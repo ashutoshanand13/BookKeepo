@@ -90,5 +90,20 @@ public class HomeController {
 	public @ResponseBody String getSuperVisiorData(@RequestParam String accountNbr) {
 		return new Gson().toJson(accountService.findAccountByAccountName(accountNbr));
 	}
+	
+	@RequestMapping(value = { "/page1" }, method = RequestMethod.GET)
+	public String getPage1() {
+		return "page1";
+	}
+	
+	@RequestMapping(value = { "/page2" }, method = RequestMethod.GET)
+	public String getPage2() {
+		return "page2";
+	}
+	
+	@RequestMapping(value = { "/base" }, method = RequestMethod.GET)
+	public String getBase() {
+		return "base";
+	}
 
 }

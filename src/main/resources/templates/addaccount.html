@@ -58,8 +58,9 @@
 								<option class="form-control" value="Contra">Contra</option>
 								<option class="form-control" value="Others">Others</option>
 																				
-							</select>	
-                                
+							</select>
+							<a th:href="@{/base}">Go to base</a>	
+                                <a th:href="@{/page1}">Go to page 1</a>
                                 <div class="form-row">
                                     <div class="col">
                                         <input type="text" class="form-control" th:field="*{gstin}" placeholder="GST Number" required>
@@ -99,8 +100,8 @@
             </div>
         </div>
     </div>
+</body>
 <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
-</body>
 </html>
