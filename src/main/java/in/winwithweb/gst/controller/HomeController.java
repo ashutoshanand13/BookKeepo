@@ -92,8 +92,12 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = { "/page1" }, method = RequestMethod.GET)
-	public String getPage1() {
-		return "page1";
+	public ModelAndView getPage1() {
+		ModelAndView modelAndView = new ModelAndView();
+		Accounts account = new Accounts();
+		modelAndView.addObject("account", account);
+		modelAndView.setViewName("page1");
+		return modelAndView;
 	}
 	
 	@RequestMapping(value = { "/page2" }, method = RequestMethod.GET)
@@ -101,9 +105,9 @@ public class HomeController {
 		return "page2";
 	}
 	
-	@RequestMapping(value = { "/base" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/postLoginCommonPage" }, method = RequestMethod.GET)
 	public String getBase() {
-		return "base";
+		return "postLoginCommonPage";
 	}
 
 }

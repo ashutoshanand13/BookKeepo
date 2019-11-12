@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE">Base</title>
+<meta name="description" content="" />
+<title>BookKeepo - GST Solutions</title>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+<link rel="stylesheet" th:href="@{/css/iofrm-style.css}">
+<link rel="stylesheet" th:href="@{/css/iofrm-theme15.css}">
+</head>
+<body>
+	<nav class="navbar navbar-expand-sm bg-success navbar-dark">
+		<ul class="navbar-nav">
+			<li class="nav-item active"><a class="nav-link" href="#">Active</a>
+			</li>
+			<li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+			<li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+			<li class="nav-item"><a class="nav-link disabled" href="#">Disabled</a>
+			</li>
+		</ul>
+	</nav>
+	<div class="form-body">
+        <div class="website-logo">
+            <a href="https://winwithweb.in" target="_blank">
+                    <img class="logo-size" th:src="@{/images/logo-light.png}" alt="">
+            </a>
+        </div>
+        <div class="row">
+            <div class="img-holder">
+                <div class="bg"></div>
+                <div class="info-holder">
+                    <h3>Get more things done with Loggin platform.</h3>
+                    <p>Access to the most powerfull tool in the entire design and web industry.<br><br>
+                        Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</p>
+                </div>
+            </div>
+           <div class="form-holder">
+                <div class="form-content form-sm">
+                <div layout:fragment="form_content">
+                    
+                   </div>
+                </div>
+            </div>
+        </div>
+    </div>
+	<div class="container">
+		<!-- <nav aria-label="breadcrumb" role="navigation">
+			<ol class="breadcrumb">
+				<th:block layout:fragment="breadcrumb">
+				</th:block>
+			</ol>
+		</nav> -->
+		<div class="content">
+			<div layout:fragment="page_content"></div>
+		</div>
+	</div>
+	<!-- /.container -->
+
+	<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+	<th:block layout:fragment="scripts">
+	</th:block>
+</body>
+
+</html>
