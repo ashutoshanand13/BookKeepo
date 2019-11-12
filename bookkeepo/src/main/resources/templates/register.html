@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WinWithWeb - GST Solutions</title>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+<link rel="stylesheet" th:href="@{/css/iofrm-style.css}">
+<link rel="stylesheet" th:href="@{/css/iofrm-theme2.css}">
+</head>
+<body>
+	<div class="form-body">
+		<div class="website-logo">
+            <a href="https://winwithweb.in" target="_blank">
+				<div class="logo">
+                    <img class="logo-size" th:src="@{/images/logo-light.png}" alt="">
+				</div>
+			</a>
+		</div>
+		<div class="row">
+			<div class="img-holder">
+				<div class="bg"></div>
+				<div class="info-holder"></div>
+			</div>
+			<div class="form-holder">
+				<div class="form-content">
+					<div class="form-items">
+						<h3>Get more things done with Loggin platform.</h3>
+						<p>Access to the most powerfull tool in the entire design and
+							web industry.</p>
+						<div class="page-links">
+							<a href="/login">Login</a><a href="/registration" class="active">Register</a>
+						</div>
+						<form autocomplete="off" th:action="@{/registration}"
+							th:object="${user}" method="post" class="form-horizontal"
+							role="form">
+							
+							<input class="form-control" type="text" name="name" th:field="*{name}" placeholder="First Name" required>
+							
+							<input class="form-control" type="text" name="lastname" th:field="*{lastName}" placeholder="Last Name" required> 
+							 
+								
+							<input class="form-control" type="email" name="email" th:field="*{email}" placeholder="E-mail Address" required>
+							<label
+							th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+							class="validation-message"></label>
+							
+							<input class="form-control" type="password" name="password" th:field="*{password}" placeholder="Password" required>
+							
+							<div class="form-button">
+								<button id="submit" type="submit" class="ibtn">Register</button>
+							</div>
+							
+						</form>
+				<!-- 		<div class="other-links">
+							<span>Or register with</span><a href="#">Facebook</a><a href="#">Google</a><a
+								href="#">Linkedin</a>
+						</div> -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+</body>
+</html>

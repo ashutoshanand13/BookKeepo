@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WinWithWeb - GST Solutions</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/iofrm-style.css}">
+    <link rel="stylesheet" th:href="@{/css/iofrm-theme15.css}">
+</head>
+
+<body>
+    <div class="form-body">
+        <div class="website-logo">
+            <a href="https://winwithweb.in" target="_blank">
+                <div class="logo">
+                    <img class="logo-size" th:src="@{/images/logo-light.png}" alt="">
+                </div>
+            </a>
+        </div>
+        <div class="row">
+            <div class="img-holder">
+                <div class="bg"></div>
+                <div class="info-holder">
+                    <h3>Get more things done with Loggin platform.</h3>
+                    <p>Access to the most powerfull tool in the entire design and web industry.<br><br>
+                        Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</p>
+                </div>
+            </div>
+           <div class="form-holder">
+                <div class="form-content form-sm">
+                    <div class="form-items">
+                        <h3 class="form-title">Add An Account</h3>
+                         <div th:if="${message}" th:text="${message}"
+					class="alert alert-info"></div>
+                        <form autocomplete="off" th:action="@{/home}"
+							th:object="${account}" method="post" class="form-horizontal"
+							role="form">
+							
+                            <div class="form-group">
+                                <label>Account Information</label>
+                                <input type="text" class="form-control" name="name" th:field="*{accountName}" placeholder="Account Name" required>
+                                <input type="email" class="form-control" name="email" th:field="*{accountEmail}" placeholder="E-mail Address" required>
+                                <label th:if="${#fields.hasErrors('accountEmail')}" th:errors="*{accountEmail}" class="validation-message"></label>
+                                <input type="text" class="form-control" name="phone" th:field="*{accountContact}" placeholder="Contact Number" required>
+                                
+                            </div>
+                            <div class="form-group">
+                                 <label>Account Type</label>
+                                
+                                <select name="selectbasic" class="form-control" th:field="*{accountType}" required="required">
+								<option class="form-control" value="">Select account type</option>
+								<option class="form-control" value="Debtor">Debtor</option>
+								<option class="form-control" value="Creditor">Creditor</option>
+								<option class="form-control" value="Loan">Loan</option>
+								<option class="form-control" value="Advances">Advances</option>
+								<option class="form-control" value="Expense">Expense</option>
+								<option class="form-control" value="Income">Income</option>
+								<option class="form-control" value="Contra">Contra</option>
+								<option class="form-control" value="Others">Others</option>
+																				
+							</select>	
+                                
+                                <div class="form-row">
+                                    <div class="col">
+                                        <input type="text" class="form-control" th:field="*{gstin}" placeholder="GST Number" required>
+                                        <label th:if="${#fields.hasErrors('gstin')}" th:errors="*{gstin}" class="validation-message"></label>
+                                        
+                                    </div>
+                                    <div class="col">
+                                        <input type="text" class="form-control"  th:field="*{accountPan}" placeholder="PAN" required>
+                                        <label th:if="${#fields.hasErrors('accountPan')}" th:errors="*{accountPan}" class="validation-message"></label>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Address</label>
+                                <textarea class="form-control" th:field="*{accountAddress}" required></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="form-row">
+                                    <div class="col">
+                                        <input type="text" class="form-control" th:field="*{accountState}" placeholder="State" required>
+                                    </div>
+                                    <div class="col">
+                                        <input type="text" class="form-control"  th:field="*{accountPincode}" placeholder="Pincode" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-button text-right">
+                                    <button type="reset" class="btn btn-light">Reset</button><button id="submit" type="submit" class="ibtn">Save</button>
+                                    
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+</body>
+</html>

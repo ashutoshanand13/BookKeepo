@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WinWithWeb - GST Solutions</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/iofrm-style.css}">
+    <link rel="stylesheet" th:href="@{/css/iofrm-theme2.css}">
+</head>
+<body>
+    <div class="form-body">
+        <div class="website-logo">
+            <a href="https://winwithweb.in" target="_blank">
+                <div class="logo">
+                    <img class="logo-size" th:src="@{/images/logo-light.png}" alt="">
+                </div>
+            </a>
+        </div>
+        <div class="row">
+            <div class="img-holder">
+                <div class="bg"></div>
+                <div class="info-holder">
+
+                </div>
+            </div>
+            <div class="form-holder">
+                <div class="form-content">
+                    <div class="form-items">
+                        <h3>Get more things done with Loggin platform.</h3>
+                        <p>Access to the most powerfull tool in the entire design and web industry.</p>
+                        <div class="page-links">
+                            <a href="/login" class="active">Login</a><a href="/registration">Register</a>
+                        </div>
+                        
+                        <div th:if="${message}" th:text="${message}"
+					class="alert alert-info"></div>
+					
+                        <form th:action="@{/login}" method="post">
+                            <input class="form-control" type="text" name="username" placeholder="E-mail Address" required>
+                            <input class="form-control" type="password" name="password" placeholder="Password" required>
+                            <input type="checkbox" id="chk1"><label for="chk1">Remember me</label>
+                            <div class="form-button">
+                                <button id="submit" type="submit" class="ibtn">Login</button>
+                            </div>
+                        </form>
+                  <!--        <div class="other-links">
+                            <span>Or login with</span><a href="#">Facebook</a><a href="#">Google</a><a href="#">Linkedin</a>
+                        </div>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+</body>
+</html>
