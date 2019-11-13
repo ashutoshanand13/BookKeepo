@@ -771,3 +771,7 @@ html, body {
         background-image: url("../images/logo-light.png");
     }
 }
+
+.bg-success{
+	background-color :#18bc9c !important;
+}
