@@ -118,6 +118,16 @@
     text-align: left;
 }
 
+.doubleunderlinetext{
+	text-decoration-line: underline;
+  	text-decoration-style: double;
+}
+
+.singleunderlinetext{
+	text-decoration-line: underline;
+  	text-decoration-style: solid;
+}
+
 .form-content p {
     color: #000;
     text-align: left;
@@ -151,6 +161,18 @@
 }
 
 .form-content input:hover, .form-content input:focus, .form-content .dropdown-toggle.btn-default:hover, .form-content .dropdown-toggle.btn-default:focus {
+    border: 1px solid #0093FF;
+    background-color: #fff;
+    color: #000000;
+}
+
+.form-content select, .form-content .dropdown-toggle.btn-default {
+    border: 1px solid rgba(0, 149, 255, 0);
+    background-color: #F7F7F7;
+    color: #000000;
+}
+
+.form-content select:hover, .form-content input:focus, .form-content .dropdown-toggle.btn-default {
     border: 1px solid #0093FF;
     background-color: #fff;
     color: #000000;

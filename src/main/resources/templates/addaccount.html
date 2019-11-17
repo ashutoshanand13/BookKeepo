@@ -1,46 +1,23 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{postLoginCommonPage}">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{postLoginCommonPage}">
 
 <head>
 <title>Add Account</title>
 </head>
-<!-- <th:block layout:fragment="breadcrumb">
-	<li class="breadcrumb-item">Page 1</li>
-</th:block> -->
-
-<!-- <div layout:fragment="page_content" id="page_content">
-	<h3>Page 1</h3>
-	
-	<div class="alert alert-info" style="display: none;" id="js-content">
-	</div>
-	<a th:href="@{/page2}">Go to page 2</a>
-</div> -->
 <div layout:fragment="form_content" id="form_content">
 	<div class="form-items">
-		<h3 class="form-title">Add An Account</h3>
+		<h3 class="form-title doubleunderlinetext">Add An Account</h3>
 		<div th:if="${message}" th:text="${message}" class="alert alert-info"></div>
-		<form autocomplete="off" th:action="@{/home}" th:object="${account}"
-			method="post" class="form-horizontal" role="form">
+		<form autocomplete="off" th:action="@{/home}" th:object="${account}" method="post"
+			class="form-horizontal" role="form">
 
 			<div class="form-group">
-				<label>Account Information</label> <input type="text"
-					class="form-control" name="name" th:field="*{accountName}"
-					placeholder="Account Name" required> <input type="email"
-					class="form-control" name="email" th:field="*{accountEmail}"
-					placeholder="E-mail Address" required> <label
-					th:if="${#fields.hasErrors('accountEmail')}"
-					th:errors="*{accountEmail}" class="validation-message"></label> <input
-					type="text" class="form-control" name="phone"
-					th:field="*{accountContact}" placeholder="Contact Number" required>
-
-			</div>
-			<div class="form-group">
-				<label>Account Type</label> <select name="selectbasic"
-					class="form-control" th:field="*{accountType}" required="required">
-					<option class="form-control" value="">Select account type</option>
+				<label>Account Information</label> 
+				<input type="text" class="form-control" name="name"	th:field="*{accountName}" placeholder="Account Name" required>
+				<select name="selectbasic" class="form-control"
+					th:field="*{accountType}" required="required">
+					<option class="form-control" value="">Select Account type</option>
 					<option class="form-control" value="Debtor">Debtor</option>
 					<option class="form-control" value="Creditor">Creditor</option>
 					<option class="form-control" value="Loan">Loan</option>
@@ -49,22 +26,25 @@
 					<option class="form-control" value="Income">Income</option>
 					<option class="form-control" value="Contra">Contra</option>
 					<option class="form-control" value="Others">Others</option>
-
 				</select>
+				<input type="text" class="form-control" th:field="*{gstin}" placeholder="GST Number" required>
+						<label th:if="${#fields.hasErrors('gstin')}" th:errors="*{gstin}" class="validation-message"></label>
+				<input type="text" class="form-control" th:field="*{accountPan}" placeholder="PAN" required>
+						<label th:if="${#fields.hasErrors('accountPan')}" th:errors="*{accountPan}"
+							class="validation-message"></label> 
+					
+
+			</div>
+			<div class="form-group">
+				<label>Contact Details</label> 
 				<div class="form-row">
 					<div class="col">
-						<input type="text" class="form-control" th:field="*{gstin}"
-							placeholder="GST Number" required> <label
-							th:if="${#fields.hasErrors('gstin')}" th:errors="*{gstin}"
-							class="validation-message"></label>
-
-					</div>
-					<div class="col">
-						<input type="text" class="form-control" th:field="*{accountPan}"
-							placeholder="PAN" required> <label
-							th:if="${#fields.hasErrors('accountPan')}"
-							th:errors="*{accountPan}" class="validation-message"></label>
-
+						<input type="email"
+					class="form-control" name="email" th:field="*{accountEmail}" placeholder="E-mail Address"
+					required> <label th:if="${#fields.hasErrors('accountEmail')}"
+					th:errors="*{accountEmail}" class="validation-message"></label> <input type="text"
+					class="form-control" name="phone" th:field="*{accountContact}" placeholder="Contact Number"
+					required>
 					</div>
 				</div>
 			</div>
@@ -76,12 +56,12 @@
 			<div class="form-group">
 				<div class="form-row">
 					<div class="col">
-						<input type="text" class="form-control" th:field="*{accountState}"
-							placeholder="State" required>
+						<input type="text" class="form-control" th:field="*{accountState}" placeholder="State"
+							required>
 					</div>
 					<div class="col">
-						<input type="text" class="form-control"
-							th:field="*{accountPincode}" placeholder="Pincode" required>
+						<input type="text" class="form-control" th:field="*{accountPincode}" placeholder="Pincode"
+							required>
 					</div>
 				</div>
 			</div>
@@ -94,10 +74,3 @@
 		</form>
 	</div>
 </div>
-<!-- <th:block layout:fragment="scripts">
-<script type="text/javascript">
-$(function(){
-	$("#js-content").html("From Javascript").slideToggle();
-});
-</script>
-</th:block> -->

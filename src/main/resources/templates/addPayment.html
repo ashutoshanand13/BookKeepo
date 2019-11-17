@@ -10,7 +10,7 @@
 <div layout:fragment="form_content" id="form_content">
 	<div class="form-content form-sm">
 		<div class="form-items">
-			<h3 class="form-title">Add A Payment</h3>
+			<h3 class="form-title doubleunderlinetext">Add A Payment</h3>
 			<div th:if="${message}" th:text="${message}" class="alert alert-info"></div>
 			<form autocomplete="off" th:action="@{/home}" th:object="${payment}"
 				method="post" class="form-horizontal" role="form">

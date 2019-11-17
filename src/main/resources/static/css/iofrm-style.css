@@ -329,8 +329,8 @@ html, body {
 .form-content label {
     color: #fff;
     text-align: left;
-    font-size: 15px;
-    font-weight: 300;
+    font-size: 16px;
+    font-weight: 450;
     line-height: 20px;
     margin-bottom: 10px;
 }
@@ -731,6 +731,12 @@ html, body {
 }
 
 .form-content.form-sm textarea {
+    padding: 6px 16px;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.form-content.form-sm select {
     padding: 6px 16px;
     margin-bottom: 10px;
     font-size: 14px;
