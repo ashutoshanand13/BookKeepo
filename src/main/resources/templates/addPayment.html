@@ -26,21 +26,18 @@
 						<option th:each="account : ${accountList}" th:value="${account}"
 							th:text="${account}"></option>
 					</select>
-
 					<div class="form-row">
 						<div class="col">
 							<input type="text" id="gstin" class="form-control"
 								th:field="*{gstin}" placeholder="GST Number" readonly="readonly"
 								required> <label th:if="${#fields.hasErrors('gstin')}"
 								th:errors="*{gstin}" class="validation-message"></label>
-
 						</div>
 						<div class="col">
 							<input type="text" class="form-control" th:field="*{accountPan}"
 								placeholder="PAN" readonly="readonly" required> <label
 								th:if="${#fields.hasErrors('accountPan')}"
 								th:errors="*{accountPan}" class="validation-message"></label>
-
 						</div>
 					</div>
 				</div>

@@ -11,7 +11,8 @@
 		<div th:if="${message}" th:text="${message}" class="alert alert-info"></div>
 		<form autocomplete="off" th:action="@{/home}" th:object="${account}" method="post"
 			class="form-horizontal" role="form">
-
+			<div class="row">
+			 <div class="col-md-6 form-group">
 			<div class="form-group">
 				<label>Account Information</label> 
 				<input type="text" class="form-control" name="name"	th:field="*{accountName}" placeholder="Account Name" required>
@@ -32,9 +33,9 @@
 				<input type="text" class="form-control" th:field="*{accountPan}" placeholder="PAN" required>
 						<label th:if="${#fields.hasErrors('accountPan')}" th:errors="*{accountPan}"
 							class="validation-message"></label> 
-					
-
 			</div>
+			</div>
+			<div class="col-md-6 form-group">
 			<div class="form-group">
 				<label>Contact Details</label> 
 				<div class="form-row">
@@ -52,7 +53,6 @@
 				<label>Address</label>
 				<textarea class="form-control" th:field="*{accountAddress}" required></textarea>
 			</div>
-
 			<div class="form-group">
 				<div class="form-row">
 					<div class="col">
@@ -65,11 +65,11 @@
 					</div>
 				</div>
 			</div>
-
+			</div>
+			</div>
 			<div class="form-button text-right">
 				<button type="reset" class="btn btn-light">Reset</button>
 				<button id="submit" type="submit" class="ibtn">Save</button>
-
 			</div>
 		</form>
 	</div>

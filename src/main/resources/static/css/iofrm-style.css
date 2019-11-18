@@ -156,7 +156,7 @@ html, body {
     top: 0;
     left: 0;
     width: 550px;
-    min-height: 700px;
+    /* min-height: 850px; */
     height: 100%;
     overflow: hidden;
     background-color: #000000;
@@ -167,7 +167,7 @@ html, body {
 
 .img-holder .info-holder {
     position: relative;
-    top: 50%;
+    top: 40%;
     -webkit-transform: translateY(-50%);
     -moz-transform: translateY(-50%);
     -ms-transform: translateY(-50%);
@@ -242,7 +242,7 @@ html, body {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 60px;
+    padding: 30px;
     min-height: 100%;
 }
 
