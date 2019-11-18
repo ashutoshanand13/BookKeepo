@@ -13,6 +13,7 @@
 <link rel="stylesheet" th:href="@{/css/iofrm-theme15.css}">
 </head>
 <body>
+<div id="topheader">
 	<nav class="navbar navbar-expand-lg navbar-dark bg-success">
 		<a class="navbar-brand" href="#">BookKeepo</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -23,14 +24,14 @@
 
 		<div class="collapse navbar-collapse" id="navbarColor02">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item active"><a class="nav-link" href="#">Home
-						<span class="sr-only">(current)</span>
-				</a></li>
+				<li class="nav-item active"><a th:class="nav-link"
+					th:href="@{/home}">Home</a></li>
 				<li class="nav-item"><a th:class="nav-link"
 					th:href="@{/addaccount}">Add Account</a></li>
 				<li class="nav-item"><a th:class="nav-link"
 					th:href="@{/addPayment}">Add Payment</a>
-				<li class="nav-item"><a class="nav-link" href="#">About</a></li>
+				<li class="nav-item"><a th:class="nav-link"
+					th:href="#">Add Receipt</a></li>
 			</ul>
 			<ul class="navbar-nav ml-auto nav-flex-icons">
 				<li class="nav-item dropdown"><a
@@ -46,6 +47,7 @@
 			</ul>
 		</div>
 	</nav>
+	</div>
 	<div class="form-body">
 		<div class="row">
 		
@@ -82,6 +84,12 @@
 	<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
 	<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
 	<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+	<script type="text/javascript">
+	$( '#topheader .navbar-nav a' ).on( 'click', function () {
+		$( '#topheader .navbar-nav' ).find( 'li.active' ).removeClass( 'active' );
+		$( this ).parent( 'li' ).addClass( 'active' );
+	});
+</script>
 	<th:block layout:fragment="scripts">
 	</th:block>
 </body>
