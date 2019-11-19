@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 
 import in.winwithweb.gst.model.Accounts;
 import in.winwithweb.gst.model.Payment;
+import in.winwithweb.gst.model.Receipts;
 import in.winwithweb.gst.service.AccountService;
 
 /**
@@ -94,6 +95,16 @@ public class HomeController {
 		Accounts account = new Accounts();
 		modelAndView.addObject("account", account);
 		modelAndView.setViewName("addaccount");
+		return modelAndView;
+	}
+	
+	@RequestMapping(value = { "/addReceipt" }, method = RequestMethod.GET)
+	public ModelAndView getAddReceipt() {
+		ModelAndView modelAndView = new ModelAndView();
+		Receipts receipt = new Receipts();
+		modelAndView.addObject("receipts", receipt);
+		modelAndView.setViewName("addReceipt");
+		modelAndView.addObject("accountList", accountService.fetchAccountName());
 		return modelAndView;
 	}
 	
