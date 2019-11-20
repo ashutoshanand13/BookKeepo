@@ -1,20 +1,3 @@
-/*------------------------------------------------------------------
- * Theme Name: iofrm - form templates
- * Theme URI: http://www.brandio.io/envato/iofrm
- * Author: Brandio
- * Author URI: http://www.brandio.io/
- * Description: A Bootstrap Responsive HTML5 Template
- * Version: 1.0
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * Bootstrap v4.1 (http://getbootstrap.com)
- * Copyright 2018 Brandio.
- -------------------------------------------------------------------*/
-/*------------------------------------------------------------------
-[Table of contents]
-
-1. General Styles.
-2. Responsive Styles.
--------------------------------------------------------------------*/
 @import url("https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900");
 /* -----------------------------------
     1 - General Styles
@@ -156,7 +139,7 @@ html, body {
     top: 0;
     left: 0;
     width: 550px;
-    min-height: 700px;
+    /* min-height: 850px; */
     height: 100%;
     overflow: hidden;
     background-color: #000000;
@@ -167,7 +150,7 @@ html, body {
 
 .img-holder .info-holder {
     position: relative;
-    top: 50%;
+    top: 40%;
     -webkit-transform: translateY(-50%);
     -moz-transform: translateY(-50%);
     -ms-transform: translateY(-50%);
@@ -242,7 +225,7 @@ html, body {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 60px;
+    padding: 30px;
     min-height: 100%;
 }
 
@@ -329,8 +312,8 @@ html, body {
 .form-content label {
     color: #fff;
     text-align: left;
-    font-size: 15px;
-    font-weight: 300;
+    font-size: 16px;
+    font-weight: 450;
     line-height: 20px;
     margin-bottom: 10px;
 }
@@ -736,6 +719,12 @@ html, body {
     font-size: 14px;
 }
 
+.form-content.form-sm select {
+    padding: 6px 16px;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
 .form-content.form-sm .form-button .ibtn {
     padding: 4px 28px;
 }
@@ -770,4 +759,8 @@ html, body {
     .website-logo .logo {
         background-image: url("../images/logo-light.png");
     }
+}
+
+.bg-success{
+	background-color :#18bc9c !important;
 }

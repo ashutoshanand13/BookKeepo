@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE">BookKeepo</title>
+<meta name="description" content="" />
+<title>BookKeepo - GST Solutions</title>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+<link rel="stylesheet" th:href="@{/css/iofrm-style.css}">
+<link rel="stylesheet" th:href="@{/css/iofrm-theme15.css}">
+</head>
+<body>
+<div id="topheader">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-success">
+		<a class="navbar-brand" href="#">BookKeepo</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse"
+			data-target="#navbarColor02" aria-controls="navbarColor02"
+			aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarColor02">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item active"><a th:class="nav-link"
+					th:href="@{/home}">Home</a></li>
+				<li class="nav-item"><a th:class="nav-link"
+					th:href="@{/addaccount}">Add Account</a></li>
+				<li class="nav-item"><a th:class="nav-link"
+					th:href="@{/addPayment}">Add Payment</a>
+				<li class="nav-item"><a th:class="nav-link"
+					th:href="@{/addReceipt}">Add Receipt</a></li>
+			</ul>
+			<ul class="navbar-nav ml-auto nav-flex-icons">
+				<li class="nav-item dropdown"><a
+					class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333"
+					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Options </a>
+					<div class="dropdown-menu dropdown-menu-right dropdown-default"
+						aria-labelledby="navbarDropdownMenuLink-333">
+						<a class="dropdown-item" href="#">User Profile</a> <a
+							class="dropdown-item" href="#">Help</a> <a class="dropdown-item"
+							href="#">Sign Out</a>
+					</div></li>
+			</ul>
+		</div>
+	</nav>
+	</div>
+	<div class="form-body">
+		<div class="row">
+		
+			<div class="img-holder">
+				<!-- <div class="website-logo">
+			<a href="https://winwithweb.in" target="_blank"> <img
+				class="logo-size" th:src="@{/images/logo-light.png}" alt="">
+			</a>
+		</div> -->
+				<div class="bg"></div>
+				<div class="info-holder" layout:fragment="screen_description">
+					
+				</div>
+			</div>
+			<div class="form-holder">
+				<div class="form-content form-sm" layout:fragment="form_content">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<!-- <nav aria-label="breadcrumb" role="navigation">
+			<ol class="breadcrumb">
+				<th:block layout:fragment="breadcrumb">
+				</th:block>
+			</ol>
+		</nav> -->
+		<div class="content">
+			<div layout:fragment="page_content"></div>
+		</div>
+	</div>
+	<!-- /.container -->
+
+	<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+	<script type="text/javascript">
+	$( '#topheader .navbar-nav a' ).on( 'click', function () {
+		$( '#topheader .navbar-nav' ).find( 'li.active' ).removeClass( 'active' );
+		$( this ).parent( 'li' ).addClass( 'active' );
+	});
+</script>
+	<th:block layout:fragment="scripts">
+	</th:block>
+</body>
+
+
+</html>

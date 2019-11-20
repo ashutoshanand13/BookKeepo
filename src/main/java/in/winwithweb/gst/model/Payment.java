@@ -51,6 +51,10 @@ public class Payment {
 	@Column(name = "payment_mode")
 	@NotEmpty(message = "*Please provide the payment mode")
 	private String paymentMode;
+	
+	@Column(name = "payment_amount")
+	@NotEmpty(message = "*Please provide the Payment amount")
+	private String paymentAmount;
 
 	@Column(name = "payment_description")
 	@NotEmpty(message = "*Please provide the payment description")
@@ -194,6 +198,20 @@ public class Payment {
 	 */
 	public void setAccountPan(String accountPan) {
 		this.accountPan = accountPan;
+	}
+
+	/**
+	 * @return the paymentAmount
+	 */
+	public String getPaymentAmount() {
+		return paymentAmount;
+	}
+
+	/**
+	 * @param paymentAmount the paymentAmount to set
+	 */
+	public void setPaymentAmount(String paymentAmount) {
+		this.paymentAmount = paymentAmount;
 	}
 	
 	
