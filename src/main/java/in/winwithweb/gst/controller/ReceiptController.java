@@ -23,7 +23,7 @@ public class ReceiptController {
 	@Autowired
 	private AccountService accountService;
 
-	@RequestMapping(value = { "/home/addReceipt" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/home/addreceipt" }, method = RequestMethod.GET)
 	public ModelAndView getAddReceipt() {
 		ModelAndView modelAndView = new ModelAndView();
 		Receipts receipt = new Receipts();
