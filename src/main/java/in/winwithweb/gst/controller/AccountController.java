@@ -3,6 +3,8 @@
  */
 package in.winwithweb.gst.controller;
 
+import java.security.Principal;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +39,7 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "/home/addaccount", method = RequestMethod.POST)
-	public ModelAndView addNewAccount(@Valid @ModelAttribute("account") Accounts account, BindingResult bindingResult) {
+	public ModelAndView addNewAccount(@Valid @ModelAttribute("account") Accounts account, BindingResult bindingResult, Principal principal) {
 		ModelAndView modelAndView = new ModelAndView();
 		Accounts accountWithGstInExists = accountService.findAccountByGstin(account.getGstin());
 
@@ -54,11 +56,12 @@ public class AccountController {
 			bindingResult.rejectValue("accountPan", "accountPan", "Please provide a valid PAN.");
 
 		}
-
+		
 		if (bindingResult.hasErrors()) {
 			modelAndView.addObject("account", account);
 			modelAndView.setViewName("addaccount");
 		} else {
+			account.setAccountOwner(principal.getName());
 			accountService.saveAccount(account);
 			modelAndView.addObject("message", "New Account Details Successfully Added");
 			modelAndView.addObject("account", new Accounts());
