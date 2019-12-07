@@ -202,7 +202,7 @@ html, body {
 
 @media (min-height: 700px) {
     .img-holder {
-        position: fixed;
+        position: absolute;
     }
 
     .website-logo {
