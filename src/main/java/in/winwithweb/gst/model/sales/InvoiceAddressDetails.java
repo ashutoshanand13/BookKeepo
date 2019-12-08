@@ -180,7 +180,4 @@ public class InvoiceAddressDetails {
 		this.invoicePartyState = invoicePartyState;
 	}
 	
-	
-	
-	
 }
