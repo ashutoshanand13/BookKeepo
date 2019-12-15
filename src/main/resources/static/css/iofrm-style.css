@@ -764,3 +764,7 @@ html, body {
 .bg-success{
 	background-color :#18bc9c !important;
 }
+
+.pt-3-half {
+padding-top: 1.4rem;
+}
