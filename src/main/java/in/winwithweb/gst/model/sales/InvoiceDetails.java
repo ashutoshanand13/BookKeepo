@@ -79,7 +79,7 @@ public class InvoiceDetails {
 	private String invoiceGstAmount;	
 	
 	@OneToMany(cascade=CascadeType.ALL)
-    @JoinColumn(name="invoice_referece_no")
+    @JoinColumn(name="invoice_products_referece_no")
     private List<InvoiceProductDetails> invoiceProductDetails;
 	
 	@OneToOne(cascade=CascadeType.ALL)
@@ -89,6 +89,11 @@ public class InvoiceDetails {
 	@OneToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="invoice_address_reference_no")
     private InvoiceAddressDetails invoiceAddressDetails;
+	
+	@OneToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name="invoice_company_reference_no")
+    private InvoiceCompanyDetails invoiceCompanyDetails;
+		
 	
 	/**
 	 * @return the id
@@ -354,6 +359,20 @@ public class InvoiceDetails {
 	 */
 	public void setInvoiceAddressDetails(InvoiceAddressDetails invoiceAddressDetails) {
 		this.invoiceAddressDetails = invoiceAddressDetails;
+	}
+
+	/**
+	 * @return the invoiceCompanyDetails
+	 */
+	public InvoiceCompanyDetails getInvoiceCompanyDetails() {
+		return invoiceCompanyDetails;
+	}
+
+	/**
+	 * @param invoiceCompanyDetails the invoiceCompanyDetails to set
+	 */
+	public void setInvoiceCompanyDetails(InvoiceCompanyDetails invoiceCompanyDetails) {
+		this.invoiceCompanyDetails = invoiceCompanyDetails;
 	}
 
 }
