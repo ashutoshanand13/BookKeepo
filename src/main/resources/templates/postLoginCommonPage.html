@@ -31,7 +31,7 @@
 				<li class="nav-item"><a th:class="nav-link"
 					th:href="@{/home/addpayment}">Add Payment</a>
 				<li class="nav-item"><a th:class="nav-link"
-					th:href="@{/home/addreceipt}">Add Receipt</a></li>
+					th:href="@{/home/addreceipt}">Add Receipts</a></li>
 			</ul>
 			
 			<ul class="navbar-nav ml-auto nav-flex-icons">
@@ -52,16 +52,8 @@
 	<div class="form-body">
 		<div class="row">
 		
-			<div class="img-holder">
-				<!-- <div class="website-logo">
-			<a href="https://winwithweb.in" target="_blank"> <img
-				class="logo-size" th:src="@{/images/logo-light.png}" alt="">
-			</a>
-		</div> -->
-				<div class="bg"></div>
-				<div class="info-holder" layout:fragment="screen_description">
-					
-				</div>
+		<div layout:fragment="screen_description">
+			
 			</div>
 			<div class="form-holder">
 				<div class="form-content form-sm" layout:fragment="form_content">
