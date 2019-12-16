@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{postLoginCommonPage}">
+<head>
+<title>Sales Invoice</title>
+</head>
+
+<div layout:fragment="form_content" id="form_content">
+<form id="form">
+		  <div class="form-items">
+			<h3 class="form-title doubleunderlinetext center">Sales Invoice</h3>
+		          <div class="row">
+        <div class="col-md-10 mx-auto">
+                <div class="form-group row">
+                    <div class="col-sm-3">
+                        <input type="image" class="form-control" id="companyLogo" name ="companyLogo" th:src="@{/images/logo-light.png}">
+                    </div>
+                    <div class="col-sm-3">
+                    </div>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name ="comapnyNameHeader" placeholder="Company Name">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                    <input type="text" class="form-control" name ="addressHeader" placeholder="Address">
+                    </div>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name ="telephoneHeader" placeholder="Telephone">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                    <input type="text" class="form-control" name ="gstinHeader" placeholder="GSTIN">
+                    </div>
+                    <div class="col-sm-6">
+                    <input type="text" class="form-control" name ="emailHeader" placeholder="Email ID">
+                    </div>
+                </div>
+				
+
+        </div>
+    </div>
+		    <h3 class="card-header text-center font-weight-bold text-uppercase py-4">Tax Invoice</h3>
+		
+
+        <div class="row">
+        <div class="col-md-10 mx-auto">
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name ="invoiceNo" placeholder="Invoice No.">
+                    </div>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name ="poNo" placeholder="PO No.">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name ="invoiceDate" placeholder="Invoice Date">
+                    </div>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name ="poDate" placeholder="PO Date">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name ="dateOfSupply" placeholder="Date of Supply">
+                    </div>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name ="transportMode" placeholder="Transport Mode">
+                    </div>
+                </div>
+				<div class="form-group row">
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name ="placeOfSupply" placeholder="Place of Supply">
+                    </div>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name ="vehicleNo" placeholder="Vehicle No">
+                    </div>
+                </div>
+				<div class="form-group row">
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name ="state" placeholder="State">
+                    </div>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name ="reverseCharge" placeholder="Reverse Charge (Y/N)">
+                    </div>
+                </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-10 mx-auto">
+                <div class="form-group row">
+                    <div class="col-sm-6">
+					<label for="inputFirstname">Bill to Party</label>
+                        <input type="text" class="form-control" name ="nameBill" placeholder="Name">
+                    </div>
+                    <div class="col-sm-6">
+					<label for="inputFirstname">Ship to Party</label>
+                        <input type="text" class="form-control" name ="nameShip" placeholder="Name">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name ="addressShip" placeholder="Address">
+                    </div>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name ="addressShip" placeholder="Address">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name ="gstinBill" placeholder="GSTIN">
+                    </div>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name ="gstinShip" placeholder="GSTIN">
+                    </div>
+                </div>
+				<div class="form-group row">
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name ="stateBill" placeholder="State">
+                    </div>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name ="stateShip" placeholder="State">
+                    </div>
+                </div>
+
+        </div>
+    </div>
+<div id="tableJson" class="table-editable">
+<div id=table>
+      <table id="itemTable" class="table table-bordered table-responsive-md table-striped text-center">
+        <thead>
+          <tr>
+            <th class="text-center">Sr No</th>
+            <th class="text-center">Product Description</th>
+            <th class="text-center">HSN Code</th>
+            <th class="text-center">UOM</th>
+            <th class="text-center">Qty</th>
+            <th class="text-center">Rate</th>
+            <th class="text-center">Amount</th>
+            <th class="text-center">Discount</th>
+            <th class="text-center">GST rate</th>
+            <th class="text-center">Taxable Value</th>
+            <th class="text-center">CGST</th>
+            <th class="text-center">SGST</th>
+            <th class="text-center">IGST</th>
+            <th class="text-center">Total Amount</th>
+            <th class="text-center">Remove</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="pt-3-half"><input type="text" id="srNo" name="excluded:skip" placeholder="Sr No" readonly="readonly"></td>
+            <td class="pt-3-half"><input type="text" id="productDesc" name="excluded:skip" placeholder="Product Description"></td>
+            <td class="pt-3-half"><input type="text" id="hsnCode" name="excluded:skip" placeholder="HSN Code"></td>
+            <td class="pt-3-half"><input type="text" id="uom" name="excluded:skip" placeholder="UOM"></td>
+            <td class="pt-3-half"><input type="text" id="qty" name="excluded:skip" placeholder="QTY"></td>
+            <td class="pt-3-half"><input type="text" id="rate" name="excluded:skip" placeholder="Rate"></td>
+            <td class="pt-3-half"><input type="text" id="amount" name="excluded:skip" placeholder="Amount"></td>
+            <td class="pt-3-half"><input type="text" id="discount" name="excluded:skip" placeholder="Discount"></td>
+            <td class="pt-3-half"><input type="text" id="gstRate" name="excluded:skip" placeholder="GST Rate"></td>
+            <td class="pt-3-half"><input type="text" id="taxableValue" name="excluded:skip" placeholder="Taxable Value"></td>
+            <td class="pt-3-half"><input type="text" id="cgst" name="excluded:skip" placeholder="CGST"></td>
+            <td class="pt-3-half"><input type="text" id="sgst" name="excluded:skip" placeholder="SGST"></td>
+            <td class="pt-3-half"><input type="text" id="igst" name="excluded:skip" placeholder="IGST"></td>
+            <td class="pt-3-half"><input type="text" id="totalAmount" name="excluded:skip" placeholder="Total Amount"></td>
+            <td>
+              <span class="table-remove"><button type="button"
+                  class="btn btn-danger btn-rounded btn-sm my-0">Remove</button></span>
+            </td>
+          </tr>
+        </tbody>
+        	  <span class="table-add"><button type="button"
+      		class="btn btn-success btn-rounded btn-sm my-0">Add Row</button></span> 
+      </table>
+      </div>
+      <button type="button" id="export-btn" class="btn btn-info btn-rounded btn-sm my-0">JSON</button>           
+    </div>
+  
+    </div>
+</form>
+</div>
+<th:block layout:fragment="scripts">
+<script>
+window.onload = function() {
+  myFunction();
+};
+
+function myFunction() {
+  var element = document.getElementById("form-data-holder");
+  element.classList.remove("form-holder");
+}
+</script>
+</th:block>

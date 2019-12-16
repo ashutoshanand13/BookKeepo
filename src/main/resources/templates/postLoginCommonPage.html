@@ -32,6 +32,8 @@
 					th:href="@{/home/addpayment}">Add Payment</a>
 				<li class="nav-item"><a th:class="nav-link"
 					th:href="@{/home/addreceipt}">Add Receipts</a></li>
+				<li class="nav-item"><a th:class="nav-link"
+					th:href="@{/home/salesinvoice}">Create Sales Invoice</a></li>
 			</ul>
 			
 			<ul class="navbar-nav ml-auto nav-flex-icons">
@@ -51,32 +53,24 @@
 	</div>
 	<div class="form-body">
 		<div class="row">
-		
-		<div layout:fragment="screen_description">
-			
-			</div>
-			<div class="form-holder">
-				<div class="form-content form-sm" layout:fragment="form_content">
-				</div>
+
+			<div layout:fragment="screen_description"></div>
+			<div class="form-holder" id="form-data-holder">
+				<div class="form-content form-sm" layout:fragment="form_content"></div>
 			</div>
 		</div>
 	</div>
 	<div class="container">
-		<!-- <nav aria-label="breadcrumb" role="navigation">
-			<ol class="breadcrumb">
-				<th:block layout:fragment="breadcrumb">
-				</th:block>
-			</ol>
-		</nav> -->
 		<div class="content">
 			<div layout:fragment="page_content"></div>
 		</div>
 	</div>
-	<!-- /.container -->
 
 	<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
 	<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
 	<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/jquery.serializejson.js}"></script>
+	<script type="text/javascript" th:src="@{/js/table.js}"></script>
 	<script type="text/javascript">
 	$( '#topheader .navbar-nav a' ).on( 'click', function () {
 		$( '#topheader .navbar-nav' ).find( 'li.active' ).removeClass( 'active' );
