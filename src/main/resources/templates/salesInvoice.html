@@ -133,9 +133,24 @@
 <div id="tableJson" class="table-editable">
 <div id=table>
       <table id="itemTable" class="table table-bordered table-responsive-md table-striped text-center">
+        <col width="70">
+        <col width="250">
+        <col width="90">
+        <col width="70">
+        <col width="70">
+        <col width="100">
+        <col width="100">
+        <col width="100">
+        <col width="80">
+        <col width="100">
+        <col width="100">
+        <col width="100">
+        <col width="100">
+        <col width="110">
+        <col width="70">
         <thead>
           <tr>
-            <th class="text-center">Sr No</th>
+            <th class="text-center">Sr. No.</th>
             <th class="text-center">Product Description</th>
             <th class="text-center">HSN Code</th>
             <th class="text-center">UOM</th>
@@ -203,6 +218,10 @@
 window.onload = function() {
 	setValues();
 };
+
+window.onbeforeunload = function() {
+    return "Are you sure you want to leave this page bla bla bla?"; // you can make this dynamic, ofcourse...
+ };
 
 </script>
 </th:block>
