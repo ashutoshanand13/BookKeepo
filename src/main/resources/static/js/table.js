@@ -67,7 +67,7 @@ document.write(json);
  
 function setValues() {
 
-	    $tblrows.each(function (index) {
+	    $tableID.find('tbody tr').each(function (index) {
 	    	
 	        var $tblrow = $(this);
 
@@ -149,10 +149,11 @@ function resetValues(){
 	        ttlQty[index]=checkValuaNaN(parseInt($tblrow.find("#qty").val(),10));
 	        ttlAmount[index]=checkValuaNaN(parseInt($tblrow.find("#amount").val(),10));
 	        ttlTaxableValue[index]=checkValuaNaN(parseInt($tblrow.find("#taxableValue").val(),10));
-	        ttlIgst[index]=checkValuaNaN(parseInt($tblrow.find("#igst").val(),10));
-	        ttlCgst[index]=checkValuaNaN(parseInt($tblrow.find("#cgst").val(),10));
-	        ttlSgst[index]=checkValuaNaN(parseInt($tblrow.find("#sgst").val(),10));
+	        ttlIgst[index]=checkValuaNaN(parseFloat($tblrow.find("#igst").val()));
+	        ttlCgst[index]=checkValuaNaN(parseFloat($tblrow.find("#cgst").val()));
+	        ttlSgst[index]=checkValuaNaN(parseFloat($tblrow.find("#sgst").val()));
 	        ttlTotalAmount[index]=checkValuaNaN(parseInt($tblrow.find("#totalAmount").val(),10));
+	        debugger;
 	    });
 	    
 	    $("[name=ttlQty]").val(getSum(ttlQty));
