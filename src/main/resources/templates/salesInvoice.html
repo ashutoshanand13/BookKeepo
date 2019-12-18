@@ -7,9 +7,9 @@
 <title>Sales Invoice</title>
 </head>
 
-<div layout:fragment="form_content" id="form_content">
+<div layout:fragment="invoice_fragment" id="form_content">
 <form id="form">
-		  <div class="form-items">
+		  <div class="form-content form-items">
 			<h3 class="form-title doubleunderlinetext center">Sales Invoice</h3>
 		          <div class="row">
         <div class="col-md-10 mx-auto">
@@ -160,20 +160,34 @@
             <td class="pt-3-half"><input type="text" id="uom" name="excluded:skip" placeholder="UOM"></td>
             <td class="pt-3-half"><input type="text" id="qty" name="excluded:skip" placeholder="QTY"></td>
             <td class="pt-3-half"><input type="text" id="rate" name="excluded:skip" placeholder="Rate"></td>
-            <td class="pt-3-half"><input type="text" id="amount" name="excluded:skip" placeholder="Amount"></td>
+            <td class="pt-3-half"><input type="text" id="amount" name="excluded:skip" placeholder="Amount" readonly="readonly"></td>
             <td class="pt-3-half"><input type="text" id="discount" name="excluded:skip" placeholder="Discount"></td>
             <td class="pt-3-half"><input type="text" id="gstRate" name="excluded:skip" placeholder="GST Rate"></td>
-            <td class="pt-3-half"><input type="text" id="taxableValue" name="excluded:skip" placeholder="Taxable Value"></td>
-            <td class="pt-3-half"><input type="text" id="cgst" name="excluded:skip" placeholder="CGST"></td>
-            <td class="pt-3-half"><input type="text" id="sgst" name="excluded:skip" placeholder="SGST"></td>
-            <td class="pt-3-half"><input type="text" id="igst" name="excluded:skip" placeholder="IGST"></td>
-            <td class="pt-3-half"><input type="text" id="totalAmount" name="excluded:skip" placeholder="Total Amount"></td>
+            <td class="pt-3-half"><input type="text" id="taxableValue" name="excluded:skip" placeholder="Taxable Value" readonly="readonly"></td>
+            <td class="pt-3-half"><input type="text" id="cgst" name="excluded:skip" placeholder="CGST" readonly="readonly"></td>
+            <td class="pt-3-half"><input type="text" id="sgst" name="excluded:skip" placeholder="SGST" readonly="readonly"></td>
+            <td class="pt-3-half"><input type="text" id="igst" name="excluded:skip" placeholder="IGST" readonly="readonly"></td>
+            <td class="pt-3-half"><input type="text" id="totalAmount" name="excluded:skip" placeholder="Total Amount" readonly="readonly"></td>
             <td>
               <span class="table-remove"><button type="button"
                   class="btn btn-danger btn-rounded btn-sm my-0">Remove</button></span>
             </td>
           </tr>
         </tbody>
+            <tfoot>
+        <tr>
+        <td class="pt-3-half" colspan="4">Total</td>
+        <td class="pt-3-half"><input type="text" name="ttlQty" readonly="readonly"></td>
+        <td class="pt-3-half"></td>
+		<td class="pt-3-half"><input type="text" name="ttlAmount" readonly="readonly"></td>
+        <td class="pt-3-half"colspan="2"></td>
+		<td class="pt-3-half"><input type="text" name="ttlTaxableValue" readonly="readonly"></td>
+        <td class="pt-3-half"><input type="text" name="ttlCgst" readonly="readonly"></td>
+        <td class="pt-3-half"><input type="text" name="ttlSgst" readonly="readonly"></td>
+        <td class="pt-3-half"><input type="text" name="ttlIgst" readonly="readonly"></td>
+        <td class="pt-3-half"><input type="text" name="ttlTotalAmount" readonly="readonly"></td>     
+        </tr>
+    </tfoot>
         	  <span class="table-add"><button type="button"
       		class="btn btn-success btn-rounded btn-sm my-0">Add Row</button></span> 
       </table>
@@ -187,12 +201,8 @@
 <th:block layout:fragment="scripts">
 <script>
 window.onload = function() {
-  myFunction();
+	setValues();
 };
 
-function myFunction() {
-  var element = document.getElementById("form-data-holder");
-  element.classList.remove("form-holder");
-}
 </script>
 </th:block>
