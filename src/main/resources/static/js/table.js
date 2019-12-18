@@ -67,7 +67,7 @@ document.write(json);
  
 function setValues() {
 
-	    $tblrows.each(function (index) {
+	    $tableID.find('tbody tr').each(function (index) {
 	    	
 	        var $tblrow = $(this);
 
