@@ -7,9 +7,9 @@
 <title>Sales Invoice</title>
 </head>
 
-<div layout:fragment="form_content" id="form_content">
+<div layout:fragment="invoice_fragment" id="form_content">
 <form id="form">
-		  <div class="form-items">
+		  <div class="form-content form-items">
 			<h3 class="form-title doubleunderlinetext center">Sales Invoice</h3>
 		          <div class="row">
         <div class="col-md-10 mx-auto">
@@ -174,6 +174,24 @@
             </td>
           </tr>
         </tbody>
+            <tfoot>
+        <tr>
+        <td class="pt-3-half"></td>
+        <td class="pt-3-half"></td>
+        <td class="pt-3-half"></td>
+		<td class="pt-3-half"></td>
+        <td class="pt-3-half"><input type="text" name="ttlQty" readonly="readonly"></td>
+        <td class="pt-3-half"></td>
+		<td class="pt-3-half"><input type="text" name="ttlAmount" readonly="readonly"></td>
+        <td class="pt-3-half"></td>
+        <td class="pt-3-half"></td>
+		<td class="pt-3-half"><input type="text" name="ttlTaxableValue" readonly="readonly"></td>
+        <td class="pt-3-half"><input type="text" name="ttlCgst" readonly="readonly"></td>
+        <td class="pt-3-half"><input type="text" name="ttlSgst" readonly="readonly"></td>
+        <td class="pt-3-half"><input type="text" name="ttlIgst" readonly="readonly"></td>
+        <td class="pt-3-half"><input type="text" name="ttlTotalAmount" readonly="readonly"></td>     
+        </tr>
+    </tfoot>
         	  <span class="table-add"><button type="button"
       		class="btn btn-success btn-rounded btn-sm my-0">Add Row</button></span> 
       </table>
@@ -187,12 +205,8 @@
 <th:block layout:fragment="scripts">
 <script>
 window.onload = function() {
-  myFunction();
+	setValues();
 };
 
-function myFunction() {
-  var element = document.getElementById("form-data-holder");
-  element.classList.remove("form-holder");
-}
 </script>
 </th:block>
