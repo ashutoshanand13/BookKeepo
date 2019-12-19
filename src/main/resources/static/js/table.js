@@ -33,8 +33,8 @@ else
 
 
  $BTN.on('click', () => {
-   var map = new Map();
    var json = '';
+   
 $('#tableJson table').map(function(i, table){
 	   var $rows = $("#" +table.id).find('tr:not(:hidden)');
 	   var newFormData = [];
@@ -48,22 +48,15 @@ $('#tableJson table').map(function(i, table){
 	       if(Object.keys(obj).length!==0)
 	       newFormData.push(obj);
 	     });
-	   map.set(table.id,newFormData);
+	   $('#item').val(JSON.stringify(newFormData));
 });
 
-var json = [].concat(JSON.stringify( strMapToObj(map) ), JSON.stringify($('#form').serializeJSON()));
+// replace function used to remove extra "" while parsing.
+var json = JSON.stringify($('#form').serializeJSON()).replace(/\\/g,"").replace("\"[","[").replace("]\"","]");
 
 document.write(json);
  });
  
- 
- function strMapToObj(strMap) {
-	  let obj = Object.create(null);
-	  for (let [k,v] of strMap) {
-	    obj[k] = v;
-	  }
-	  return obj;
-}
  
 function setValues() {
 
@@ -146,13 +139,13 @@ function resetValues(){
 	 $tableID.find('tbody tr').each(function (index) {
 	        var $tblrow = $(this);
 	        $tblrow.find("#srNo").val(index+1);
-	        ttlQty[index]=checkValuaNaN(parseInt($tblrow.find("#qty").val(),10));
-	        ttlAmount[index]=checkValuaNaN(parseInt($tblrow.find("#amount").val(),10));
-	        ttlTaxableValue[index]=checkValuaNaN(parseInt($tblrow.find("#taxableValue").val(),10));
-	        ttlIgst[index]=checkValuaNaN(parseFloat($tblrow.find("#igst").val()));
-	        ttlCgst[index]=checkValuaNaN(parseFloat($tblrow.find("#cgst").val()));
-	        ttlSgst[index]=checkValuaNaN(parseFloat($tblrow.find("#sgst").val()));
-	        ttlTotalAmount[index]=checkValuaNaN(parseInt($tblrow.find("#totalAmount").val(),10));
+	        ttlQty[index]=checkValueNaN(parseInt($tblrow.find("#qty").val(),10));
+	        ttlAmount[index]=checkValueNaN(parseInt($tblrow.find("#amount").val(),10));
+	        ttlTaxableValue[index]=checkValueNaN(parseInt($tblrow.find("#taxableValue").val(),10));
+	        ttlIgst[index]=checkValueNaN(parseFloat($tblrow.find("#igst").val()));
+	        ttlCgst[index]=checkValueNaN(parseFloat($tblrow.find("#cgst").val()));
+	        ttlSgst[index]=checkValueNaN(parseFloat($tblrow.find("#sgst").val()));
+	        ttlTotalAmount[index]=checkValueNaN(parseInt($tblrow.find("#totalAmount").val(),10));
 	        debugger;
 	    });
 	    
@@ -166,12 +159,10 @@ function resetValues(){
 	    
 }
 
-function checkValuaNaN(value) {
+function checkValueNaN(value) {
 	var val=0;
 	if(!isNaN(value))
 		val=value;
 	
 	return val;
 }
-
-
