@@ -9,7 +9,7 @@
  var ttlIgst = [];
  var ttlSgst = [];
  var ttlTotalAmount = [];
- const newTr = '<tr>            <td class="pt-3-half"><input type="text" id="srNo" name="excluded:skip" placeholder="Sr No" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="productDesc" name="excluded:skip" placeholder="Product Description"></td>            <td class="pt-3-half"><input type="text" id="hsnCode" name="excluded:skip" placeholder="HSN Code"></td>            <td class="pt-3-half"><input type="text" id="uom" name="excluded:skip" placeholder="UOM"></td>            <td class="pt-3-half"><input type="text" id="qty" name="excluded:skip" placeholder="QTY"></td>            <td class="pt-3-half"><input type="text" id="rate" name="excluded:skip" placeholder="Rate"></td>            <td class="pt-3-half"><input type="text" id="amount" name="excluded:skip" placeholder="Amount" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="discount" name="excluded:skip" placeholder="Discount"></td>            <td class="pt-3-half"><input type="text" id="gstRate" name="excluded:skip" placeholder="GST Rate"></td>            <td class="pt-3-half"><input type="text" id="taxableValue" name="excluded:skip" placeholder="Taxable Value" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="cgst" name="excluded:skip" placeholder="CGST" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="sgst" name="excluded:skip" placeholder="SGST" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="igst" name="excluded:skip" placeholder="IGST" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="totalAmount" name="excluded:skip" placeholder="Total Amount" readonly="readonly"></td>            <td>              <span class="table-remove"><button type="button"                  class="btn btn-danger btn-rounded btn-sm my-0">Remove</button></span>            </td>          </tr>';
+ const newTr = '<tr>  <td class="pt-3-half"><input type="text" id="srNo" name="excluded:skip" placeholder="Sr No" readonly="readonly"></td>  <td class="pt-3-half"><textarea cols="40" rows="5" id="productDesc" style="height:60px;" name="excluded:skip" placeholder="Product Description"></textarea></td>  <td class="pt-3-half"><input type="text" id="hsnCode" name="excluded:skip" placeholder="HSN Code"></td>  <td class="pt-3-half"><input type="text" id="uom" name="excluded:skip" placeholder="UOM"></td>  <td class="pt-3-half"><input type="text" id="qty" name="excluded:skip" placeholder="QTY"></td>  <td class="pt-3-half"><input type="text" id="rate" name="excluded:skip" placeholder="Rate"></td>  <td class="pt-3-half"><input type="text" id="amount" name="excluded:skip" placeholder="Amount" readonly="readonly"></td>  <td class="pt-3-half"><input type="text" id="discount" name="excluded:skip" placeholder="Discount"></td>  <td class="pt-3-half"><input type="text" id="gstRate" name="excluded:skip" placeholder="GST Rate"></td>  <td class="pt-3-half"><input type="text" id="taxableValue" name="excluded:skip" placeholder="Taxable Value" readonly="readonly"></td>  <td class="pt-3-half"><input type="text" id="cgst" name="excluded:skip" placeholder="CGST" readonly="readonly"></td>  <td class="pt-3-half"><input type="text" id="sgst" name="excluded:skip" placeholder="SGST" readonly="readonly"></td>  <td class="pt-3-half"><input type="text" id="igst" name="excluded:skip" placeholder="IGST" readonly="readonly"></td>  <td class="pt-3-half"><input type="text" id="totalAmount" name="excluded:skip" placeholder="Total Amount" readonly="readonly"></td>  <td>    <span class="table-remove"><button type="button"        class="btn btn-danger btn-rounded btn-sm my-0">Remove</button></span>  </td></tr>';
 
  $tableID.on('click', '.table-add', function () {
    $tableID.find('table').append(newTr);
@@ -33,37 +33,30 @@ else
 
 
  $BTN.on('click', () => {
-   var map = new Map();
    var json = '';
+   
 $('#tableJson table').map(function(i, table){
 	   var $rows = $("#" +table.id).find('tr:not(:hidden)');
 	   var newFormData = [];
 	   jQuery( $("#" +table.id).find('tr:not(:first), tr:not(:last)')).each(function(i) {
 	       var tb = jQuery(this);
 	       var obj = {};
-	       tb.find('input').each(function() {
+	       tb.find('textarea,input').each(function() {
 	    	   if(this.id!=="")
 	         obj[this.id] = this.value;
 	       });
 	       if(Object.keys(obj).length!==0)
 	       newFormData.push(obj);
 	     });
-	   map.set(table.id,newFormData);
+	   $('#itemList').val(JSON.stringify(newFormData));
 });
 
-var json = [].concat(JSON.stringify( strMapToObj(map) ), JSON.stringify($('#form').serializeJSON()));
+// replace function used to remove extra "" while parsing.
+var json = JSON.stringify($('#form').serializeJSON()).replace(/\\/g,"").replace("\"[","[").replace("]\"","]");
 
 document.write(json);
  });
  
- 
- function strMapToObj(strMap) {
-	  let obj = Object.create(null);
-	  for (let [k,v] of strMap) {
-	    obj[k] = v;
-	  }
-	  return obj;
-}
  
 function setValues() {
 
@@ -146,13 +139,13 @@ function resetValues(){
 	 $tableID.find('tbody tr').each(function (index) {
 	        var $tblrow = $(this);
 	        $tblrow.find("#srNo").val(index+1);
-	        ttlQty[index]=checkValuaNaN(parseInt($tblrow.find("#qty").val(),10));
-	        ttlAmount[index]=checkValuaNaN(parseInt($tblrow.find("#amount").val(),10));
-	        ttlTaxableValue[index]=checkValuaNaN(parseInt($tblrow.find("#taxableValue").val(),10));
-	        ttlIgst[index]=checkValuaNaN(parseFloat($tblrow.find("#igst").val()));
-	        ttlCgst[index]=checkValuaNaN(parseFloat($tblrow.find("#cgst").val()));
-	        ttlSgst[index]=checkValuaNaN(parseFloat($tblrow.find("#sgst").val()));
-	        ttlTotalAmount[index]=checkValuaNaN(parseInt($tblrow.find("#totalAmount").val(),10));
+	        ttlQty[index]=checkValueNaN(parseInt($tblrow.find("#qty").val(),10));
+	        ttlAmount[index]=checkValueNaN(parseInt($tblrow.find("#amount").val(),10));
+	        ttlTaxableValue[index]=checkValueNaN(parseInt($tblrow.find("#taxableValue").val(),10));
+	        ttlIgst[index]=checkValueNaN(parseFloat($tblrow.find("#igst").val()));
+	        ttlCgst[index]=checkValueNaN(parseFloat($tblrow.find("#cgst").val()));
+	        ttlSgst[index]=checkValueNaN(parseFloat($tblrow.find("#sgst").val()));
+	        ttlTotalAmount[index]=checkValueNaN(parseInt($tblrow.find("#totalAmount").val(),10));
 	        debugger;
 	    });
 	    
@@ -166,12 +159,10 @@ function resetValues(){
 	    
 }
 
-function checkValuaNaN(value) {
+function checkValueNaN(value) {
 	var val=0;
 	if(!isNaN(value))
 		val=value;
 	
 	return val;
 }
-
-
