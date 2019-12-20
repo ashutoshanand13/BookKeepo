@@ -48,7 +48,7 @@ $('#tableJson table').map(function(i, table){
 	       if(Object.keys(obj).length!==0)
 	       newFormData.push(obj);
 	     });
-	   $('#item').val(JSON.stringify(newFormData));
+	   $('#itemList').val(JSON.stringify(newFormData));
 });
 
 // replace function used to remove extra "" while parsing.
