@@ -24,6 +24,10 @@ public class Accounts {
 	@Column(name = "account_name")
 	@NotEmpty(message = "*Please provide the account name")
 	private String accountName;
+	
+	@Column(name = "account_owner")
+	@NotEmpty(message = "*Please provide the account owner")
+	private String accountOwner;
 
 	@Column(name = "account_type")
 	@NotEmpty(message = "*Please provide the account type")
@@ -196,6 +200,20 @@ public class Accounts {
 	 */
 	public void setAccountEmail(String accountEmail) {
 		this.accountEmail = accountEmail;
+	}
+
+	/**
+	 * @return the accountOwner
+	 */
+	public String getAccountOwner() {
+		return accountOwner;
+	}
+
+	/**
+	 * @param accountOwner the accountOwner to set
+	 */
+	public void setAccountOwner(String accountOwner) {
+		this.accountOwner = accountOwner;
 	}
 
 }

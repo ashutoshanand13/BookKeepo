@@ -46,6 +46,10 @@ public class User {
 	@Column(name = "last_name")
 	@NotEmpty(message = "*Please provide your last name")
 	private String lastName;
+	
+	@Column(name = "phone_number")
+	@NotEmpty(message = "*Please provide your phone number")
+	private String phoneNumber;
 
 	@Column(name = "active")
 	private int active;
@@ -150,6 +154,20 @@ public class User {
 	 */
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
+	}
+
+	/**
+	 * @return the phone_number
+	 */
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	/**
+	 * @param phone_number the phone_number to set
+	 */
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
 
 }

@@ -31,6 +31,11 @@ public class LoginController {
 	public String setup(ModelMap model) {
 		return "login";
 	}
+	
+	@RequestMapping(value = "/home/salesinvoice", method = RequestMethod.GET)
+	public String setupSales(ModelMap model) {
+		return "salesInvoice";
+	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView setupform(ModelMap model, @RequestParam(value = "error", required = false) String error,

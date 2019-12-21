@@ -15,7 +15,7 @@ html, body {
 }
 
 .form-body {
-    background-color: #0093FF;
+    background-color: #FFFFF;
     height: 100%;
 }
 
@@ -202,7 +202,7 @@ html, body {
 
 @media (min-height: 700px) {
     .img-holder {
-        position: fixed;
+        position: absolute;
     }
 
     .website-logo {
@@ -364,7 +364,7 @@ html, body {
 
 .form-content input, .form-content .dropdown-toggle.btn-default {
     width: 100%;
-    padding: 9px 20px;
+    padding: 9px;
     text-align: left;
     border: 0;
     outline: 0;
@@ -387,7 +387,7 @@ html, body {
 .form-content textarea {
     position: static !important;
     width: 100%;
-    padding: 8px 20px;
+    padding: 8px;
     border-radius: 6px;
     text-align: left;
     background-color: #fff;
@@ -763,4 +763,8 @@ html, body {
 
 .bg-success{
 	background-color :#18bc9c !important;
+}
+
+.pt-3-half {
+padding-top: 1.4rem;
 }

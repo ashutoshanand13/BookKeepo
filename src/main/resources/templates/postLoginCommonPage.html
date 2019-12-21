@@ -27,12 +27,15 @@
 				<li class="nav-item active"><a th:class="nav-link"
 					th:href="@{/home}">Home</a></li>
 				<li class="nav-item"><a th:class="nav-link"
-					th:href="@{/addaccount}">Add Account</a></li>
+					th:href="@{/home/addaccount}">Add Account</a></li>
 				<li class="nav-item"><a th:class="nav-link"
-					th:href="@{/addPayment}">Add Payment</a>
+					th:href="@{/home/addpayment}">Add Payment</a>
 				<li class="nav-item"><a th:class="nav-link"
-					th:href="@{/addReceipt}">Add Receipt</a></li>
+					th:href="@{/home/addreceipt}">Add Receipts</a></li>
+				<li class="nav-item"><a th:class="nav-link"
+					th:href="@{/home/salesinvoice}">Create Sales Invoice</a></li>
 			</ul>
+			
 			<ul class="navbar-nav ml-auto nav-flex-icons">
 				<li class="nav-item dropdown"><a
 					class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333"
@@ -42,48 +45,33 @@
 						aria-labelledby="navbarDropdownMenuLink-333">
 						<a class="dropdown-item" href="#">User Profile</a> <a
 							class="dropdown-item" href="#">Help</a> <a class="dropdown-item"
-							href="#">Sign Out</a>
+							th:href="@{/logout}">Sign Out</a>
 					</div></li>
 			</ul>
 		</div>
 	</nav>
 	</div>
+	<div layout:fragment="invoice_fragment"></div>
 	<div class="form-body">
 		<div class="row">
-		
-			<div class="img-holder">
-				<!-- <div class="website-logo">
-			<a href="https://winwithweb.in" target="_blank"> <img
-				class="logo-size" th:src="@{/images/logo-light.png}" alt="">
-			</a>
-		</div> -->
-				<div class="bg"></div>
-				<div class="info-holder" layout:fragment="screen_description">
-					
-				</div>
-			</div>
-			<div class="form-holder">
-				<div class="form-content form-sm" layout:fragment="form_content">
-				</div>
+
+			<div layout:fragment="screen_description"></div>
+			<div class="form-holder" id="form-data-holder">
+				<div class="form-content form-sm" layout:fragment="form_content"></div>
 			</div>
 		</div>
 	</div>
 	<div class="container">
-		<!-- <nav aria-label="breadcrumb" role="navigation">
-			<ol class="breadcrumb">
-				<th:block layout:fragment="breadcrumb">
-				</th:block>
-			</ol>
-		</nav> -->
 		<div class="content">
 			<div layout:fragment="page_content"></div>
 		</div>
 	</div>
-	<!-- /.container -->
 
 	<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
 	<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
 	<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/jquery.serializejson.js}"></script>
+	<script type="text/javascript" th:src="@{/js/table.js}"></script>
 	<script type="text/javascript">
 	$( '#topheader .navbar-nav a' ).on( 'click', function () {
 		$( '#topheader .navbar-nav' ).find( 'li.active' ).removeClass( 'active' );
