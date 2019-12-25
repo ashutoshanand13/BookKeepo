@@ -145,7 +145,6 @@ function resetValues(){
 	        ttlCgst[index]=checkValueNaN(parseFloat($tblrow.find("#cgst").val()));
 	        ttlSgst[index]=checkValueNaN(parseFloat($tblrow.find("#sgst").val()));
 	        ttlTotalAmount[index]=checkValueNaN(parseInt($tblrow.find("#totalAmount").val(),10));
-	        debugger;
 	    });
 	    
 	    $("[name=ttlQty]").val(getSum(ttlQty));
