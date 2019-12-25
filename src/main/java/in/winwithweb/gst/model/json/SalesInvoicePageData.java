@@ -58,6 +58,9 @@ public class SalesInvoicePageData {
 	@SerializedName("nameShip")
 	@Expose
 	private String nameShip;
+	@SerializedName("addressBill")
+	@Expose
+	private String addressBill;
 	@SerializedName("addressShip")
 	@Expose
 	private String addressShip;
@@ -256,6 +259,14 @@ public class SalesInvoicePageData {
 
 	public void setNameShip(String nameShip) {
 	this.nameShip = nameShip;
+	}
+
+	public String getAddressBill() {
+		return addressBill;
+	}
+
+	public void setAddressBill(String addressBill) {
+		this.addressBill = addressBill;
 	}
 
 	public String getAddressShip() {

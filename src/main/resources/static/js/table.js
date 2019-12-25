@@ -31,32 +31,58 @@ else
 	  });
 
 
- $BTN.on('click', () => {
+function sendData() {
+   var flag = false;
    var json = '';
-   
-$('#tableJson table').map(function(i, table){
-	   var $rows = $("#" +table.id).find('tr:not(:hidden)');
-	   var newFormData = [];
-	   jQuery( $("#" +table.id).find('tr:not(:first), tr:not(:last)')).each(function(i) {
-	       var tb = jQuery(this);
-	       var obj = {};
-	       tb.find('textarea,input').each(function() {
-	    	   if(this.id!=="")
-	         obj[this.id] = this.value;
-	       });
-	       if(Object.keys(obj).length!==0)
-	       newFormData.push(obj);
-	     });
-	   $('#itemList').val(JSON.stringify(newFormData));
-});
-
-// replace function used to remove extra "" while parsing.
-var json = JSON.stringify($('#form').serializeJSON()).replace(/\\/g,"").replace("\"[","[").replace("]\"","]");
-
-document.write(json);
- });
+   if(validate()) {
+		$('#tableJson table').map(function(i, table){
+			   var $rows = $("#" +table.id).find('tr:not(:hidden)');
+			   var newFormData = [];
+			   jQuery( $("#" +table.id).find('tr:not(:first), tr:not(:last)')).each(function(i) {
+			       var tb = jQuery(this);
+			       var obj = {};
+			       tb.find('textarea,input').each(function() {
+			    	   if(this.id!=="")
+			         obj[this.id] = this.value;
+			       });
+			       if(Object.keys(obj).length!==0)
+			       newFormData.push(obj);
+			     });
+			   $('#itemList').val(JSON.stringify(newFormData));
+		});
+		
+		// replace function used to remove extra "" while parsing.
+		var json = JSON.stringify($('#form').serializeJSON()).replace(/\\/g,"").replace("\"[","[").replace("]\"","]");
+		
+		$.ajax({
+		    url: "/home/salesinvoice",
+		    contentType: "application/text; charset=utf-8",
+		    type: 'POST',
+		    datatype: 'text',
+		    data: json,
+		    success : function(response){
+		    	window.onbeforeunload = null;
+		        location.reload();
+		    }
+		 });
+		flag=true;
+   }
+return flag;
+ }
  
- 
+function validate() {
+	var valid=false;
+	var data = $("[name=telephoneHeader]").val();
+	debugger;
+	if(data.length===10){
+		valid=true;
+	}
+	else {
+		$("[name=telephoneHeader]").focus();
+	}
+	return valid;
+}
+
 function setValues() {
 
 	    $tableID.find('tbody tr').each(function (index) {

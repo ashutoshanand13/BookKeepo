@@ -36,7 +36,7 @@ public class InvoiceDetails {
 	@Column(name = "invoice_number")
 	private String invoiceNumber;
 	
-	@Column(name = "invoice_data")
+	@Column(name = "invoice_date")
 	private String invoiceDate;
 	
 	@Column(name = "invoice_owner")
