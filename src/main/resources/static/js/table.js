@@ -1,6 +1,5 @@
  const $tableID = $('#table');
  const $BTN = $('#export-btn');
- const $AddButton = $('#addRow')
  const $EXPORT = $('#export');
  var $tblrows = $("#itemTable tbody tr");
  var ttlAmount = [];
@@ -10,18 +9,11 @@
  var ttlIgst = [];
  var ttlSgst = [];
  var ttlTotalAmount = [];
- const newTr = '<tr>  <td class="pt-3-half"><input type="text" id="srNo" name="excluded:skip" placeholder="Sr No" readonly="readonly"></td>  <td class="pt-3-half"><textarea cols="40" rows="5" id="productDesc" style="height:60px;" name="excluded:skip" placeholder="Product Description"></textarea></td>  <td class="pt-3-half"><input type="text" id="hsnCode" name="excluded:skip" placeholder="HSN Code"></td>  <td class="pt-3-half"><input type="text" id="uom" name="excluded:skip" placeholder="UOM"></td>  <td class="pt-3-half"><input type="text" id="qty" name="excluded:skip" placeholder="QTY"></td>  <td class="pt-3-half"><input type="text" id="rate" name="excluded:skip" placeholder="Rate"></td>  <td class="pt-3-half"><input type="text" id="amount" name="excluded:skip" placeholder="Amount" readonly="readonly"></td>  <td class="pt-3-half"><input type="text" id="discount" name="excluded:skip" placeholder="Discount"></td>  <td class="pt-3-half"><input type="text" id="gstRate" name="excluded:skip" placeholder="GST Rate"></td>  <td class="pt-3-half"><input type="text" id="taxableValue" name="excluded:skip" placeholder="Taxable Value" readonly="readonly"></td>  <td class="pt-3-half"><input type="text" id="cgst" name="excluded:skip" placeholder="CGST" readonly="readonly"></td>  <td class="pt-3-half"><input type="text" id="sgst" name="excluded:skip" placeholder="SGST" readonly="readonly"></td>  <td class="pt-3-half"><input type="text" id="igst" name="excluded:skip" placeholder="IGST" readonly="readonly"></td>  <td class="pt-3-half"><input type="text" id="totalAmount" name="excluded:skip" placeholder="Total Amount" readonly="readonly"></td>  <td>    <span class="table-remove"><button type="button"        class="btn btn-danger btn-rounded btn-sm my-0">Remove</button></span>  </td></tr>';
-
- $AddButton.on('click', function () {
-   $tableID.find('table').append(newTr);
-   resetValues();
-   setValues();
- });
+ const newTr = '<tr>            <td class="pt-3-half"><input type="text" id="srNo" name="excluded:skip" placeholder="Sr No" readonly="readonly"></td>            <td class="pt-3-half"><textarea cols="40" rows="5" id="productDesc" style="height:60px;" name="excluded:skip" placeholder="Product Description"></textarea></td>            <td class="pt-3-half"><input type="text" id="hsnCode" name="excluded:skip" placeholder="HSN Code"></td>            <td class="pt-3-half"><input type="text" id="uom" name="excluded:skip" placeholder="UOM"></td>            <td class="pt-3-half"><input type="text" id="qty" name="excluded:skip" placeholder="QTY"></td>            <td class="pt-3-half"><input type="text" id="rate" name="excluded:skip" placeholder="Rate"></td>            <td class="pt-3-half"><input type="text" id="amount" name="excluded:skip" placeholder="Amount" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="discount" name="excluded:skip" placeholder="Discount"></td>            <td class="pt-3-half"><input type="text" id="gstRate" name="excluded:skip" placeholder="GST Rate"></td>            <td class="pt-3-half"><input type="text" id="taxableValue" name="excluded:skip" placeholder="Taxable Value" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="cgst" name="excluded:skip" placeholder="CGST" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="sgst" name="excluded:skip" placeholder="SGST" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="igst" name="excluded:skip" placeholder="IGST" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="totalAmount" name="excluded:skip" placeholder="Total Amount" readonly="readonly"></td>			<td>			<figure style="display:flex;">              <span class="table-add"><img class="autoResizeImage" style="margin-right: 2px;" src="/images/add.png" alt=""></span>              <span class="table-remove"><img class="autoResizeImage" style="margin-left: 2px;" src="/images/remove.png" alt=""></span>              </figure>            </td>          </tr>';
 
  $tableID.on('click', '.table-remove', function () {
 if ($tableID.find('tbody tr').length !== 1) {
    $(this).parents('tr').detach();
-   var a = $tableID.find('tbody tr').length;
    
    resetValues();
    setValues();
@@ -31,6 +23,12 @@ else
 	alert("Cannot Remove Last Row");
 	}
  });
+ 
+ $tableID.on('click', '.table-add', function () {
+	 $(this).closest('tr').after(newTr);
+	   resetValues();
+	   setValues();
+	  });
 
 
  $BTN.on('click', () => {

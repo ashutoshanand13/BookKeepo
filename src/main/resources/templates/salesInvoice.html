@@ -139,7 +139,6 @@
             <th class="text-center">SGST</th>
             <th class="text-center">IGST</th>
             <th class="text-center">Total Amount</th>
-            <th class="text-center">Remove</th>
           </tr>
         </thead>
         <tbody>
@@ -158,9 +157,11 @@
             <td class="pt-3-half"><input type="text" id="sgst" name="excluded:skip" placeholder="SGST" readonly="readonly"></td>
             <td class="pt-3-half"><input type="text" id="igst" name="excluded:skip" placeholder="IGST" readonly="readonly"></td>
             <td class="pt-3-half"><input type="text" id="totalAmount" name="excluded:skip" placeholder="Total Amount" readonly="readonly"></td>
-            <td>
-              <span class="table-remove"><button type="button"
-                  class="btn btn-danger btn-rounded btn-sm my-0">Remove</button></span>
+			<td>
+			<figure style="display:flex;">
+              <span class="table-add"><img class="autoResizeImage" style="margin-right: 2px;" th:src="@{/images/add.png}" alt=""></span>
+              <span class="table-remove"><img class="autoResizeImage" style="margin-left: 2px;" th:src="@{/images/remove.png}" alt=""></span>
+              </figure>
             </td>
           </tr>
         </tbody>
@@ -235,9 +236,7 @@
  
       </table>
       </div>
-      <button type="button" id="export-btn" class="btn btn-info btn-rounded btn-sm my-0">JSON</button>      
-              	  <button id=addRow type="button"
-      		class="btn btn-success btn-rounded btn-sm my-0">Add Row</button>    
+      <button type="button" id="export-btn" class="btn btn-info btn-rounded btn-sm my-0">JSON</button>   
     </div>
   
     </div>
