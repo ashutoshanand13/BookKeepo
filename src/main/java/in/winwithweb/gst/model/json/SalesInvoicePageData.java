@@ -118,6 +118,9 @@ public class SalesInvoicePageData {
 	@SerializedName("bankifsc")
 	@Expose
 	private String bankifsc;
+	@SerializedName("termsConditions")
+	@Expose
+	private String termsConditions;
 
 	public String getCompanyNameHeader() {
 	return companyNameHeader;
@@ -415,6 +418,14 @@ public class SalesInvoicePageData {
 	this.bankifsc = bankifsc;
 	}
 
+	public String getTermsConditions() {
+		return termsConditions;
+	}
+
+	public void setTermsConditions(String termsConditions) {
+		this.termsConditions = termsConditions;
+	}
+
 	@Override
 	public String toString() {
 		return "SalesInvoicePageData [companyNameHeader=" + companyNameHeader + ", addressHeader=" + addressHeader
@@ -429,7 +440,7 @@ public class SalesInvoicePageData {
 				+ ", ttlSgst=" + ttlSgst + ", ttlIgst=" + ttlIgst + ", ttlTotalAmount=" + ttlTotalAmount
 				+ ", totalAmountBeforeTax=" + totalAmountBeforeTax + ", totalGst=" + totalGst + ", totalTaxAmount="
 				+ totalTaxAmount + ", totalAmountAfterTax=" + totalAmountAfterTax + ", gstReverseCharge="
-				+ gstReverseCharge + ", bankAccountNumber=" + bankAccountNumber + ", bankifsc=" + bankifsc + "]";
+				+ gstReverseCharge + ", bankAccountNumber=" + bankAccountNumber + ", bankifsc=" + bankifsc + ", termsConditions=" + termsConditions + "]";
 	}
 	
 	
