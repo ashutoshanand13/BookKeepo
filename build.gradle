@@ -19,11 +19,15 @@ repositories {
 
 dependencies {
 	dependencies {
+	implementation 'com.itextpdf:io:7.0.2'
+	implementation 'com.itextpdf:kernel:7.0.2'
+	implementation 'com.itextpdf:layout:7.0.2'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'org.springframework.security:spring-security-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	compile group: 'com.itextpdf', name: 'itextpdf', version: '5.5.13'
 	compileOnly 'org.projectlombok:lombok'
 	compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity5', version: '3.0.4.RELEASE'
 	compile group: 'nz.net.ultraq.thymeleaf', name: 'thymeleaf-layout-dialect', version: '2.4.1'

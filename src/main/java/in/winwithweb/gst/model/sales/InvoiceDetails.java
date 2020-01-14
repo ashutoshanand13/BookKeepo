@@ -47,6 +47,9 @@ public class InvoiceDetails {
 	
 	@Column(name = "invoice_dos")
 	private String invoiceDOS;
+	
+	@Column(name = "invoice_po_date")
+	private String invoicePoDate;
 
 	@Column(name = "invoice_pos")
 	private String invoicePOS;
@@ -177,6 +180,14 @@ public class InvoiceDetails {
 	 */
 	public void setInvoiceDOS(String invoiceDOS) {
 		this.invoiceDOS = invoiceDOS;
+	}
+
+	public String getInvoicePoDate() {
+		return invoicePoDate;
+	}
+
+	public void setInvoicePoDate(String invoicePoDate) {
+		this.invoicePoDate = invoicePoDate;
 	}
 
 	/**

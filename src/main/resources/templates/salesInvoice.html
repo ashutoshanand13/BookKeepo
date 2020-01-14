@@ -8,7 +8,7 @@
 </head>
 
 <div layout:fragment="invoice_fragment" id="form_content">
-<form id="form" method="post" th:action="@{/home/salesinvoice}" onsubmit="return sendData()">
+<form id="form" method="post" th:action="@{/home/salesinvoice}">
 <div class="form-content form-items needs-validation">
 <table id="headerDetailsTable" style="border:1px solid black;" class="table table-width table-responsive-md text-center">
 <tbody>
@@ -185,7 +185,7 @@
         </tr>
         <tr>
 		<td rowspan="3" colspan="5" ></td>
-		<td class="pt-3-half" colspan="8" bgcolor="#92D14F"><span style='font-weight:bold;'>Add: GST</span></td>
+		<td class="pt-3-half" colspan="8" bgcolor="#92D14F"><span style='font-weight:bold;'>Add: IGST</span></td>
         <td class="pt-3-half"><input type="text" name="totalGst" readonly="readonly"></td>
 		</tr>
 		<tr>
@@ -233,7 +233,7 @@
  
       </table>
       </div>
-      <button type="submit" id="export-btn" class="btn btn-info btn-rounded btn-sm my-0">JSON</button>   
+      <button type="button" id="export-btn" class="btn btn-info btn-rounded btn-sm my-0">JSON</button>
     </div>
   
     </div>

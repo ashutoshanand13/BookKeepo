@@ -6,7 +6,6 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class SalesInvoicePageData {
-
 	@SerializedName("companyNameHeader")
 	@Expose
 	private String companyNameHeader;
@@ -126,139 +125,139 @@ public class SalesInvoicePageData {
 	private String termsConditions;
 
 	public String getCompanyNameHeader() {
-	return companyNameHeader;
+		return companyNameHeader;
 	}
 
 	public void setCompanyNameHeader(String companyNameHeader) {
-	this.companyNameHeader = companyNameHeader;
+		this.companyNameHeader = companyNameHeader;
 	}
 
 	public String getAddressHeader() {
-	return addressHeader;
+		return addressHeader;
 	}
 
 	public void setAddressHeader(String addressHeader) {
-	this.addressHeader = addressHeader;
+		this.addressHeader = addressHeader;
 	}
 
 	public String getTelephoneHeader() {
-	return telephoneHeader;
+		return telephoneHeader;
 	}
 
 	public void setTelephoneHeader(String telephoneHeader) {
-	this.telephoneHeader = telephoneHeader;
+		this.telephoneHeader = telephoneHeader;
 	}
 
 	public String getGstinHeader() {
-	return gstinHeader;
+		return gstinHeader;
 	}
 
 	public void setGstinHeader(String gstinHeader) {
-	this.gstinHeader = gstinHeader;
+		this.gstinHeader = gstinHeader;
 	}
 
 	public String getEmailHeader() {
-	return emailHeader;
+		return emailHeader;
 	}
 
 	public void setEmailHeader(String emailHeader) {
-	this.emailHeader = emailHeader;
+		this.emailHeader = emailHeader;
 	}
 
 	public String getInvoiceNo() {
-	return invoiceNo;
+		return invoiceNo;
 	}
 
 	public void setInvoiceNo(String invoiceNo) {
-	this.invoiceNo = invoiceNo;
+		this.invoiceNo = invoiceNo;
 	}
 
 	public String getPoNo() {
-	return poNo;
+		return poNo;
 	}
 
 	public void setPoNo(String poNo) {
-	this.poNo = poNo;
+		this.poNo = poNo;
 	}
 
 	public String getInvoiceDate() {
-	return invoiceDate;
+		return invoiceDate;
 	}
 
 	public void setInvoiceDate(String invoiceDate) {
-	this.invoiceDate = invoiceDate;
+		this.invoiceDate = invoiceDate;
 	}
 
 	public String getPoDate() {
-	return poDate;
+		return poDate;
 	}
 
 	public void setPoDate(String poDate) {
-	this.poDate = poDate;
+		this.poDate = poDate;
 	}
 
 	public String getDateOfSupply() {
-	return dateOfSupply;
+		return dateOfSupply;
 	}
 
 	public void setDateOfSupply(String dateOfSupply) {
-	this.dateOfSupply = dateOfSupply;
+		this.dateOfSupply = dateOfSupply;
 	}
 
 	public String getTransportMode() {
-	return transportMode;
+		return transportMode;
 	}
 
 	public void setTransportMode(String transportMode) {
-	this.transportMode = transportMode;
+		this.transportMode = transportMode;
 	}
 
 	public String getPlaceOfSupply() {
-	return placeOfSupply;
+		return placeOfSupply;
 	}
 
 	public void setPlaceOfSupply(String placeOfSupply) {
-	this.placeOfSupply = placeOfSupply;
+		this.placeOfSupply = placeOfSupply;
 	}
 
 	public String getVehicleNo() {
-	return vehicleNo;
+		return vehicleNo;
 	}
 
 	public void setVehicleNo(String vehicleNo) {
-	this.vehicleNo = vehicleNo;
+		this.vehicleNo = vehicleNo;
 	}
 
 	public String getState() {
-	return state;
+		return state;
 	}
 
 	public void setState(String state) {
-	this.state = state;
+		this.state = state;
 	}
 
 	public String getReverseCharge() {
-	return reverseCharge;
+		return reverseCharge;
 	}
 
 	public void setReverseCharge(String reverseCharge) {
-	this.reverseCharge = reverseCharge;
+		this.reverseCharge = reverseCharge;
 	}
 
 	public String getNameBill() {
-	return nameBill;
+		return nameBill;
 	}
 
 	public void setNameBill(String nameBill) {
-	this.nameBill = nameBill;
+		this.nameBill = nameBill;
 	}
 
 	public String getNameShip() {
-	return nameShip;
+		return nameShip;
 	}
 
 	public void setNameShip(String nameShip) {
-	this.nameShip = nameShip;
+		this.nameShip = nameShip;
 	}
 
 	public String getAddressBill() {
@@ -270,163 +269,163 @@ public class SalesInvoicePageData {
 	}
 
 	public String getAddressShip() {
-	return addressShip;
+		return addressShip;
 	}
 
 	public void setAddressShip(String addressShip) {
-	this.addressShip = addressShip;
+		this.addressShip = addressShip;
 	}
 
 	public String getGstinBill() {
-	return gstinBill;
+		return gstinBill;
 	}
 
 	public void setGstinBill(String gstinBill) {
-	this.gstinBill = gstinBill;
+		this.gstinBill = gstinBill;
 	}
 
 	public String getGstinShip() {
-	return gstinShip;
+		return gstinShip;
 	}
 
 	public void setGstinShip(String gstinShip) {
-	this.gstinShip = gstinShip;
+		this.gstinShip = gstinShip;
 	}
 
 	public String getStateBill() {
-	return stateBill;
+		return stateBill;
 	}
 
 	public void setStateBill(String stateBill) {
-	this.stateBill = stateBill;
+		this.stateBill = stateBill;
 	}
 
 	public String getStateShip() {
-	return stateShip;
+		return stateShip;
 	}
 
 	public void setStateShip(String stateShip) {
-	this.stateShip = stateShip;
+		this.stateShip = stateShip;
 	}
 
 	public List<ItemList> getItemList() {
-	return itemList;
+		return itemList;
 	}
 
 	public void setItemList(List<ItemList> itemList) {
-	this.itemList = itemList;
+		this.itemList = itemList;
 	}
 
 	public String getTtlQty() {
-	return ttlQty;
+		return ttlQty;
 	}
 
 	public void setTtlQty(String ttlQty) {
-	this.ttlQty = ttlQty;
+		this.ttlQty = ttlQty;
 	}
 
 	public String getTtlAmount() {
-	return ttlAmount;
+		return ttlAmount;
 	}
 
 	public void setTtlAmount(String ttlAmount) {
-	this.ttlAmount = ttlAmount;
+		this.ttlAmount = ttlAmount;
 	}
 
 	public String getTtlTaxableValue() {
-	return ttlTaxableValue;
+		return ttlTaxableValue;
 	}
 
 	public void setTtlTaxableValue(String ttlTaxableValue) {
-	this.ttlTaxableValue = ttlTaxableValue;
+		this.ttlTaxableValue = ttlTaxableValue;
 	}
 
 	public String getTtlCgst() {
-	return ttlCgst;
+		return ttlCgst;
 	}
 
 	public void setTtlCgst(String ttlCgst) {
-	this.ttlCgst = ttlCgst;
+		this.ttlCgst = ttlCgst;
 	}
 
 	public String getTtlSgst() {
-	return ttlSgst;
+		return ttlSgst;
 	}
 
 	public void setTtlSgst(String ttlSgst) {
-	this.ttlSgst = ttlSgst;
+		this.ttlSgst = ttlSgst;
 	}
 
 	public String getTtlIgst() {
-	return ttlIgst;
+		return ttlIgst;
 	}
 
 	public void setTtlIgst(String ttlIgst) {
-	this.ttlIgst = ttlIgst;
+		this.ttlIgst = ttlIgst;
 	}
 
 	public String getTtlTotalAmount() {
-	return ttlTotalAmount;
+		return ttlTotalAmount;
 	}
 
 	public void setTtlTotalAmount(String ttlTotalAmount) {
-	this.ttlTotalAmount = ttlTotalAmount;
+		this.ttlTotalAmount = ttlTotalAmount;
 	}
 
 	public String getTotalAmountBeforeTax() {
-	return totalAmountBeforeTax;
+		return totalAmountBeforeTax;
 	}
 
 	public void setTotalAmountBeforeTax(String totalAmountBeforeTax) {
-	this.totalAmountBeforeTax = totalAmountBeforeTax;
+		this.totalAmountBeforeTax = totalAmountBeforeTax;
 	}
 
 	public String getTotalGst() {
-	return totalGst;
+		return totalGst;
 	}
 
 	public void setTotalGst(String totalGst) {
-	this.totalGst = totalGst;
+		this.totalGst = totalGst;
 	}
 
 	public String getTotalTaxAmount() {
-	return totalTaxAmount;
+		return totalTaxAmount;
 	}
 
 	public void setTotalTaxAmount(String totalTaxAmount) {
-	this.totalTaxAmount = totalTaxAmount;
+		this.totalTaxAmount = totalTaxAmount;
 	}
 
 	public String getTotalAmountAfterTax() {
-	return totalAmountAfterTax;
+		return totalAmountAfterTax;
 	}
 
 	public void setTotalAmountAfterTax(String totalAmountAfterTax) {
-	this.totalAmountAfterTax = totalAmountAfterTax;
+		this.totalAmountAfterTax = totalAmountAfterTax;
 	}
 
 	public String getGstReverseCharge() {
-	return gstReverseCharge;
+		return gstReverseCharge;
 	}
 
 	public void setGstReverseCharge(String gstReverseCharge) {
-	this.gstReverseCharge = gstReverseCharge;
+		this.gstReverseCharge = gstReverseCharge;
 	}
 
 	public String getBankAccountNumber() {
-	return bankAccountNumber;
+		return bankAccountNumber;
 	}
 
 	public void setBankAccountNumber(String bankAccountNumber) {
-	this.bankAccountNumber = bankAccountNumber;
+		this.bankAccountNumber = bankAccountNumber;
 	}
 
 	public String getBankifsc() {
-	return bankifsc;
+		return bankifsc;
 	}
 
 	public void setBankifsc(String bankifsc) {
-	this.bankifsc = bankifsc;
+		this.bankifsc = bankifsc;
 	}
 
 	public String getTermsConditions() {
@@ -445,15 +444,14 @@ public class SalesInvoicePageData {
 				+ ", poDate=" + poDate + ", dateOfSupply=" + dateOfSupply + ", transportMode=" + transportMode
 				+ ", placeOfSupply=" + placeOfSupply + ", vehicleNo=" + vehicleNo + ", state=" + state
 				+ ", reverseCharge=" + reverseCharge + ", nameBill=" + nameBill + ", nameShip=" + nameShip
-				+ ", addressShip=" + addressShip + ", gstinBill=" + gstinBill + ", gstinShip=" + gstinShip
-				+ ", stateBill=" + stateBill + ", stateShip=" + stateShip + ", itemList=" + itemList + ", ttlQty="
-				+ ttlQty + ", ttlAmount=" + ttlAmount + ", ttlTaxableValue=" + ttlTaxableValue + ", ttlCgst=" + ttlCgst
-				+ ", ttlSgst=" + ttlSgst + ", ttlIgst=" + ttlIgst + ", ttlTotalAmount=" + ttlTotalAmount
-				+ ", totalAmountBeforeTax=" + totalAmountBeforeTax + ", totalGst=" + totalGst + ", totalTaxAmount="
-				+ totalTaxAmount + ", totalAmountAfterTax=" + totalAmountAfterTax + ", gstReverseCharge="
-				+ gstReverseCharge + ", bankAccountNumber=" + bankAccountNumber + ", bankifsc=" + bankifsc + ", termsConditions=" + termsConditions + "]";
+				+ ", addressBill=" + addressBill + ", addressShip=" + addressShip + ", gstinBill=" + gstinBill
+				+ ", gstinShip=" + gstinShip + ", stateBill=" + stateBill + ", stateShip=" + stateShip + ", itemList="
+				+ itemList + ", ttlQty=" + ttlQty + ", ttlAmount=" + ttlAmount + ", ttlTaxableValue=" + ttlTaxableValue
+				+ ", ttlCgst=" + ttlCgst + ", ttlSgst=" + ttlSgst + ", ttlIgst=" + ttlIgst + ", ttlTotalAmount="
+				+ ttlTotalAmount + ", totalAmountBeforeTax=" + totalAmountBeforeTax + ", totalGst=" + totalGst
+				+ ", totalTaxAmount=" + totalTaxAmount + ", totalAmountAfterTax=" + totalAmountAfterTax
+				+ ", gstReverseCharge=" + gstReverseCharge + ", bankAccountNumber=" + bankAccountNumber + ", bankifsc="
+				+ bankifsc + ", termsConditions=" + termsConditions + "]";
 	}
-	
-	
-}
 
+}

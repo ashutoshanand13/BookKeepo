@@ -9,6 +9,7 @@
  var ttlIgst = [];
  var ttlSgst = [];
  var ttlTotalAmount = [];
+// const downloadLocation = browser.downloads.showDefaultFolder();
  const newTr = '<tr>            <td class="pt-3-half"><input type="text" id="srNo" name="excluded:skip" placeholder="Sr No" readonly="readonly"></td>            <td class="pt-3-half"><textarea cols="40" rows="5" id="productDesc" style="height:60px;" name="excluded:skip" placeholder="Product Description"></textarea></td>            <td class="pt-3-half"><input type="text" id="hsnCode" name="excluded:skip" placeholder="HSN Code"></td>            <td class="pt-3-half"><input type="text" id="uom" name="excluded:skip" placeholder="UOM"></td>            <td class="pt-3-half"><input type="text" id="qty" name="excluded:skip" placeholder="QTY"></td>            <td class="pt-3-half"><input type="text" id="rate" name="excluded:skip" placeholder="Rate"></td>            <td class="pt-3-half"><input type="text" id="amount" name="excluded:skip" placeholder="Amount" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="discount" name="excluded:skip" placeholder="Discount"></td>            <td class="pt-3-half"><input type="text" id="gstRate" name="excluded:skip" placeholder="GST Rate"></td>            <td class="pt-3-half"><input type="text" id="taxableValue" name="excluded:skip" placeholder="Taxable Value" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="cgst" name="excluded:skip" placeholder="CGST" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="sgst" name="excluded:skip" placeholder="SGST" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="igst" name="excluded:skip" placeholder="IGST" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="totalAmount" name="excluded:skip" placeholder="Total Amount" readonly="readonly"></td>			<td>			<figure style="display:flex;">              <span class="table-add"><img class="autoResizeImage" style="margin-right: 2px;" src="/images/add.png" alt=""></span>              <span class="table-remove"><img class="autoResizeImage" style="margin-left: 2px;" src="/images/remove.png" alt=""></span>              </figure>            </td>          </tr>';
 
  $tableID.on('click', '.table-remove', function () {
@@ -31,7 +32,7 @@ else
 	  });
 
 
-function sendData() {
+ $BTN.on('click', function () {
    var flag = false;
    var json = '';
    if(validate()) {
@@ -53,7 +54,6 @@ function sendData() {
 		
 		// replace function used to remove extra "" while parsing.
 		var json = JSON.stringify($('#form').serializeJSON()).replace(/\\/g,"").replace("\"[","[").replace("]\"","]");
-		
 		$.ajax({
 		    url: "/home/salesinvoice",
 		    contentType: "application/text; charset=utf-8",
@@ -61,19 +61,18 @@ function sendData() {
 		    datatype: 'text',
 		    data: json,
 		    success : function(response){
-		    	window.onbeforeunload = null;
-		        location.reload();
+		    	$("#form")[0].reset();
+		    	setValues();
 		    }
 		 });
 		flag=true;
    }
 return flag;
- }
+ });
  
 function validate() {
 	var valid=false;
 	var data = $("[name=telephoneHeader]").val();
-	debugger;
 	if(data.length===10){
 		valid=true;
 	}
