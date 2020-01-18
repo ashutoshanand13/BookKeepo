@@ -26,9 +26,13 @@ public class CompanyController {
 		return modelAndView;
 	}
 	
-	@RequestMapping(value = "/home/company", method = RequestMethod.POST)
-	public String addCompany(@Valid @ModelAttribute("Company") Accounts account, BindingResult bindingResult, Principal principal) {
-		return "addCompany";
+	@RequestMapping(value = "/home/addcompany", method = RequestMethod.POST)
+	public ModelAndView addCompany(@Valid @ModelAttribute("Company") Accounts account, BindingResult bindingResult, Principal principal) {
+		ModelAndView modelAndView = new ModelAndView();
+		Company company = new Company();
+		modelAndView.addObject("company", company);
+		modelAndView.setViewName("addCompany");
+		return modelAndView;
 	}
 	
 }

@@ -1,5 +1,7 @@
 package in.winwithweb.gst.model;
 
+import java.io.File;
+
 public class Company {
 	
 	private String companyName;
@@ -8,6 +10,7 @@ public class Company {
 	private String companyAddress;
 	private String companyEmail;
 	private String companyTelephone;
+	private File companyLogo;
 	/**
 	 * @return the companyName
 	 */
@@ -80,6 +83,19 @@ public class Company {
 	public void setCompanyTelephone(String companyTelephone) {
 		this.companyTelephone = companyTelephone;
 	}
+	/**
+	 * @return the companyLogo
+	 */
+	public File getCompanyLogo() {
+		return companyLogo;
+	}
+	/**
+	 * @param companyLogo the companyLogo to set
+	 */
+	public void setCompanyLogo(File companyLogo) {
+		this.companyLogo = companyLogo;
+	}
+	
 	
 	
 
