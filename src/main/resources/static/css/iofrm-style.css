@@ -771,6 +771,26 @@ padding-top: 1.4rem;
 
 .table-width {
 	width :70%;
-	  margin-left: auto;
-  margin-right: auto;
+	margin-left: auto;
+    margin-right: auto;
+}
+
+.autoResizeImage {
+    width :20px;
+    margin-top :20px;
+	height:auto;
+}
+
+.button-position {
+	margin-left: auto;
+    margin-right: auto;
+}
+
+@media print {
+  #printPageButton {
+    display: none;
+  }
+  #export-btn {
+    display: none;
+  }
 }
