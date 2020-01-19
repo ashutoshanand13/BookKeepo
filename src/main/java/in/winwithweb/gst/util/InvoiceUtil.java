@@ -23,11 +23,11 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import in.winwithweb.gst.model.Company;
 import in.winwithweb.gst.model.json.ItemList;
 import in.winwithweb.gst.model.json.SalesInvoicePageData;
 import in.winwithweb.gst.model.sales.InvoiceAddressDetails;
 import in.winwithweb.gst.model.sales.InvoiceBankDetails;
-import in.winwithweb.gst.model.sales.InvoiceCompanyDetails;
 import in.winwithweb.gst.model.sales.InvoiceDetails;
 import in.winwithweb.gst.model.sales.InvoiceProductDetails;
 
@@ -37,12 +37,11 @@ import in.winwithweb.gst.model.sales.InvoiceProductDetails;
  */
 public class InvoiceUtil {
 
-	public static void updateInvoice(InvoiceDetails invoice, SalesInvoicePageData salesInvoiceData) {
+	public static void updateInvoice(InvoiceDetails invoice, SalesInvoicePageData salesInvoiceData ,Company companyDetails) {
 
 		List<InvoiceProductDetails> productList = new ArrayList<InvoiceProductDetails>();
 		InvoiceBankDetails invoiceBankDetails = new InvoiceBankDetails();
 		InvoiceAddressDetails invoiceAddressDetails = new InvoiceAddressDetails();
-		InvoiceCompanyDetails invoiceCompanyDetails = new InvoiceCompanyDetails();
 
 		invoice.setInvoiceNumber(salesInvoiceData.getInvoiceNo());
 		invoice.setInvoiceDate(salesInvoiceData.getInvoiceDate());
@@ -73,13 +72,8 @@ public class InvoiceUtil {
 		invoiceAddressDetails.setInvoicePartyGst(salesInvoiceData.getGstinShip());
 		invoiceAddressDetails.setInvoicePartyState(salesInvoiceData.getStateShip());
 		invoice.setInvoiceAddressDetails(invoiceAddressDetails);
-
-		invoiceCompanyDetails.setComanyName(salesInvoiceData.getCompanyNameHeader());
-		invoiceCompanyDetails.setAddress(salesInvoiceData.getAddressHeader());
-		invoiceCompanyDetails.setTelephone(salesInvoiceData.getTelephoneHeader());
-		invoiceCompanyDetails.setCompanyGstin(salesInvoiceData.getGstinHeader());
-		invoiceCompanyDetails.setCompanyEmail(salesInvoiceData.getEmailHeader());
-		invoice.setInvoiceCompanyDetails(invoiceCompanyDetails);
+		
+		invoice.setInvoiceCompanyDetails(companyDetails);
 
 		for (ItemList item : salesInvoiceData.getItemList()) {
 			InvoiceProductDetails invoiceProductDetails = new InvoiceProductDetails();
@@ -142,11 +136,11 @@ public class InvoiceUtil {
 			itemTable.setWidthPercentage(90f);
 
 			insertCell(table, "", Element.ALIGN_LEFT, 1, bf12, 5, "#FFFFFF", 1f, 0.5f, 0f);
-			insertCell(table, invoice.getInvoiceCompanyDetails().getComanyName(), Element.ALIGN_LEFT, 1, bf12, 1,
+			insertCell(table, invoice.getInvoiceCompanyDetails().getCompanyName(), Element.ALIGN_LEFT, 1, bf12, 1,
 					"#FFFFFF", 0.5f, 1f, 0f);
-			insertCell(table, invoice.getInvoiceCompanyDetails().getAddress(), Element.ALIGN_LEFT, 1, bf12, 1,
+			insertCell(table, invoice.getInvoiceCompanyDetails().getCompanyAddress(), Element.ALIGN_LEFT, 1, bf12, 1,
 					"#FFFFFF", 0.5f, 1f, 0f);
-			insertCell(table, invoice.getInvoiceCompanyDetails().getTelephone(), Element.ALIGN_LEFT, 1, bf12, 1,
+			insertCell(table, invoice.getInvoiceCompanyDetails().getCompanyTelephone(), Element.ALIGN_LEFT, 1, bf12, 1,
 					"#FFFFFF", 0.5f, 1f, 0f);
 			insertCell(table, invoice.getInvoiceCompanyDetails().getCompanyGstin(), Element.ALIGN_LEFT, 1, bf12, 1,
 					"#FFFFFF", 0.5f, 1f, 0f);

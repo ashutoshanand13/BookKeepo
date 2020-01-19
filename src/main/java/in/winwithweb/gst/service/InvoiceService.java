@@ -3,6 +3,8 @@
  */
 package in.winwithweb.gst.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,10 @@ public class InvoiceService {
 
 	public void saveInvoice(InvoiceDetails invoice) {
 		invoiceRepository.save(invoice);
+	}
+
+	public List<InvoiceDetails> fetchAllInvoice() {
+		return invoiceRepository.findAll();
 	}
 
 }
