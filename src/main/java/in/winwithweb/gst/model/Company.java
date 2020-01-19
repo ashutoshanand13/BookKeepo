@@ -2,15 +2,54 @@ package in.winwithweb.gst.model;
 
 import java.io.File;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import lombok.Data;
+
+@Data
+@Entity
+@Table(name = "company_details")
 public class Company {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "company_id")
+	private int id;
+	
+	@Column(name = "user_name")
+	private String userName;
+	
+	@Column(name = "company_name")
 	private String companyName;
+	
+	@Column(name = "company_gstin")
 	private String companyGstin;
+	
+	@Column(name = "company_state")
 	private String companyState;
+	
+	@Column(name = "company_address")
 	private String companyAddress;
+	
+	@Column(name = "company_email")
 	private String companyEmail;
+	
+	@Column(name = "company_telephone")
 	private String companyTelephone;
+	
+	@Column(name = "company_logo")
 	private File companyLogo;
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 	/**
 	 * @return the companyName
 	 */
