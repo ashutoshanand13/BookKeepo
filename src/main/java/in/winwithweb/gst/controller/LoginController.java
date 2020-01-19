@@ -3,6 +3,7 @@
  */
 package in.winwithweb.gst.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import in.winwithweb.gst.model.Company;
 import in.winwithweb.gst.model.User;
+import in.winwithweb.gst.service.CompanyDetailsService;
 import in.winwithweb.gst.service.UserService;
 
 /**
@@ -26,6 +29,9 @@ public class LoginController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	CompanyDetailsService companyDetailsService;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String setup(ModelMap model) {
@@ -33,8 +39,13 @@ public class LoginController {
 	}
 	
 	@RequestMapping(value = "/home/salesinvoice", method = RequestMethod.GET)
-	public String setupSales(ModelMap model) {
-		return "salesInvoice";
+	public ModelAndView setupSales(HttpServletRequest request) {
+		String user=request.getUserPrincipal().getName();
+		ModelAndView modelAndView = new ModelAndView();
+		Company company = companyDetailsService.findByUserName(user);
+		modelAndView.addObject("company", company!= null ? company : new Company());
+		modelAndView.setViewName("salesInvoice");
+		return modelAndView;
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
