@@ -18,28 +18,45 @@ import in.winwithweb.gst.service.CompanyDetailsService;
 
 @Controller
 public class CompanyController {
-	
+
 	@Autowired
 	CompanyDetailsService companyDetailsService;
-	
+
 	@RequestMapping(value = { "/home/addcompany" }, method = RequestMethod.GET)
 	public ModelAndView getAddCompanyPage(HttpServletRequest request) {
-		String user=request.getUserPrincipal().getName();
+		String user = request.getUserPrincipal().getName();
 		ModelAndView modelAndView = new ModelAndView();
 		Company company = companyDetailsService.findByUserName(user);
-		modelAndView.addObject("company", company!= null ? company : new Company());
+		modelAndView.addObject("company", company != null ? company : new Company());
 		modelAndView.setViewName("addCompany");
 		return modelAndView;
 	}
-	
+
 	@RequestMapping(value = "/home/addcompany", method = RequestMethod.POST)
-	public ModelAndView addCompany(@Valid @ModelAttribute("company") Company company, BindingResult bindingResult, Principal principal) {
+	public ModelAndView addCompany(@Valid @ModelAttribute("company") Company company, BindingResult bindingResult,
+			Principal principal) {
 		ModelAndView modelAndView = new ModelAndView();
 		company.setUserName(principal.getName());
-		modelAndView.addObject("company", company);
 		modelAndView.setViewName("addCompany");
-		companyDetailsService.save(company);
+
+		Company isDataExists = companyDetailsService.findByUserName(principal.getName());
+
+		if (isDataExists == null) {
+			companyDetailsService.save(company);
+		} else {
+			isDataExists.setCompanyAddress(company.getCompanyAddress());
+			isDataExists.setCompanyEmail(company.getCompanyEmail());
+			isDataExists.setCompanyGstin(company.getCompanyGstin());
+			isDataExists.setCompanyLogo(company.getCompanyLogo());
+			isDataExists.setCompanyName(company.getCompanyName());
+			isDataExists.setCompanyState(company.getCompanyState());
+			isDataExists.setCompanyTelephone(company.getCompanyTelephone());
+			companyDetailsService.save(isDataExists);
+		}
+
+		modelAndView.addObject("company", companyDetailsService.findByUserName(principal.getName()));
+
 		return modelAndView;
 	}
-	
+
 }
