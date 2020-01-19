@@ -33,9 +33,7 @@ else
 
 
  $BTN.on('click', function () {
-   var flag = false;
    var json = '';
-   if(validate()) {
 		$('#tableJson table').map(function(i, table){
 			   var $rows = $("#" +table.id).find('tr:not(:hidden)');
 			   var newFormData = [];
@@ -65,22 +63,7 @@ else
 		    	setValues();
 		    }
 		 });
-		flag=true;
-   }
-return flag;
  });
- 
-function validate() {
-	var valid=false;
-	var data = $("[name=telephoneHeader]").val();
-	if(data.length===10){
-		valid=true;
-	}
-	else {
-		$("[name=telephoneHeader]").focus();
-	}
-	return valid;
-}
 
 function setValues() {
 
