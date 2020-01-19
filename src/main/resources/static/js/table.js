@@ -189,3 +189,13 @@ function checkValueNaN(value) {
 	
 	return val;
 }
+
+function validateFileType(){
+    var fileName =  document.getElementById("companylogo").value; 
+    var idxDot = fileName.lastIndexOf(".") + 1;
+    var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+    if (!(extFile=="jpg" || extFile=="jpeg" || extFile=="png")){
+    	document.getElementById("companylogo").value='';
+        alert("Only jpg/jpeg and png files are allowed!");
+    }   
+}

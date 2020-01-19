@@ -44,6 +44,7 @@ public class Company {
 	
 	@Column(name = "company_logo")
 	private File companyLogo;
+	
 	public String getUserName() {
 		return userName;
 	}
