@@ -190,31 +190,6 @@ function checkValueNaN(value) {
 	return val;
 }
 
-/*function validateFileType(){
-    var fileName =  document.getElementById("companylogo").value; 
-    var idxDot = fileName.lastIndexOf(".") + 1;
-    var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
-    if (!(extFile=="jpg" || extFile=="jpeg" || extFile=="png")){
-    	document.getElementById("companylogo").value='';
-        alert("Only jpg/jpeg and png files are allowed!");
-    }
-}
-
-function readURL(input) {
-	  if (input.files && input.files[0]) {
-	    var reader = new FileReader();
-	    	reader.onload = function(e) {
-	  	      $('#companylogopreview').attr('src', e.target.result);
-	  	    }
-	  	    reader.readAsDataURL(input.files[0]);
-	  }
-	}
-
-$("#companylogo").change(function() {
-	  readURL(this);
-	});*/
-
-
 var _URL = window.URL || window.webkitURL;
 
 $("#companylogo").change(function(e) {
@@ -225,6 +200,10 @@ $("#companylogo").change(function(e) {
         	if(this.width>400 || this.height>400){
         		alert("Image resolution should be within 400x400");
         		document.getElementById("companylogo").value='';
+        	}else{
+        		var input = $("#companylogo").val();
+        		//alert(input);
+        		readURL(input);
         	}
         };
         img.onerror = function() {
@@ -236,13 +215,10 @@ $("#companylogo").change(function(e) {
 });
 
 function readURL(input) {
-	alert('Hi' + input.files[0] + "-");
-	  if (input.files && input.files[0]) {
 	    var reader = new FileReader();
 	    	reader.onload = function(e) {
-	    	  $('#companylogo').append('<img src="'+e.target.result+'">');
-	  	      /*$('#companylogopreview').attr('src', e.target.result);*/
+	    	  /*$('#companylogo').append('<img src="'+e.target.result+'">');*/
+	  	      $('#companylogopreview').attr('src', e.target.result);
 	  	    }
-	  	    reader.readAsDataURL(input.files[0]);
-	  }
+	  	    //reader.readAsDataURL(input.files[0]);
 	}
