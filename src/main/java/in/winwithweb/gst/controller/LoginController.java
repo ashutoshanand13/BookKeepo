@@ -3,6 +3,9 @@
  */
 package in.winwithweb.gst.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.util.Base64;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -43,8 +46,23 @@ public class LoginController {
 		String user=request.getUserPrincipal().getName();
 		ModelAndView modelAndView = new ModelAndView();
 		Company company = companyDetailsService.findByUserName(user);
-		modelAndView.addObject("company", company!= null ? company : new Company());
+		if(company==null) {
+			modelAndView.addObject("message", "Please update company details before creating an Invoice");
+			modelAndView.addObject("company",new Company());
+			modelAndView.setViewName("addCompany");
+		}
+		else {
+		modelAndView.addObject("company",company);
+		byte[] encodeBase64 = Base64.getEncoder().encode(company.getCompanyLogo());
+		String base64Encoded = null;
+		try {
+			base64Encoded = new String(encodeBase64);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		modelAndView.addObject("logoImage",base64Encoded);
 		modelAndView.setViewName("salesInvoice");
+		}
 		return modelAndView;
 	}
 
