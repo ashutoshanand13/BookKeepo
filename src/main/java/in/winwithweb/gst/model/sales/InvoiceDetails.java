@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import in.winwithweb.gst.model.Company;
 import lombok.Data;
 
 /**
@@ -95,7 +96,7 @@ public class InvoiceDetails {
 	
 	@OneToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="invoice_company_reference_no")
-    private InvoiceCompanyDetails invoiceCompanyDetails;
+    private Company invoiceCompanyDetails;
 		
 	
 	/**
@@ -375,14 +376,14 @@ public class InvoiceDetails {
 	/**
 	 * @return the invoiceCompanyDetails
 	 */
-	public InvoiceCompanyDetails getInvoiceCompanyDetails() {
+	public Company getInvoiceCompanyDetails() {
 		return invoiceCompanyDetails;
 	}
 
 	/**
 	 * @param invoiceCompanyDetails the invoiceCompanyDetails to set
 	 */
-	public void setInvoiceCompanyDetails(InvoiceCompanyDetails invoiceCompanyDetails) {
+	public void setInvoiceCompanyDetails(Company invoiceCompanyDetails) {
 		this.invoiceCompanyDetails = invoiceCompanyDetails;
 	}
 

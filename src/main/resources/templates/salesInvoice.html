@@ -8,37 +8,36 @@
 </head>
 
 <div layout:fragment="invoice_fragment" id="form_content">
-<form id="form" method="post" th:action="@{/home/salesinvoice}">
+<form id="form" method="post" th:action="@{/home/salesinvoice}" th:object="${company}">
 <div class="form-content form-items needs-validation">
 <table id="headerDetailsTable" style="border:1px solid black;" class="table table-width table-responsive-md text-center">
 <tbody>
 <tr>
-<td rowspan="6" ><img height="100px" th:src="@{/images/logo-light.png}" alt="">
+<td rowspan="7" ><img id="logo" height="1000px" th:src="@{data:image/jpeg,image/jpg,image/png;base64,${logoImage}}">
 </td>
 </tr>
 <tr>
-<td>
-<input type="text" class="form-control" name ="companyNameHeader" placeholder="Company Name" required="required">
+<td th:text="*{companyName}">
 </td>
 </tr>
 <tr>
-<td>
-<input type="text" class="form-control" name ="addressHeader" placeholder="Address" required="required">
+<td class="pt-3-half" th:text="*{companyAddress}">
 </td>
 </tr>
 <tr>
-<td>
-<input type="number" class="form-control" name ="telephoneHeader" placeholder="Telephone" required="required">
+<td class="pt-3-half" th:text="*{companyState}">
 </td>
 </tr>
 <tr>
-<td>
-<input type="text" class="form-control" name ="gstinHeader" placeholder="GSTIN" required="required">
+<td class="pt-3-half" th:text="*{companyTelephone}">
 </td>
 </tr>
 <tr>
-<td>
-<input type="text" class="form-control" name ="emailHeader" placeholder="Email ID" required="required">
+<td class="pt-3-half" th:text="*{companyGstin}">
+</td>
+</tr>
+<tr>
+<td class="pt-3-half" th:text="*{companyEmail}">
 </td>
 </tr>
 </tbody>
