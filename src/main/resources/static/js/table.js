@@ -201,8 +201,14 @@ $("#companylogo").change(function(e) {
         		alert("Image resolution should be within 400x400");
         		document.getElementById("companylogo").value='';
         	}else{
-        		var input = $("#companylogo").val();
-        		//alert(input);
+        		var input = $("#companylogo")[0];
+        		/*var img = $('<img />').attr({
+	                'id': 'companylogopreview',
+	                'src': 'http://doc.jsfiddle.net/_downloads/jsfiddle-logo.png',
+	                'alt': 'JSFiddle logo',
+	                'title': 'JSFiddle logo',
+	                'width': 250
+	            }).appendTo('#companylogo');*/
         		readURL(input);
         	}
         };
@@ -215,10 +221,11 @@ $("#companylogo").change(function(e) {
 });
 
 function readURL(input) {
+		if (input.files && input.files[0]) {
 	    var reader = new FileReader();
 	    	reader.onload = function(e) {
-	    	  /*$('#companylogo').append('<img src="'+e.target.result+'">');*/
 	  	      $('#companylogopreview').attr('src', e.target.result);
 	  	    }
-	  	    //reader.readAsDataURL(input.files[0]);
+	  	    reader.readAsDataURL(input.files[0]);
+		}
 	}
