@@ -1,7 +1,5 @@
 package in.winwithweb.gst.model;
 
-import java.io.File;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -43,7 +41,8 @@ public class Company {
 	private String companyTelephone;
 	
 	@Column(name = "company_logo")
-	private File companyLogo;
+	private byte[] companyLogo;
+	
 	public String getUserName() {
 		return userName;
 	}
@@ -125,13 +124,13 @@ public class Company {
 	/**
 	 * @return the companyLogo
 	 */
-	public File getCompanyLogo() {
+	public byte[] getCompanyLogo() {
 		return companyLogo;
 	}
 	/**
 	 * @param companyLogo the companyLogo to set
 	 */
-	public void setCompanyLogo(File companyLogo) {
+	public void setCompanyLogo(byte[] companyLogo) {
 		this.companyLogo = companyLogo;
 	}
 	
