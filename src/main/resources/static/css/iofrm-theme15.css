@@ -252,3 +252,10 @@
         background-image: url("../images/logo-light.png");
     }
 }
+
+.img-border{
+	border: 2px solid;
+  	padding: 5px;
+  	width:200px;
+  	height:150px;
+}

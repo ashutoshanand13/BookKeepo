@@ -50,10 +50,10 @@
 				</div>
 			</div>
 			<div class="row">
-			
 			<div class="col-md-6 form-group">
 				<label>Company Logo</label> 
-				<input type="file" name="companylogo" id="companylogo" th:field="*{companyLogo}" accept="image/x-png,image/jpeg" onchange="validateFileType();" required>
+				<input type="file" name="companylogo" id="companylogo" th:field="*{companyLogo}" accept="image/x-png,image/jpeg" required>
+ 				<img id="companylogopreview" class="img-border" th:src="@{/images/image-400x400.jpg}" alt="BookKeepo Company Logo"/>
 			</div>
 			<div class="col-md-6 form-group">
 			<div class="form-group">
