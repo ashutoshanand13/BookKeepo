@@ -183,15 +183,9 @@ $("#companylogo").change(function(e) {
         	if(this.width>400 || this.height>400){
         		alert("Image resolution should be within 400x400");
         		document.getElementById("companylogo").value='';
+        		document.getElementById('companylogopreview').src = "/images/image-400x400.jpg";
         	}else{
         		var input = $("#companylogo")[0];
-        		/*var img = $('<img />').attr({
-	                'id': 'companylogopreview',
-	                'src': 'http://doc.jsfiddle.net/_downloads/jsfiddle-logo.png',
-	                'alt': 'JSFiddle logo',
-	                'title': 'JSFiddle logo',
-	                'width': 250
-	            }).appendTo('#companylogo');*/
         		readURL(input);
         	}
         };
