@@ -8,7 +8,9 @@ import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -42,8 +44,8 @@ public class SalesInvoiceController {
 	@Autowired
 	Gson gson;
 
-	@RequestMapping(value = "/home/salesinvoice", method = RequestMethod.POST, produces = MediaType.APPLICATION_PDF_VALUE)
-	public ResponseEntity<InputStreamResource> setupSalesInvoiceData(@RequestBody String salesInvoiceJson,Principal principal) {
+	@RequestMapping(value = "/home/salesinvoice", method = RequestMethod.GET, produces = MediaType.APPLICATION_PDF_VALUE)
+	public ResponseEntity<byte[]> setupSalesInvoiceData(@RequestBody String salesInvoiceJson,Principal principal) {
 		SalesInvoicePageData salesInvoiceData = null;
 		try {
 			salesInvoiceData = gson.fromJson(salesInvoiceJson, SalesInvoicePageData.class);
@@ -59,13 +61,22 @@ public class SalesInvoiceController {
 		InvoiceUtil.updateInvoice(invoice, salesInvoiceData,companyDetails);
 		invoiceService.saveInvoice(invoice);
 
-		ByteArrayInputStream bis = InvoiceUtil.createPDF(invoice);
+//		ByteArrayInputStream bis = InvoiceUtil.createPDF(invoice);
 
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("Content-Disposition", "filename=invoice.pdf");
+		byte[] documentBody = InvoiceUtil.createPDF(invoice).toByteArray();
+	    HttpHeaders header = new HttpHeaders();
+	    header.setContentType(MediaType.APPLICATION_PDF);
+	    header.set(HttpHeaders.CONTENT_DISPOSITION,
+	                   "attachment; filename=invoice.pdf");
+	    header.setContentLength(documentBody.length);
 
-		return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF)
-				.body(new InputStreamResource(bis));
+//		return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF)
+//				.body(new InputStreamResource(bis));
+//		
+//		return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF).body(InvoiceUtil.createPDF(invoice).toByteArray());
+	    
+	    return new ResponseEntity<byte[]>(documentBody, header,HttpStatus.OK);
+				
 	}
 
 	@RequestMapping(value = { "/home/showInvoice" }, method = RequestMethod.GET)

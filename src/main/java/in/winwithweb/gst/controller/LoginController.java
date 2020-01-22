@@ -3,7 +3,6 @@
  */
 package in.winwithweb.gst.controller;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Base64;
 
 import javax.servlet.http.HttpServletRequest;

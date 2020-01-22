@@ -97,7 +97,7 @@ public class InvoiceUtil {
 
 	}
 
-	public static ByteArrayInputStream createPDF(InvoiceDetails invoice) {
+	public static ByteArrayOutputStream createPDF(InvoiceDetails invoice) {
 
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		
@@ -322,7 +322,7 @@ public class InvoiceUtil {
 				docWriter.close();
 			}
 		}
-		return new ByteArrayInputStream(output.toByteArray());
+		return output;
 	}
 
 	private static void insertCell(PdfPTable table, String text, int align, int colspan, Font font, int rowspan,

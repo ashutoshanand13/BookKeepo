@@ -8,35 +8,35 @@
 </head>
 
 <div layout:fragment="invoice_fragment" id="form_content">
-<form id="form" method="post" th:action="@{/home/salesinvoice}" th:object="${company}">
+<form id="form" method="get" th:action="@{/home/salesinvoice}">
 <div class="form-content form-items needs-validation">
-<table id="headerDetailsTable" style="border:1px solid black;" class="table table-width table-responsive-md text-center">
+<table id="headerDetailsTable" style="border:1px solid black;"  class="table table-width table-responsive-md text-center">
 <tbody>
-<tr>
-<td rowspan="7" ><img id="logo" height="1000px" th:src="@{data:image/jpeg,image/jpg,image/png;base64,${logoImage}}">
+<tr style="border: 0px;">
+<td rowspan="7" ><img id="logo" height="100px" th:src="|data:image/png;base64,${logoImage}">
 </td>
 </tr>
-<tr>
+<tr style="border: 0px;">
 <td th:text="*{companyName}">
 </td>
 </tr>
-<tr>
+<tr style="border: 0px;">
 <td class="pt-3-half" th:text="*{companyAddress}">
 </td>
 </tr>
-<tr>
+<tr style="border: 0px;">
 <td class="pt-3-half" th:text="*{companyState}">
 </td>
 </tr>
-<tr>
+<tr style="border: 0px;">
 <td class="pt-3-half" th:text="*{companyTelephone}">
 </td>
 </tr>
-<tr>
+<tr style="border: 0px;">
 <td class="pt-3-half" th:text="*{companyGstin}">
 </td>
-</tr>
-<tr>
+</tr >
+<tr style="border: 0px;">
 <td class="pt-3-half" th:text="*{companyEmail}">
 </td>
 </tr>
