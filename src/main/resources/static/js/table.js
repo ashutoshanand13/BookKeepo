@@ -173,12 +173,36 @@ function checkValueNaN(value) {
 	return val;
 }
 
-function validateFileType(){
-    var fileName =  document.getElementById("companylogo").value; 
-    var idxDot = fileName.lastIndexOf(".") + 1;
-    var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
-    if (!(extFile=="jpg" || extFile=="jpeg" || extFile=="png")){
-    	document.getElementById("companylogo").value='';
-        alert("Only jpg/jpeg and png files are allowed!");
-    }   
-}
+var _URL = window.URL || window.webkitURL;
+
+$("#companylogo").change(function(e) {
+    var file, img;
+    if ((file = this.files[0])) {
+        img = new Image();
+        img.onload = function() {
+        	if(this.width>400 || this.height>400){
+        		alert("Image resolution should be within 400x400");
+        		document.getElementById("companylogo").value='';
+        		document.getElementById('companylogopreview').src = "/images/image-400x400.jpg";
+        	}else{
+        		var input = $("#companylogo")[0];
+        		readURL(input);
+        	}
+        };
+        img.onerror = function() {
+            alert( "Please upload valid image " + file.type);
+            document.getElementById("companylogo").value='';
+        };
+        img.src = _URL.createObjectURL(file);
+    }
+});
+
+function readURL(input) {
+		if (input.files && input.files[0]) {
+	    var reader = new FileReader();
+	    	reader.onload = function(e) {
+	  	      $('#companylogopreview').attr('src', e.target.result);
+	  	    }
+	  	    reader.readAsDataURL(input.files[0]);
+		}
+	}
