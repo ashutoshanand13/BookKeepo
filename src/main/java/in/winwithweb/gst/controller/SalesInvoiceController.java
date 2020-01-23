@@ -4,7 +4,12 @@
 package in.winwithweb.gst.controller;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.security.Principal;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -44,8 +49,8 @@ public class SalesInvoiceController {
 	@Autowired
 	Gson gson;
 
-	@RequestMapping(value = "/home/salesinvoice", method = RequestMethod.GET, produces = MediaType.APPLICATION_PDF_VALUE)
-	public ResponseEntity<byte[]> setupSalesInvoiceData(@RequestBody String salesInvoiceJson,Principal principal) {
+	@RequestMapping(value = "/home/salesinvoice", method = RequestMethod.POST, produces = MediaType.APPLICATION_PDF_VALUE)
+	public void setupSalesInvoiceData(@RequestBody String salesInvoiceJson,Principal principal, HttpServletResponse response) throws IOException {
 		SalesInvoicePageData salesInvoiceData = null;
 		try {
 			salesInvoiceData = gson.fromJson(salesInvoiceJson, SalesInvoicePageData.class);
@@ -64,18 +69,31 @@ public class SalesInvoiceController {
 //		ByteArrayInputStream bis = InvoiceUtil.createPDF(invoice);
 
 		byte[] documentBody = InvoiceUtil.createPDF(invoice).toByteArray();
-	    HttpHeaders header = new HttpHeaders();
-	    header.setContentType(MediaType.APPLICATION_PDF);
-	    header.set(HttpHeaders.CONTENT_DISPOSITION,
-	                   "attachment; filename=invoice.pdf");
-	    header.setContentLength(documentBody.length);
+		response.setContentType("application/pdf");
+		response.addHeader("Content-Disposition", "attachment; filename=invoice.pdf");
+		response.setContentLength(documentBody.length);
+//		OutputStream responseOutputStream = response.getOutputStream();
+//		try {
+//			os = response.getOutputStream();
+//			responseOutputStream.write(documentBody , 0, documentBody.length);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		finally {
+//			responseOutputStream.close();
+//		}
 
 //		return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF)
 //				.body(new InputStreamResource(bis));
 //		
 //		return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF).body(InvoiceUtil.createPDF(invoice).toByteArray());
 	    
-	    return new ResponseEntity<byte[]>(documentBody, header,HttpStatus.OK);
+	   // return new ResponseEntity<byte[]>(documentBody, header,HttpStatus.OK);
+		
+		  OutputStream out = response.getOutputStream();
+		  InvoiceUtil.createPDF(invoice).writeTo(out);
+		  out.flush();
 				
 	}
 

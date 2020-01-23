@@ -9,7 +9,12 @@
  var ttlIgst = [];
  var ttlSgst = [];
  var ttlTotalAmount = [];
-// const downloadLocation = browser.downloads.showDefaultFolder();
+ var gstBill = false;
+ var gstShip = false;
+ var shippingType ='';
+ 
+ var gstRegex = /^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$/;
+ 
  const newTr = '<tr>            <td class="pt-3-half"><input type="text" id="srNo" name="excluded:skip" placeholder="Sr No" readonly="readonly"></td>            <td class="pt-3-half"><textarea cols="40" rows="5" id="productDesc" style="height:60px;" name="excluded:skip" placeholder="Product Description"></textarea></td>            <td class="pt-3-half"><input type="text" id="hsnCode" name="excluded:skip" placeholder="HSN Code"></td>            <td class="pt-3-half"><input type="text" id="uom" name="excluded:skip" placeholder="UOM"></td>            <td class="pt-3-half"><input type="text" id="qty" name="excluded:skip" placeholder="QTY"></td>            <td class="pt-3-half"><input type="text" id="rate" name="excluded:skip" placeholder="Rate"></td>            <td class="pt-3-half"><input type="text" id="amount" name="excluded:skip" placeholder="Amount" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="discount" name="excluded:skip" placeholder="Discount"></td>            <td class="pt-3-half"><input type="text" id="gstRate" name="excluded:skip" placeholder="GST Rate"></td>            <td class="pt-3-half"><input type="text" id="taxableValue" name="excluded:skip" placeholder="Taxable Value" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="cgst" name="excluded:skip" placeholder="CGST" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="sgst" name="excluded:skip" placeholder="SGST" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="igst" name="excluded:skip" placeholder="IGST" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="totalAmount" name="excluded:skip" placeholder="Total Amount" readonly="readonly"></td>			<td>			<figure style="display:flex;">              <span class="table-add"><img class="autoResizeImage" style="margin-right: 2px;" src="/images/add.png" alt=""></span>              <span class="table-remove"><img class="autoResizeImage" style="margin-left: 2px;" src="/images/remove.png" alt=""></span>              </figure>            </td>          </tr>';
 
  $tableID.on('click', '.table-remove', function () {
@@ -31,9 +36,83 @@ else
 	   setValues();
 	  });
 
+function validateGST(val){
+	removeTableColumnClass();
+	 var value = $(val).val();
+	 if(!gstRegex.test(value) || value === "")
+		 {
+		 	alert('GST Identification Number is not valid. It should be in this "11AAAAA1111Z1A1" format');
+			 if($(val).attr("name").includes("Bill")) {
+				 gstBill=false;
+			 }
+			 else{
+				 gstShip=false;
+			 }
+		 }
+	 else {
+		 if($(val).attr("name").includes("Bill")) {
+			 gstBill=true;
+		 }
+		 else{
+			 gstShip=true;
+		 } 
+		 updateTableColumn();
+	 }
+ }
+
+function removeTableColumnClass() {
+	var container = document.querySelector("#itemTable");
+	var cells = container.querySelectorAll('td');
+	for (var i = 0; i < cells.length; i++) {
+		cells[i].classList.remove('unselectable');
+	}
+}
+
+function updateTableColumn() {
+	removeTableColumnClass();
+	var gstShipValue = $("[name=gstinBill]").val();
+	var gstBillValue = $("[name=gstinShip]").val();
+
+	if (gstBill && gstShip) {
+		if (gstShipValue.substring(0, 2) === gstBillValue.substring(0, 2)) {
+			var container = document.querySelector("#itemTable");
+			var cells = container.querySelectorAll('td:nth-child(13)');
+
+			for (var i = 0; i < cells.length; i++) {
+				cells[i].classList.add('unselectable');
+
+			}
+			setAlert("Intra-State Form")
+		} else {
+			var container = document.querySelector("#itemTable");
+			var cells = container.querySelectorAll('td:nth-child(12)');
+			var cells1 = container.querySelectorAll('td:nth-child(11)');
+
+			for (var i = 0; i < cells.length; i++) {
+				cells[i].classList.add('unselectable');
+
+			}
+
+			for (var i = 0; i < cells1.length; i++) {
+				cells1[i].classList.add('unselectable');
+
+			}
+			
+			setAlert("Inter-State Form")
+		}
+	}
+}
+
+function setAlert(message) {
+	$('#alert_placeholder').html(
+			'<div class="alert alert-info table-width fade-in"><span><center>'
+					+ message + '</center></span></div>')
+	$("#alert_placeholder").fadeTo(2000, 500).slideUp(500);
+}
 
  $BTN.on('click', function () {
    var json = '';
+   if(gstBill && gstShip) {
 		$('#tableJson table').map(function(i, table){
 			   var $rows = $("#" +table.id).find('tr:not(:hidden)');
 			   var newFormData = [];
@@ -63,6 +142,10 @@ else
 		    	setValues();
 		    }
 		 });
+   }
+   else {
+	   alert('Enter GST Identification Number. It should be in this "11AAAAA1111Z1A1" format');
+   }
  });
 
 function setValues() {
@@ -75,7 +158,7 @@ function setValues() {
 	        $tblrow.on('change', function () {
 	            var qty = $tblrow.find("[id=qty]").val();
 	            if(!isNaN(qty)){
-	            	ttlQty[index]=parseInt(qty,10);
+	            	ttlQty[index]=parseFloat(qty);
 	            	$("[name=ttlQty]").val(getSum(ttlQty));
 	            }
 	            var rate = $tblrow.find("[id=rate]").val();

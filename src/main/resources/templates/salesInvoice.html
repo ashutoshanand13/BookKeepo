@@ -8,32 +8,36 @@
 </head>
 
 <div layout:fragment="invoice_fragment" id="form_content">
-	<form id="form" method="get" th:action="@{/home/salesinvoice}">
+	<form id="form" method="post" th:action="@{/home/salesinvoice}">
 		<div class="form-content form-items needs-validation">
 			<table id="headerDetailsTable" style="border: 1px solid black;"
-				class="table table-width table-responsive-md text-center">
+				class="table table-width table-responsive-md text-center" >
+				<colgroup>
+					<col span="1" style="width: 40%;">
+					<col span="1" style="width: 60%;">
+				</colgroup>
 				<tbody>
 					<tr style="border: 0px;">
-						<td rowspan="7" align="left"><img id="logo" height="100px"
+						<td rowspan="7" style="vertical-align : middle;"><img id="logo" height="100px"
 							th:src="|data:image/png;base64,${logoImage}"></td>
 					</tr>
 					<tr style="border: 0px;">
-						<td th:text="*{companyName}"></td>
+						<td th:text="${company.companyName}"></td>
 					</tr>
 					<tr style="border: 0px;">
-						<td class="pt-3-half" th:field="*{companyAddress}"></td>
+						<td class="pt-3-half" th:text="${company.companyAddress}"></td>
 					</tr>
 					<tr style="border: 0px;">
-						<td class="pt-3-half" th:text="*{companyState}"></td>
+						<td class="pt-3-half" th:text="${company.companyState}"></td>
 					</tr>
 					<tr style="border: 0px;">
-						<td class="pt-3-half" th:text="*{companyTelephone}"></td>
+						<td class="pt-3-half" th:text="${company.companyTelephone}"></td>
 					</tr>
 					<tr style="border: 0px;">
-						<td class="pt-3-half" th:text="*{companyGstin}"></td>
+						<td class="pt-3-half" th:text="${company.companyGstin}"></td>
 					</tr>
 					<tr style="border: 0px;">
-						<td class="pt-3-half" th:text="*{companyEmail}"></td>
+						<td class="pt-3-half" th:text="${company.companyEmail}"></td>
 					</tr>
 				</tbody>
 			</table>
@@ -116,9 +120,11 @@
 					</tr>
 					<tr>
 						<td class="pt-3-half"><input type="text" class="form-control"
-							name="gstinBill" placeholder="GSTIN" required="required"></td>
+							name="gstinBill" placeholder="GSTIN" onblur="validateGST(this)"
+							required="required"></td>
 						<td class="pt-3-half"><input type="text" class="form-control"
-							name="gstinShip" placeholder="GSTIN" required="required"></td>
+							name="gstinShip" placeholder="GSTIN" onblur="validateGST(this)"
+							required="required"></td>
 					</tr>
 					<tr>
 						<td class="pt-3-half"><input type="text" class="form-control"
@@ -131,6 +137,8 @@
 
 			</table>
 
+			<div id = "alert_placeholder"></div>
+
 			<div id="tableJson">
 				<div id=table>
 					<input type="hidden" id="itemList" name="itemList">
@@ -139,17 +147,17 @@
 						<col width="70">
 						<col width="250">
 						<col width="90">
-						<col width="70">
-						<col width="70">
+						<col width="80">
+						<col width="95">
 						<col width="100">
-						<col width="100">
-						<col width="100">
+						<col width="85">
+						<col width="90">
 						<col width="80">
 						<col width="100">
-						<col width="100">
-						<col width="100">
-						<col width="100">
-						<col width="110">
+						<col width="95">
+						<col width="95">
+						<col width="95">
+						<col width="140">
 						<col width="70">
 						<thead>
 							<tr bgcolor="#BFD6E9">
@@ -180,17 +188,17 @@
 									name="excluded:skip" placeholder="HSN Code" required="required"></td>
 								<td class="pt-3-half"><input type="text" id="uom"
 									name="excluded:skip" placeholder="UOM" required="required"></td>
-								<td class="pt-3-half"><input type="number" min="0" id="qty"
+								<td class="pt-3-half"><input type="text" onfocus="(this.type='number')"min="0" id="qty"
 									name="excluded:skip" placeholder="QTY" required="required"></td>
-								<td class="pt-3-half"><input type="number" min="0"
+								<td class="pt-3-half"><input type="text" onfocus="(this.type='number')" min="0"
 									id="rate" name="excluded:skip" placeholder="Rate"
 									required="required"></td>
 								<td class="pt-3-half"><input type="text" id="amount"
 									name="excluded:skip" placeholder="Amount" readonly="readonly"></td>
-								<td class="pt-3-half"><input type="number" min="0"
+								<td class="pt-3-half"><input type="text" onfocus="(this.type='number')" min="0"
 									id="discount" name="excluded:skip" placeholder="Discount"
 									required="required"></td>
-								<td class="pt-3-half"><input type="number" min="0"
+								<td class="pt-3-half"><input type="text" onfocus="(this.type='number')" min="0"
 									id="gstRate" name="excluded:skip" placeholder="GST Rate"
 									required="required"></td>
 								<td class="pt-3-half"><input type="text" id="taxableValue"
@@ -281,8 +289,7 @@
 									particulars given above are required and correct <pre>
 		
 		
-		</pre><span style='font-weight: bold;'>For Company Name</span>
-								<pre>
+		</pre><span style='font-weight: bold;'>For Company Name</span> <pre>
 		
 		
 		
