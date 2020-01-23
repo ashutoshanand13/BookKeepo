@@ -4,7 +4,6 @@
 package in.winwithweb.gst.util;
 
 import java.awt.Color;
-import java.io.ByteArrayInputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +16,7 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Font.FontFamily;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
@@ -135,10 +135,26 @@ public class InvoiceUtil {
 			table.setWidthPercentage(90f);
 			itemTable.setWidthPercentage(90f);
 
-			insertCell(table, "", Element.ALIGN_LEFT, 1, bf12, 5, "#FFFFFF", 1f, 0.5f, 0f);
+			Image img = Image.getInstance(invoice.getInvoiceCompanyDetails().getCompanyLogo());
+			img.scaleAbsolute(img.getWidth()/2,img.getHeight() );
+
+			PdfPCell cell = new PdfPCell(img);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setColspan(1);
+			cell.setRowspan(6);
+			cell.setBorderWidthLeft(1f);
+			cell.setBorderWidthRight(0.5f);
+			cell.setMinimumHeight(0f);
+			// in case there is no text and you wan to create an empty row
+			cell.setBackgroundColor(new BaseColor(Color.decode("#FFFFFF").getRGB()));
+			// add the call to the table
+			table.addCell(cell);
 			insertCell(table, invoice.getInvoiceCompanyDetails().getCompanyName(), Element.ALIGN_LEFT, 1, bf12, 1,
 					"#FFFFFF", 0.5f, 1f, 0f);
 			insertCell(table, invoice.getInvoiceCompanyDetails().getCompanyAddress(), Element.ALIGN_LEFT, 1, bf12, 1,
+					"#FFFFFF", 0.5f, 1f, 0f);
+			insertCell(table, invoice.getInvoiceCompanyDetails().getCompanyState(), Element.ALIGN_LEFT, 1, bf12, 1,
 					"#FFFFFF", 0.5f, 1f, 0f);
 			insertCell(table, invoice.getInvoiceCompanyDetails().getCompanyTelephone(), Element.ALIGN_LEFT, 1, bf12, 1,
 					"#FFFFFF", 0.5f, 1f, 0f);

@@ -137,8 +137,15 @@ function setAlert(message) {
 		    type: 'POST',
 		    datatype: 'text',
 		    data: json,
-		    success : function(response){
+		    xhrFields: {responseType: "blob"},
+		    success : function(blob){
+		        var filename = "invoice.pdf";
+		        var link = document.createElement('a');
+		        link.href = window.URL.createObjectURL(blob);
+		        link.download = "invoice.pdf";
+		        link.click();
 		    	$("#form")[0].reset();
+		    	window.scrollTo(0, 0);
 		    	setValues();
 		    }
 		 });
