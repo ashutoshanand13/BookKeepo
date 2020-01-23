@@ -710,13 +710,13 @@ html, body {
 .form-content.form-sm input, .form-content.form-sm .dropdown-toggle.btn-default {
     padding: 6px 16px;
     margin-bottom: 10px;
-    font-size: 10px;
+    font-size: 14px;
 }
 
 .form-content.form-sm textarea {
     padding: 6px 16px;
     margin-bottom: 10px;
-    font-size: 10px;
+    font-size: 14px;
 }
 
 .form-content.form-sm select {
