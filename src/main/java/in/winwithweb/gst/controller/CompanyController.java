@@ -26,21 +26,13 @@ public class CompanyController {
 	CompanyDetailsService companyDetailsService;
 
 	@RequestMapping(value = { "/home/addcompany" }, method = RequestMethod.GET)
-	public ModelAndView getAddCompanyPage(HttpServletRequest request, @RequestParam("companyLogo") MultipartFile companyLogo) {
+	public ModelAndView getAddCompanyPage(HttpServletRequest request) {
 		String user = request.getUserPrincipal().getName();
 		ModelAndView modelAndView = new ModelAndView();
 		Company company = companyDetailsService.findByUserName(user);
-		if(company!=null) {
-			try {
-				company.setCompanyLogo(companyLogo.getBytes());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			modelAndView.addObject("company", company);
-		}
-		else {
-			modelAndView.addObject("company",new Company());
-		}
+		//company.setCompanyLogo(company.getCompanyLogo());
+		//System.out.println(company.getCompanyLogo());
+		modelAndView.addObject("company", company != null ? company : new Company());
 		modelAndView.setViewName("addCompany");
 		return modelAndView;
 	}
