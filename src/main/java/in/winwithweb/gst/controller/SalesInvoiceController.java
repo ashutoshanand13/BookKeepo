@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.security.Principal;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,7 @@ public class SalesInvoiceController {
 		}
 
 		InvoiceDetails invoice = new InvoiceDetails();
+		invoice.setInvoiceOwner(principal.getName());
 
 		Company companyDetails = companyDetailsService.findByUserName(principal.getName());
 
@@ -71,9 +73,9 @@ public class SalesInvoiceController {
 	}
 
 	@RequestMapping(value = { "/home/showInvoice" }, method = RequestMethod.GET)
-	public ModelAndView showInvoice() {
+	public ModelAndView showInvoice(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("invoiceList", invoiceService.fetchAllInvoice());
+		modelAndView.addObject("invoiceList", invoiceService.findByInvoiceOwner(request.getUserPrincipal().getName()));
 		modelAndView.setViewName("showInvoice");
 		return modelAndView;
 	}
