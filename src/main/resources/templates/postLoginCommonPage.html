@@ -38,6 +38,8 @@
 					th:href="@{/home/addcompany}">Add Company</a></li>
 				<li class="nav-item"><a th:class="nav-link"
 					th:href="@{/home/salesinvoice}">Create Sales Invoice</a></li>
+				<li class="nav-item"><a th:class="nav-link"
+					th:href="@{/home/showInvoice}">Show Invoices</a></li>
 			</ul>
 			
 			<ul class="navbar-nav ml-auto nav-flex-icons">
@@ -84,6 +86,8 @@
 		$( '#topheader .navbar-nav' ).find( 'li.active' ).removeClass( 'active' );
 		$( this ).parent( 'li' ).addClass( 'active' );
 	});
+	
+	$("#alert").fadeTo(2000, 500).slideUp(500);
 </script>
 	<th:block layout:fragment="scripts">
 	</th:block>
