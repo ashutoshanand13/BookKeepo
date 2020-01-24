@@ -30,6 +30,8 @@ public class CompanyController {
 		String user = request.getUserPrincipal().getName();
 		ModelAndView modelAndView = new ModelAndView();
 		Company company = companyDetailsService.findByUserName(user);
+		//company.setCompanyLogo(company.getCompanyLogo());
+		//System.out.println(company.getCompanyLogo());
 		modelAndView.addObject("company", company != null ? company : new Company());
 		modelAndView.setViewName("addCompany");
 		return modelAndView;
@@ -69,7 +71,7 @@ public class CompanyController {
 		}
 
 		modelAndView.addObject("company", companyDetailsService.findByUserName(principal.getName()));
-
+		modelAndView.addObject("message", "Company details added successfully!");
 		return modelAndView;
 	}
 

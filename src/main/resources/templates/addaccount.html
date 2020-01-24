@@ -19,7 +19,7 @@
 <div layout:fragment="form_content" id="form_content">
 	<div class="form-items">
 		<h3 class="form-title doubleunderlinetext">Add An Account</h3>
-		<div th:if="${message}" th:text="${message}" class="alert alert-info"></div>
+		<div id="alert" th:if="${message}" th:text="${message} " class="alert alert-info fade-in"></div>
 		<form autocomplete="off" th:action="@{/home/addaccount}" th:object="${account}" method="post"
 			class="form-horizontal" role="form">
 			<div class="row">
