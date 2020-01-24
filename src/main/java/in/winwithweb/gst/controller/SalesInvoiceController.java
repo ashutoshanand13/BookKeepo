@@ -3,6 +3,7 @@
  */
 package in.winwithweb.gst.controller;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.security.Principal;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -61,13 +63,13 @@ public class SalesInvoiceController {
 		InvoiceUtil.updateInvoice(invoice, salesInvoiceData, companyDetails);
 		invoiceService.saveInvoice(invoice);
 
-		byte[] documentBody = InvoiceUtil.createPDF(invoice).toByteArray();
+		ByteArrayOutputStream invoiceData = InvoiceUtil.createPDF(invoice);
 		response.setContentType("application/pdf");
 		response.addHeader("Content-Disposition", "attachment; filename=invoice.pdf");
-		response.setContentLength(documentBody.length);
+		response.setContentLength(invoiceData.size());
 
 		OutputStream out = response.getOutputStream();
-		InvoiceUtil.createPDF(invoice).writeTo(out);
+		invoiceData.writeTo(out);
 		out.flush();
 
 	}
@@ -80,4 +82,30 @@ public class SalesInvoiceController {
 		return modelAndView;
 	}
 
+    @RequestMapping(value = {"/home/showInvoice/{id}"}) 
+	public ModelAndView view(@PathVariable("id") int id, HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
+    	
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("invoiceList", invoiceService.findByInvoiceOwner(request.getUserPrincipal().getName()));
+		modelAndView.setViewName("showInvoice");
+		modelAndView.addObject("message", "Invoice Downloaded");
+
+		InvoiceDetails invoice = invoiceService.findById(id);
+
+		ByteArrayOutputStream invoiceData = InvoiceUtil.createPDF(invoice);
+
+		response.setContentType("application/pdf");
+		response.addHeader("Content-Disposition", "attachment; filename=invoice.pdf");
+		response.setContentLength(invoiceData.size());
+		   
+		OutputStream out = null;
+		out = response.getOutputStream();
+		invoiceData.writeTo(out);
+		out.close();
+		out.flush();
+				
+		return modelAndView;
+	}
+    
 }
