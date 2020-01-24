@@ -38,6 +38,8 @@
 					th:href="@{/home/addcompany}">Add Company</a></li>
 				<li class="nav-item"><a th:class="nav-link"
 					th:href="@{/home/salesinvoice}">Create Sales Invoice</a></li>
+				<li class="nav-item"><a th:class="nav-link"
+					th:href="@{/home/showInvoice}">Show Invoices</a></li>
 			</ul>
 			
 			<ul class="navbar-nav ml-auto nav-flex-icons">
@@ -74,16 +76,18 @@
 	<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
 	<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
 	<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
-	<script type="text/javascript" th:src="@{/js/jquery.serializejson.js}"></script>
 	<script type="text/javascript" th:src="@{/js/table.js}"></script>
 	<script type="text/javascript" th:src="@{/js/jquery-3.3.1.js}"></script>
 	<script type="text/javascript" th:src="@{/js/jquery.dataTables.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/jquery.serializejson.js}"></script>
 	
 	<script type="text/javascript">
 	$( '#topheader .navbar-nav a' ).on( 'click', function () {
 		$( '#topheader .navbar-nav' ).find( 'li.active' ).removeClass( 'active' );
 		$( this ).parent( 'li' ).addClass( 'active' );
 	});
+	
+	$("#alert").fadeTo(2000, 500).slideUp(500);
 </script>
 	<th:block layout:fragment="scripts">
 	</th:block>

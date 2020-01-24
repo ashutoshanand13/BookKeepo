@@ -370,7 +370,7 @@ html, body {
     outline: 0;
     border-radius: 6px;
     background-color: #fff;
-    font-size: 15px;
+    font-size: 10px;
     font-weight: 300;
     color: #8D8D8D;
     -webkit-transition: all 0.3s ease 0s;
@@ -392,7 +392,7 @@ html, body {
     text-align: left;
     background-color: #fff;
     border: 0;
-    font-size: 15px;
+    font-size: 10px;
     color: #8D8D8D;
     outline: none;
     resize: none;
@@ -793,4 +793,9 @@ padding-top: 1.4rem;
   #export-btn {
     display: none;
   }
+}
+
+.unselectable{
+     background-color: #ddd;
+     cursor: not-allowed;
 }

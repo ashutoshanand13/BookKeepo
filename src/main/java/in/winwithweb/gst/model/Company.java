@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -40,7 +41,8 @@ public class Company {
 	@Column(name = "company_telephone")
 	private String companyTelephone;
 	
-	@Column(name = "company_logo")
+	@Lob
+	@Column(name = "company_logo", length = 2097152)
 	private byte[] companyLogo;
 	
 	public String getUserName() {
