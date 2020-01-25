@@ -140,25 +140,31 @@ function setAlert(message) {
 		});
 		
 		// replace function used to remove extra "" while parsing.
-		var json = JSON.stringify($('#form').serializeJSON()).replace(/\\/g,"").replace("\"[","[").replace("]\"","]");
-		$.ajax({
-		    url: "/home/salesinvoice",
-		    contentType: "application/text; charset=utf-8",
-		    type: 'POST',
-		    datatype: 'text',
-		    data: json,
-		    xhrFields: {responseType: "blob"},
-		    success : function(blob){
-		        var filename = "invoice.pdf";
-		        var link = document.createElement('a');
-		        link.href = window.URL.createObjectURL(blob);
-		        link.download = "invoice.pdf";
-		        link.click();
-		    	$("#form")[0].reset();
-		    	window.scrollTo(0, 0);
-		    	setValues();
-		    }
-		 });
+						var json = JSON.stringify($('#form').serializeJSON())
+								.replace(/\\/g, "").replace("\"[", "[")
+								.replace("]\"", "]");
+						$('#overlay').fadeIn();
+						$.ajax({
+							url : "/home/salesinvoice",
+							contentType : "application/text; charset=utf-8",
+							type : 'POST',
+							datatype : 'text',
+							data : json,
+							xhrFields : {
+								responseType : "blob"
+							},
+							success : function(blob) {
+								var filename = "invoice.pdf";
+								var link = document.createElement('a');
+								link.href = window.URL.createObjectURL(blob);
+								link.download = "invoice.pdf";
+								link.click();
+								$("#form")[0].reset();
+								window.scrollTo(0, 0);
+								setValues();
+								$('#overlay').delay(500).fadeOut();
+							}
+						});
    }
    else {
 	   alert('Enter GST Identification Number. It should be in this "11AAAAA1111Z1A1" format');
