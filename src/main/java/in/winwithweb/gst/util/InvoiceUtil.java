@@ -21,6 +21,7 @@ import com.itextpdf.text.Font;
 import com.itextpdf.text.Font.FontFamily;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -39,6 +40,8 @@ import in.winwithweb.gst.model.sales.InvoiceProductDetails;
  *
  */
 public class InvoiceUtil {
+
+	private static float[] columnItemTableWidths = null;
 
 	public static void updateInvoice(InvoiceDetails invoice, SalesInvoicePageData salesInvoiceData,
 			Company companyDetails) {
@@ -78,6 +81,11 @@ public class InvoiceUtil {
 		invoice.setInvoiceAddressDetails(invoiceAddressDetails);
 
 		invoice.setInvoiceCompanyDetails(companyDetails);
+		if (salesInvoiceData.getGstinShip().substring(0, 2).equals(salesInvoiceData.getGstinBill().substring(0, 2))) {
+			invoice.setInvoiceType("Intra State");
+		} else {
+			invoice.setInvoiceType("Inter State");
+		}
 
 		for (ItemList item : salesInvoiceData.getItemList()) {
 			InvoiceProductDetails invoiceProductDetails = new InvoiceProductDetails();
@@ -132,8 +140,18 @@ public class InvoiceUtil {
 			// specify column widths
 			float[] columnWidthHeader = { 3f, 4f, 3f };
 			float[] columnWidths = { 5f, 5f };
-			float[] columnItemTableWidths = { 0.7f, 2.2f, 1f, 1f, 1f, 1f, 1.5f, 1.5f, 1f, 1.6f, 1.1f, 1.1f, 1.f, 1.3f };
+			if ("Intra State".equals(invoice.getInvoiceType())) {
+				columnItemTableWidths = new float[] { 0.7f, 2.2f, 1f, 1f, 1f, 1f, 1.5f, 1.5f, 1f, 1.6f, 1.1f, 1.1f,
+						1.3f };
+			} else {
+				columnItemTableWidths = new float[] { 0.7f, 2.2f, 1f, 1f, 1f, 1f, 1.5f, 1.5f, 1f, 1.6f, 1.f, 1.3f };
+			}
 			// create PDF table with the given widths
+			
+			Paragraph header = new Paragraph();
+			header.add("Tax Invoice - "+invoice.getInvoiceType()+"\n\n");
+			header.setAlignment(Element.ALIGN_CENTER);
+			
 			PdfPTable tableHeader = new PdfPTable(columnWidthHeader);
 			PdfPTable table = new PdfPTable(columnWidths);
 			PdfPTable itemTable = new PdfPTable(columnItemTableWidths);
@@ -144,19 +162,6 @@ public class InvoiceUtil {
 
 			addHeader(invoice, bfBold12, tableHeader);
 			
-//			insertCell(tableHeader, invoice.getInvoiceCompanyDetails().getCompanyName(), Element.ALIGN_LEFT, 1, bf12, 1,
-//					"#FFFFFF", 0.5f, 1f, 0f);
-//			insertCell(table, invoice.getInvoiceCompanyDetails().getCompanyAddress(), Element.ALIGN_LEFT, 1, bf12, 1,
-//					"#FFFFFF", 0.5f, 1f, 0f);
-//			insertCell(table, invoice.getInvoiceCompanyDetails().getCompanyState(), Element.ALIGN_LEFT, 1, bf12, 1,
-//					"#FFFFFF", 0.5f, 1f, 0f);
-//			insertCell(table, invoice.getInvoiceCompanyDetails().getCompanyTelephone(), Element.ALIGN_LEFT, 1, bf12, 1,
-//					"#FFFFFF", 0.5f, 1f, 0f);
-//			insertCell(table, invoice.getInvoiceCompanyDetails().getCompanyGstin(), Element.ALIGN_LEFT, 1, bf12, 1,
-//					"#FFFFFF", 0.5f, 1f, 0f);
-//			insertCell(table, invoice.getInvoiceCompanyDetails().getCompanyEmail(), Element.ALIGN_LEFT, 1, bf12, 1,
-//					"#FFFFFF", 0.5f, 1f, 0f);
-
 			insertCell(table, "", Element.ALIGN_LEFT, 2, bfBold12, 1, "#FFFFFF", 1f, 1f, 0f);
 
 			insertCell(table, "Tax Invoice", Element.ALIGN_CENTER, 2, bfBold12, 1, "#BFD6E9", 1f, 1f, 30f);
@@ -216,9 +221,12 @@ public class InvoiceUtil {
 			insertCell(itemTable, "Discount", Element.ALIGN_CENTER, 1, bfBold12, 1, "#BFD6E9", 0.5f, 0.5f, 30f);
 			insertCell(itemTable, "GST Rate", Element.ALIGN_CENTER, 1, bfBold12, 1, "#BFD6E9", 0.5f, 0.5f, 30f);
 			insertCell(itemTable, "Taxable Value", Element.ALIGN_CENTER, 1, bfBold12, 1, "#BFD6E9", 0.5f, 0.5f, 30f);
-			insertCell(itemTable, "CGST", Element.ALIGN_CENTER, 1, bfBold12, 1, "#BFD6E9", 0.5f, 0.5f, 30f);
-			insertCell(itemTable, "SGST", Element.ALIGN_CENTER, 1, bfBold12, 1, "#BFD6E9", 0.5f, 0.5f, 30f);
-			insertCell(itemTable, "IGST", Element.ALIGN_CENTER, 1, bfBold12, 1, "#BFD6E9", 0.5f, 0.5f, 30f);
+			if ("Intra State".equals(invoice.getInvoiceType())) {
+				insertCell(itemTable, "CGST", Element.ALIGN_CENTER, 1, bfBold12, 1, "#BFD6E9", 0.5f, 0.5f, 30f);
+				insertCell(itemTable, "SGST", Element.ALIGN_CENTER, 1, bfBold12, 1, "#BFD6E9", 0.5f, 0.5f, 30f);
+			} else {
+				insertCell(itemTable, "IGST", Element.ALIGN_CENTER, 1, bfBold12, 1, "#BFD6E9", 0.5f, 0.5f, 30f);
+			}
 			insertCell(itemTable, "Total Amount", Element.ALIGN_CENTER, 1, bfBold12, 1, "#BFD6E9", 0.5f, 1f, 30f);
 
 			int count = 1;
@@ -240,16 +248,19 @@ public class InvoiceUtil {
 						0.5f, 0f);
 				insertCell(itemTable, product.getProductDiscount(), Element.ALIGN_CENTER, 1, bf12, 1, "#FFFFFF", 0.5f,
 						0.5f, 0f);
-				insertCell(itemTable, product.getProductGstRate(), Element.ALIGN_CENTER, 1, bf12, 1, "#FFFFFF", 0.5f,
+				insertCell(itemTable, product.getProductGstRate()+"%", Element.ALIGN_CENTER, 1, bf12, 1, "#FFFFFF", 0.5f,
 						0.5f, 0f);
 				insertCell(itemTable, product.getProductTaxValue(), Element.ALIGN_CENTER, 1, bf12, 1, "#FFFFFF", 0.5f,
 						0.5f, 0f);
-				insertCell(itemTable, product.getProductCgst(), Element.ALIGN_CENTER, 1, bf12, 1, "#FFFFFF", 0.5f, 0.5f,
-						0f);
-				insertCell(itemTable, product.getProductSgst(), Element.ALIGN_CENTER, 1, bf12, 1, "#FFFFFF", 0.5f, 0.5f,
-						0f);
-				insertCell(itemTable, product.getProductIgst(), Element.ALIGN_CENTER, 1, bf12, 1, "#FFFFFF", 0.5f, 0.5f,
-						0f);
+				if ("Intra State".equals(invoice.getInvoiceType())) {
+					insertCell(itemTable, product.getProductCgst(), Element.ALIGN_CENTER, 1, bf12, 1, "#FFFFFF", 0.5f,
+							0.5f, 0f);
+					insertCell(itemTable, product.getProductSgst(), Element.ALIGN_CENTER, 1, bf12, 1, "#FFFFFF", 0.5f,
+							0.5f, 0f);
+				} else {
+					insertCell(itemTable, product.getProductIgst(), Element.ALIGN_CENTER, 1, bf12, 1, "#FFFFFF", 0.5f,
+							0.5f, 0f);
+				}
 				insertCell(itemTable, product.getProductTotalAmount(), Element.ALIGN_CENTER, 1, bf12, 1, "#FFFFFF",
 						0.5f, 1f, 0f);
 				totalQty = totalQty + Integer.valueOf(product.getProductQuantity());
@@ -316,6 +327,7 @@ public class InvoiceUtil {
 			insertCell(itemTable, invoice.getInvoiceBankDetails().getInvoiceBankCondition(), Element.ALIGN_CENTER, 4,
 					bf12, 4, "#FFFFFFF", 1f, 0.5f, 0f);
 
+			doc.add(header);
 			doc.add(tableHeader);
 			doc.add(table);
 			doc.add(itemTable);
