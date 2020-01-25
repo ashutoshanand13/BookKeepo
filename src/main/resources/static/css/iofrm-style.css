@@ -766,7 +766,7 @@ html, body {
 }
 
 .pt-3-half {
-padding-top: 1.4rem;
+padding: 0.4rem !important;
 }
 
 .table-width {
@@ -798,4 +798,19 @@ padding-top: 1.4rem;
 .unselectable{
      background-color: #ddd;
      cursor: not-allowed;
+}
+
+.table-width2 {
+	width :90%;
+	margin-left: auto;
+    margin-right: auto;
+}
+
+div.form-content select.salesformcontent{
+    border: 1px solid rgb(39, 200, 169);
+    background-color: #F7F7F7;
+    color: #000000;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 300;
 }
