@@ -370,7 +370,7 @@ html, body {
     outline: 0;
     border-radius: 6px;
     background-color: #fff;
-    font-size: 15px;
+    font-size: 10px;
     font-weight: 300;
     color: #8D8D8D;
     -webkit-transition: all 0.3s ease 0s;
@@ -392,7 +392,7 @@ html, body {
     text-align: left;
     background-color: #fff;
     border: 0;
-    font-size: 15px;
+    font-size: 10px;
     color: #8D8D8D;
     outline: none;
     resize: none;
@@ -766,7 +766,7 @@ html, body {
 }
 
 .pt-3-half {
-padding-top: 1.4rem;
+padding: 0.4rem !important;
 }
 
 .table-width {
@@ -793,4 +793,24 @@ padding-top: 1.4rem;
   #export-btn {
     display: none;
   }
+}
+
+.unselectable{
+     background-color: #ddd;
+     cursor: not-allowed;
+}
+
+.table-width2 {
+	width :90%;
+	margin-left: auto;
+    margin-right: auto;
+}
+
+div.form-content select.salesformcontent{
+    border: 1px solid rgb(39, 200, 169);
+    background-color: #F7F7F7;
+    color: #000000;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 300;
 }

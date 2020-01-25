@@ -1,20 +1,30 @@
 package in.winwithweb.gst.controller;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.security.Principal;
+import java.util.Base64;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import in.winwithweb.gst.model.Company;
 import in.winwithweb.gst.service.CompanyDetailsService;
+import in.winwithweb.gst.util.CommonUtils;
 
 @Controller
 public class CompanyController {
@@ -27,35 +37,57 @@ public class CompanyController {
 		String user = request.getUserPrincipal().getName();
 		ModelAndView modelAndView = new ModelAndView();
 		Company company = companyDetailsService.findByUserName(user);
-		modelAndView.addObject("company", company != null ? company : new Company());
+		if(company!=null) {
+			modelAndView.addObject("company",company);
+			modelAndView.addObject("logoImage",CommonUtils.getImgfromByteArray(company.getCompanyLogo()));
+		}else {
+			modelAndView.addObject("company", new Company());
+			modelAndView.addObject("logoImage",CommonUtils.getImgfromResource("/static/images/image-400x400.jpg"));
+		}
+		
 		modelAndView.setViewName("addCompany");
 		return modelAndView;
 	}
 
 	@RequestMapping(value = "/home/addcompany", method = RequestMethod.POST)
 	public ModelAndView addCompany(@Valid @ModelAttribute("company") Company company, BindingResult bindingResult,
-			Principal principal) {
+			Principal principal, @RequestParam("companyLogo") MultipartFile companyLogo) {
 		ModelAndView modelAndView = new ModelAndView();
+		byte[] CompanyUploadedFile=null;
 		company.setUserName(principal.getName());
 		modelAndView.setViewName("addCompany");
 
 		Company isDataExists = companyDetailsService.findByUserName(principal.getName());
 
 		if (isDataExists == null) {
+			try {
+				CompanyUploadedFile = companyLogo.getBytes();
+				company.setCompanyLogo(companyLogo.getBytes());
+				modelAndView.addObject("message", "Company details added successfully!");
+				modelAndView.addObject("logoImage",CommonUtils.getImgfromByteArray(CompanyUploadedFile));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			companyDetailsService.save(company);
 		} else {
 			isDataExists.setCompanyAddress(company.getCompanyAddress());
 			isDataExists.setCompanyEmail(company.getCompanyEmail());
 			isDataExists.setCompanyGstin(company.getCompanyGstin());
-			isDataExists.setCompanyLogo(company.getCompanyLogo());
+			try {
+				CompanyUploadedFile = companyLogo.getBytes();
+				isDataExists.setCompanyLogo(companyLogo.getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			isDataExists.setCompanyName(company.getCompanyName());
 			isDataExists.setCompanyState(company.getCompanyState());
 			isDataExists.setCompanyTelephone(company.getCompanyTelephone());
 			companyDetailsService.save(isDataExists);
+			modelAndView.addObject("logoImage",CommonUtils.getImgfromByteArray(CompanyUploadedFile));
+			modelAndView.addObject("message", "Company details updated successfully!");
 		}
 
 		modelAndView.addObject("company", companyDetailsService.findByUserName(principal.getName()));
-
 		return modelAndView;
 	}
 

@@ -19,9 +19,11 @@
 <div layout:fragment="form_content" id="form_content">
 	<div class="form-items">
 		<h3 class="form-title doubleunderlinetext">Add An Account</h3>
-		<div th:if="${message}" th:text="${message}" class="alert alert-info"></div>
-		<form autocomplete="off" th:action="@{/home/addaccount}" th:object="${account}" method="post"
-			class="form-horizontal" role="form">
+		<div id="alert" th:if="${message}" th:text="${message} "
+			class="alert alert-info fade-in"></div>
+		<form autocomplete="off" th:action="@{/home/addaccount}"
+			th:object="${account}" method="post" class="form-horizontal"
+			role="form" onSubmit="return isValid()">
 			<div class="row">
 				<div class="col-md-6 form-group">
 					<div class="form-group">
@@ -37,11 +39,14 @@
 							<option class="form-control" value="Income">Income</option>
 							<option class="form-control" value="Contra">Contra</option>
 							<option class="form-control" value="Others">Others</option>
-						</select> <input type="text" class="form-control" th:field="*{gstin}" placeholder="GST Number" required>
-						<label th:if="${#fields.hasErrors('gstin')}" th:errors="*{gstin}" class="validation-message"></label>
-						<input type="text" class="form-control" th:field="*{accountPan}" placeholder="PAN" required>
-						<label th:if="${#fields.hasErrors('accountPan')}" th:errors="*{accountPan}"
-							class="validation-message"></label>
+						</select> <input type="text" class="form-control" th:field="*{gstin}"
+							onblur="validateGST(this)" placeholder="GST Number" required>
+						<label th:if="${#fields.hasErrors('gstin')}" th:errors="*{gstin}"
+							class="validation-message"></label> <input type="text"
+							class="form-control" th:field="*{accountPan}"
+							onblur="validatePan(this)" placeholder="PAN" required> <label
+							th:if="${#fields.hasErrors('accountPan')}"
+							th:errors="*{accountPan}" class="validation-message"></label>
 					</div>
 				</div>
 				<div class="col-md-6 form-group">
@@ -82,3 +87,34 @@
 		</form>
 	</div>
 </div>
+<th:block layout:fragment="scripts">
+	<script>
+		var isPanValid = false;
+		var isGSTValid = false;
+		function validatePan(val) {
+			var panRegex = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
+			var value = $(val).val();
+			if (!panRegex.test(value) || value === "") {
+				alert('Enter a valid PAN number');
+				isPanValid = false;
+			} else {
+				isPanValid = true;
+			}
+		}
+
+		function validateGST(val) {
+			var gstRegex = /^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$/;
+			var value = $(val).val();
+			if (!gstRegex.test(value) || value === "") {
+				alert('GST Identification Number is not valid. It should be in this "11AAAAA1111Z1A1" format');
+				isGSTValid = false;
+			} else {
+				isGSTValid = true;
+			}
+		}
+
+		function isValid() {
+			return (isGSTValid && isPanValid) ? true : false;
+		}
+	</script>
+</th:block>

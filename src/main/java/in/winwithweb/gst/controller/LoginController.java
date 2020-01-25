@@ -3,7 +3,6 @@
  */
 package in.winwithweb.gst.controller;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Base64;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +21,7 @@ import in.winwithweb.gst.model.Company;
 import in.winwithweb.gst.model.User;
 import in.winwithweb.gst.service.CompanyDetailsService;
 import in.winwithweb.gst.service.UserService;
+import in.winwithweb.gst.util.CommonUtils;
 
 /**
  * @author sachingoyal
@@ -49,6 +49,7 @@ public class LoginController {
 		if(company==null) {
 			modelAndView.addObject("message", "Please update company details before creating an Invoice");
 			modelAndView.addObject("company",new Company());
+			modelAndView.addObject("logoImage",CommonUtils.getImgfromResource("/static/images/image-400x400.jpg"));
 			modelAndView.setViewName("addCompany");
 		}
 		else {
