@@ -282,12 +282,16 @@ public class InvoiceUtil {
 			insertCell(itemTable, "", Element.ALIGN_CENTER, 2, bfBold12, 1, "#FFFFFF", 0.5f, 0.5f, 30f);
 			insertCell(itemTable, df.format(totalTaxValue), Element.ALIGN_CENTER, 1, bfBold12, 1, "#FFFFFF", 0.5f, 0.5f,
 					30f);
+			if ("Intra State".equals(invoice.getInvoiceType())) {
 			insertCell(itemTable, df.format(totalCgst), Element.ALIGN_CENTER, 1, bfBold12, 1, "#FFFFFF", 0.5f, 0.5f,
 					30f);
 			insertCell(itemTable, df.format(totalSgst), Element.ALIGN_CENTER, 1, bfBold12, 1, "#FFFFFF", 0.5f, 0.5f,
 					30f);
+			}
+			else {
 			insertCell(itemTable, df.format(totalIgst), Element.ALIGN_CENTER, 1, bfBold12, 1, "#FFFFFF", 0.5f, 0.5f,
 					30f);
+			}
 			insertCell(itemTable, df.format(ttlTotalAmount), Element.ALIGN_CENTER, 1, bfBold12, 1, "#FFFFFF", 0.5f, 1f,
 					30f);
 
