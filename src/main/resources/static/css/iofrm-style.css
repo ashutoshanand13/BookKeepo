@@ -814,3 +814,11 @@ div.form-content select.salesformcontent{
     font-size: 10px;
     font-weight: 300;
 }
+
+div.form-content p.companydetails{
+	font-size: 12px;
+    font-weight: 800;
+    line-height: 20px;
+    margin-bottom: 3px;
+    text-align: right;
+}
