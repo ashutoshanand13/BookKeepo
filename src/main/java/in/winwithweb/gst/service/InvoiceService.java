@@ -34,5 +34,13 @@ public class InvoiceService {
 	public List<InvoiceDetails> fetchAllInvoice() {
 		return invoiceRepository.findAll();
 	}
+	
+	public List<InvoiceDetails> findByInvoiceOwner(String name) {
+		return invoiceRepository.findByInvoiceOwner(name);
+	}
+	
+	public InvoiceDetails findById(int id) {
+		return invoiceRepository.findById(id);
+	}
 
 }
