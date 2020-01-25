@@ -26,7 +26,6 @@ public class Accounts {
 	private String accountName;
 	
 	@Column(name = "account_owner")
-	@NotEmpty(message = "*Please provide the account owner")
 	private String accountOwner;
 
 	@Column(name = "account_type")
