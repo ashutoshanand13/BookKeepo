@@ -297,3 +297,9 @@ function readURL(input) {
 		}
 }
 
+function showAlert() {
+	$('#alert_showinvoice').html(
+			'<div class="alert alert-info fade-in"><span><center>Invoice Downloaded</center></span></div>')
+	$("#alert_showinvoice").fadeTo(2000, 500).slideUp(500);
+}
+

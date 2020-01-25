@@ -83,13 +83,8 @@ public class SalesInvoiceController {
 	}
 
     @RequestMapping(value = {"/home/showInvoice/{id}"}) 
-	public ModelAndView view(@PathVariable("id") int id, HttpServletRequest request, HttpServletResponse response)
+	public void view(@PathVariable("id") int id, HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
-    	
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("invoiceList", invoiceService.findByInvoiceOwner(request.getUserPrincipal().getName()));
-		modelAndView.setViewName("showInvoice");
-		modelAndView.addObject("message", "Invoice Downloaded");
 
 		InvoiceDetails invoice = invoiceService.findById(id);
 
@@ -98,14 +93,13 @@ public class SalesInvoiceController {
 		response.setContentType("application/pdf");
 		response.addHeader("Content-Disposition", "attachment; filename=invoice.pdf");
 		response.setContentLength(invoiceData.size());
-		   
+
 		OutputStream out = null;
 		out = response.getOutputStream();
 		invoiceData.writeTo(out);
 		out.close();
 		out.flush();
-				
-		return modelAndView;
+
 	}
     
 }
