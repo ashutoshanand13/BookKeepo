@@ -34,6 +34,7 @@ else
 	 $(this).closest('tr').after(newTr);
 	   resetValues();
 	   setValues();
+	   updateTableColumn(false);
 	  });
 
 function validateGST(val){
@@ -56,7 +57,7 @@ function validateGST(val){
 		 else{
 			 gstShip=true;
 		 } 
-		 updateTableColumn();
+		 updateTableColumn(true);
 	 }
  }
 
@@ -68,13 +69,25 @@ function removeTableColumnClass() {
 	}
 }
 
-function updateTableColumn() {
+function updateTableColumn(showAlert) {
 	removeTableColumnClass();
 	var gstShipValue = $("[name=gstinBill]").val();
 	var gstBillValue = $("[name=gstinShip]").val();
 
-	if (gstBill && gstShip) {
+	disableColumns(gstShipValue, gstBillValue);
+
+	if (showAlert) {
 		if (gstShipValue.substring(0, 2) === gstBillValue.substring(0, 2)) {
+			setAlert("Intra-State Form")
+		} else if(gstShipValue!==""&&gstBillValue!=="") {
+			setAlert("Inter-State Form")
+		}
+	}
+}
+
+function disableColumns(ship, bill) {
+	if (gstBill && gstShip) {
+		if (ship.substring(0, 2) === bill.substring(0, 2)) {
 			var container = document.querySelector("#itemTable");
 			var cells = container.querySelectorAll('td:nth-child(13)');
 
@@ -82,7 +95,6 @@ function updateTableColumn() {
 				cells[i].classList.add('unselectable');
 
 			}
-			setAlert("Intra-State Form")
 		} else {
 			var container = document.querySelector("#itemTable");
 			var cells = container.querySelectorAll('td:nth-child(12)');
@@ -97,8 +109,6 @@ function updateTableColumn() {
 				cells1[i].classList.add('unselectable');
 
 			}
-			
-			setAlert("Inter-State Form")
 		}
 	}
 }
