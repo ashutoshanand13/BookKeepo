@@ -49,6 +49,7 @@ public class CompanyController {
 		if (isDataExists == null) {
 			try {
 				company.setCompanyLogo(companyLogo.getBytes());
+				modelAndView.addObject("message", "Company details added successfully!");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -68,10 +69,10 @@ public class CompanyController {
 			isDataExists.setCompanyState(company.getCompanyState());
 			isDataExists.setCompanyTelephone(company.getCompanyTelephone());
 			companyDetailsService.save(isDataExists);
+			modelAndView.addObject("message", "Company details updated successfully!");
 		}
 
 		modelAndView.addObject("company", companyDetailsService.findByUserName(principal.getName()));
-		modelAndView.addObject("message", "Company details added successfully!");
 		return modelAndView;
 	}
 
