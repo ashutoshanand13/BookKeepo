@@ -4,11 +4,14 @@
 package in.winwithweb.gst.util;
 
 import java.awt.Color;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.itextpdf.io.source.ByteArrayOutputStream;
+import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -37,7 +40,8 @@ import in.winwithweb.gst.model.sales.InvoiceProductDetails;
  */
 public class InvoiceUtil {
 
-	public static void updateInvoice(InvoiceDetails invoice, SalesInvoicePageData salesInvoiceData ,Company companyDetails) {
+	public static void updateInvoice(InvoiceDetails invoice, SalesInvoicePageData salesInvoiceData,
+			Company companyDetails) {
 
 		List<InvoiceProductDetails> productList = new ArrayList<InvoiceProductDetails>();
 		InvoiceBankDetails invoiceBankDetails = new InvoiceBankDetails();
@@ -72,7 +76,7 @@ public class InvoiceUtil {
 		invoiceAddressDetails.setInvoicePartyGst(salesInvoiceData.getGstinShip());
 		invoiceAddressDetails.setInvoicePartyState(salesInvoiceData.getStateShip());
 		invoice.setInvoiceAddressDetails(invoiceAddressDetails);
-		
+
 		invoice.setInvoiceCompanyDetails(companyDetails);
 
 		for (ItemList item : salesInvoiceData.getItemList()) {
@@ -100,7 +104,7 @@ public class InvoiceUtil {
 	public static ByteArrayOutputStream createPDF(InvoiceDetails invoice) {
 
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
-		
+
 		Document doc = new Document();
 		PdfWriter docWriter = null;
 
@@ -126,42 +130,32 @@ public class InvoiceUtil {
 			doc.open();
 
 			// specify column widths
+			float[] columnWidthHeader = { 3f, 4f, 3f };
 			float[] columnWidths = { 5f, 5f };
 			float[] columnItemTableWidths = { 0.7f, 2.2f, 1f, 1f, 1f, 1f, 1.5f, 1.5f, 1f, 1.6f, 1.1f, 1.1f, 1.f, 1.3f };
 			// create PDF table with the given widths
+			PdfPTable tableHeader = new PdfPTable(columnWidthHeader);
 			PdfPTable table = new PdfPTable(columnWidths);
 			PdfPTable itemTable = new PdfPTable(columnItemTableWidths);
 			// set table width a percentage of the page width
 			table.setWidthPercentage(90f);
 			itemTable.setWidthPercentage(90f);
+			tableHeader.setWidthPercentage(90f);
 
-			Image img = Image.getInstance(invoice.getInvoiceCompanyDetails().getCompanyLogo());
-			img.scaleAbsolute(img.getWidth()/2,img.getHeight() );
-
-			PdfPCell cell = new PdfPCell(img);
-			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-			cell.setColspan(1);
-			cell.setRowspan(6);
-			cell.setBorderWidthLeft(1f);
-			cell.setBorderWidthRight(0.5f);
-			cell.setMinimumHeight(0f);
-			// in case there is no text and you wan to create an empty row
-			cell.setBackgroundColor(new BaseColor(Color.decode("#FFFFFF").getRGB()));
-			// add the call to the table
-			table.addCell(cell);
-			insertCell(table, invoice.getInvoiceCompanyDetails().getCompanyName(), Element.ALIGN_LEFT, 1, bf12, 1,
-					"#FFFFFF", 0.5f, 1f, 0f);
-			insertCell(table, invoice.getInvoiceCompanyDetails().getCompanyAddress(), Element.ALIGN_LEFT, 1, bf12, 1,
-					"#FFFFFF", 0.5f, 1f, 0f);
-			insertCell(table, invoice.getInvoiceCompanyDetails().getCompanyState(), Element.ALIGN_LEFT, 1, bf12, 1,
-					"#FFFFFF", 0.5f, 1f, 0f);
-			insertCell(table, invoice.getInvoiceCompanyDetails().getCompanyTelephone(), Element.ALIGN_LEFT, 1, bf12, 1,
-					"#FFFFFF", 0.5f, 1f, 0f);
-			insertCell(table, invoice.getInvoiceCompanyDetails().getCompanyGstin(), Element.ALIGN_LEFT, 1, bf12, 1,
-					"#FFFFFF", 0.5f, 1f, 0f);
-			insertCell(table, invoice.getInvoiceCompanyDetails().getCompanyEmail(), Element.ALIGN_LEFT, 1, bf12, 1,
-					"#FFFFFF", 0.5f, 1f, 0f);
+			addHeader(invoice, bfBold12, tableHeader);
+			
+//			insertCell(tableHeader, invoice.getInvoiceCompanyDetails().getCompanyName(), Element.ALIGN_LEFT, 1, bf12, 1,
+//					"#FFFFFF", 0.5f, 1f, 0f);
+//			insertCell(table, invoice.getInvoiceCompanyDetails().getCompanyAddress(), Element.ALIGN_LEFT, 1, bf12, 1,
+//					"#FFFFFF", 0.5f, 1f, 0f);
+//			insertCell(table, invoice.getInvoiceCompanyDetails().getCompanyState(), Element.ALIGN_LEFT, 1, bf12, 1,
+//					"#FFFFFF", 0.5f, 1f, 0f);
+//			insertCell(table, invoice.getInvoiceCompanyDetails().getCompanyTelephone(), Element.ALIGN_LEFT, 1, bf12, 1,
+//					"#FFFFFF", 0.5f, 1f, 0f);
+//			insertCell(table, invoice.getInvoiceCompanyDetails().getCompanyGstin(), Element.ALIGN_LEFT, 1, bf12, 1,
+//					"#FFFFFF", 0.5f, 1f, 0f);
+//			insertCell(table, invoice.getInvoiceCompanyDetails().getCompanyEmail(), Element.ALIGN_LEFT, 1, bf12, 1,
+//					"#FFFFFF", 0.5f, 1f, 0f);
 
 			insertCell(table, "", Element.ALIGN_LEFT, 2, bfBold12, 1, "#FFFFFF", 1f, 1f, 0f);
 
@@ -309,18 +303,20 @@ public class InvoiceUtil {
 					0f);
 			insertCell(itemTable, "", Element.ALIGN_CENTER, 1, bfBold12, 1, "#FFFFFF", 0.5f, 1f, 0f);
 
-			insertCell(itemTable, invoice.getInvoiceBankDetails().getInvoiceBankAccount(), Element.ALIGN_CENTER, 4,
-					bf12, 1, "#FFFFFFF", 1f, 0.5f, 0f);
+			insertCell(itemTable, "Bank A/c: ",invoice.getInvoiceBankDetails().getInvoiceBankAccount(), Element.ALIGN_LEFT, 4,
+					bfBold12, bf12, 1, "#FFFFFFF", 1f, 0.5f);
 			insertCell(itemTable,
-					"Ceritified that the particulars given above are true and correct \n\n\n\n For Company Name \n\n\n\n Authorised Signatory",
+					"Ceritified that the particulars given above are true and correct \n\n\n\n For "
+							+ invoice.getInvoiceCompanyDetails().getCompanyName() + " \n\n\n\n Authorised Signatory",
 					Element.ALIGN_CENTER, 7, bf12, 6, "#FFFFFFF", 0.5f, 1f, 0f);
 
-			insertCell(itemTable, invoice.getInvoiceBankDetails().getInvoiceIfsCode(), Element.ALIGN_CENTER, 4, bf12, 1,
-					"#FFFFFFF", 1f, 0.5f, 0f);
+			insertCell(itemTable, "Bank A/c: ", invoice.getInvoiceBankDetails().getInvoiceIfsCode(), Element.ALIGN_LEFT, 4, bfBold12, bf12, 1,
+					"#FFFFFFF", 1f, 0.5f);
 			insertCell(itemTable, "Bank", Element.ALIGN_CENTER, 4, bfBold12, 1, "#FFFFFFF", 1f, 0.5f, 0f);
 			insertCell(itemTable, invoice.getInvoiceBankDetails().getInvoiceBankCondition(), Element.ALIGN_CENTER, 4,
 					bf12, 4, "#FFFFFFF", 1f, 0.5f, 0f);
 
+			doc.add(tableHeader);
 			doc.add(table);
 			doc.add(itemTable);
 
@@ -339,6 +335,58 @@ public class InvoiceUtil {
 			}
 		}
 		return output;
+	}
+
+	/**
+	 * @param invoice
+	 * @param bfBold12
+	 * @param tableHeader
+	 * @throws BadElementException
+	 * @throws MalformedURLException
+	 * @throws IOException
+	 */
+	private static void addHeader(InvoiceDetails invoice, Font bfBold12, PdfPTable tableHeader)
+			throws BadElementException, MalformedURLException, IOException {
+		Image img = Image.getInstance(invoice.getInvoiceCompanyDetails().getCompanyLogo());
+		img.scaleAbsolute(120f, 50f);
+
+		PdfPCell cell = new PdfPCell(img);
+		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+		cell.setColspan(1);
+		cell.setRowspan(6);
+		cell.setBorderWidthLeft(1f);
+		cell.setBorderWidthRight(0f);
+		cell.setMinimumHeight(0f);
+		cell.setBackgroundColor(new BaseColor(Color.decode("#FFFFFF").getRGB()));
+		tableHeader.addCell(cell);
+
+		String companyColumn = invoice.getInvoiceCompanyDetails().getCompanyName() + "\n\n"
+				+ invoice.getInvoiceCompanyDetails().getCompanyAddress() + "\n\nTel: "
+				+ invoice.getInvoiceCompanyDetails().getCompanyTelephone() + "\nGSTIN: "
+				+ invoice.getInvoiceCompanyDetails().getCompanyGstin()+"\n";
+		
+		PdfPCell cell2 = new PdfPCell(new Phrase(companyColumn.trim(),new Font(FontFamily.TIMES_ROMAN, 10, Font.BOLD)));
+		cell2.setHorizontalAlignment(Element.ALIGN_CENTER);
+		cell2.setVerticalAlignment(Element.ALIGN_MIDDLE);
+		cell2.setColspan(1);
+		cell2.setRowspan(6);
+		cell2.setBorderWidthLeft(0f);
+		cell2.setBorderWidthRight(0f);
+		cell2.setMinimumHeight(0f);
+		cell2.setBackgroundColor(new BaseColor(Color.decode("#FFFFFF").getRGB()));
+		tableHeader.addCell(cell2);
+
+		PdfPCell cell3 = new PdfPCell(new Phrase("Original for Receipient",bfBold12));
+		cell3.setHorizontalAlignment(Element.ALIGN_CENTER);
+		cell3.setVerticalAlignment(Element.ALIGN_MIDDLE);
+		cell3.setColspan(1);
+		cell3.setRowspan(6);
+		cell3.setBorderWidthLeft(0f);
+		cell3.setBorderWidthRight(1f);
+		cell3.setMinimumHeight(0f);
+		cell3.setBackgroundColor(new BaseColor(Color.decode("#FFFFFF").getRGB()));
+		tableHeader.addCell(cell3);
 	}
 
 	private static void insertCell(PdfPTable table, String text, int align, int colspan, Font font, int rowspan,
