@@ -459,7 +459,6 @@ public class InvoiceUtil {
 		}
 		// add the call to the table
 		table.addCell(cell);
-
 	}
 
 }
