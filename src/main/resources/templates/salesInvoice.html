@@ -143,22 +143,23 @@
 				<div id=table>
 					<input type="hidden" id="itemList" name="itemList">
 					<table id="itemTable" border="1"
-						class="table table-width table-responsive-md text-center">
-						<col width="70">
-						<col width="250">
-						<col width="90">
-						<col width="80">
-						<col width="95">
-						<col width="100">
-						<col width="85">
-						<col width="90">
-						<col width="80">
-						<col width="100">
-						<col width="95">
-						<col width="95">
-						<col width="95">
-						<col width="140">
-						<col width="70">
+						class="table table-width2 table-responsive-md text-center">
+						<colgroup>
+						<col width="2%">
+						<col width="10%">
+						<col width="7%">
+						<col width="5%">
+						<col width="7%">
+						<col width="8%">
+						<col width="10%">
+						<col width="5%">
+						<col width="9%">
+						<col width="6%">
+						<col width="5%">
+						<col width="5%">
+						<col width="5%">
+						<col width="10%">
+						</colgroup>
 						<thead>
 							<tr bgcolor="#BFD6E9">
 								<th class="text-center">Sr. No.</th>
@@ -198,9 +199,16 @@
 								<td class="pt-3-half"><input type="text" onfocus="(this.type='number')" min="0"
 									id="discount" name="excluded:skip" placeholder="Discount"
 									required="required"></td>
-								<td class="pt-3-half"><input type="text" onfocus="(this.type='number')" min="0"
+								<td class="pt-3-half"><!-- <input type="text" onfocus="(this.type='number')" min="0"
 									id="gstRate" name="excluded:skip" placeholder="GST Rate"
-									required="required"></td>
+									required="required"> -->
+									<select name="selectbasic" class="pt-3-half salesformcontent" id="gstRate" required="required">
+							<option class="form-control" value="0">0%</option>
+							<option class="form-control" value="5">5%</option>
+							<option class="form-control" value="12">12%</option>
+							<option class="form-control" value="18">18%</option>
+							<option class="form-control" value="28">28%</option>
+						</select></td>
 								<td class="pt-3-half"><input type="text" id="taxableValue"
 									name="excluded:skip" placeholder="Taxable Value"
 									readonly="readonly"></td>
