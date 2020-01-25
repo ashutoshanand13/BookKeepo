@@ -297,24 +297,24 @@ public class InvoiceUtil {
 
 			insertCell(itemTable, "Total Amount in Words", Element.ALIGN_CENTER, 5, bfBold12, 1, "#BFD6E9", 1f, 0.5f,
 					0f);
-			insertCell(itemTable, "Total Amount before Tax", Element.ALIGN_CENTER, 8, bfBold12, 1, "#FFFFFF", 0.5f,
+			insertCell(itemTable, "Total Amount before Tax", Element.ALIGN_CENTER, "Intra State".equals(invoice.getInvoiceType())?7:6, bfBold12, 1, "#FFFFFF", 0.5f,
 					0.5f, 0f);
 			insertCell(itemTable, "", Element.ALIGN_CENTER, 1, bfBold12, 1, "#FFFFFF", 0.5f, 1f, 0f);
 
 			insertCell(itemTable, "", Element.ALIGN_CENTER, 5, bfBold12, 3, "#FFFFFF", 1f, 0.5f, 0f);
-			insertCell(itemTable, "Add:IGST", Element.ALIGN_CENTER, 8, bfBold12, 1, "#92D14F", 0.5f, 0.5f, 0f);
+			insertCell(itemTable, "Add:IGST", Element.ALIGN_CENTER, "Intra State".equals(invoice.getInvoiceType())?7:6, bfBold12, 1, "#92D14F", 0.5f, 0.5f, 0f);
 			insertCell(itemTable, "", Element.ALIGN_CENTER, 1, bfBold12, 1, "#FFFFFF", 0.5f, 1f, 0f);
 
-			insertCell(itemTable, "Total Tax Amount", Element.ALIGN_CENTER, 8, bfBold12, 1, "#FFFFFF", 0.5f, 0.5f, 0f);
+			insertCell(itemTable, "Total Tax Amount", Element.ALIGN_CENTER, "Intra State".equals(invoice.getInvoiceType())?7:6, bfBold12, 1, "#FFFFFF", 0.5f, 0.5f, 0f);
 			insertCell(itemTable, "", Element.ALIGN_CENTER, 1, bfBold12, 1, "#FFFFFF", 0.5f, 1f, 0f);
 
-			insertCell(itemTable, "Total Amount after tax", Element.ALIGN_CENTER, 8, bfBold12, 1, "#FFFFFF", 0.5f, 0.5f,
+			insertCell(itemTable, "Total Amount after tax", Element.ALIGN_CENTER, "Intra State".equals(invoice.getInvoiceType())?7:6, bfBold12, 1, "#FFFFFF", 0.5f, 0.5f,
 					0f);
 			insertCell(itemTable, "", Element.ALIGN_CENTER, 1, bfBold12, 1, "#FFFFFF", 0.5f, 1f, 0f);
 
 			insertCell(itemTable, "Bank Details", Element.ALIGN_CENTER, 4, bfBold12, 1, "#BFD6E9", 1f, 0.5f, 0f);
 			insertCell(itemTable, "Common Seal", Element.ALIGN_CENTER, 3, bfBold12, 6, "#FFFFFF", 0.5f, 0.5f, 0f);
-			insertCell(itemTable, "GST on Reverse Charge", Element.ALIGN_CENTER, 6, bfBold12, 1, "#BFD6E9", 0.5f, 0.5f,
+			insertCell(itemTable, "GST on Reverse Charge", Element.ALIGN_CENTER, "Intra State".equals(invoice.getInvoiceType())?5:4, bfBold12, 1, "#BFD6E9", 0.5f, 0.5f,
 					0f);
 			insertCell(itemTable, "", Element.ALIGN_CENTER, 1, bfBold12, 1, "#FFFFFF", 0.5f, 1f, 0f);
 
@@ -323,7 +323,7 @@ public class InvoiceUtil {
 			insertCell(itemTable,
 					"Ceritified that the particulars given above are true and correct \n\n\n\n For "
 							+ invoice.getInvoiceCompanyDetails().getCompanyName() + " \n\n\n\n Authorised Signatory",
-					Element.ALIGN_CENTER, 7, bf12, 6, "#FFFFFFF", 0.5f, 1f, 0f);
+					Element.ALIGN_CENTER, "Intra State".equals(invoice.getInvoiceType())?6:5, bf12, 6, "#FFFFFFF", 0.5f, 1f, 0f);
 
 			insertCell(itemTable, "Bank A/c: ", invoice.getInvoiceBankDetails().getInvoiceIfsCode(), Element.ALIGN_LEFT, 4, bfBold12, bf12, 1,
 					"#FFFFFFF", 1f, 0.5f);
