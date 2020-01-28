@@ -8,7 +8,7 @@
 </head>
 
 <div layout:fragment="invoice_fragment" id="form_content">
-	<form id="form" onSubmit="submit();">
+	<form id="form">
 		<div class="form-content form-items needs-validation">
 			<table id="headerDetailsTable" style="border: 1px solid black;"
 				class="table table-width table-responsive-md text-center" >
@@ -131,10 +131,14 @@
 					<tr>
 						<td class="pt-3-half"><input type="text" class="form-control"
 							name="gstinBill" placeholder="GSTIN" onblur="validateGST(this)"
-							required="required"></td>
+							pattern="^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$"
+							required="required"
+							oninvalid="this.setCustomValidity('GST Identification Number is not valid. It should be in this 11AAAAA1111Z1A1 format')"></td>
 						<td class="pt-3-half"><input type="text" class="form-control"
 							name="gstinShip" placeholder="GSTIN" onblur="validateGST(this)"
-							required="required"></td>
+							pattern="^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$"
+							required="required"
+							oninvalid="this.setCustomValidity('GST Identification Number is not valid. It should be in this 11AAAAA1111Z1A1 format')"></td>
 					</tr>
 					<tr>
 						<td class="pt-3-half"><input type="text" class="form-control"
@@ -340,7 +344,7 @@
 				</div>
 				<div class="row">
 				<div class="col-md-5 form-group"></div>
-				<div class="col-md-2 form-group"><button type="submit" id="export-btn"
+				<div class="col-md-2 form-group"><button id="export-btn"
 					class="btn btn-info btn-rounded btn-sm my-0">Create Invoice</button></div>
 				<div class="col-md-4 form-group"></div>
 					</div>

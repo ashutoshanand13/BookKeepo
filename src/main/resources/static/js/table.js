@@ -42,7 +42,6 @@ function validateGST(val){
 	 var value = $(val).val();
 	 if(!gstRegex.test(value) || value === "")
 		 {
-		 	alert('GST Identification Number is not valid. It should be in this "11AAAAA1111Z1A1" format');
 			 if($(val).attr("name").includes("Bill")) {
 				 gstBill=false;
 			 }
@@ -120,9 +119,12 @@ function setAlert(message) {
 	$("#alert_placeholder").fadeTo(2000, 500).slideUp(500);
 }
 
- function submit(){
+ $BTN.on('click', function () {
    var json = '';
-   if(gstBill && gstShip) {
+   
+   var f = $("#form")[0];
+   
+   if(gstBill && gstShip && f.reportValidity()) {
 		$('#tableJson table').map(function(i, table){
 			   var $rows = $("#" +table.id).find('tr:not(:hidden)');
 			   var newFormData = [];
@@ -168,10 +170,7 @@ function setAlert(message) {
 							}
 						});
    }
-   else {
-	   alert('Enter GST Identification Number. It should be in this "11AAAAA1111Z1A1" format');
-   }
- }
+ });
 
 function setValues() {
 
