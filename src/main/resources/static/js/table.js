@@ -321,3 +321,11 @@ function showAlert() {
 	$("#alert_showinvoice").fadeTo(2000, 500).slideUp(500);
 }
 
+$("#registrationform").submit(function () {
+    if ($('#password').val() == $('#confirmpassword').val()) {
+        $('#messagePassword').html('Passwords Match').css('color', 'green');
+        return true;
+    } else 
+        $('#messagePassword').html('Passwords Not Matching').css('color', 'red');
+    	return false;
+});
