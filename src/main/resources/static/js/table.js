@@ -120,7 +120,7 @@ function setAlert(message) {
 	$("#alert_placeholder").fadeTo(2000, 500).slideUp(500);
 }
 
- $BTN.on('click', function () {
+ function submit(){
    var json = '';
    if(gstBill && gstShip) {
 		$('#tableJson table').map(function(i, table){
@@ -138,11 +138,11 @@ function setAlert(message) {
 			     });
 			   $('#itemList').val(JSON.stringify(newFormData));
 		});
-		
 		// replace function used to remove extra "" while parsing.
 						var json = JSON.stringify($('#form').serializeJSON())
 								.replace(/\\/g, "").replace("\"[", "[")
 								.replace("]\"", "]");
+						
 						$('#overlay').fadeIn();
 						$.ajax({
 							url : "/home/salesinvoice",
@@ -162,6 +162,8 @@ function setAlert(message) {
 								$("#form")[0].reset();
 								window.scrollTo(0, 0);
 								setValues();
+								gstShip=false;
+								gstBill=false;
 								$('#overlay').delay(500).fadeOut();
 							}
 						});
@@ -169,7 +171,7 @@ function setAlert(message) {
    else {
 	   alert('Enter GST Identification Number. It should be in this "11AAAAA1111Z1A1" format');
    }
- });
+ }
 
 function setValues() {
 

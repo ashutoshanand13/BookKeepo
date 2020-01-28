@@ -8,7 +8,7 @@
 </head>
 
 <div layout:fragment="invoice_fragment" id="form_content">
-	<form id="form" method="post" th:action="@{/home/salesinvoice}">
+	<form id="form" onSubmit="submit();">
 		<div class="form-content form-items needs-validation">
 			<table id="headerDetailsTable" style="border: 1px solid black;"
 				class="table table-width table-responsive-md text-center" >
@@ -340,7 +340,7 @@
 				</div>
 				<div class="row">
 				<div class="col-md-5 form-group"></div>
-				<div class="col-md-2 form-group"><button type="button" id="export-btn"
+				<div class="col-md-2 form-group"><button type="submit" id="export-btn"
 					class="btn btn-info btn-rounded btn-sm my-0">Create Invoice</button></div>
 				<div class="col-md-4 form-group"></div>
 					</div>
