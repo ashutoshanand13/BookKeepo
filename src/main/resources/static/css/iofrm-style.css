@@ -822,3 +822,13 @@ div.form-content p.companydetails{
     margin-bottom: 3px;
     text-align: right;
 }
+
+div.form-body input.loginformfields
+{
+	font-size: 15px;
+}
+
+div.form-body password.loginformfields
+{
+	font-size: 15px;
+}
