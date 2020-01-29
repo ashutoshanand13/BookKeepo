@@ -328,3 +328,18 @@ $("#registrationform").submit(function () {
         $('#messagePassword').html('Passwords Not Matching').css('color', 'red');
     	return false;
 });
+
+
+$("#changepasswordform").submit(function () {
+	if($('#oldpassword').val()!=''){
+    if ($('#password').val() == $('#confirmpassword').val()) {
+        $('#messagePassword').html('Passwords Match').css('color', 'green');
+        return true;
+    } else {
+        $('#messagePassword').html('Passwords Not Matching').css('color', 'red');
+    	return false;
+    	}
+	}else{
+		 $('#messagePassword').html('Please enter old password').css('color', 'red');
+	}
+});
