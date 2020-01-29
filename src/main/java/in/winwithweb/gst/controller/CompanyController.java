@@ -75,7 +75,12 @@ public class CompanyController {
 			isDataExists.setCompanyGstin(company.getCompanyGstin());
 			try {
 				CompanyUploadedFile = companyLogo.getBytes();
-				isDataExists.setCompanyLogo(companyLogo.getBytes());
+				if(CompanyUploadedFile.length!=0){
+					isDataExists.setCompanyLogo(companyLogo.getBytes());	
+				}else {
+					CompanyUploadedFile = isDataExists.getCompanyLogo();
+					isDataExists.setCompanyLogo(isDataExists.getCompanyLogo());//Making changes if company page is submitted w/o changing anything
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
