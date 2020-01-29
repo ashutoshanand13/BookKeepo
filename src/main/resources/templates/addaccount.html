@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{postLoginCommonPage}">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{postLoginCommonPage}">
 
 <head>
 <title>Add Account</title>
@@ -10,9 +12,11 @@
 		<div class="bg"></div>
 		<h3>Get more things done with BookKeepo platform.</h3>
 		<p>
-			Access to the most powerful tool in the entire design and web industry.<br> <br> Nam
-			libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime
-			placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.
+			Access to the most powerful tool in the entire design and web
+			industry.<br> <br> Nam libero tempore, cum soluta nobis est
+			eligendi optio cumque nihil impedit quo minus id quod maxime placeat
+			facere possimus, omnis voluptas assumenda est, omnis dolor
+			repellendus.
 		</p>
 	</div>
 </div>
@@ -23,14 +27,17 @@
 			class="alert alert-info fade-in"></div>
 		<form autocomplete="off" th:action="@{/home/addaccount}"
 			th:object="${account}" method="post" class="form-horizontal"
-			role="form" onSubmit="return isValid()">
+			role="form">
 			<div class="row">
 				<div class="col-md-6 form-group">
 					<div class="form-group">
-						<label>Account Information</label> <input type="text" class="form-control" name="name"
-							th:field="*{accountName}" placeholder="Account Name" required> <select
-							name="selectbasic" class="form-control" th:field="*{accountType}" required="required">
-							<option class="form-control" value="">Select Account type</option>
+						<label>Account Information</label> <input type="text"
+							class="form-control" name="name" th:field="*{accountName}"
+							placeholder="Account Name" required> <select
+							name="selectbasic" class="form-control" th:field="*{accountType}"
+							required="required">
+							<option class="form-control" value="">Select Account
+								type</option>
 							<option class="form-control" value="Debtor">Debtor</option>
 							<option class="form-control" value="Creditor">Creditor</option>
 							<option class="form-control" value="Loan">Loan</option>
@@ -40,12 +47,16 @@
 							<option class="form-control" value="Contra">Contra</option>
 							<option class="form-control" value="Others">Others</option>
 						</select> <input type="text" class="form-control" th:field="*{gstin}"
-							onblur="validateGST(this)" placeholder="GST Number" required>
+							placeholder="GST Number" required
+							pattern="^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$"
+							oninvalid="this.setCustomValidity('GST Identification Number is not valid. It should be in this 11AAAAA1111Z1A1 format')">
 						<label th:if="${#fields.hasErrors('gstin')}" th:errors="*{gstin}"
 							class="validation-message"></label> <input type="text"
-							class="form-control" th:field="*{accountPan}"
-							onblur="validatePan(this)" placeholder="PAN" required> <label
-							th:if="${#fields.hasErrors('accountPan')}"
+							class="form-control" th:field="*{accountPan}" placeholder="PAN"
+							required
+							pattern="^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$"
+							oninvalid="this.setCustomValidity('Enter a valid PAN ID')">
+						<label th:if="${#fields.hasErrors('accountPan')}"
 							th:errors="*{accountPan}" class="validation-message"></label>
 					</div>
 				</div>
@@ -54,27 +65,31 @@
 						<label>Contact Details</label>
 						<div class="form-row">
 							<div class="col">
-								<input type="email" class="form-control" name="email" th:field="*{accountEmail}"
-									placeholder="E-mail Address" required> <label
-									th:if="${#fields.hasErrors('accountEmail')}" th:errors="*{accountEmail}"
-									class="validation-message"></label> <input type="text" class="form-control" name="phone"
-									th:field="*{accountContact}" placeholder="Contact Number" required>
+								<input type="email" class="form-control" name="email"
+									th:field="*{accountEmail}" placeholder="E-mail Address"
+									required> <label
+									th:if="${#fields.hasErrors('accountEmail')}"
+									th:errors="*{accountEmail}" class="validation-message"></label>
+								<input type="text" class="form-control" name="phone"
+									th:field="*{accountContact}" placeholder="Contact Number"
+									required>
 							</div>
 						</div>
 					</div>
 					<div class="form-group">
 						<label>Address</label>
-						<textarea class="form-control" th:field="*{accountAddress}" required></textarea>
+						<textarea class="form-control" th:field="*{accountAddress}"
+							required></textarea>
 					</div>
 					<div class="form-group">
 						<div class="form-row">
 							<div class="col">
-								<input type="text" class="form-control" th:field="*{accountState}" placeholder="State"
-									required>
+								<input type="text" class="form-control"
+									th:field="*{accountState}" placeholder="State" required>
 							</div>
 							<div class="col">
-								<input type="text" class="form-control" th:field="*{accountPincode}" placeholder="Pincode"
-									required>
+								<input type="text" class="form-control"
+									th:field="*{accountPincode}" placeholder="Pincode" required>
 							</div>
 						</div>
 					</div>
@@ -87,34 +102,3 @@
 		</form>
 	</div>
 </div>
-<th:block layout:fragment="scripts">
-	<script>
-		var isPanValid = false;
-		var isGSTValid = false;
-		function validatePan(val) {
-			var panRegex = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
-			var value = $(val).val();
-			if (!panRegex.test(value) || value === "") {
-				alert('Enter a valid PAN number');
-				isPanValid = false;
-			} else {
-				isPanValid = true;
-			}
-		}
-
-		function validateGST(val) {
-			var gstRegex = /^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$/;
-			var value = $(val).val();
-			if (!gstRegex.test(value) || value === "") {
-				alert('GST Identification Number is not valid. It should be in this "11AAAAA1111Z1A1" format');
-				isGSTValid = false;
-			} else {
-				isGSTValid = true;
-			}
-		}
-
-		function isValid() {
-			return (isGSTValid && isPanValid) ? true : false;
-		}
-	</script>
-</th:block>
