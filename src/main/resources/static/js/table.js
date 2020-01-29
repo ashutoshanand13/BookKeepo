@@ -9,6 +9,7 @@
  var ttlIgst = [];
  var ttlSgst = [];
  var ttlTotalAmount = [];
+ var discount = [];
  var gstBill = false;
  var gstShip = false;
  var shippingType ='';
@@ -90,6 +91,7 @@ function disableColumns(ship, bill) {
 			var container = document.querySelector("#itemTable");
 			var cells = container.querySelectorAll('td:nth-child(13)');
 
+			$("#igstData").addClass('unselectable');
 			for (var i = 0; i < cells.length; i++) {
 				cells[i].classList.add('unselectable');
 
@@ -98,6 +100,8 @@ function disableColumns(ship, bill) {
 			var container = document.querySelector("#itemTable");
 			var cells = container.querySelectorAll('td:nth-child(12)');
 			var cells1 = container.querySelectorAll('td:nth-child(11)');
+			$("#cgstData").addClass('unselectable');
+			$("#sgstData").addClass('unselectable');
 
 			for (var i = 0; i < cells.length; i++) {
 				cells[i].classList.add('unselectable');
@@ -221,12 +225,19 @@ function setValues() {
 	            	
 	            }
 	            
-	            var totalAmount = taxableValue+igst+cgst+sgst;
+	            var totalAmount = taxableValue+igst;
 	            if(!isNaN(totalAmount)) {
 	            	$tblrow.find('#totalAmount').val(totalAmount.toFixed(2));
 	            	ttlTotalAmount[index]=totalAmount;
 	            	$("[name=ttlTotalAmount]").val(getSum(ttlTotalAmount).toFixed(2));
 	            }
+	            
+	    	    $("[name=totalAmountBeforeTax]").val(getSum(ttlTaxableValue).toFixed(2));
+	    	    $("[name=totalAddIGst]").val(getSum(ttlIgst).toFixed(2));
+	    	    $("[name=totalAddSGst]").val(getSum(ttlSgst).toFixed(2));
+	    	    $("[name=totalAddCGst]").val(getSum(ttlCgst).toFixed(2));
+	    	    $("[name=totalTaxAmount]").val(getSum(ttlIgst).toFixed(2));
+	    	    $("[name=totalAmountAfterTax]").val(getSum(ttlTotalAmount).toFixed(2));
 	        });
 	        
 	    });
@@ -253,13 +264,13 @@ function resetValues(){
 	 $tableID.find('tbody tr').each(function (index) {
 	        var $tblrow = $(this);
 	        $tblrow.find("#srNo").val(index+1);
-	        ttlQty[index]=checkValueNaN(parseInt($tblrow.find("#qty").val(),10));
-	        ttlAmount[index]=checkValueNaN(parseInt($tblrow.find("#amount").val(),10));
-	        ttlTaxableValue[index]=checkValueNaN(parseInt($tblrow.find("#taxableValue").val(),10));
+	        ttlQty[index]=checkValueNaN(parseFloat($tblrow.find("#qty").val()));
+	        ttlAmount[index]=checkValueNaN(parseFloat($tblrow.find("#amount").val()));
+	        ttlTaxableValue[index]=checkValueNaN(parseFloat($tblrow.find("#taxableValue").val()));
 	        ttlIgst[index]=checkValueNaN(parseFloat($tblrow.find("#igst").val()));
 	        ttlCgst[index]=checkValueNaN(parseFloat($tblrow.find("#cgst").val()));
 	        ttlSgst[index]=checkValueNaN(parseFloat($tblrow.find("#sgst").val()));
-	        ttlTotalAmount[index]=checkValueNaN(parseInt($tblrow.find("#totalAmount").val(),10));
+	        ttlTotalAmount[index]=checkValueNaN(parseFloat($tblrow.find("#totalAmount").val()));
 	    });
 	    
 	    $("[name=ttlQty]").val(getSum(ttlQty));
@@ -269,6 +280,14 @@ function resetValues(){
 	    $("[name=ttlCgst]").val(getSum(ttlCgst).toFixed(2));
 	    $("[name=ttlSgst]").val(getSum(ttlSgst).toFixed(2));
 	    $("[name=ttlTotalAmount]").val(getSum(ttlTotalAmount).toFixed(2));
+	    
+	    $("[name=totalAmountBeforeTax]").val(getSum(ttlTaxableValue).toFixed(2));
+	    $("[name=totalAddIGst]").val(getSum(ttlIgst).toFixed(2));
+	    $("[name=totalAddSGst]").val(getSum(ttlSgst).toFixed(2));
+	    $("[name=totalAddCGst]").val(getSum(ttlCgst).toFixed(2));
+	    $("[name=totalTaxAmount]").val(getSum(ttlIgst).toFixed(2));
+	    $("[name=totalAmountAfterTax]").val(getSum(ttlTotalAmount).toFixed(2));
+	    
 	    
 }
 
