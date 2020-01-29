@@ -15,7 +15,7 @@ public class CommonUtils {
 	 */
 	public static String getImgfromResource(String path) {
 		String base64Encoded = null;
-		Resource resource = new ClassPathResource("/static/images/image-400x400.jpg");
+		Resource resource = new ClassPathResource(path);
 		try {
 			InputStream inputStream = resource.getInputStream();
 			byte[] bFile = FileCopyUtils.copyToByteArray(inputStream);
@@ -40,5 +40,9 @@ public class CommonUtils {
 			e.printStackTrace();
 		}
 		return base64Encoded;
+	}
+	
+	public static void main(String [] args) {
+		System.out.println(getImgfromResource("/static/images/image-400x400.jpg"));
 	}
 }
