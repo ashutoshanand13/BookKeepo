@@ -69,3 +69,11 @@
 		</form>
 	</div>
 </div>
+<th:block layout:fragment="scripts">
+	<script type="text/javascript">
+$(document).ready(function() {
+	var data=document.getElementById('companylogopreview').src;
+	checkifImageExists(data);
+});
+</script>
+</th:block>
