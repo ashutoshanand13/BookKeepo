@@ -276,10 +276,22 @@
 									name="totalAmountBeforeTax" readonly="readonly"></td>
 							</tr>
 							<tr>
-								<td rowspan="3" colspan="5"></td>
+								<td rowspan="5" colspan="5" id="amountWords"></td>
 								<td class="pt-3-half" colspan="8" bgcolor="#92D14F"><span
 									style='font-weight: bold;'>Add: IGST</span></td>
-								<td class="pt-3-half"><input type="text" name="totalGst"
+								<td class="pt-3-half" id="igstData"><input type="text" name="totalAddIGst"
+									readonly="readonly"></td>
+							</tr>
+							<tr>
+							<td class="pt-3-half" colspan="8" bgcolor="#92D14F"><span
+									style='font-weight: bold;'>Add: SGST</span></td>
+								<td class="pt-3-half" id="sgstData"><input type="text" name="totalAddSGst"
+									readonly="readonly"></td>
+							</tr>
+							<tr>
+							<td class="pt-3-half" colspan="8" bgcolor="#92D14F"><span
+									style='font-weight: bold;'>Add: CGST</span></td>
+								<td class="pt-3-half" id="cgstData"><input type="text" name="totalAddCGst"
 									readonly="readonly"></td>
 							</tr>
 							<tr>
@@ -311,7 +323,7 @@
 									particulars given above are required and correct <pre>
 		
 		
-		</pre><span style='font-weight: bold;'>For Company Name</span> <pre>
+		</pre><span style='font-weight: bold;'>For [[${company.companyName}]]</span> <pre>
 		
 		
 		

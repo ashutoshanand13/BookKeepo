@@ -2,25 +2,12 @@
 package in.winwithweb.gst.model.json;
 
 import java.util.List;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class SalesInvoicePageData {
-	@SerializedName("companyNameHeader")
-	@Expose
-	private String companyNameHeader;
-	@SerializedName("addressHeader")
-	@Expose
-	private String addressHeader;
-	@SerializedName("telephoneHeader")
-	@Expose
-	private String telephoneHeader;
-	@SerializedName("gstinHeader")
-	@Expose
-	private String gstinHeader;
-	@SerializedName("emailHeader")
-	@Expose
-	private String emailHeader;
+
 	@SerializedName("invoiceNo")
 	@Expose
 	private String invoiceNo;
@@ -102,9 +89,15 @@ public class SalesInvoicePageData {
 	@SerializedName("totalAmountBeforeTax")
 	@Expose
 	private String totalAmountBeforeTax;
-	@SerializedName("totalGst")
+	@SerializedName("totalAddIGst")
 	@Expose
-	private String totalGst;
+	private String totalAddIGst;
+	@SerializedName("totalAddSGst")
+	@Expose
+	private String totalAddSGst;
+	@SerializedName("totalAddCGst")
+	@Expose
+	private String totalAddCGst;
 	@SerializedName("totalTaxAmount")
 	@Expose
 	private String totalTaxAmount;
@@ -123,46 +116,6 @@ public class SalesInvoicePageData {
 	@SerializedName("termsConditions")
 	@Expose
 	private String termsConditions;
-
-	public String getCompanyNameHeader() {
-		return companyNameHeader;
-	}
-
-	public void setCompanyNameHeader(String companyNameHeader) {
-		this.companyNameHeader = companyNameHeader;
-	}
-
-	public String getAddressHeader() {
-		return addressHeader;
-	}
-
-	public void setAddressHeader(String addressHeader) {
-		this.addressHeader = addressHeader;
-	}
-
-	public String getTelephoneHeader() {
-		return telephoneHeader;
-	}
-
-	public void setTelephoneHeader(String telephoneHeader) {
-		this.telephoneHeader = telephoneHeader;
-	}
-
-	public String getGstinHeader() {
-		return gstinHeader;
-	}
-
-	public void setGstinHeader(String gstinHeader) {
-		this.gstinHeader = gstinHeader;
-	}
-
-	public String getEmailHeader() {
-		return emailHeader;
-	}
-
-	public void setEmailHeader(String emailHeader) {
-		this.emailHeader = emailHeader;
-	}
 
 	public String getInvoiceNo() {
 		return invoiceNo;
@@ -380,12 +333,28 @@ public class SalesInvoicePageData {
 		this.totalAmountBeforeTax = totalAmountBeforeTax;
 	}
 
-	public String getTotalGst() {
-		return totalGst;
+	public String getTotalAddIGst() {
+		return totalAddIGst;
 	}
 
-	public void setTotalGst(String totalGst) {
-		this.totalGst = totalGst;
+	public void setTotalAddIGst(String totalAddIGst) {
+		this.totalAddIGst = totalAddIGst;
+	}
+
+	public String getTotalAddSGst() {
+		return totalAddSGst;
+	}
+
+	public void setTotalAddSGst(String totalAddSGst) {
+		this.totalAddSGst = totalAddSGst;
+	}
+
+	public String getTotalAddCGst() {
+		return totalAddCGst;
+	}
+
+	public void setTotalAddCGst(String totalAddCGst) {
+		this.totalAddCGst = totalAddCGst;
 	}
 
 	public String getTotalTaxAmount() {
@@ -438,20 +407,19 @@ public class SalesInvoicePageData {
 
 	@Override
 	public String toString() {
-		return "SalesInvoicePageData [companyNameHeader=" + companyNameHeader + ", addressHeader=" + addressHeader
-				+ ", telephoneHeader=" + telephoneHeader + ", gstinHeader=" + gstinHeader + ", emailHeader="
-				+ emailHeader + ", invoiceNo=" + invoiceNo + ", poNo=" + poNo + ", invoiceDate=" + invoiceDate
-				+ ", poDate=" + poDate + ", dateOfSupply=" + dateOfSupply + ", transportMode=" + transportMode
-				+ ", placeOfSupply=" + placeOfSupply + ", vehicleNo=" + vehicleNo + ", state=" + state
-				+ ", reverseCharge=" + reverseCharge + ", nameBill=" + nameBill + ", nameShip=" + nameShip
-				+ ", addressBill=" + addressBill + ", addressShip=" + addressShip + ", gstinBill=" + gstinBill
-				+ ", gstinShip=" + gstinShip + ", stateBill=" + stateBill + ", stateShip=" + stateShip + ", itemList="
-				+ itemList + ", ttlQty=" + ttlQty + ", ttlAmount=" + ttlAmount + ", ttlTaxableValue=" + ttlTaxableValue
-				+ ", ttlCgst=" + ttlCgst + ", ttlSgst=" + ttlSgst + ", ttlIgst=" + ttlIgst + ", ttlTotalAmount="
-				+ ttlTotalAmount + ", totalAmountBeforeTax=" + totalAmountBeforeTax + ", totalGst=" + totalGst
-				+ ", totalTaxAmount=" + totalTaxAmount + ", totalAmountAfterTax=" + totalAmountAfterTax
-				+ ", gstReverseCharge=" + gstReverseCharge + ", bankAccountNumber=" + bankAccountNumber + ", bankifsc="
-				+ bankifsc + ", termsConditions=" + termsConditions + "]";
+		return "Example [invoiceNo=" + invoiceNo + ", poNo=" + poNo + ", invoiceDate=" + invoiceDate + ", poDate="
+				+ poDate + ", dateOfSupply=" + dateOfSupply + ", transportMode=" + transportMode + ", placeOfSupply="
+				+ placeOfSupply + ", vehicleNo=" + vehicleNo + ", state=" + state + ", reverseCharge=" + reverseCharge
+				+ ", nameBill=" + nameBill + ", nameShip=" + nameShip + ", addressBill=" + addressBill
+				+ ", addressShip=" + addressShip + ", gstinBill=" + gstinBill + ", gstinShip=" + gstinShip
+				+ ", stateBill=" + stateBill + ", stateShip=" + stateShip + ", itemList=" + itemList + ", ttlQty="
+				+ ttlQty + ", ttlAmount=" + ttlAmount + ", ttlTaxableValue=" + ttlTaxableValue + ", ttlCgst=" + ttlCgst
+				+ ", ttlSgst=" + ttlSgst + ", ttlIgst=" + ttlIgst + ", ttlTotalAmount=" + ttlTotalAmount
+				+ ", totalAmountBeforeTax=" + totalAmountBeforeTax + ", totalAddIGst=" + totalAddIGst
+				+ ", totalAddSGst=" + totalAddSGst + ", totalAddCGst=" + totalAddCGst + ", totalTaxAmount="
+				+ totalTaxAmount + ", totalAmountAfterTax=" + totalAmountAfterTax + ", gstReverseCharge="
+				+ gstReverseCharge + ", bankAccountNumber=" + bankAccountNumber + ", bankifsc=" + bankifsc
+				+ ", termsConditions=" + termsConditions + "]";
 	}
 
 }
