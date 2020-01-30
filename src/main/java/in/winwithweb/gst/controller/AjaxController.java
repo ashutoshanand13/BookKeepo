@@ -27,8 +27,13 @@ public class AjaxController {
 	private AccountService accountService;
 	
 	@RequestMapping(value = "/home/getGstinData", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody String getSuperVisiorData(@RequestParam String accountNbr) {
-		return new Gson().toJson(accountService.findAccountByAccountName(accountNbr));
+	public @ResponseBody String getSuperVisiorGstinData(@RequestParam String accountNbr) {
+		return new Gson().toJson(accountService.findGSTByAccountName(accountNbr));
+	}
+	
+	@RequestMapping(value = "/home/getPanNumberData", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody String getSuperVisiorPanData(@RequestParam String accountNbr) {
+		return new Gson().toJson(accountService.findPanByAccountName(accountNbr));
 	}
 	
 	@RequestMapping(value = "/home/getAmountInWords", method = RequestMethod.GET, produces = "application/json")

@@ -99,7 +99,7 @@
 							name="state" placeholder="State" required="required"></td>
 						<td class="pt-3-half" bgcolor="#EEFF74"><input type="text"
 							class="form-control" name="reverseCharge"
-							placeholder="Reverse Charge (Y/N)" required="required"></td>
+							placeholder="Reverse Charge (Y/N)" onKeyDown="inputValidate()" maxlength="1" required="required"></td>
 					</tr>
 				</tbody>
 			</table>
@@ -379,6 +379,18 @@ window.onload = function() {
 window.onbeforeunload = function() {
     return "Are you sure you want to leave this page?"; // you can make this dynamic, ofcourse...
  };
+ 
+ function inputValidate(){
+	   var e = event || window.event;  
+	   var key = e.keyCode || e.which;                              
+	   if ((key===89)||(key===78)||(key===8)) {
+		   return true;
+		   
+	   }
+	           if (e.preventDefault) e.preventDefault(); 
+	           e.returnValue = false; 
+	   
+	 }
 
 </script>
 </th:block>
