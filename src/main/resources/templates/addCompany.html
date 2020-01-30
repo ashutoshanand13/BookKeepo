@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{postLoginCommonPage}">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{postLoginCommonPage}">
 
 <head>
 <title>Add Company</title>
@@ -10,26 +12,35 @@
 		<div class="bg"></div>
 		<h3>Get more things done with BookKeepo platform.</h3>
 		<p>
-			Access to the most powerful tool in the entire design and web industry.<br> <br> Nam
-			libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime
-			placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.
+			Access to the most powerful tool in the entire design and web
+			industry.<br> <br> Nam libero tempore, cum soluta nobis est
+			eligendi optio cumque nihil impedit quo minus id quod maxime placeat
+			facere possimus, omnis voluptas assumenda est, omnis dolor
+			repellendus.
 		</p>
 	</div>
 </div>
 <div layout:fragment="form_content" id="form_content">
 	<div class="form-items">
 		<h3 class="form-title doubleunderlinetext">Add Company Profile</h3>
-		<div id="alert" th:if="${message}" th:text="${message} " class="alert alert-info fade-in"></div>
-		<form autocomplete="off" th:action="@{/home/addcompany}" th:object="${company}" method="post"
-			class="form-horizontal" role="form" enctype="multipart/form-data">
+		<div id="alert" th:if="${message}" th:text="${message} "
+			class="alert alert-info fade-in"></div>
+		<form autocomplete="off" th:action="@{/home/addcompany}"
+			th:object="${company}" method="post" class="form-horizontal"
+			role="form" enctype="multipart/form-data">
 			<div class="row">
 				<div class="col-md-6 form-group">
 					<div class="form-group">
-						<label>Company Information</label>
-						<input type="text" class="form-control" name="name" th:field="*{companyName}" placeholder="Company Name" required>
-						<input type="text" class="form-control" th:field="*{companyGstin}" placeholder="GST Number" required>
-						<label th:if="${#fields.hasErrors('companyGstin')}" th:errors="*{companyGstin}" class="validation-message"></label>
-						
+						<label>Company Information</label> <input type="text"
+							class="form-control" name="name" th:field="*{companyName}"
+							placeholder="Company Name" required> <input type="text"
+							class="form-control" th:field="*{companyGstin}"
+							placeholder="GST Number" required
+							pattern="^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$"
+							oninvalid="this.setCustomValidity('GST Identification Number is not valid. It should be in this 11AAAAA1111Z1A1 format')">
+						<label th:if="${#fields.hasErrors('companyGstin')}"
+							th:errors="*{companyGstin}" class="validation-message"></label>
+
 					</div>
 				</div>
 				<div class="col-md-6 form-group">
@@ -37,30 +48,37 @@
 						<label>Contact Details</label>
 						<div class="form-row">
 							<div class="col">
-								<input type="email" class="form-control" name="email" th:field="*{companyEmail}"
-									placeholder="E-mail Address" required> <label
-									th:if="${#fields.hasErrors('companyEmail')}" th:errors="*{companyEmail}"
-									class="validation-message"></label> <input type="text" class="form-control" name="phone"
-									th:field="*{companyTelephone}" placeholder="Contact Number" required>
-									<input type="text" class="form-control" th:field="*{companyState}" placeholder="State"
-									required>
+								<input type="email" class="form-control" name="email"
+									th:field="*{companyEmail}" placeholder="E-mail Address"
+									required> <label
+									th:if="${#fields.hasErrors('companyEmail')}"
+									th:errors="*{companyEmail}" class="validation-message"></label>
+								<input type="text" class="form-control" name="phone"
+									th:field="*{companyTelephone}" placeholder="Contact Number"
+									required> <input type="text" class="form-control"
+									th:field="*{companyState}" placeholder="State" required>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="row">
-			<div class="col-md-6 form-group">
-				<label>Company Logo</label> 
-				<input type="file" name="companylogo" id="companylogo" th:field="*{companyLogo}" accept="image/x-png,image/jpeg" required>
- 				<img id="companylogopreview" class="img-border" th:src="|data:image/png;base64,${logoImage}" alt="BookKeepo Company Logo"/>
-			</div>
-			<div class="col-md-6 form-group">
-			<div class="form-group">
+				<div class="col-md-6 form-group">
+					<label>Company Logo</label> <input type="file" name="companylogo"
+						id="companylogo" th:field="*{companyLogo}"
+						accept="image/x-png,image/jpeg" required> <img
+						id="companylogopreview" class="img-border"
+						th:src="|data:image/png;base64,${logoImage}"
+						alt="BookKeepo Company Logo" />
+				</div>
+				<div class="col-md-6 form-group">
+					<div class="form-group">
 						<label>Address</label>
-						<textarea class="form-control" th:field="*{companyAddress}" required></textarea>
-					</div></div>
-				
+						<textarea class="form-control" th:field="*{companyAddress}"
+							required></textarea>
+					</div>
+				</div>
+
 			</div>
 			<div class="form-button text-right">
 				<button type="reset" class="btn btn-light">Reset</button>
@@ -71,9 +89,9 @@
 </div>
 <th:block layout:fragment="scripts">
 	<script type="text/javascript">
-$(document).ready(function() {
-	var data=document.getElementById('companylogopreview').src;
-	checkifImageExists(data);
-});
-</script>
+		$(document).ready(function() {
+			var data = document.getElementById('companylogopreview').src;
+			checkifImageExists(data);
+		});
+	</script>
 </th:block>

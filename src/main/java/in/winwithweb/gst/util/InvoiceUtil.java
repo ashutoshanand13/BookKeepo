@@ -63,7 +63,12 @@ public class InvoiceUtil {
 		invoice.setInvoiceTotalAmountBeforeTax(salesInvoiceData.getTotalAmountBeforeTax());
 		invoice.setInvoiceTotalAmountAfterTax(salesInvoiceData.getTotalAmountAfterTax());
 		invoice.setInvoiceTaxAmount(salesInvoiceData.getTotalTaxAmount());
-		invoice.setInvoiceGstAmount(salesInvoiceData.getTotalGst());
+		invoice.setInvoiceIgstAmount(salesInvoiceData.getTotalAddIGst());
+		invoice.setInvoiceSgstAmount(salesInvoiceData.getTotalAddSGst());
+		invoice.setInvoiceCgstAmount(salesInvoiceData.getTotalAddCGst());
+		invoice.setInvoiceTotalAmountBeforeTax(salesInvoiceData.getTotalAmountBeforeTax());
+		invoice.setInvoiceTotalAmountAfterTax(salesInvoiceData.getTotalAmountAfterTax());
+		invoice.setInvoiceTaxAmount(salesInvoiceData.getTotalAddIGst());
 
 		invoiceBankDetails.setInvoiceBankAccount(salesInvoiceData.getBankAccountNumber());
 		invoiceBankDetails.setInvoiceIfsCode(salesInvoiceData.getBankifsc());
@@ -115,6 +120,7 @@ public class InvoiceUtil {
 
 		Document doc = new Document();
 		PdfWriter docWriter = null;
+		boolean isIntraState = false;
 
 		DecimalFormat df = new DecimalFormat("0.00");
 
@@ -140,7 +146,10 @@ public class InvoiceUtil {
 			// specify column widths
 			float[] columnWidthHeader = { 3f, 4f, 3f };
 			float[] columnWidths = { 5f, 5f };
-			if ("Intra State".equals(invoice.getInvoiceType())) {
+			if("Intra State".equals(invoice.getInvoiceType())) {
+				isIntraState = true;
+			}
+			if (isIntraState) {
 				columnItemTableWidths = new float[] { 0.7f, 2.2f, 1f, 1f, 1f, 1f, 1.5f, 1.5f, 1f, 1.6f, 1.1f, 1.1f,
 						1.3f };
 			} else {
@@ -221,7 +230,7 @@ public class InvoiceUtil {
 			insertCell(itemTable, "Discount", Element.ALIGN_CENTER, 1, bfBold12, 1, "#BFD6E9", 0.5f, 0.5f, 30f);
 			insertCell(itemTable, "GST Rate", Element.ALIGN_CENTER, 1, bfBold12, 1, "#BFD6E9", 0.5f, 0.5f, 30f);
 			insertCell(itemTable, "Taxable Value", Element.ALIGN_CENTER, 1, bfBold12, 1, "#BFD6E9", 0.5f, 0.5f, 30f);
-			if ("Intra State".equals(invoice.getInvoiceType())) {
+			if (isIntraState) {
 				insertCell(itemTable, "CGST", Element.ALIGN_CENTER, 1, bfBold12, 1, "#BFD6E9", 0.5f, 0.5f, 30f);
 				insertCell(itemTable, "SGST", Element.ALIGN_CENTER, 1, bfBold12, 1, "#BFD6E9", 0.5f, 0.5f, 30f);
 			} else {
@@ -252,7 +261,7 @@ public class InvoiceUtil {
 						0.5f, 0f);
 				insertCell(itemTable, product.getProductTaxValue(), Element.ALIGN_CENTER, 1, bf12, 1, "#FFFFFF", 0.5f,
 						0.5f, 0f);
-				if ("Intra State".equals(invoice.getInvoiceType())) {
+				if (isIntraState) {
 					insertCell(itemTable, product.getProductCgst(), Element.ALIGN_CENTER, 1, bf12, 1, "#FFFFFF", 0.5f,
 							0.5f, 0f);
 					insertCell(itemTable, product.getProductSgst(), Element.ALIGN_CENTER, 1, bf12, 1, "#FFFFFF", 0.5f,
@@ -282,7 +291,7 @@ public class InvoiceUtil {
 			insertCell(itemTable, "", Element.ALIGN_CENTER, 2, bfBold12, 1, "#FFFFFF", 0.5f, 0.5f, 30f);
 			insertCell(itemTable, df.format(totalTaxValue), Element.ALIGN_CENTER, 1, bfBold12, 1, "#FFFFFF", 0.5f, 0.5f,
 					30f);
-			if ("Intra State".equals(invoice.getInvoiceType())) {
+			if (isIntraState) {
 			insertCell(itemTable, df.format(totalCgst), Element.ALIGN_CENTER, 1, bfBold12, 1, "#FFFFFF", 0.5f, 0.5f,
 					30f);
 			insertCell(itemTable, df.format(totalSgst), Element.ALIGN_CENTER, 1, bfBold12, 1, "#FFFFFF", 0.5f, 0.5f,
@@ -297,24 +306,30 @@ public class InvoiceUtil {
 
 			insertCell(itemTable, "Total Amount in Words", Element.ALIGN_CENTER, 5, bfBold12, 1, "#BFD6E9", 1f, 0.5f,
 					0f);
-			insertCell(itemTable, "Total Amount before Tax", Element.ALIGN_CENTER, "Intra State".equals(invoice.getInvoiceType())?7:6, bfBold12, 1, "#FFFFFF", 0.5f,
+			insertCell(itemTable, "Total Amount before Tax", Element.ALIGN_CENTER, isIntraState?7:6, bfBold12, 1, "#FFFFFF", 0.5f,
 					0.5f, 0f);
-			insertCell(itemTable, "", Element.ALIGN_CENTER, 1, bfBold12, 1, "#FFFFFF", 0.5f, 1f, 0f);
+			insertCell(itemTable, invoice.getInvoiceTotalAmountBeforeTax(), Element.ALIGN_CENTER, 1, bfBold12, 1, "#FFFFFF", 0.5f, 1f, 0f);
 
-			insertCell(itemTable, "", Element.ALIGN_CENTER, 5, bfBold12, 3, "#FFFFFF", 1f, 0.5f, 0f);
-			insertCell(itemTable, "Add:IGST", Element.ALIGN_CENTER, "Intra State".equals(invoice.getInvoiceType())?7:6, bfBold12, 1, "#92D14F", 0.5f, 0.5f, 0f);
-			insertCell(itemTable, "", Element.ALIGN_CENTER, 1, bfBold12, 1, "#FFFFFF", 0.5f, 1f, 0f);
+			insertCell(itemTable, invoice.getInvoiceTotalAmountWords(), Element.ALIGN_CENTER, 5, bf12, 5, "#FFFFFF", 1f, 0.5f, 0f);
+			insertCell(itemTable, "Add:IGST", Element.ALIGN_CENTER, isIntraState?7:6, bfBold12, 1, "#92D14F", 0.5f, 0.5f, 0f);
+			insertCell(itemTable, isIntraState?"":invoice.getInvoiceIgstAmount(), Element.ALIGN_CENTER, 1, bfBold12, 1, "#FFFFFF", 0.5f, 1f, 0f);
+			
+			insertCell(itemTable, "Add:SGST", Element.ALIGN_CENTER, isIntraState?7:6, bfBold12, 1, "#92D14F", 0.5f, 0.5f, 0f);
+			insertCell(itemTable, isIntraState?invoice.getInvoiceSgstAmount():"", Element.ALIGN_CENTER, 1, bfBold12, 1, "#FFFFFF", 0.5f, 1f, 0f);
+			
+			insertCell(itemTable, "Add:CGST", Element.ALIGN_CENTER, isIntraState?7:6, bfBold12, 1, "#92D14F", 0.5f, 0.5f, 0f);
+			insertCell(itemTable, isIntraState?invoice.getInvoiceCgstAmount():"", Element.ALIGN_CENTER, 1, bfBold12, 1, "#FFFFFF", 0.5f, 1f, 0f);
 
-			insertCell(itemTable, "Total Tax Amount", Element.ALIGN_CENTER, "Intra State".equals(invoice.getInvoiceType())?7:6, bfBold12, 1, "#FFFFFF", 0.5f, 0.5f, 0f);
-			insertCell(itemTable, "", Element.ALIGN_CENTER, 1, bfBold12, 1, "#FFFFFF", 0.5f, 1f, 0f);
+			insertCell(itemTable, "Total Tax Amount", Element.ALIGN_CENTER, isIntraState?7:6, bfBold12, 1, "#FFFFFF", 0.5f, 0.5f, 0f);
+			insertCell(itemTable, invoice.getInvoiceIgstAmount(), Element.ALIGN_CENTER, 1, bfBold12, 1, "#FFFFFF", 0.5f, 1f, 0f);
 
-			insertCell(itemTable, "Total Amount after tax", Element.ALIGN_CENTER, "Intra State".equals(invoice.getInvoiceType())?7:6, bfBold12, 1, "#FFFFFF", 0.5f, 0.5f,
+			insertCell(itemTable, "Total Amount after tax", Element.ALIGN_CENTER, isIntraState?7:6, bfBold12, 1, "#FFFFFF", 0.5f, 0.5f,
 					0f);
-			insertCell(itemTable, "", Element.ALIGN_CENTER, 1, bfBold12, 1, "#FFFFFF", 0.5f, 1f, 0f);
+			insertCell(itemTable, invoice.getInvoiceTotalAmountAfterTax(), Element.ALIGN_CENTER, 1, bfBold12, 1, "#FFFFFF", 0.5f, 1f, 0f);
 
 			insertCell(itemTable, "Bank Details", Element.ALIGN_CENTER, 4, bfBold12, 1, "#BFD6E9", 1f, 0.5f, 0f);
 			insertCell(itemTable, "Common Seal", Element.ALIGN_CENTER, 3, bfBold12, 6, "#FFFFFF", 0.5f, 0.5f, 0f);
-			insertCell(itemTable, "GST on Reverse Charge", Element.ALIGN_CENTER, "Intra State".equals(invoice.getInvoiceType())?5:4, bfBold12, 1, "#BFD6E9", 0.5f, 0.5f,
+			insertCell(itemTable, "GST on Reverse Charge", Element.ALIGN_CENTER, isIntraState?5:4, bfBold12, 1, "#BFD6E9", 0.5f, 0.5f,
 					0f);
 			insertCell(itemTable, "", Element.ALIGN_CENTER, 1, bfBold12, 1, "#FFFFFF", 0.5f, 1f, 0f);
 
@@ -323,7 +338,7 @@ public class InvoiceUtil {
 			insertCell(itemTable,
 					"Ceritified that the particulars given above are true and correct \n\n\n\n For "
 							+ invoice.getInvoiceCompanyDetails().getCompanyName() + " \n\n\n\n Authorised Signatory",
-					Element.ALIGN_CENTER, "Intra State".equals(invoice.getInvoiceType())?6:5, bf12, 6, "#FFFFFFF", 0.5f, 1f, 0f);
+					Element.ALIGN_CENTER, isIntraState?6:5, bf12, 6, "#FFFFFFF", 0.5f, 1f, 0f);
 
 			insertCell(itemTable, "Bank A/c: ", invoice.getInvoiceBankDetails().getInvoiceIfsCode(), Element.ALIGN_LEFT, 4, bfBold12, bf12, 1,
 					"#FFFFFFF", 1f, 0.5f);
