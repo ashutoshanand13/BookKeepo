@@ -50,7 +50,7 @@ public class ChangePasswordController {
 		} else {
 			modelAndView.addObject("message", "Password successfully changed");
 
-			userExists.setPassword(bCryptPasswordEncoder.encode(user.getNewPassword()));
+			userExists.setPassword(user.getNewPassword());
 			userService.saveUser(userExists);
 
 		}
