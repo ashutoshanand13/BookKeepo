@@ -42,7 +42,7 @@
 								th:field="*{gstin}" placeholder="GST Number" readonly="readonly"
 								required> <label th:if="${#fields.hasErrors('gstin')}"
 								th:errors="*{gstin}" class="validation-message"></label>
-							<input type="text" class="form-control" th:field="*{accountPan}"
+							<input type="text" id="accountPan" class="form-control" th:field="*{accountPan}"
 								placeholder="PAN" readonly="readonly" required> <label
 								th:if="${#fields.hasErrors('accountPan')}"
 								th:errors="*{accountPan}" class="validation-message"></label>
@@ -65,6 +65,7 @@
 $(document).ready(function() {
 	$("#selectbasic").change(function() {
 		getGstin();
+		getPanNumber();
 	});
 });
 
@@ -78,6 +79,21 @@ function getGstin() {
 		dataType : 'json',				
 		success : function(data) {
 		    var gstin = document.getElementById('gstin');
+		    gstin.value = data;
+		}
+		});
+};
+
+function getPanNumber() {
+	var accountNbr = $("#selectbasic").val();
+	
+	$.ajax({
+		type : "GET",
+		contentType : "application/json",
+		url : "getPanNumberData?accountNbr=" + accountNbr,
+		dataType : 'json',				
+		success : function(data) {
+		    var gstin = document.getElementById('accountPan');
 		    gstin.value = data;
 		}
 		});
