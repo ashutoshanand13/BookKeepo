@@ -79,8 +79,17 @@ public class InvoiceDetails {
 	@Column(name = "invoice_tax_amount")
 	private String invoiceTaxAmount;
 	
-	@Column(name = "invoice_gst_amount")
-	private String invoiceGstAmount;	
+	@Column(name = "invoice_igst_amount")
+	private String invoiceIgstAmount;
+	
+	@Column(name = "invoice_cgst_amount")
+	private String invoiceCgstAmount;
+	
+	@Column(name = "invoice_sgst_amount")
+	private String invoiceSgstAmount;
+	
+	@Column(name = "invoice_total_amount_words")
+	private String invoiceTotalAmountWords;
 	
 	@OneToMany(cascade=CascadeType.ALL)
     @JoinColumn(name="invoice_products_referece_no")
@@ -318,24 +327,42 @@ public class InvoiceDetails {
 	}
 
 	/**
-	 * @return the invoiceGstAmount
-	 */
-	public String getInvoiceGstAmount() {
-		return invoiceGstAmount;
-	}
-
-	/**
-	 * @param invoiceGstAmount the invoiceGstAmount to set
-	 */
-	public void setInvoiceGstAmount(String invoiceGstAmount) {
-		this.invoiceGstAmount = invoiceGstAmount;
-	}
-
-	/**
 	 * @return the invoiceProductDetails
 	 */
 	public List<InvoiceProductDetails> getInvoiceProductDetails() {
 		return invoiceProductDetails;
+	}
+
+	public String getInvoiceIgstAmount() {
+		return invoiceIgstAmount;
+	}
+
+	public void setInvoiceIgstAmount(String invoiceIgstAmount) {
+		this.invoiceIgstAmount = invoiceIgstAmount;
+	}
+
+	public String getInvoiceCgstAmount() {
+		return invoiceCgstAmount;
+	}
+
+	public void setInvoiceCgstAmount(String invoiceCgstAmount) {
+		this.invoiceCgstAmount = invoiceCgstAmount;
+	}
+
+	public String getInvoiceSgstAmount() {
+		return invoiceSgstAmount;
+	}
+
+	public void setInvoiceSgstAmount(String invoiceSgstAmount) {
+		this.invoiceSgstAmount = invoiceSgstAmount;
+	}
+
+	public String getInvoiceTotalAmountWords() {
+		return invoiceTotalAmountWords;
+	}
+
+	public void setInvoiceTotalAmountWords(String invoiceTotalAmountWords) {
+		this.invoiceTotalAmountWords = invoiceTotalAmountWords;
 	}
 
 	/**

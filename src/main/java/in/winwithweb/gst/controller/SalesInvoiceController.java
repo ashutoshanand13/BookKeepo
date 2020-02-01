@@ -27,6 +27,7 @@ import in.winwithweb.gst.model.json.SalesInvoicePageData;
 import in.winwithweb.gst.model.sales.InvoiceDetails;
 import in.winwithweb.gst.service.CompanyDetailsService;
 import in.winwithweb.gst.service.InvoiceService;
+import in.winwithweb.gst.util.CommonUtils;
 import in.winwithweb.gst.util.InvoiceUtil;
 
 /**
@@ -57,6 +58,7 @@ public class SalesInvoiceController {
 
 		InvoiceDetails invoice = new InvoiceDetails();
 		invoice.setInvoiceOwner(principal.getName());
+		invoice.setInvoiceTotalAmountWords(CommonUtils.numberConverter(salesInvoiceData.getTtlTotalAmount()));
 
 		Company companyDetails = companyDetailsService.findByUserName(principal.getName());
 
