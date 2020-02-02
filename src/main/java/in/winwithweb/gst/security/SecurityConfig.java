@@ -25,7 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
-	
+
 	@Autowired
 	private AccessDeniedHandler accessDeniedHandler;
 
@@ -46,9 +46,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable().authorizeRequests().antMatchers("/","/css/**", "/js/**", "/images/**" , "/registration","/webfonts/**").permitAll()
+		http.csrf().disable().authorizeRequests()
+				.antMatchers("/", "/css/**", "/js/**", "/images/**", "/registration","/forgotPassword", "/webfonts/**").permitAll()
 				.antMatchers("/home/**").hasAuthority("USER").anyRequest().authenticated().and().formLogin()
 				.loginPage("/login").defaultSuccessUrl("/home").permitAll().and().logout().permitAll().and()
 				.exceptionHandling().accessDeniedHandler(accessDeniedHandler);
 
-}}
+	}
+}
