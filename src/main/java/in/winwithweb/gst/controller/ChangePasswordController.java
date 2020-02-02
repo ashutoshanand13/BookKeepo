@@ -4,6 +4,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -16,6 +18,8 @@ import in.winwithweb.gst.model.UserDetails;
 import in.winwithweb.gst.service.UserService;
 import in.winwithweb.gst.util.CommonUtils;
 
+
+@Configuration
 @Controller
 public class ChangePasswordController {
 
@@ -24,6 +28,16 @@ public class ChangePasswordController {
 
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	
+	
+	@Value("${email.forgetPassword.subject}")
+	private String forgetPssSub;
+	
+	@Value("${email.forgetPassword.body}")
+	private String forgetPssBdy;
+	
+	@Value("${email.from}")
+	private String emailFrom;
 
 	@RequestMapping(value = { "/home/changePassword" }, method = RequestMethod.GET)
 	public ModelAndView getChangePasswordPage(HttpServletRequest request) {
@@ -84,7 +98,7 @@ public class ChangePasswordController {
 			String newPassword = CommonUtils.getUniqueID();
 			modelAndView.addObject("message", "New Password sent on your email.");
 
-			CommonUtils.sendEmail(userExists.getEmail(), "New Password", "Your new password " + newPassword);
+			CommonUtils.sendEmail(userExists.getEmail(),emailFrom, forgetPssSub, forgetPssBdy + " " + newPassword);
 			userExists.setPassword(newPassword);
 			userService.saveUser(userExists);
 		}

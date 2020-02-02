@@ -174,7 +174,7 @@ public class CommonUtils {
 
 	}
 
-	public static void sendEmail(String email, String subject, String body) {
+	public static void sendEmail(String email, String enailfrom, String subject, String body) {
 
 		Properties properties = new Properties();
 		properties.setProperty("mail.smtp.host", "email-smtp.ap-south-1.amazonaws.com");
@@ -199,7 +199,7 @@ public class CommonUtils {
 		try {
 
 			MimeMessage message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("no-reply@bookkeepo.com"));
+			message.setFrom(new InternetAddress(enailfrom));
 
 			message.setSubject(subject);
 			message.setText(body);
