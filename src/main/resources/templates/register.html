@@ -31,21 +31,24 @@
 						</div>
 						<form autocomplete="off" th:action="@{/registration}"
 							th:object="${user}" method="post" class="form-horizontal"
-							role="form">
+							role="form" id="registrationform">
 							
-							<input class="form-control" type="text" name="name" th:field="*{name}" placeholder="First Name" required>
+							<input class="form-control loginformfields" type="text" name="name" th:field="*{name}" placeholder="First Name" required>
 							
-							<input class="form-control" type="text" name="lastname" th:field="*{lastName}" placeholder="Last Name" required> 
+							<input class="form-control loginformfields" type="text" name="lastname" th:field="*{lastName}" placeholder="Last Name" required> 
 							
-							<input class="form-control" type="text" name="phonenumber" th:field="*{phoneNumber}" placeholder="Phone Number" required> 
+							<input class="form-control loginformfields" type="text" name="phonenumber" th:field="*{phoneNumber}" placeholder="Phone Number" required> 
 							 
 								
-							<input class="form-control" type="email" name="email" th:field="*{email}" placeholder="E-mail Address" required>
+							<input class="form-control loginformfields" type="email" name="email" th:field="*{email}" placeholder="E-mail Address" required>
 							<label
 							th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
 							class="validation-message"></label>
 							
-							<input class="form-control" type="password" name="password" th:field="*{password}" placeholder="Password" required>
+							<input class="form-control loginformfields" type="password" id="password" name="password" th:field="*{password}" placeholder="Password" required>
+							
+							<input class="form-control loginformfields" type="password" id="confirmpassword" name="confirmpassword" placeholder="Confirm Password" required>
+							<span id='messagePassword'></span>
 							
 							<div class="form-button">
 								<button id="submit" type="submit" class="ibtn">Register</button>
@@ -60,5 +63,6 @@
 	<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
 	<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
 	<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/table.js}"></script>
 </body>
 </html>

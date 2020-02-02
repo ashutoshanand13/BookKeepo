@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import in.winwithweb.gst.model.Company;
 import lombok.Data;
 
 /**
@@ -36,7 +37,7 @@ public class InvoiceDetails {
 	@Column(name = "invoice_number")
 	private String invoiceNumber;
 	
-	@Column(name = "invoice_data")
+	@Column(name = "invoice_date")
 	private String invoiceDate;
 	
 	@Column(name = "invoice_owner")
@@ -47,6 +48,9 @@ public class InvoiceDetails {
 	
 	@Column(name = "invoice_dos")
 	private String invoiceDOS;
+	
+	@Column(name = "invoice_po_date")
+	private String invoicePoDate;
 
 	@Column(name = "invoice_pos")
 	private String invoicePOS;
@@ -75,8 +79,17 @@ public class InvoiceDetails {
 	@Column(name = "invoice_tax_amount")
 	private String invoiceTaxAmount;
 	
-	@Column(name = "invoice_gst_amount")
-	private String invoiceGstAmount;	
+	@Column(name = "invoice_igst_amount")
+	private String invoiceIgstAmount;
+	
+	@Column(name = "invoice_cgst_amount")
+	private String invoiceCgstAmount;
+	
+	@Column(name = "invoice_sgst_amount")
+	private String invoiceSgstAmount;
+	
+	@Column(name = "invoice_total_amount_words")
+	private String invoiceTotalAmountWords;
 	
 	@OneToMany(cascade=CascadeType.ALL)
     @JoinColumn(name="invoice_products_referece_no")
@@ -92,7 +105,7 @@ public class InvoiceDetails {
 	
 	@OneToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="invoice_company_reference_no")
-    private InvoiceCompanyDetails invoiceCompanyDetails;
+    private Company invoiceCompanyDetails;
 		
 	
 	/**
@@ -177,6 +190,14 @@ public class InvoiceDetails {
 	 */
 	public void setInvoiceDOS(String invoiceDOS) {
 		this.invoiceDOS = invoiceDOS;
+	}
+
+	public String getInvoicePoDate() {
+		return invoicePoDate;
+	}
+
+	public void setInvoicePoDate(String invoicePoDate) {
+		this.invoicePoDate = invoicePoDate;
 	}
 
 	/**
@@ -306,24 +327,42 @@ public class InvoiceDetails {
 	}
 
 	/**
-	 * @return the invoiceGstAmount
-	 */
-	public String getInvoiceGstAmount() {
-		return invoiceGstAmount;
-	}
-
-	/**
-	 * @param invoiceGstAmount the invoiceGstAmount to set
-	 */
-	public void setInvoiceGstAmount(String invoiceGstAmount) {
-		this.invoiceGstAmount = invoiceGstAmount;
-	}
-
-	/**
 	 * @return the invoiceProductDetails
 	 */
 	public List<InvoiceProductDetails> getInvoiceProductDetails() {
 		return invoiceProductDetails;
+	}
+
+	public String getInvoiceIgstAmount() {
+		return invoiceIgstAmount;
+	}
+
+	public void setInvoiceIgstAmount(String invoiceIgstAmount) {
+		this.invoiceIgstAmount = invoiceIgstAmount;
+	}
+
+	public String getInvoiceCgstAmount() {
+		return invoiceCgstAmount;
+	}
+
+	public void setInvoiceCgstAmount(String invoiceCgstAmount) {
+		this.invoiceCgstAmount = invoiceCgstAmount;
+	}
+
+	public String getInvoiceSgstAmount() {
+		return invoiceSgstAmount;
+	}
+
+	public void setInvoiceSgstAmount(String invoiceSgstAmount) {
+		this.invoiceSgstAmount = invoiceSgstAmount;
+	}
+
+	public String getInvoiceTotalAmountWords() {
+		return invoiceTotalAmountWords;
+	}
+
+	public void setInvoiceTotalAmountWords(String invoiceTotalAmountWords) {
+		this.invoiceTotalAmountWords = invoiceTotalAmountWords;
 	}
 
 	/**
@@ -364,14 +403,14 @@ public class InvoiceDetails {
 	/**
 	 * @return the invoiceCompanyDetails
 	 */
-	public InvoiceCompanyDetails getInvoiceCompanyDetails() {
+	public Company getInvoiceCompanyDetails() {
 		return invoiceCompanyDetails;
 	}
 
 	/**
 	 * @param invoiceCompanyDetails the invoiceCompanyDetails to set
 	 */
-	public void setInvoiceCompanyDetails(InvoiceCompanyDetails invoiceCompanyDetails) {
+	public void setInvoiceCompanyDetails(Company invoiceCompanyDetails) {
 		this.invoiceCompanyDetails = invoiceCompanyDetails;
 	}
 

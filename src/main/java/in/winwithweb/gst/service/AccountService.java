@@ -50,12 +50,21 @@ public class AccountService {
 		return accountName;
 	}
 
-	public String findAccountByAccountName(String accountName) {
+	public String findGSTByAccountName(String accountName) {
 		Accounts account = accountRepository.findByAccountName(accountName);
 		if (account != null) {
 			return account.getGstin();
 		} else {
 			return "No GST Found";
+		}
+	}
+	
+	public String findPanByAccountName(String accountName) {
+		Accounts account = accountRepository.findByAccountName(accountName);
+		if (account != null) {
+			return account.getAccountPan();
+		} else {
+			return "No Pan Found";
 		}
 	}
 }

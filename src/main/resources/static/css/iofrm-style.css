@@ -124,7 +124,7 @@ html, body {
     transition: all 0.5s cubic-bezier(0.34, 1.61, 0.7, 1);
 }
 
-.preview-body .img-link:hover img, .preview-body .img-link:focus img {
+.preview-body .img-link:hover img, .preview-body .H-link:focus img {
     -webkit-transform: scale(1.05);
     -moz-transform: scale(1.05);
     -ms-transform: scale(1.05);
@@ -364,13 +364,13 @@ html, body {
 
 .form-content input, .form-content .dropdown-toggle.btn-default {
     width: 100%;
-    padding: 9px 20px;
+    padding: 9px;
     text-align: left;
     border: 0;
     outline: 0;
     border-radius: 6px;
     background-color: #fff;
-    font-size: 15px;
+    font-size: 10px;
     font-weight: 300;
     color: #8D8D8D;
     -webkit-transition: all 0.3s ease 0s;
@@ -387,12 +387,12 @@ html, body {
 .form-content textarea {
     position: static !important;
     width: 100%;
-    padding: 8px 20px;
+    padding: 8px;
     border-radius: 6px;
     text-align: left;
     background-color: #fff;
     border: 0;
-    font-size: 15px;
+    font-size: 10px;
     color: #8D8D8D;
     outline: none;
     resize: none;
@@ -763,4 +763,76 @@ html, body {
 
 .bg-success{
 	background-color :#18bc9c !important;
+}
+
+.pt-3-half {
+padding: 0.4rem !important;
+}
+
+.table-width {
+	width :70%;
+	margin-left: auto;
+    margin-right: auto;
+}
+
+.autoResizeImage {
+    width :20px;
+    margin-top :20px;
+	height:auto;
+}
+
+.button-position {
+	margin-left: auto;
+    margin-right: auto;
+}
+
+@media print {
+  #printPageButton {
+    display: none;
+  }
+  #export-btn {
+    display: none;
+  }
+}
+
+.unselectable{
+     background-color: #ddd;
+     cursor: not-allowed;
+}
+
+.table-width2 {
+	width :90%;
+	margin-left: auto;
+    margin-right: auto;
+}
+
+div.form-content select.salesformcontent{
+    border: 1px solid rgb(39, 200, 169);
+    background-color: #F7F7F7;
+    color: #000000;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 300;
+}
+
+div.form-content p.companydetails{
+	font-size: 12px;
+    font-weight: 800;
+    line-height: 20px;
+    margin-bottom: 3px;
+    text-align: right;
+}
+
+div.form-body input.loginformfields
+{
+	font-size: 15px;
+}
+
+div.form-body password.loginformfields
+{
+	font-size: 15px;
+}
+
+div.form-body div.showinvoices{
+	margin-top: -500px;
 }

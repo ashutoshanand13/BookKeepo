@@ -11,6 +11,8 @@
 <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 <link rel="stylesheet" th:href="@{/css/iofrm-style.css}">
 <link rel="stylesheet" th:href="@{/css/iofrm-theme15.css}">
+<link rel="stylesheet" th:href="@{/css/jquery.dataTables.min.css}">
+
 </head>
 <body>
 <div id="topheader">
@@ -32,6 +34,12 @@
 					th:href="@{/home/addpayment}">Add Payment</a>
 				<li class="nav-item"><a th:class="nav-link"
 					th:href="@{/home/addreceipt}">Add Receipts</a></li>
+				<li class="nav-item"><a th:class="nav-link"
+					th:href="@{/home/addcompany}">Add Company</a></li>
+				<li class="nav-item"><a th:class="nav-link"
+					th:href="@{/home/salesinvoice}">Create Sales Invoice</a></li>
+				<li class="nav-item"><a th:class="nav-link"
+					th:href="@{/home/showInvoice}">Show Invoices</a></li>
 			</ul>
 			
 			<ul class="navbar-nav ml-auto nav-flex-icons">
@@ -42,46 +50,44 @@
 					<div class="dropdown-menu dropdown-menu-right dropdown-default"
 						aria-labelledby="navbarDropdownMenuLink-333">
 						<a class="dropdown-item" href="#">User Profile</a> <a
-							class="dropdown-item" href="#">Help</a> <a class="dropdown-item"
+							class="dropdown-item" th:href="@{/home/changePassword}">Change Password</a> <a class="dropdown-item"
 							th:href="@{/logout}">Sign Out</a>
 					</div></li>
 			</ul>
 		</div>
 	</nav>
 	</div>
+	<div layout:fragment="invoice_fragment"></div>
 	<div class="form-body">
 		<div class="row">
-		
-		<div layout:fragment="screen_description">
-			
-			</div>
-			<div class="form-holder">
-				<div class="form-content form-sm" layout:fragment="form_content">
-				</div>
+
+			<div layout:fragment="screen_description"></div>
+			<div class="form-holder" id="form-data-holder">
+				<div class="form-content form-sm" layout:fragment="form_content"></div>
 			</div>
 		</div>
 	</div>
 	<div class="container">
-		<!-- <nav aria-label="breadcrumb" role="navigation">
-			<ol class="breadcrumb">
-				<th:block layout:fragment="breadcrumb">
-				</th:block>
-			</ol>
-		</nav> -->
 		<div class="content">
 			<div layout:fragment="page_content"></div>
 		</div>
 	</div>
-	<!-- /.container -->
 
 	<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
 	<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
 	<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/table.js}"></script>
+	<script type="text/javascript" th:src="@{/js/jquery-3.3.1.js}"></script>
+	<script type="text/javascript" th:src="@{/js/jquery.dataTables.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/jquery.serializejson.js}"></script>
+	
 	<script type="text/javascript">
 	$( '#topheader .navbar-nav a' ).on( 'click', function () {
 		$( '#topheader .navbar-nav' ).find( 'li.active' ).removeClass( 'active' );
 		$( this ).parent( 'li' ).addClass( 'active' );
 	});
+	
+	$("#alert").fadeTo(2000, 500).slideUp(500);
 </script>
 	<th:block layout:fragment="scripts">
 	</th:block>
