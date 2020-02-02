@@ -202,7 +202,7 @@ public class CommonUtils {
 			message.setFrom(new InternetAddress(enailfrom));
 
 			message.setSubject(subject);
-			message.setText(body);
+			message.setContent(body,"text/html");;
 
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
 			Transport.send(message);

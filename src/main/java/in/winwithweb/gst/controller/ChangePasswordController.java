@@ -18,7 +18,6 @@ import in.winwithweb.gst.model.UserDetails;
 import in.winwithweb.gst.service.UserService;
 import in.winwithweb.gst.util.CommonUtils;
 
-
 @Configuration
 @Controller
 public class ChangePasswordController {
@@ -28,14 +27,13 @@ public class ChangePasswordController {
 
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
-	
-	
+
 	@Value("${email.forgetPassword.subject}")
 	private String forgetPssSub;
-	
+
 	@Value("${email.forgetPassword.body}")
 	private String forgetPssBdy;
-	
+
 	@Value("${email.from}")
 	private String emailFrom;
 
@@ -54,6 +52,7 @@ public class ChangePasswordController {
 
 		User userExists = userService.findUserByEmail(request.getUserPrincipal().getName());
 		modelAndView.setViewName("changePassword");
+		
 		modelAndView.addObject("userDetails", user);
 
 		if (userExists == null || !bCryptPasswordEncoder.matches(user.getOldPassword(), userExists.getPassword())) {
@@ -92,13 +91,17 @@ public class ChangePasswordController {
 		modelAndView.setViewName("forgotPassword");
 
 		if (userExists == null) {
+			modelAndView.addObject("user", user);
 			modelAndView.addObject("message", "This email is not register with BookKeepo !");
 
 		} else {
+			modelAndView.addObject("user", new UserDetails());
+
 			String newPassword = CommonUtils.getUniqueID();
 			modelAndView.addObject("message", "New Password sent on your email.");
 
-			CommonUtils.sendEmail(userExists.getEmail(),emailFrom, forgetPssSub, forgetPssBdy + " " + newPassword);
+			CommonUtils.sendEmail(userExists.getEmail(), emailFrom, forgetPssSub,
+					forgetPssBdy.replace("<Password>", newPassword));
 			userExists.setPassword(newPassword);
 			userService.saveUser(userExists);
 		}
