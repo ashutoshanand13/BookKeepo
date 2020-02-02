@@ -37,7 +37,7 @@
 							class="form-control" th:field="*{companyGstin}"
 							placeholder="GST Number" required
 							pattern="^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$"
-							oninvalid="this.setCustomValidity('GST Identification Number is not valid. It should be in this 11AAAAA1111Z1A1 format')">
+							oninvalid="this.setCustomValidity('GST Identification Number is not valid. It should be in this 11AAAAA1111Z1A1 format')" oninput="setCustomValidity('')">
 						<label th:if="${#fields.hasErrors('companyGstin')}"
 							th:errors="*{companyGstin}" class="validation-message"></label>
 
