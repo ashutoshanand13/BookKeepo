@@ -35,6 +35,7 @@ $(document).ready(function() {
 							<th>Invoice Id</th>
 							<th>Invoice Date</th>
 							<th>Invoice Number</th>
+							<th>Invoice Amount</th>
 							<th>Download</th>
 
 						</tr>
@@ -44,6 +45,7 @@ $(document).ready(function() {
 							<td data-th-text="${invoice.id}"></td>
 							<td data-th-text="${invoice.invoiceDate}"></td>
 							<td data-th-text="${invoice.invoiceNumber}"></td>
+							<td data-th-text="${invoice.invoiceTotalAmountAfterTax}"></td>
 							<td><a th:href="@{/home/showInvoice/__${invoice.id}__}" onclick="showAlert()">Click Here</a></td>
 							
 						</tr>
