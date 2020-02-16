@@ -41,6 +41,15 @@ public class Company {
 	@Column(name = "company_telephone")
 	private String companyTelephone;
 	
+	@Column(name = "company_bank_ac")
+	private String companyBankAC;
+	
+	@Column(name = "company_bank_ifsc")
+	private String companyBankIFSC;
+	
+	@Column(name = "company_bank_tnc")
+	private String companyBankTNC;
+	
 	@Lob
 	@Column(name = "company_logo", length = 2097152)
 	private byte[] companyLogo;
@@ -135,8 +144,40 @@ public class Company {
 	public void setCompanyLogo(byte[] companyLogo) {
 		this.companyLogo = companyLogo;
 	}
-	
-	
-	
-
+	/**
+	 * @return the companyBankAC
+	 */
+	public String getCompanyBankAC() {
+		return companyBankAC;
+	}
+	/**
+	 * @param companyBankAC the companyBankAC to set
+	 */
+	public void setCompanyBankAC(String companyBankAC) {
+		this.companyBankAC = companyBankAC;
+	}
+	/**
+	 * @return the companyBankIFSC
+	 */
+	public String getCompanyBankIFSC() {
+		return companyBankIFSC;
+	}
+	/**
+	 * @param companyBankIFSC the companyBankIFSC to set
+	 */
+	public void setCompanyBankIFSC(String companyBankIFSC) {
+		this.companyBankIFSC = companyBankIFSC;
+	}
+	/**
+	 * @return the companyBankTNC
+	 */
+	public String getCompanyBankTNC() {
+		return companyBankTNC;
+	}
+	/**
+	 * @param companyBankTNC the companyBankTNC to set
+	 */
+	public void setCompanyBankTNC(String companyBankTNC) {
+		this.companyBankTNC = companyBankTNC;
+	}
 }

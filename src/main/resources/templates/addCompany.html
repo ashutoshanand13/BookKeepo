@@ -64,6 +64,22 @@
 			</div>
 			<div class="row">
 				<div class="col-md-6 form-group">
+					<label>Bank Details</label> <input type="text" class="form-control" name="bankAC"
+						th:field="*{companyBankAC}" placeholder= "Bank A/C"
+						required> <input type="text" class="form-control"
+						th:field="*{companyBankIFSC}" placeholder="Bank IFSC Details" required>
+				</div>
+				<div class="col-md-6 form-group">
+					<div class="form-group">
+						<label>Terms & Conditions</label>
+						<input type="text" class="form-control"
+						th:field="*{companyBankTNC}" placeholder="Payment Terms" required>
+					</div>
+				</div>
+
+			</div>
+			<div class="row">
+				<div class="col-md-6 form-group">
 					<label>Company Logo</label> <input type="file" name="companylogo"
 						id="companylogo" th:field="*{companyLogo}"
 						accept="image/x-png,image/jpeg" required> <img
