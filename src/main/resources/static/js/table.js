@@ -397,3 +397,10 @@ function getAmountInWords() {
 		}
 		});
 }
+
+function setDate(data) {
+	debugger;
+	 $("[name=dateOfSupply]").val($(data).val());
+	 $("[name=dateOfSupply]").focus();
+	 $(data).focus();
+}

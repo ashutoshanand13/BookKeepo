@@ -76,18 +76,18 @@
 					</tr>
 					<tr>
 						<td class="pt-3-half"><input type="text" class="form-control"
-							name="invoiceDate" onfocus="(this.type='date')"
-							onblur="(this.type='text')" placeholder="Invoice Date"
+							name="invoiceDate" onfocus="(this.type='date')" onChange="setDate(this);"
+							onblur="if(!this.value)this.type='text'" placeholder="Invoice Date"
 							required="required"></td>
 						<td class="pt-3-half"><input type="text" class="form-control"
 							name="poDate" onfocus="(this.type='date')"
-							onblur="(this.type='text')" placeholder="PO Date"
+							onblur="if(!this.value)this.type='text'" placeholder="PO Date"
 							required="required"></td>
 					</tr>
 					<tr>
 						<td class="pt-3-half"><input type="text" class="form-control"
 							name="dateOfSupply" onfocus="(this.type='date')"
-							onblur="(this.type='text')" placeholder="Date of Supply"
+							onblur="if(!this.value)this.type='text'" placeholder="Date of Supply"
 							required="required"></td>
 						<td class="pt-3-half"><input type="text" class="form-control"
 							name="transportMode" placeholder="Transport Mode"
@@ -398,11 +398,7 @@ window.onbeforeunload = function() {
 	           if (e.preventDefault) e.preventDefault(); 
 	           e.returnValue = false; 
 	   
-	 }
-
- $("[name=invoiceDate]").on('change', function () {
-	 $("[name=dateOfSupply]").val($("[name=invoiceDate]").val());
-	  });
+ }
  
 </script>
 </th:block>
