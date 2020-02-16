@@ -65,7 +65,7 @@
 					<label>Bank Details</label> <input type="text" class="form-control" name="bankAC"
 						th:field="*{companyBankAC}" placeholder= "Bank A/C"
 						required> <input type="text" class="form-control"
-						th:field="*{companyBankIFSC}" placeholder="Bank IFSC Details" required>
+						th:field="*{companyBankIFSC}" pattern="^[A-Za-z]{4}[a-zA-Z0-9]{7}$" oninvalid="this.setCustomValidity('IFSC code should of format AAAA1111111')" oninput="setCustomValidity('')" placeholder="Bank IFSC Details" required>
 				</div>
 				<div class="col-md-6 form-group">
 					<div class="form-group">
