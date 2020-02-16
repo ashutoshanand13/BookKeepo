@@ -187,7 +187,7 @@ function setValues() {
 	            var qty = $tblrow.find("[id=qty]").val();
 	            if(!isNaN(qty)){
 	            	ttlQty[index]=parseFloat(qty);
-	            	$("[name=ttlQty]").val(getSum(ttlQty));
+	            	$("[name=ttlQty]").val(checkValueNaN(getSum(ttlQty)));
 	            }
 	            var rate = $tblrow.find("[id=rate]").val();
 	            var amount = parseInt(qty, 10) * parseFloat(rate);
