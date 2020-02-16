@@ -70,6 +70,9 @@ public class CompanyController {
 			isDataExists.setCompanyAddress(company.getCompanyAddress());
 			isDataExists.setCompanyEmail(company.getCompanyEmail());
 			isDataExists.setCompanyGstin(company.getCompanyGstin());
+			isDataExists.setCompanyBankAC(company.getCompanyBankAC());
+			isDataExists.setCompanyBankIFSC(company.getCompanyBankIFSC());
+			isDataExists.setCompanyBankTNC(company.getCompanyBankTNC());
 			try {
 				CompanyUploadedFile = companyLogo.getBytes();
 				if(CompanyUploadedFile.length!=0){
