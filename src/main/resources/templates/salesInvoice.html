@@ -12,6 +12,12 @@
 		<div class="form-content form-items needs-validation">
 			<table id="headerDetailsTable" style="border: 1px solid black;"
 				class="table table-width table-responsive-md text-center" >
+				<thead class="table-width">
+					<tr bgcolor="#BFD6E9">
+						<th class="text-center" width="100%" height="60" colspan="2"><h3
+								class="text-center font-weight-bold text-uppercase">Invoice Details</h3></th>
+					</tr>
+				</thead>
 				<colgroup>
 					<col span="1" style="width: 40%;">
 					<col span="1" style="width: 60%;">
@@ -56,9 +62,9 @@
 				class="table table-width table-responsive-md text-center">
 				<thead class="table-width">
 					<tr bgcolor="#BFD6E9">
-						<th class="text-center" width="100%" colspan="2"><h3
+						<th class="text-center" width="100%" colspan="2"><h6
 								class="text-center font-weight-bold text-uppercase py-3">Tax
-								Invoice</h3></th>
+								Invoice</h6></th>
 					</tr>
 				</thead>
 				<tbody class="table-width">
@@ -70,18 +76,18 @@
 					</tr>
 					<tr>
 						<td class="pt-3-half"><input type="text" class="form-control"
-							name="invoiceDate" onfocus="(this.type='date')"
-							onblur="(this.type='text')" placeholder="Invoice Date"
+							name="invoiceDate" onfocus="(this.type='date')" onChange="setDate(this);"
+							onblur="if(!this.value)this.type='text'" placeholder="Invoice Date"
 							required="required"></td>
 						<td class="pt-3-half"><input type="text" class="form-control"
 							name="poDate" onfocus="(this.type='date')"
-							onblur="(this.type='text')" placeholder="PO Date"
+							onblur="if(!this.value)this.type='text'" placeholder="PO Date"
 							required="required"></td>
 					</tr>
 					<tr>
 						<td class="pt-3-half"><input type="text" class="form-control"
 							name="dateOfSupply" onfocus="(this.type='date')"
-							onblur="(this.type='text')" placeholder="Date of Supply"
+							onblur="if(!this.value)this.type='text'" placeholder="Date of Supply"
 							required="required"></td>
 						<td class="pt-3-half"><input type="text" class="form-control"
 							name="transportMode" placeholder="Transport Mode"
@@ -176,6 +182,10 @@
 						</colgroup>
 						<thead>
 							<tr bgcolor="#BFD6E9">
+								<th class="text-center text-uppercase" width="100%" colspan="14"><span style='font-weight: bold;'>Item
+								Details</span></th>
+							</tr>
+							<tr bgcolor="#BFD6E9">
 								<th class="text-center">Sr. No.</th>
 								<th class="text-center">Product Description</th>
 								<th class="text-center">HSN Code</th>
@@ -258,11 +268,11 @@
 								<td class="pt-3-half" colspan="2"></td>
 								<td class="pt-3-half"><input type="text"
 									name="ttlTaxableValue" readonly="readonly"></td>
-								<td class="pt-3-half"><input type="text" name="ttlCgst"
+								<td id ="ttlCgst" class="pt-3-half"><input type="text" name="ttlCgst"
 									readonly="readonly"></td>
-								<td class="pt-3-half"><input type="text" name="ttlSgst"
+								<td id ="ttlSgst" class="pt-3-half"><input type="text" name="ttlSgst"
 									readonly="readonly"></td>
-								<td class="pt-3-half"><input type="text" name="ttlIgst"
+								<td id ="ttlIgst" class="pt-3-half"><input type="text" name="ttlIgst"
 									readonly="readonly"></td>
 								<td class="pt-3-half"><input type="text"
 									name="ttlTotalAmount" readonly="readonly"></td>
@@ -317,8 +327,7 @@
 							</tr>
 							<tr>
 								<td class="pt-3-half" colspan="3"><input type="text"
-									name="bankAccountNumber" placeholder="Bank A/c"
-									required="required"></td>
+									name="bankAccountNumber" th:field="${company.companyBankAC}" readonly="readonly"></td>
 								<td class="pt-3-half" rowspan="5" colspan="9">Certified the
 									particulars given above are required and correct <pre>
 		
@@ -335,7 +344,7 @@
 							</tr>
 							<tr>
 								<td class="pt-3-half" colspan="3"><input type="text"
-									name="bankifsc" placeholder="Bank IFSC" required="required"></td>
+									name="bankifsc" th:field="${company.companyBankIFSC}" readonly="readonly"></td>
 							</tr>
 							<tr>
 								<td class="pt-3-half" colspan="3"><span
@@ -344,8 +353,7 @@
 							<tr>
 								<td class="pt-3-half" colspan="3" rowspan="2"><textarea
 										cols="40" rows="5" style="height: 110px;"
-										name="termsConditions" placeholder="Terms & Conditions"
-										required="required"></textarea></td>
+										name="termsConditions" th:field="${company.companyBankTNC}" readonly="readonly"></textarea></td>
 							</tr>
 							<tr>
 								<td class="pt-3-half" colspan="2">Common Seal</td>
@@ -390,7 +398,7 @@ window.onbeforeunload = function() {
 	           if (e.preventDefault) e.preventDefault(); 
 	           e.returnValue = false; 
 	   
-	 }
-
+ }
+ 
 </script>
 </th:block>

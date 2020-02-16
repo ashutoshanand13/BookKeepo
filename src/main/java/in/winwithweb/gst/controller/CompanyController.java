@@ -63,10 +63,16 @@ public class CompanyController {
 				e.printStackTrace();
 			}
 			companyDetailsService.save(company);
+			if(company.isRedirected()) {
+				modelAndView.setViewName("salesInvoice");
+			}
 		} else {
 			isDataExists.setCompanyAddress(company.getCompanyAddress());
 			isDataExists.setCompanyEmail(company.getCompanyEmail());
 			isDataExists.setCompanyGstin(company.getCompanyGstin());
+			isDataExists.setCompanyBankAC(company.getCompanyBankAC());
+			isDataExists.setCompanyBankIFSC(company.getCompanyBankIFSC());
+			isDataExists.setCompanyBankTNC(company.getCompanyBankTNC());
 			try {
 				CompanyUploadedFile = companyLogo.getBytes();
 				if(CompanyUploadedFile.length!=0){
