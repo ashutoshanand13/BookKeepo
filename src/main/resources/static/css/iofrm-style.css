@@ -396,7 +396,7 @@ html, body {
     color: #8D8D8D;
     outline: none;
     resize: none;
-    height: 120px;
+    height: 80px;
     -webkit-transition: none;
     transition: none;
     margin-bottom: 14px;
@@ -835,4 +835,8 @@ div.form-body password.loginformfields
 
 div.form-body div.showinvoices{
 	margin-top: -500px;
+}
+
+div.form-body div.fluid-height{
+	height : 135%;
 }
