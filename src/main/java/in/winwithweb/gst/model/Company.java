@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.Data;
 
@@ -53,6 +54,18 @@ public class Company {
 	@Lob
 	@Column(name = "company_logo", length = 2097152)
 	private byte[] companyLogo;
+	
+	@Transient
+	private boolean redirected;
+	
+	public Company() {
+		
+	}
+	
+	public Company(boolean redirected) {
+		super();
+		this.redirected = redirected;
+	}
 	
 	public String getUserName() {
 		return userName;
@@ -180,4 +193,17 @@ public class Company {
 	public void setCompanyBankTNC(String companyBankTNC) {
 		this.companyBankTNC = companyBankTNC;
 	}
+	/**
+	 * @return the redirected
+	 */
+	public boolean isRedirected() {
+		return redirected;
+	}
+	/**
+	 * @param redirected the redirected to set
+	 */
+	public void setRedirected(boolean redirected) {
+		this.redirected = redirected;
+	}
+	
 }

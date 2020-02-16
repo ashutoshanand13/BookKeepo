@@ -63,6 +63,9 @@ public class CompanyController {
 				e.printStackTrace();
 			}
 			companyDetailsService.save(company);
+			if(company.isRedirected()) {
+				modelAndView.setViewName("salesInvoice");
+			}
 		} else {
 			isDataExists.setCompanyAddress(company.getCompanyAddress());
 			isDataExists.setCompanyEmail(company.getCompanyEmail());
