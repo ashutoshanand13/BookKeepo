@@ -66,6 +66,7 @@ function removeTableColumnClass() {
 	var cells = container.querySelectorAll('td');
 	for (var i = 0; i < cells.length; i++) {
 		cells[i].classList.remove('unselectable');
+		cells[i].classList.remove('hide');
 	}
 }
 
@@ -92,9 +93,12 @@ function disableColumns(ship, bill) {
 			var cells = container.querySelectorAll('td:nth-child(13)');
 
 			$("#igstData").addClass('unselectable');
+			$("#igstData").addClass('hide');
+			$("#ttlIgst").addClass('unselectable');
+			$("#ttlIgst").addClass('hide');
 			for (var i = 0; i < cells.length; i++) {
 				cells[i].classList.add('unselectable');
-
+				cells[i].classList.add('hide');
 			}
 		} else {
 			var container = document.querySelector("#itemTable");
@@ -102,15 +106,21 @@ function disableColumns(ship, bill) {
 			var cells1 = container.querySelectorAll('td:nth-child(11)');
 			$("#cgstData").addClass('unselectable');
 			$("#sgstData").addClass('unselectable');
+			$("#cgstData").addClass('hide');
+			$("#sgstData").addClass('hide');
+			$("#ttlSgst").addClass('unselectable');
+			$("#ttlSgst").addClass('hide');
+			$("#ttlCgst").addClass('unselectable');
+			$("#ttlCgst").addClass('hide');
 
 			for (var i = 0; i < cells.length; i++) {
 				cells[i].classList.add('unselectable');
-
+				cells[i].classList.add('hide');
 			}
 
 			for (var i = 0; i < cells1.length; i++) {
 				cells1[i].classList.add('unselectable');
-
+				cells1[i].classList.add('hide');
 			}
 		}
 	}
@@ -386,4 +396,11 @@ function getAmountInWords() {
 			$('#amountWords').html(data);
 		}
 		});
+}
+
+function setDate(data) {
+	debugger;
+	 $("[name=dateOfSupply]").val($(data).val());
+	 $("[name=dateOfSupply]").focus();
+	 $(data).focus();
 }
