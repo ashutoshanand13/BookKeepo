@@ -327,7 +327,7 @@
 							</tr>
 							<tr>
 								<td class="pt-3-half" colspan="3"><input type="text"
-									name="bankAccountNumber" th:field="${company.companyBankAC}" readonly="readonly"></td>
+									name="bankAccountNumber" th:value="${company.companyBankAC}" readonly="readonly"></td>
 								<td class="pt-3-half" rowspan="5" colspan="9">Certified the
 									particulars given above are required and correct <pre>
 		
@@ -344,7 +344,7 @@
 							</tr>
 							<tr>
 								<td class="pt-3-half" colspan="3"><input type="text"
-									name="bankifsc" th:field="${company.companyBankIFSC}" readonly="readonly"></td>
+									name="bankifsc" th:value="${company.companyBankIFSC}" readonly="readonly"></td>
 							</tr>
 							<tr>
 								<td class="pt-3-half" colspan="3"><span
@@ -353,7 +353,7 @@
 							<tr>
 								<td class="pt-3-half" colspan="3" rowspan="2"><textarea
 										cols="40" rows="5" style="height: 110px;"
-										name="termsConditions" th:field="${company.companyBankTNC}" readonly="readonly"></textarea></td>
+										name="termsConditions" th:text="${company.companyBankTNC}" readonly="readonly"></textarea></td>
 							</tr>
 							<tr>
 								<td class="pt-3-half" colspan="2">Common Seal</td>
@@ -364,7 +364,7 @@
 				</div>
 				<div class="row">
 				<div class="col-md-5 form-group"></div>
-				<div class="col-md-2 form-group"><button id="export-btn"
+				<div class="col-md-2 form-group"><button id="export-btn" name="salesInvoice"
 					class="btn btn-info btn-rounded btn-sm my-0">Create Invoice</button></div>
 				<div class="col-md-4 form-group"></div>
 					</div>

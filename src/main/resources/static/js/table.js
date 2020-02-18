@@ -14,6 +14,8 @@
  var gstShip = false;
  var shippingType ='';
  
+ var controllerMap = { salesInvoice: "/home/salesinvoice", exportInvoice: "/home/exportinvoice", debitNote:"/home/debitnote", creditNote:"/home/creditnote" };
+ 
  var gstRegex = /^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$/;
  
  const newTr = '<tr>            <td class="pt-3-half"><input type="text" id="srNo" name="excluded:skip" placeholder="Sr No" readonly="readonly"></td>            <td class="pt-3-half"><textarea cols="40" rows="5" id="productDesc" style="height:60px;" name="excluded:skip" placeholder="Product Description"></textarea></td>            <td class="pt-3-half"><input type="text" id="hsnCode" name="excluded:skip" placeholder="HSN Code"></td>            <td class="pt-3-half"><input type="text" id="uom" name="excluded:skip" placeholder="UOM"></td>            <td class="pt-3-half"><input type="number" id="qty" name="excluded:skip" placeholder="QTY"></td>            <td class="pt-3-half"><input type="number" id="rate" name="excluded:skip" placeholder="Rate"></td>            <td class="pt-3-half"><input type="text" id="amount" name="excluded:skip" placeholder="Amount" readonly="readonly"></td>            <td class="pt-3-half"><input type="number" id="discount" name="excluded:skip" placeholder="Discount"></td>            <td class="pt-3-half"><input type="number" id="gstRate" name="excluded:skip" placeholder="GST Rate"></td>            <td class="pt-3-half"><input type="text" id="taxableValue" name="excluded:skip" placeholder="Taxable Value" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="cgst" name="excluded:skip" placeholder="CGST" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="sgst" name="excluded:skip" placeholder="SGST" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="igst" name="excluded:skip" placeholder="IGST" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="totalAmount" name="excluded:skip" placeholder="Total Amount" readonly="readonly"></td>			<td>			<figure style="display:flex;">              <span class="table-add"><img class="autoResizeImage" style="margin-right: 2px;" src="/images/add.png" alt=""></span>              <span class="table-remove"><img class="autoResizeImage" style="margin-left: 2px;" src="/images/remove.png" alt=""></span>              </figure>            </td>          </tr>';
@@ -135,6 +137,8 @@ function setAlert(message) {
 
  $BTN.on('click', function () {
    var json = '';
+   var name = $(this).attr("name");
+   var url = controllerMap.name;
    
    var f = $("#form")[0];
    
@@ -149,7 +153,7 @@ function setAlert(message) {
 			    	   if(this.id!=="")
 			         obj[this.id] = this.value;
 			       });
-			       if(Object.keys(obj).length!==0)
+			       if(Object.keys(obj).length!==0 && Object.keys(obj).length===14)
 			       newFormData.push(obj);
 			     });
 			   $('#itemList').val(JSON.stringify(newFormData));
@@ -158,7 +162,7 @@ function setAlert(message) {
 						var json = JSON.stringify($('#form').serializeJSON())
 								.replace(/\\/g, "").replace("\"[", "[")
 								.replace("]\"", "]");
-						
+						debugger;
 						$('#overlay').fadeIn();
 						$.ajax({
 							url : "/home/salesinvoice",
@@ -399,7 +403,6 @@ function getAmountInWords() {
 }
 
 function setDate(data) {
-	debugger;
 	 $("[name=dateOfSupply]").val($(data).val());
 	 $("[name=dateOfSupply]").focus();
 	 $(data).focus();
