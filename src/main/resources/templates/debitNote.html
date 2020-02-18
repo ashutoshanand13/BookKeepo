@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{postLoginCommonPage}">
+<head>
+<title>Sales Invoice</title>
+</head>
+
+<div layout:fragment="invoice_fragment" id="form_content">
+	<form id="form">
+		<div class="form-content form-items needs-validation">
+			<table id="headerDetailsTable" style="border: 1px solid black;"
+				class="table table-width table-responsive-md text-center" >
+				<thead class="table-width">
+					<tr bgcolor="#BFD6E9">
+						<th class="text-center" width="100%" height="60" colspan="2"><h3
+								class="text-center font-weight-bold text-uppercase">Invoice Details</h3></th>
+					</tr>
+				</thead>
+				<colgroup>
+					<col span="1" style="width: 40%;">
+					<col span="1" style="width: 60%;">
+				</colgroup>
+				<tbody>
+					<tr style="border: 0px;">
+						<td rowspan="2" style="vertical-align : middle;"><img id="logo" height="100px"
+							th:src="|data:image/png;base64,${logoImage}"></td>
+					</tr>
+					<tr>
+						<td>
+							<p class="companydetails" th:text="${company.companyName}"></p>
+							<p class="companydetails" th:text="${company.companyTelephone}"></p>
+							<p class="companydetails" th:text="${company.companyGstin}"></p>
+							<p class="companydetails" th:text="${company.companyEmail}"></p>
+							<p class="companydetails" th:text="${company.companyAddress}"></p>
+							<p class="companydetails" th:text="${company.companyState}"></p>
+						</td>
+					</tr>
+					<!-- <tr style="border: 0px;">
+						<td th:text="${company.companyName}"></td>
+					</tr>
+					<tr style="border: 0px;">
+						<td class="pt-3-half" th:text="${company.companyAddress}"></td>
+					</tr>
+					<tr style="border: 0px;">
+						<td class="pt-3-half" th:text="${company.companyState}"></td>
+					</tr>
+					<tr style="border: 0px;">
+						<td class="pt-3-half" th:text="${company.companyTelephone}"></td>
+					</tr>
+					<tr style="border: 0px;">
+						<td class="pt-3-half" th:text="${company.companyGstin}"></td>
+					</tr>
+					<tr style="border: 0px;">
+						<td class="pt-3-half" th:text="${company.companyEmail}"></td>
+					</tr> -->
+				</tbody>
+			</table>
+
+			<table id="invoiceDetailsTable" border="1"
+				class="table table-width table-responsive-md text-center">
+				<thead class="table-width">
+					<tr bgcolor="#BFD6E9">
+						<th class="text-center" width="100%" colspan="2"><h6
+								class="text-center font-weight-bold text-uppercase py-3">Debit
+								Note</h6></th>
+					</tr>
+				</thead>
+				<tbody class="table-width">
+					<tr>
+						<td class="pt-3-half"><input type="text" class="form-control"
+							name="documentNumber" placeholder="Document No." required="required"></td>
+						<td class="pt-3-half"><input type="text" class="form-control"
+							name="againstInvoice" placeholder="Against Invoice" required="required"></td>
+					</tr>
+					<tr>
+						<td class="pt-3-half"><input type="text" class="form-control"
+							name="issueDate" onfocus="(this.type='date')"
+							onblur="if(!this.value)this.type='text'" placeholder="Issue Date"
+							required="required"></td>
+						<td class="pt-3-half"><input type="text" class="form-control"
+							name="dateOfInvoice" onfocus="(this.type='date')"
+							onblur="if(!this.value)this.type='text'" placeholder="Date of Invoice"
+							required="required"></td>
+					</tr>
+					<tr>
+						<td class="pt-3-half"><input type="text" class="form-control"
+							name="state" placeholder="State" required="required"></td>
+						<td class="pt-3-half" bgcolor="#EEFF74"><input type="text"
+							class="form-control" name="reverseCharge"
+							placeholder="Reverse Charge (Y/N)" onKeyDown="inputValidate()" maxlength="1" required="required"></td>
+					</tr>
+				</tbody>
+			</table>
+
+			<table id="partyDetailsTable" border="1"
+				class="table table-width table-responsive-md text-center">
+
+				<thead>
+					<tr bgcolor="#BFD6E9">
+						<th class="text-center"><span style='font-weight: bold;'>Bill
+								to Party</span></th>
+						<th class="text-center"><span style='font-weight: bold;'>Ship
+								to Party</span></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="pt-3-half"><input type="text" class="form-control"
+							name="nameBill" placeholder="Name" required="required"></td>
+						<td class="pt-3-half"><input type="text" class="form-control"
+							name="nameShip" placeholder="Name" required="required"></td>
+					</tr>
+					<tr>
+						<td class="pt-3-half"><input type="text" class="form-control"
+							name="addressBill" placeholder="Address" required="required"></td>
+						<td class="pt-3-half"><input type="text" class="form-control"
+							name="addressShip" placeholder="Address" required="required"></td>
+					</tr>
+					<tr>
+						<td class="pt-3-half"><input type="text" class="form-control"
+							name="gstinBill" placeholder="GSTIN" onblur="validateGST(this)"
+							pattern="^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$"
+							required="required"
+							oninvalid="this.setCustomValidity('GST Identification Number is not valid. It should be in this 11AAAAA1111Z1A1 format')" oninput="setCustomValidity('')"></td>
+						<td class="pt-3-half"><input type="text" class="form-control"
+							name="gstinShip" placeholder="GSTIN" onblur="validateGST(this)"
+							pattern="^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$"
+							required="required"
+							oninvalid="this.setCustomValidity('GST Identification Number is not valid. It should be in this 11AAAAA1111Z1A1 format')" oninput="setCustomValidity('')"></td>
+					</tr>
+					<tr>
+						<td class="pt-3-half"><input type="text" class="form-control"
+							name="stateBill" placeholder="State" required="required"></td>
+						<td class="pt-3-half"><input type="text" class="form-control"
+							name="stateShip" placeholder="State" required="required"></td>
+					</tr>
+
+				</tbody>
+
+			</table>
+
+			<div id = "alert_placeholder"></div>
+
+			<div id="tableJson">
+				<div id=table>
+					<input type="hidden" id="itemList" name="itemList">
+					<table id="itemTable" border="1"
+						class="table table-width2 table-responsive-md text-center">
+						<colgroup>
+						<col width="2%">
+						<col width="10%">
+						<col width="7%">
+						<col width="5%">
+						<col width="7%">
+						<col width="8%">
+						<col width="10%">
+						<col width="5%">
+						<col width="9%">
+						<col width="6%">
+						<col width="5%">
+						<col width="5%">
+						<col width="5%">
+						<col width="10%">
+						</colgroup>
+						<thead>
+							<tr bgcolor="#BFD6E9">
+								<th class="text-center text-uppercase" width="100%" colspan="14"><span style='font-weight: bold;'>Item
+								Details</span></th>
+							</tr>
+							<tr bgcolor="#BFD6E9">
+								<th class="text-center">Sr. No.</th>
+								<th class="text-center">Product Description</th>
+								<th class="text-center">HSN Code</th>
+								<th class="text-center">UOM</th>
+								<th class="text-center">Qty</th>
+								<th class="text-center">Rate</th>
+								<th class="text-center">Amount</th>
+								<th class="text-center">Discount</th>
+								<th class="text-center">GST rate</th>
+								<th class="text-center">Taxable Value</th>
+								<th class="text-center">CGST</th>
+								<th class="text-center">SGST</th>
+								<th class="text-center">IGST</th>
+								<th class="text-center">Total Amount</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="pt-3-half"><input type="text" id="srNo"
+									name="excluded:skip" placeholder="Sr No" readonly="readonly"></td>
+								<td class="pt-3-half"><textarea cols="40" rows="5"
+										id="productDesc" style="height: 60px;" name="excluded:skip"
+										placeholder="Product Description" required="required"></textarea></td>
+								<td class="pt-3-half"><input type="text" id="hsnCode"
+									name="excluded:skip" placeholder="HSN Code" required="required"></td>
+								<td class="pt-3-half"><input type="text" id="uom"
+									name="excluded:skip" placeholder="UOM" required="required"></td>
+								<td class="pt-3-half"><input type="text" onfocus="(this.type='number')"min="0" id="qty"
+									name="excluded:skip" placeholder="QTY" required="required"></td>
+								<td class="pt-3-half"><input type="text" onfocus="(this.type='number')" min="0"
+									id="rate" name="excluded:skip" placeholder="Rate"
+									required="required"></td>
+								<td class="pt-3-half"><input type="text" id="amount"
+									name="excluded:skip" placeholder="Amount" readonly="readonly"></td>
+								<td class="pt-3-half"><input type="text" onfocus="(this.type='number')" min="0"
+									id="discount" name="excluded:skip" placeholder="Discount"
+									required="required"></td>
+								<td class="pt-3-half"><input type="text" onfocus="(this.type='number')" min="0"
+									id="gstRate" name="excluded:skip" placeholder="GST Rate"
+									required="required"> 
+									<!-- <select name="selectbasic" class="pt-3-half salesformcontent" id="gstRate" required="required">
+							<option class="form-control" value="0">0%</option>
+							<option class="form-control" value="5">5%</option>
+							<option class="form-control" value="12">12%</option>
+							<option class="form-control" value="18">18%</option>
+							<option class="form-control" value="28">28%</option>
+						</select> --></td>
+								<td class="pt-3-half"><input type="text" id="taxableValue"
+									name="excluded:skip" placeholder="Taxable Value"
+									readonly="readonly"></td>
+								<td class="pt-3-half"><input type="text" id="cgst"
+									name="excluded:skip" placeholder="CGST" readonly="readonly"></td>
+								<td class="pt-3-half"><input type="text" id="sgst"
+									name="excluded:skip" placeholder="SGST" readonly="readonly"></td>
+								<td class="pt-3-half"><input type="text" id="igst"
+									name="excluded:skip" placeholder="IGST" readonly="readonly"></td>
+								<td class="pt-3-half"><input type="text" id="totalAmount"
+									name="excluded:skip" placeholder="Total Amount"
+									readonly="readonly"></td>
+								<td>
+									<figure style="display: flex;">
+										<span class="table-add"><img class="autoResizeImage"
+											style="margin-right: 2px;" th:src="@{/images/add.png}" alt=""></span>
+										<span class="table-remove"><img class="autoResizeImage"
+											style="margin-left: 2px;" th:src="@{/images/remove.png}"
+											alt=""></span>
+									</figure>
+								</td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr>
+								<td class="pt-3-half" colspan="4"><span
+									style='font-weight: bold;'>Total</span></td>
+								<td class="pt-3-half"><input type="text" name="ttlQty"
+									readonly="readonly"></td>
+								<td class="pt-3-half"></td>
+								<td class="pt-3-half"><input type="text" name="ttlAmount"
+									readonly="readonly"></td>
+								<td class="pt-3-half" colspan="2"></td>
+								<td class="pt-3-half"><input type="text"
+									name="ttlTaxableValue" readonly="readonly"></td>
+								<td id ="ttlCgst" class="pt-3-half"><input type="text" name="ttlCgst"
+									readonly="readonly"></td>
+								<td id ="ttlSgst" class="pt-3-half"><input type="text" name="ttlSgst"
+									readonly="readonly"></td>
+								<td id ="ttlIgst" class="pt-3-half"><input type="text" name="ttlIgst"
+									readonly="readonly"></td>
+								<td class="pt-3-half"><input type="text"
+									name="ttlTotalAmount" readonly="readonly"></td>
+							</tr>
+							<tr>
+								<td class="pt-3-half" colspan="5" bgcolor="#BFD6E9"><span
+									style='font-weight: bold;'>Total Invoice amount in words</span></td>
+								<td class="pt-3-half" colspan="8"><span
+									style='font-weight: bold;'>Total Amount before Tax</span></td>
+								<td class="pt-3-half"><input type="text"
+									name="totalAmountBeforeTax" readonly="readonly"></td>
+							</tr>
+							<tr>
+								<td rowspan="5" colspan="5" id="amountWords"></td>
+								<td class="pt-3-half" colspan="8" bgcolor="#92D14F"><span
+									style='font-weight: bold;'>Add: IGST</span></td>
+								<td class="pt-3-half" id="igstData"><input type="text" name="totalAddIGst"
+									readonly="readonly"></td>
+							</tr>
+							<tr>
+							<td class="pt-3-half" colspan="8" bgcolor="#92D14F"><span
+									style='font-weight: bold;'>Add: SGST</span></td>
+								<td class="pt-3-half" id="sgstData"><input type="text" name="totalAddSGst"
+									readonly="readonly"></td>
+							</tr>
+							<tr>
+							<td class="pt-3-half" colspan="8" bgcolor="#92D14F"><span
+									style='font-weight: bold;'>Add: CGST</span></td>
+								<td class="pt-3-half" id="cgstData"><input type="text" name="totalAddCGst"
+									readonly="readonly"></td>
+							</tr>
+							<tr>
+								<td class="pt-3-half" colspan="8"><span
+									style='font-weight: bold;'>Total Tax Amount</span></td>
+								<td class="pt-3-half"><input type="text"
+									name="totalTaxAmount" readonly="readonly"></td>
+							</tr>
+							<tr>
+								<td class="pt-3-half" colspan="8"><span
+									style='font-weight: bold;'>Total Amount After Tax</span></td>
+								<td class="pt-3-half"><input type="text"
+									name="totalAmountAfterTax" readonly="readonly"></td>
+							</tr>
+							<tr>
+								<td class="pt-3-half" bgcolor="#BFD6E9" colspan="3"><span
+									style='font-weight: bold;'>Bank Details:</span></td>
+								<td class="pt-3-half" rowspan="5" colspan="2"></td>
+								<td class="pt-3-half" colspan="8"><span
+									style='font-weight: bold;'>GST on Reverse Charge</span></td>
+								<td class="pt-3-half"><input type="text"
+									name="gstReverseCharge" readonly="readonly"></td>
+							</tr>
+							<tr>
+								<td class="pt-3-half" colspan="3"><input type="text"
+									name="bankAccountNumber" th:field="${company.companyBankAC}" readonly="readonly"></td>
+								<td class="pt-3-half" rowspan="5" colspan="9">Certified the
+									particulars given above are required and correct <pre>
+		
+		
+		</pre><span style='font-weight: bold;'>For [[${company.companyName}]]</span> <pre>
+		
+		
+		
+		
+		
+		
+		</pre><span style='font-weight: bold;'>Authorized Signatory</span>
+								</td>
+							</tr>
+							<tr>
+								<td class="pt-3-half" colspan="3"><input type="text"
+									name="bankifsc" th:field="${company.companyBankIFSC}" readonly="readonly"></td>
+							</tr>
+							<tr>
+								<td class="pt-3-half" colspan="3"><span
+									style='font-weight: bold;'>Bank</span></td>
+							</tr>
+							<tr>
+								<td class="pt-3-half" colspan="3" rowspan="2"><textarea
+										cols="40" rows="5" style="height: 110px;"
+										name="termsConditions" th:field="${company.companyBankTNC}" readonly="readonly"></textarea></td>
+							</tr>
+							<tr>
+								<td class="pt-3-half" colspan="2">Common Seal</td>
+							</tr>
+						</tfoot>
+
+					</table>
+				</div>
+				<div class="row">
+				<div class="col-md-5 form-group"></div>
+				<div class="col-md-2 form-group"><button id="export-btn"
+					class="btn btn-info btn-rounded btn-sm my-0">Create Invoice</button></div>
+				<div class="col-md-4 form-group"></div>
+					</div>
+			</div>
+
+		</div>
+		<div id="overlay" style="display:none;">
+    <div class="spinner"></div>
+    <br/>
+    Loading...
+</div>
+	</form>
+</div>
+<th:block layout:fragment="scripts">
+	<script>
+window.onload = function() {
+	setValues();
+};
+
+window.onbeforeunload = function() {
+    return "Are you sure you want to leave this page?"; // you can make this dynamic, ofcourse...
+ };
+ 
+ function inputValidate(){
+	   var e = event || window.event;  
+	   var key = e.keyCode || e.which;                              
+	   if ((key===89)||(key===78)||(key===8)) {
+		   return true;
+		   
+	   }
+	           if (e.preventDefault) e.preventDefault(); 
+	           e.returnValue = false; 
+	   
+ }
+ 
+</script>
+</th:block>

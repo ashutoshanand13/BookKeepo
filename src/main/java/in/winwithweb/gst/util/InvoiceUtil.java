@@ -36,7 +36,7 @@ import in.winwithweb.gst.model.sales.InvoiceDetails;
 import in.winwithweb.gst.model.sales.InvoiceProductDetails;
 
 /**
- * @author yash Singh
+ * @author Yash Singh
  *
  */
 public class InvoiceUtil {
