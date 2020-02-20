@@ -63,42 +63,26 @@
 				<thead class="table-width">
 					<tr bgcolor="#BFD6E9">
 						<th class="text-center" width="100%" colspan="2"><h6
-								class="text-center font-weight-bold text-uppercase py-3">Tax
-								Invoice</h6></th>
+								class="text-center font-weight-bold text-uppercase py-3">Credit
+								Note</h6></th>
 					</tr>
 				</thead>
 				<tbody class="table-width">
 					<tr>
 						<td class="pt-3-half"><input type="text" class="form-control"
-							name="invoiceNo" placeholder="Invoice No." required="required"></td>
+							name="documentNumber" placeholder="Document No." required="required"></td>
 						<td class="pt-3-half"><input type="text" class="form-control"
-							name="poNo" placeholder="PO No." required="required"></td>
+							name="againstInvoice" placeholder="Against Invoice" required="required"></td>
 					</tr>
 					<tr>
 						<td class="pt-3-half"><input type="text" class="form-control"
-							name="invoiceDate" onfocus="(this.type='date')" onChange="setDate(this);"
-							onblur="if(!this.value)this.type='text'" placeholder="Invoice Date"
+							name="issueDate" onfocus="(this.type='date')"
+							onblur="if(!this.value)this.type='text'" placeholder="Issue Date"
 							required="required"></td>
 						<td class="pt-3-half"><input type="text" class="form-control"
-							name="poDate" onfocus="(this.type='date')"
-							onblur="if(!this.value)this.type='text'" placeholder="PO Date"
+							name="dateOfInvoice" onfocus="(this.type='date')"
+							onblur="if(!this.value)this.type='text'" placeholder="Date of Invoice"
 							required="required"></td>
-					</tr>
-					<tr>
-						<td class="pt-3-half"><input type="text" class="form-control"
-							name="dateOfSupply" onfocus="(this.type='date')"
-							onblur="if(!this.value)this.type='text'" placeholder="Date of Supply"
-							required="required"></td>
-						<td class="pt-3-half"><input type="text" class="form-control"
-							name="transportMode" placeholder="Transport Mode"
-							required="required"></td>
-					</tr>
-					<tr>
-						<td class="pt-3-half"><input type="text" class="form-control"
-							name="placeOfSupply" placeholder="Place of Supply"
-							required="required"></td>
-						<td class="pt-3-half"><input type="text" class="form-control"
-							name="vehicleNo" placeholder="Vehicle No" required="required"></td>
 					</tr>
 					<tr>
 						<td class="pt-3-half"><input type="text" class="form-control"
@@ -364,7 +348,7 @@
 				</div>
 				<div class="row">
 				<div class="col-md-5 form-group"></div>
-				<div class="col-md-2 form-group"><button id="export-btn" name="salesInvoice"
+				<div class="col-md-2 form-group"><button id="export-btn" name="creditNote"
 					class="btn btn-info btn-rounded btn-sm my-0">Create Invoice</button></div>
 				<div class="col-md-4 form-group"></div>
 					</div>

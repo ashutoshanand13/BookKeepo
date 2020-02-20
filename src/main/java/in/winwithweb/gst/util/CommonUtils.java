@@ -3,6 +3,16 @@ package in.winwithweb.gst.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Base64;
+import java.util.Properties;
+import java.util.UUID;
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -35,7 +45,7 @@ public class CommonUtils {
 
 		return base64Encoded;
 	}
-	
+
 	/*
 	 * 
 	 */
@@ -147,15 +157,59 @@ public class CommonUtils {
 		}
 		return num;
 	}
-	
+
 	public static String numberConverter(String num) {
 
 		if (num.split("\\.")[1].equals("00")) {
-			return (CommonUtils.convertNumberToWords(Integer.parseInt(num.split("\\.")[0]))+" rupees");
+			return (CommonUtils.convertNumberToWords(Integer.parseInt(num.split("\\.")[0])) + " rupees");
 		} else {
 			String[] stringarray = num.split("\\.");
 			return (CommonUtils.convertNumberToWords(Integer.parseInt(stringarray[0])) + " rupees and"
 					+ CommonUtils.convertNumberToWords(Integer.parseInt(stringarray[1])) + " Paisa");
 		}
+	}
+
+	public static String getUniqueID() {
+		return UUID.randomUUID().toString();
+
+	}
+
+	public static void sendEmail(String email, String enailfrom, String subject, String body) {
+
+		Properties properties = new Properties();
+		properties.setProperty("mail.smtp.host", "email-smtp.ap-south-1.amazonaws.com");
+		properties.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+		properties.setProperty("mail.smtp.socketFactory.fallback", "false");
+		properties.setProperty("mail.smtp.port", "465");
+		properties.setProperty("mail.smtp.socketFactory.port", "465");
+		properties.put("mail.smtp.starttls.enable", "true");
+		properties.put("mail.smtp.auth", "true");
+		properties.put("mail.debug", "true");
+		properties.put("mail.store.protocol", "pop3");
+		properties.put("mail.transport.protocol", "smtp");
+		properties.put("mail.debug.auth", "true");
+		properties.setProperty("mail.pop3.socketFactory.fallback", "false");
+		Session session = Session.getDefaultInstance(properties, new javax.mail.Authenticator() {
+			@Override
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication("AKIAUN7QVBU46IV7GO23",
+						"BDoenGzgcCuHsT0vkkCKGNCge7NAYev2L6Kb5z0RxNn4");
+			}
+		});
+		try {
+
+			MimeMessage message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(enailfrom));
+
+			message.setSubject(subject);
+			message.setContent(body,"text/html");;
+
+			message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+			Transport.send(message);
+
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
+
 	}
 }
