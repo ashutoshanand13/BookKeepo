@@ -95,7 +95,11 @@
 				<thead>
 					<tr bgcolor="#BFD6E9">
 						<th class="text-center"><span style='font-weight: bold;'>Bill
-								to Party</span></th>
+								to Party</span><select class="form-control"
+						id="selectAccount" style="width: 200px;">
+						<option th:each="account : ${accountList}" th:value="${account}"
+							th:text="${account}"></option>
+					</select></th>
 						<th class="text-center"><span style='font-weight: bold;'>Ship
 								to Party</span></th>
 					</tr>

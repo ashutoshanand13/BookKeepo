@@ -34,7 +34,7 @@ public class ExportInvoiceController {
 		Company company = companyDetailsService.findByUserName(user);
 		if(company==null) {
 			modelAndView.addObject("message", "Please update company details before creating an Invoice");
-			modelAndView.addObject("company",new Company(true));
+			modelAndView.addObject("company",new Company("exportInvoice"));
 			modelAndView.addObject("logoImage",CommonUtils.getImgfromResource("/static/images/image-400x400.jpg"));
 			modelAndView.setViewName("addCompany");
 		}
