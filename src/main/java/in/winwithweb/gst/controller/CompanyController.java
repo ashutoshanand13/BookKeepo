@@ -31,14 +31,14 @@ public class CompanyController {
 		String user = request.getUserPrincipal().getName();
 		ModelAndView modelAndView = new ModelAndView();
 		Company company = companyDetailsService.findByUserName(user);
-		if(company!=null) {
-			modelAndView.addObject("company",company);
-			modelAndView.addObject("logoImage",CommonUtils.getImgfromByteArray(company.getCompanyLogo()));
-		}else {
+		if (company != null) {
+			modelAndView.addObject("company", company);
+			modelAndView.addObject("logoImage", CommonUtils.getImgfromByteArray(company.getCompanyLogo()));
+		} else {
 			modelAndView.addObject("company", new Company());
-			modelAndView.addObject("logoImage",CommonUtils.getImgfromResource("/static/images/image-400x400.jpg"));
+			modelAndView.addObject("logoImage", CommonUtils.getImgfromResource("/static/images/image-400x400.jpg"));
 		}
-		
+
 		modelAndView.setViewName("addCompany");
 		return modelAndView;
 	}
@@ -47,7 +47,7 @@ public class CompanyController {
 	public ModelAndView addCompany(@Valid @ModelAttribute("company") Company company, BindingResult bindingResult,
 			Principal principal, @RequestParam("companyLogo") MultipartFile companyLogo) {
 		ModelAndView modelAndView = new ModelAndView();
-		byte[] CompanyUploadedFile=null;
+		byte[] CompanyUploadedFile = null;
 		company.setUserName(principal.getName());
 		modelAndView.setViewName("addCompany");
 
@@ -58,13 +58,13 @@ public class CompanyController {
 				CompanyUploadedFile = companyLogo.getBytes();
 				company.setCompanyLogo(companyLogo.getBytes());
 				modelAndView.addObject("message", "Company details added successfully!");
-				modelAndView.addObject("logoImage",CommonUtils.getImgfromByteArray(CompanyUploadedFile));
+				modelAndView.addObject("logoImage", CommonUtils.getImgfromByteArray(CompanyUploadedFile));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			companyDetailsService.save(company);
-			if(company.isRedirected()) {
-				modelAndView.setViewName("salesInvoice");
+			if (company.getPageName() != null && !company.getPageName().trim().equals("")) {
+				modelAndView.setViewName(company.getPageName());
 			}
 		} else {
 			isDataExists.setCompanyAddress(company.getCompanyAddress());
@@ -75,11 +75,12 @@ public class CompanyController {
 			isDataExists.setCompanyBankTNC(company.getCompanyBankTNC());
 			try {
 				CompanyUploadedFile = companyLogo.getBytes();
-				if(CompanyUploadedFile.length!=0){
-					isDataExists.setCompanyLogo(companyLogo.getBytes());	
-				}else {
+				if (CompanyUploadedFile.length != 0) {
+					isDataExists.setCompanyLogo(companyLogo.getBytes());
+				} else {
 					CompanyUploadedFile = isDataExists.getCompanyLogo();
-					isDataExists.setCompanyLogo(isDataExists.getCompanyLogo());//Making changes if company page is submitted w/o changing anything
+					isDataExists.setCompanyLogo(isDataExists.getCompanyLogo());// Making changes if company page is
+																				// submitted w/o changing anything
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -88,7 +89,7 @@ public class CompanyController {
 			isDataExists.setCompanyState(company.getCompanyState());
 			isDataExists.setCompanyTelephone(company.getCompanyTelephone());
 			companyDetailsService.save(isDataExists);
-			modelAndView.addObject("logoImage",CommonUtils.getImgfromByteArray(CompanyUploadedFile));
+			modelAndView.addObject("logoImage", CommonUtils.getImgfromByteArray(CompanyUploadedFile));
 			modelAndView.addObject("message", "Company details updated successfully!");
 		}
 
