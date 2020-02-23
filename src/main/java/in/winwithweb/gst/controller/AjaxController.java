@@ -46,7 +46,7 @@ public class AjaxController {
 		return new Gson().toJson(accountService.findByAccountName(accountName));
 	}
 
-	@RequestMapping(value = "/home/imagebase64", method = RequestMethod.GET, produces = "application/text")
+	@RequestMapping(value = "/home/imagebase64", method = RequestMethod.GET, produces = "text/plain")
 	public @ResponseBody String getImageBase64() {
 		return CommonUtils.getImgfromResource("/static/images/image-400x400.jpg");
 	}

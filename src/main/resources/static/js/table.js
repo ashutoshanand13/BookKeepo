@@ -388,12 +388,11 @@ function checkifImageExists(data) {
 	debugger;
 	$.ajax({
 		type : "GET",
-		contentType : "application/text",
-		url : "imagebase64",
-		dataType : 'json',				
+		contentType : "text/plain",
+		url : "imagebase64",			
 		success : function(base64String) {
 			if(!data.includes(base64String))
-				document.getElementById("companylogo").required = false;
+				$("#companylogo").removeAttr('required');
 		}
 		});
 	
