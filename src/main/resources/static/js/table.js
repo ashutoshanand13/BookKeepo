@@ -204,7 +204,7 @@ function setValues() {
 	            	$("[name=ttlQty]").val(checkValueNaN(getSum(ttlQty)));
 	            }
 	            var rate = $tblrow.find("[id=rate]").val();
-	            var amount = parseInt(qty, 10) * parseFloat(rate);
+	            var amount = parseFloat(qty) * parseFloat(rate);
 	            if (!isNaN(amount)) {
 	            	ttlAmount[index]=amount;
 	                $tblrow.find("#amount").val(amount.toFixed(2));
@@ -407,3 +407,34 @@ function setDate(data) {
 	 $("[name=dateOfSupply]").focus();
 	 $(data).focus();
 }
+
+$("#selectAccount").change(function() {
+	var accountName = $("#selectAccount").val();
+	debugger;
+	if(accountName === "Select Account") {
+		$("[name=nameBill").val("");
+		$("[name=addressBill").val("");
+		$("[name=gstinBill").val("");
+		$("[name=stateBill").val("");
+		
+	} 
+	else {
+		$.ajax({
+			type : "GET",
+			contentType : "application/json",
+			url : "accountdetails?accountName=" + accountName,
+			dataType : 'json',				
+			success : function(data) {
+				$("[name=nameBill").val(data.accountName);
+				$("[name=nameShip").val(data.accountName);
+				$("[name=addressBill").val(data.accountAddress);
+				$("[name=addressShip").val(data.accountAddress);
+				$("[name=gstinBill").val(data.gstin);
+				$("[name=gstinShip").val(data.gstin);
+				$("[name=stateBill").val(data.accountState);
+				$("[name=stateShip").val(data.accountState);
+				
+			}
+			});
+	}
+});
