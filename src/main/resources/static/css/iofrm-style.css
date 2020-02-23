@@ -840,3 +840,6 @@ div.form-body div.showinvoices{
 div.form-body div.fluid-height{
 	height : 135%;
 }
+#logo{
+	float: left;
+}
