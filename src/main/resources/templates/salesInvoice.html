@@ -14,21 +14,15 @@
 				class="table table-width table-responsive-md text-center" >
 				<thead class="table-width">
 					<tr bgcolor="#BFD6E9">
-						<th class="text-center" width="100%" height="60" colspan="2"><h3
+						<th class="text-center" width="100%" height="60" colspan="3"><h3
 								class="text-center font-weight-bold text-uppercase">Invoice Details</h3></th>
 					</tr>
 				</thead>
-				<colgroup>
-					<col span="1" style="width: 40%;">
-					<col span="1" style="width: 60%;">
-				</colgroup>
 				<tbody>
 					<tr style="border: 0px;">
-						<td rowspan="2" style="vertical-align : middle;"><img id="logo" height="100px"
+						<td rowspan="1" style="vertical-align : middle;"><img id="logo" height="100px" width="200px"
 							th:src="|data:image/png;base64,${logoImage}"></td>
-					</tr>
-					<tr>
-						<td>
+						<td align="left">
 							<p class="companydetails" th:text="${company.companyName}"></p>
 							<p class="companydetails" th:text="${company.companyTelephone}"></p>
 							<p class="companydetails" th:text="${company.companyGstin}"></p>
@@ -36,25 +30,10 @@
 							<p class="companydetails" th:text="${company.companyAddress}"></p>
 							<p class="companydetails" th:text="${company.companyState}"></p>
 						</td>
+						<td>
+							<p class="centerfromtop">Original for Recipient</p>
+						</td>
 					</tr>
-					<!-- <tr style="border: 0px;">
-						<td th:text="${company.companyName}"></td>
-					</tr>
-					<tr style="border: 0px;">
-						<td class="pt-3-half" th:text="${company.companyAddress}"></td>
-					</tr>
-					<tr style="border: 0px;">
-						<td class="pt-3-half" th:text="${company.companyState}"></td>
-					</tr>
-					<tr style="border: 0px;">
-						<td class="pt-3-half" th:text="${company.companyTelephone}"></td>
-					</tr>
-					<tr style="border: 0px;">
-						<td class="pt-3-half" th:text="${company.companyGstin}"></td>
-					</tr>
-					<tr style="border: 0px;">
-						<td class="pt-3-half" th:text="${company.companyEmail}"></td>
-					</tr> -->
 				</tbody>
 			</table>
 
@@ -116,7 +95,11 @@
 				<thead>
 					<tr bgcolor="#BFD6E9">
 						<th class="text-center"><span style='font-weight: bold;'>Bill
-								to Party</span></th>
+								to Party</span><select class="form-control"
+						id="selectAccount" style="width: 200px;">
+						<option th:each="account : ${accountList}" th:value="${account}"
+							th:text="${account}"></option>
+					</select></th>
 						<th class="text-center"><span style='font-weight: bold;'>Ship
 								to Party</span></th>
 					</tr>

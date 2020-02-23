@@ -40,5 +40,15 @@ public class AjaxController {
 	public @ResponseBody String getAmountInWords(@RequestParam String amount) {
 		return new Gson().toJson(CommonUtils.numberConverter(amount));
 	}
+	
+	@RequestMapping(value = "/home/accountdetails", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody String getAccountDetails(@RequestParam String accountName) {
+		return new Gson().toJson(accountService.findByAccountName(accountName));
+	}
 
+	@RequestMapping(value = "/home/imagebase64", method = RequestMethod.GET, produces = "text/plain")
+	public @ResponseBody String getImageBase64() {
+		return CommonUtils.getImgfromResource("/static/images/image-400x400.jpg");
+	}
+	
 }

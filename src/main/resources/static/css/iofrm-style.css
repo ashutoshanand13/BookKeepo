@@ -816,11 +816,11 @@ div.form-content select.salesformcontent{
 }
 
 div.form-content p.companydetails{
-	font-size: 12px;
+	font-size: 14px;
     font-weight: 800;
     line-height: 20px;
     margin-bottom: 3px;
-    text-align: right;
+    text-align: center;
 }
 
 div.form-body input.loginformfields
@@ -839,4 +839,14 @@ div.form-body div.showinvoices{
 
 div.form-body div.fluid-height{
 	height : 135%;
+}
+#logo{
+	float: left;
+}
+div.form-content p.centerfromtop{
+	font-size: 14px;
+    font-weight: 800;
+    line-height: 20px;
+    text-align: right;
+    margin-top: 20%;
 }
