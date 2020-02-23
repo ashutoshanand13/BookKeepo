@@ -28,7 +28,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 
 import in.winwithweb.gst.model.Company;
-import in.winwithweb.gst.model.json.SalesInvoicePageData;
+import in.winwithweb.gst.model.json.InvoicePageData;
 import in.winwithweb.gst.model.sales.InvoiceDetails;
 import in.winwithweb.gst.service.AccountService;
 import in.winwithweb.gst.service.CompanyDetailsService;
@@ -91,9 +91,9 @@ public class SalesInvoiceController {
 	@RequestMapping(value = "/home/salesinvoice", method = RequestMethod.POST, produces = MediaType.APPLICATION_PDF_VALUE)
 	public void setupSalesInvoiceData(@RequestBody String salesInvoiceJson, Principal principal,
 			HttpServletResponse response) throws IOException {
-		SalesInvoicePageData salesInvoiceData = null;
+		InvoicePageData salesInvoiceData = null;
 		try {
-			salesInvoiceData = gson.fromJson(salesInvoiceJson, SalesInvoicePageData.class);
+			salesInvoiceData = gson.fromJson(salesInvoiceJson, InvoicePageData.class);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

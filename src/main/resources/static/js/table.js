@@ -138,7 +138,7 @@ function setAlert(message) {
  $BTN.on('click', function () {
    var json = '';
    var name = $(this).attr("name");
-   var url = controllerMap.name;
+   var url = controllerMap[name];
    
    var f = $("#form")[0];
    
@@ -157,15 +157,16 @@ function setAlert(message) {
 			       newFormData.push(obj);
 			     });
 			   $('#itemList').val(JSON.stringify(newFormData));
+			   
 		});
 		// replace function used to remove extra "" while parsing.
 						var json = JSON.stringify($('#form').serializeJSON())
 								.replace(/\\/g, "").replace("\"[", "[")
 								.replace("]\"", "]");
-						debugger;
+						
 						$('#overlay').fadeIn();
 						$.ajax({
-							url : "/home/salesinvoice",
+							url : url,
 							contentType : "application/text; charset=utf-8",
 							type : 'POST',
 							datatype : 'text',
@@ -385,7 +386,7 @@ $("#changepasswordform").submit(function () {
 
 
 function checkifImageExists(data) {
-	debugger;
+	
 	$.ajax({
 		type : "GET",
 		contentType : "text/plain",
@@ -419,7 +420,7 @@ function setDate(data) {
 
 $("#selectAccount").change(function() {
 	var accountName = $("#selectAccount").val();
-	debugger;
+	
 	if(accountName === "Select Account") {
 		$("[name=nameBill").val("");
 		$("[name=addressBill").val("");

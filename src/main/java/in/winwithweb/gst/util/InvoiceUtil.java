@@ -28,8 +28,8 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import in.winwithweb.gst.model.Company;
+import in.winwithweb.gst.model.json.InvoicePageData;
 import in.winwithweb.gst.model.json.ItemList;
-import in.winwithweb.gst.model.json.SalesInvoicePageData;
 import in.winwithweb.gst.model.sales.InvoiceAddressDetails;
 import in.winwithweb.gst.model.sales.InvoiceBankDetails;
 import in.winwithweb.gst.model.sales.InvoiceDetails;
@@ -43,7 +43,7 @@ public class InvoiceUtil {
 
 	private static float[] columnItemTableWidths = null;
 
-	public static void updateInvoice(InvoiceDetails invoice, SalesInvoicePageData salesInvoiceData,
+	public static void updateInvoice(InvoiceDetails invoice, InvoicePageData salesInvoiceData,
 			Company companyDetails) {
 
 		List<InvoiceProductDetails> productList = new ArrayList<InvoiceProductDetails>();
