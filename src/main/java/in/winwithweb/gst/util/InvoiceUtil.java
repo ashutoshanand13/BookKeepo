@@ -36,7 +36,7 @@ import in.winwithweb.gst.model.sales.InvoiceDetails;
 import in.winwithweb.gst.model.sales.InvoiceProductDetails;
 
 /**
- * @author yash Singh
+ * @author Yash Singh
  *
  */
 public class InvoiceUtil {
@@ -133,11 +133,11 @@ public class InvoiceUtil {
 			docWriter = PdfWriter.getInstance(doc, output);
 
 			// document header attributes
-			doc.addAuthor("betterThanZero");
+			doc.addAuthor(invoice.getInvoiceOwner());
 			doc.addCreationDate();
 			doc.addProducer();
-			doc.addCreator("MySampleCode.com");
-			doc.addTitle("Report with Column Headings");
+			doc.addCreator("BookKeepo.com");
+			doc.addTitle("Invoice");
 			doc.setPageSize(PageSize.A4);
 
 			// open document

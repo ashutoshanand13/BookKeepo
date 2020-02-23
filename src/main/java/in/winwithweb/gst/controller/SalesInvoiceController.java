@@ -7,6 +7,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.security.Principal;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -45,6 +48,8 @@ public class SalesInvoiceController {
 
 	@Autowired
 	Gson gson;
+	
+	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 
 	@RequestMapping(value = "/home/salesinvoice", method = RequestMethod.POST, produces = MediaType.APPLICATION_PDF_VALUE)
 	public void setupSalesInvoiceData(@RequestBody String salesInvoiceJson, Principal principal,
@@ -67,7 +72,11 @@ public class SalesInvoiceController {
 
 		ByteArrayOutputStream invoiceData = InvoiceUtil.createPDF(invoice);
 		response.setContentType("application/pdf");
-		response.addHeader("Content-Disposition", "attachment; filename=invoice.pdf");
+		
+		Date date = new Date();
+		String time = sdf.format(new Timestamp(date.getTime()));
+		
+		response.addHeader("Content-Disposition", "attachment; filename=invoice_"+invoice.getInvoiceNumber()+"_"+time+".pdf");
 		response.setContentLength(invoiceData.size());
 
 		OutputStream out = response.getOutputStream();
@@ -93,7 +102,11 @@ public class SalesInvoiceController {
 		ByteArrayOutputStream invoiceData = InvoiceUtil.createPDF(invoice);
 
 		response.setContentType("application/pdf");
-		response.addHeader("Content-Disposition", "attachment; filename=invoice.pdf");
+		
+		Date date = new Date();
+		String time = sdf.format(new Timestamp(date.getTime()));
+		
+		response.addHeader("Content-Disposition", "attachment; filename=invoice_"+invoice.getInvoiceNumber()+"_"+time+".pdf");
 		response.setContentLength(invoiceData.size());
 
 		OutputStream out = null;
