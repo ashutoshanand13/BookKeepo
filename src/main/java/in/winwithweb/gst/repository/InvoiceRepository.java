@@ -19,4 +19,6 @@ public interface InvoiceRepository extends JpaRepository<InvoiceDetails, Long>{
 	List<InvoiceDetails> findByInvoiceOwner(String name);
 	
 	InvoiceDetails findById(int id);
+	
+	InvoiceDetails findByInvoiceNumber(String invoiceNumber);
 }

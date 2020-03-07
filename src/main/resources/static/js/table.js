@@ -15,6 +15,7 @@
  var shippingType ='';
  
  var controllerMap = { salesInvoice: "/home/salesinvoice", exportInvoice: "/home/exportinvoice", debitNote:"/home/debitnote", creditNote:"/home/creditnote" };
+ var fileMap = { salesInvoice: "salesinvoice.pdf", exportInvoice: "exportinvoice.pdf", debitNote:"debitnote.pdf", creditNote:"creditNote.pdf" };
  
  var gstRegex = /^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$/;
  
@@ -139,6 +140,7 @@ function setAlert(message) {
    var json = '';
    var name = $(this).attr("name");
    var url = controllerMap[name];
+   var fileName = fileMap[name];
    
    var f = $("#form")[0];
    
@@ -163,7 +165,7 @@ function setAlert(message) {
 						var json = JSON.stringify($('#form').serializeJSON())
 								.replace(/\\/g, "").replace("\"[", "[")
 								.replace("]\"", "]");
-						
+						debugger;
 						$('#overlay').fadeIn();
 						$.ajax({
 							url : url,
@@ -178,7 +180,7 @@ function setAlert(message) {
 								var filename = "invoice.pdf";
 								var link = document.createElement('a');
 								link.href = window.URL.createObjectURL(blob);
-								link.download = "invoice.pdf";
+								link.download = fileName;
 								link.click();
 								$("#form")[0].reset();
 								window.scrollTo(0, 0);
@@ -443,8 +445,38 @@ $("#selectAccount").change(function() {
 				$("[name=gstinShip").val(data.gstin);
 				$("[name=stateBill").val(data.accountState);
 				$("[name=stateShip").val(data.accountState);
-				
+				$("[name=gstinBill").focus();
+				$("[name=gstinShip").focus();
+				$("[name=gstinShip").blur();
 			}
 			});
+	}
+});
+
+$("#againstInvoicedropdown").change(function() {
+	var invoiceNumber = $("#againstInvoicedropdown").val();
+	
+	if(invoiceNumber !== "Against Invoice") {
+		$.ajax({
+			type : "GET",
+			contentType : "application/json",
+			url : "invoicedetails?invoiceNo=" + invoiceNumber,
+			dataType : 'json',				
+			success : function(data) {
+				$("[name=invoiceDate").val(data.invoiceDate);
+				$("[name=state").val(data.invoiceState);
+				$("[name=reverseCharge").val(data.invoiceReverseCharge);
+				$("[name=invoiceDate").focus();
+				$("[name=invoiceDate").blur();
+			}
+			});
+		
+	} 
+	else {
+		$("[name=invoiceDate").val("");
+		$("[name=state").val("");
+		$("[name=reverseCharge").val("");
+		$("[name=invoiceDate").focus();
+		$("[name=invoiceDate").blur();
 	}
 });
