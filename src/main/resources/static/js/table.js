@@ -177,7 +177,6 @@ function setAlert(message) {
 								responseType : "blob"
 							},
 							success : function(blob) {
-								var filename = "invoice.pdf";
 								var link = document.createElement('a');
 								link.href = window.URL.createObjectURL(blob);
 								link.download = fileName;
@@ -466,7 +465,6 @@ $("#againstInvoicedropdown").change(function() {
 				$("[name=invoiceDate").val(data.invoiceDate);
 				$("[name=state").val(data.invoiceState);
 				$("[name=reverseCharge").val(data.invoiceReverseCharge);
-				$("[name=invoiceDate").focus();
 				$("[name=invoiceDate").blur();
 			}
 			});
@@ -476,7 +474,6 @@ $("#againstInvoicedropdown").change(function() {
 		$("[name=invoiceDate").val("");
 		$("[name=state").val("");
 		$("[name=reverseCharge").val("");
-		$("[name=invoiceDate").focus();
 		$("[name=invoiceDate").blur();
 	}
 });
