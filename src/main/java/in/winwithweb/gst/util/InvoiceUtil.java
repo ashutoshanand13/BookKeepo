@@ -168,7 +168,7 @@ public class InvoiceUtil {
 			// create PDF table with the given widths
 			
 			Paragraph header = new Paragraph();
-			header.add("Tax Invoice - "+invoice.getInvoiceType()+"\n\n");
+			header.add(invoice.getType()+" - "+invoice.getInvoiceType()+"\n\n");
 			header.setAlignment(Element.ALIGN_CENTER);
 			
 			PdfPTable tableHeader = new PdfPTable(columnWidthHeader);

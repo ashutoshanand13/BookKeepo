@@ -186,9 +186,9 @@ function setAlert(message) {
 								setValues();
 								gstShip=false;
 								gstBill=false;
-								$('#overlay').delay(500).fadeOut();
 							}
 						});
+						$('#overlay').delay(500).fadeOut();
    }
  });
 
