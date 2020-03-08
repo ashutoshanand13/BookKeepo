@@ -95,19 +95,21 @@
 				<thead>
 					<tr bgcolor="#BFD6E9">
 						<th class="text-center"><span style='font-weight: bold;'>Bill
-								to Party</span><select class="form-control"
-						id="selectAccount" style="width: 200px;">
-						<option th:each="account : ${accountList}" th:value="${account}"
-							th:text="${account}"></option>
-					</select></th>
+								to Party</span></th>
 						<th class="text-center"><span style='font-weight: bold;'>Ship
 								to Party</span></th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
-						<td class="pt-3-half"><input type="text" class="form-control"
-							name="nameBill" placeholder="Name" required="required"></td>
+						<td class="pt-3-half">							
+							<input list="select" class="form-control"
+							name="nameBill" placeholder="Name" autocomplete="off"> <datalist
+								id="select">
+								<option th:each="account : ${accountList}" th:value="${account}"
+									th:text="${account}"></option>
+							</datalist>
+						</td>
 						<td class="pt-3-half"><input type="text" class="form-control"
 							name="nameShip" placeholder="Name" required="required"></td>
 					</tr>

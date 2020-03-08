@@ -419,8 +419,8 @@ function setDate(data) {
 	 $(data).focus();
 }
 
-$("#selectAccount").change(function() {
-	var accountName = $("#selectAccount").val();
+$("[name=nameBill]").change(function() {
+	var accountName = $("[name=nameBill]").val();
 	
 	if(accountName === "Select Account") {
 		$("[name=nameBill").val("");
