@@ -37,6 +37,18 @@ public class InvoiceDetails {
 	@Column(name = "invoice_number")
 	private String invoiceNumber;
 	
+	@Column(name = "type")
+	private String type;
+	
+	@Column(name = "invoice_against_invoice")
+	private String invoiceAgainstInvoice;
+	
+	@Column(name = "invoice_issue_date")
+	private String invoiceIssueDate;
+	
+	@Column(name = "invoice_document_number")
+	private String invoiceDocumentNumber;
+	
 	@Column(name = "invoice_date")
 	private String invoiceDate;
 	
@@ -412,6 +424,62 @@ public class InvoiceDetails {
 	 */
 	public void setInvoiceCompanyDetails(Company invoiceCompanyDetails) {
 		this.invoiceCompanyDetails = invoiceCompanyDetails;
+	}
+
+	/**
+	 * @return the type
+	 */
+	public String getType() {
+		return type;
+	}
+
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	/**
+	 * @return the invoiceAgainstInvoice
+	 */
+	public String getInvoiceAgainstInvoice() {
+		return invoiceAgainstInvoice;
+	}
+
+	/**
+	 * @param invoiceAgainstInvoice the invoiceAgainstInvoice to set
+	 */
+	public void setInvoiceAgainstInvoice(String invoiceAgainstInvoice) {
+		this.invoiceAgainstInvoice = invoiceAgainstInvoice;
+	}
+
+	/**
+	 * @return the invoiceIssueDate
+	 */
+	public String getInvoiceIssueDate() {
+		return invoiceIssueDate;
+	}
+
+	/**
+	 * @param invoiceIssueDate the invoiceIssueDate to set
+	 */
+	public void setInvoiceIssueDate(String invoiceIssueDate) {
+		this.invoiceIssueDate = invoiceIssueDate;
+	}
+
+	/**
+	 * @return the invoiceDocumentNumber
+	 */
+	public String getInvoiceDocumentNumber() {
+		return invoiceDocumentNumber;
+	}
+
+	/**
+	 * @param invoiceDocumentNumber the invoiceDocumentNumber to set
+	 */
+	public void setInvoiceDocumentNumber(String invoiceDocumentNumber) {
+		this.invoiceDocumentNumber = invoiceDocumentNumber;
 	}
 
 }

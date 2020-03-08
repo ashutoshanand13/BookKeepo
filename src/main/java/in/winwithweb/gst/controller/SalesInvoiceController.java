@@ -99,6 +99,7 @@ public class SalesInvoiceController {
 		}
 
 		InvoiceDetails invoice = new InvoiceDetails();
+		invoice.setType("Tax Invoice");
 		invoice.setInvoiceOwner(principal.getName());
 		invoice.setInvoiceTotalAmountWords(CommonUtils.numberConverter(salesInvoiceData.getTtlTotalAmount()));
 
@@ -125,7 +126,7 @@ public class SalesInvoiceController {
 	@RequestMapping(value = { "/home/showInvoice" }, method = RequestMethod.GET)
 	public ModelAndView showInvoice(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("invoiceList", invoiceService.findByInvoiceOwner(request.getUserPrincipal().getName()));
+		modelAndView.addObject("invoiceList", invoiceService.findByInvoiceOwner(request.getUserPrincipal().getName(), "Tax Invoice"));
 		modelAndView.setViewName("showInvoice");
 		return modelAndView;
 	}
