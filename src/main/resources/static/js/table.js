@@ -203,7 +203,7 @@ function setValues() {
 	            var qty = $tblrow.find("[id=qty]").val();
 	            if(!isNaN(qty)){
 	            	ttlQty[index]=parseFloat(qty);
-	            	$("[name=ttlQty]").val(checkValueNaN(getSum(ttlQty)));
+	            	$("[name=ttlQty]").val(checkValueNaN(getSum(ttlQty).toFixed(2)));
 	            }
 	            var rate = $tblrow.find("[id=rate]").val();
 	            var amount = parseFloat(qty) * parseFloat(rate);
@@ -292,7 +292,7 @@ function resetValues(){
 	        ttlTotalAmount[index]=checkValueNaN(parseFloat($tblrow.find("#totalAmount").val()));
 	    });
 	    
-	    $("[name=ttlQty]").val(getSum(ttlQty));
+	    $("[name=ttlQty]").val(getSum(ttlQty).toFixed(2));
 	    $("[name=ttlAmount]").val(getSum(ttlAmount).toFixed(2));
 	    $("[name=ttlTaxableValue]").val(getSum(ttlTaxableValue).toFixed(2));
 	    $("[name=ttlIgst]").val(getSum(ttlIgst).toFixed(2));
