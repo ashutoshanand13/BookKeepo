@@ -15,6 +15,7 @@
  var shippingType ='';
  
  var controllerMap = { salesInvoice: "/home/salesinvoice", exportInvoice: "/home/exportinvoice", debitNote:"/home/debitnote", creditNote:"/home/creditnote" };
+ var fileMap = { salesInvoice: "salesinvoice.pdf", exportInvoice: "exportinvoice.pdf", debitNote:"debitnote.pdf", creditNote:"creditNote.pdf" };
  
  var gstRegex = /^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$/;
  
@@ -138,7 +139,8 @@ function setAlert(message) {
  $BTN.on('click', function () {
    var json = '';
    var name = $(this).attr("name");
-   var url = controllerMap.name;
+   var url = controllerMap[name];
+   var fileName = fileMap[name];
    
    var f = $("#form")[0];
    
@@ -157,6 +159,7 @@ function setAlert(message) {
 			       newFormData.push(obj);
 			     });
 			   $('#itemList').val(JSON.stringify(newFormData));
+			   
 		});
 		// replace function used to remove extra "" while parsing.
 						var json = JSON.stringify($('#form').serializeJSON())
@@ -165,7 +168,7 @@ function setAlert(message) {
 						debugger;
 						$('#overlay').fadeIn();
 						$.ajax({
-							url : "/home/salesinvoice",
+							url : url,
 							contentType : "application/text; charset=utf-8",
 							type : 'POST',
 							datatype : 'text',
@@ -174,10 +177,9 @@ function setAlert(message) {
 								responseType : "blob"
 							},
 							success : function(blob) {
-								var filename = "invoice.pdf";
 								var link = document.createElement('a');
 								link.href = window.URL.createObjectURL(blob);
-								link.download = "invoice.pdf";
+								link.download = fileName;
 								link.click();
 								$("#form")[0].reset();
 								window.scrollTo(0, 0);
@@ -201,7 +203,7 @@ function setValues() {
 	            var qty = $tblrow.find("[id=qty]").val();
 	            if(!isNaN(qty)){
 	            	ttlQty[index]=parseFloat(qty);
-	            	$("[name=ttlQty]").val(checkValueNaN(getSum(ttlQty)));
+	            	$("[name=ttlQty]").val(checkValueNaN(getSum(ttlQty).toFixed(2)));
 	            }
 	            var rate = $tblrow.find("[id=rate]").val();
 	            var amount = parseFloat(qty) * parseFloat(rate);
@@ -290,7 +292,7 @@ function resetValues(){
 	        ttlTotalAmount[index]=checkValueNaN(parseFloat($tblrow.find("#totalAmount").val()));
 	    });
 	    
-	    $("[name=ttlQty]").val(getSum(ttlQty));
+	    $("[name=ttlQty]").val(getSum(ttlQty).toFixed(2));
 	    $("[name=ttlAmount]").val(getSum(ttlAmount).toFixed(2));
 	    $("[name=ttlTaxableValue]").val(getSum(ttlTaxableValue).toFixed(2));
 	    $("[name=ttlIgst]").val(getSum(ttlIgst).toFixed(2));
@@ -385,15 +387,14 @@ $("#changepasswordform").submit(function () {
 
 
 function checkifImageExists(data) {
-	debugger;
+	
 	$.ajax({
 		type : "GET",
-		contentType : "application/text",
-		url : "imagebase64",
-		dataType : 'json',				
+		contentType : "text/plain",
+		url : "imagebase64",			
 		success : function(base64String) {
 			if(!data.includes(base64String))
-				document.getElementById("companylogo").required = false;
+				$("#companylogo").removeAttr('required');
 		}
 		});
 	
@@ -418,9 +419,9 @@ function setDate(data) {
 	 $(data).focus();
 }
 
-$("#selectAccount").change(function() {
-	var accountName = $("#selectAccount").val();
-	debugger;
+$("[name=nameBill]").change(function() {
+	var accountName = $("[name=nameBill]").val();
+	
 	if(accountName === "Select Account") {
 		$("[name=nameBill").val("");
 		$("[name=addressBill").val("");
@@ -443,8 +444,36 @@ $("#selectAccount").change(function() {
 				$("[name=gstinShip").val(data.gstin);
 				$("[name=stateBill").val(data.accountState);
 				$("[name=stateShip").val(data.accountState);
-				
+				$("[name=gstinBill").focus();
+				$("[name=gstinShip").focus();
+				$("[name=gstinShip").blur();
 			}
 			});
+	}
+});
+
+$("#againstInvoicedropdown").change(function() {
+	var invoiceNumber = $("#againstInvoicedropdown").val();
+	
+	if(invoiceNumber !== "Against Invoice") {
+		$.ajax({
+			type : "GET",
+			contentType : "application/json",
+			url : "invoicedetails?invoiceNo=" + invoiceNumber,
+			dataType : 'json',				
+			success : function(data) {
+				$("[name=invoiceDate").val(data.invoiceDate);
+				$("[name=state").val(data.invoiceState);
+				$("[name=reverseCharge").val(data.invoiceReverseCharge);
+				$("[name=invoiceDate").blur();
+			}
+			});
+		
+	} 
+	else {
+		$("[name=invoiceDate").val("");
+		$("[name=state").val("");
+		$("[name=reverseCharge").val("");
+		$("[name=invoiceDate").blur();
 	}
 });

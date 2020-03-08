@@ -28,8 +28,8 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import in.winwithweb.gst.model.Company;
+import in.winwithweb.gst.model.json.InvoicePageData;
 import in.winwithweb.gst.model.json.ItemList;
-import in.winwithweb.gst.model.json.SalesInvoicePageData;
 import in.winwithweb.gst.model.sales.InvoiceAddressDetails;
 import in.winwithweb.gst.model.sales.InvoiceBankDetails;
 import in.winwithweb.gst.model.sales.InvoiceDetails;
@@ -43,23 +43,33 @@ public class InvoiceUtil {
 
 	private static float[] columnItemTableWidths = null;
 
-	public static void updateInvoice(InvoiceDetails invoice, SalesInvoicePageData salesInvoiceData,
+	public static void updateInvoice(InvoiceDetails invoice, InvoicePageData salesInvoiceData,
 			Company companyDetails) {
 
 		List<InvoiceProductDetails> productList = new ArrayList<InvoiceProductDetails>();
 		InvoiceBankDetails invoiceBankDetails = new InvoiceBankDetails();
 		InvoiceAddressDetails invoiceAddressDetails = new InvoiceAddressDetails();
 
-		invoice.setInvoiceNumber(salesInvoiceData.getInvoiceNo());
-		invoice.setInvoiceDate(salesInvoiceData.getInvoiceDate());
-		invoice.setInvoiceDOS(salesInvoiceData.getDateOfSupply());
-		invoice.setInvoicePOS(salesInvoiceData.getPlaceOfSupply());
-		invoice.setInvoicePoDate(salesInvoiceData.getPoDate());
-		invoice.setInvoiceState(salesInvoiceData.getState());
-		invoice.setInvoicePoNumber(salesInvoiceData.getPoNo());
-		invoice.setInvoiceTransportMode(salesInvoiceData.getTransportMode());
-		invoice.setInvoiceVehicleNumber(salesInvoiceData.getVehicleNo());
-		invoice.setInvoiceReverseCharge(salesInvoiceData.getReverseCharge());
+		if(invoice.getType().equals("Tax Invoice") || invoice.getType().equals("Export Invoice")) {
+			invoice.setInvoiceNumber(salesInvoiceData.getInvoiceNo());
+			invoice.setInvoiceDate(salesInvoiceData.getInvoiceDate());
+			invoice.setInvoiceDOS(salesInvoiceData.getDateOfSupply());
+			invoice.setInvoicePOS(salesInvoiceData.getPlaceOfSupply());
+			invoice.setInvoicePoDate(salesInvoiceData.getPoDate());
+			invoice.setInvoiceState(salesInvoiceData.getState());
+			invoice.setInvoicePoNumber(salesInvoiceData.getPoNo());
+			invoice.setInvoiceTransportMode(salesInvoiceData.getTransportMode());
+			invoice.setInvoiceVehicleNumber(salesInvoiceData.getVehicleNo());
+			invoice.setInvoiceReverseCharge(salesInvoiceData.getReverseCharge());
+		}
+		else {
+			invoice.setInvoiceAgainstInvoice(salesInvoiceData.getAgainstInvoice());
+			invoice.setInvoiceDate(salesInvoiceData.getInvoiceDate());
+			invoice.setInvoiceState(salesInvoiceData.getState());
+			invoice.setInvoiceReverseCharge(salesInvoiceData.getReverseCharge());
+			invoice.setInvoiceDocumentNumber(salesInvoiceData.getDocumentNumber());
+			invoice.setInvoiceIssueDate(salesInvoiceData.getIssueDate());
+		}
 		invoice.setInvoiceTotalAmountBeforeTax(salesInvoiceData.getTotalAmountBeforeTax());
 		invoice.setInvoiceTotalAmountAfterTax(salesInvoiceData.getTotalAmountAfterTax());
 		invoice.setInvoiceTaxAmount(salesInvoiceData.getTotalTaxAmount());
@@ -173,27 +183,44 @@ public class InvoiceUtil {
 			
 			insertCell(table, "", Element.ALIGN_LEFT, 2, bfBold12, 1, "#FFFFFF", 1f, 1f, 0f);
 
-			insertCell(table, "Tax Invoice", Element.ALIGN_CENTER, 2, bfBold12, 1, "#BFD6E9", 1f, 1f, 30f);
-			insertCell(table, "Invoice No: ", invoice.getInvoiceNumber(), Element.ALIGN_LEFT, 1, bfBold12, bf12, 1,
-					"#FFFFFF", 1f, 0.5f);
-			insertCell(table, "PO No: ", invoice.getInvoicePoNumber(), Element.ALIGN_LEFT, 1, bfBold12, bf12, 1,
-					"#FFFFFF", 0.5f, 1f);
-			insertCell(table, "Invoice Date: ", invoice.getInvoiceDate(), Element.ALIGN_LEFT, 1, bfBold12, bf12, 1,
-					"#FFFFFF", 1f, 0.5f);
-			insertCell(table, "PO Date: ", invoice.getInvoicePoDate(), Element.ALIGN_LEFT, 1, bfBold12, bf12, 1,
-					"#FFFFFF", 0.5f, 1f);
-			insertCell(table, "Date Of Supply: ", invoice.getInvoiceDOS(), Element.ALIGN_LEFT, 1, bfBold12, bf12, 1,
-					"#FFFFFF", 1f, 0.5f);
-			insertCell(table, "Transport Mode: ", invoice.getInvoiceTransportMode(), Element.ALIGN_LEFT, 1, bfBold12,
-					bf12, 1, "#FFFFFF", 0.5f, 1f);
-			insertCell(table, "Place Of Supply: ", invoice.getInvoicePOS(), Element.ALIGN_LEFT, 1, bfBold12, bf12, 1,
-					"#FFFFFF", 1f, 0.5f);
-			insertCell(table, "Vehicle No: ", invoice.getInvoiceVehicleNumber(), Element.ALIGN_LEFT, 1, bfBold12, bf12,
-					1, "#FFFFFF", 0.5f, 1f);
-			insertCell(table, "State: ", invoice.getInvoiceState(), Element.ALIGN_LEFT, 1, bfBold12, bf12, 1, "#FFFFFF",
-					1f, 0.5f);
-			insertCell(table, "Reverse Charge (Y/N): ", invoice.getInvoiceReverseCharge(), Element.ALIGN_LEFT, 1,
-					bfBold12, bf12, 1, "#EEFF74", 0.5f, 1f);
+			insertCell(table, invoice.getType(), Element.ALIGN_CENTER, 2, bfBold12, 1, "#BFD6E9", 1f, 1f, 30f);
+			
+			if(invoice.getType().equals("Tax Invoice") || invoice.getType().equals("Export Invoice")) {
+				insertCell(table, "Invoice No: ", invoice.getInvoiceNumber(), Element.ALIGN_LEFT, 1, bfBold12, bf12, 1,
+						"#FFFFFF", 1f, 0.5f);
+				insertCell(table, "PO No: ", invoice.getInvoicePoNumber(), Element.ALIGN_LEFT, 1, bfBold12, bf12, 1,
+						"#FFFFFF", 0.5f, 1f);
+				insertCell(table, "Invoice Date: ", invoice.getInvoiceDate(), Element.ALIGN_LEFT, 1, bfBold12, bf12, 1,
+						"#FFFFFF", 1f, 0.5f);
+				insertCell(table, "PO Date: ", invoice.getInvoicePoDate(), Element.ALIGN_LEFT, 1, bfBold12, bf12, 1,
+						"#FFFFFF", 0.5f, 1f);
+				insertCell(table, "Date Of Supply: ", invoice.getInvoiceDOS(), Element.ALIGN_LEFT, 1, bfBold12, bf12, 1,
+						"#FFFFFF", 1f, 0.5f);
+				insertCell(table, "Transport Mode: ", invoice.getInvoiceTransportMode(), Element.ALIGN_LEFT, 1, bfBold12,
+						bf12, 1, "#FFFFFF", 0.5f, 1f);
+				insertCell(table, "Place Of Supply: ", invoice.getInvoicePOS(), Element.ALIGN_LEFT, 1, bfBold12, bf12, 1,
+						"#FFFFFF", 1f, 0.5f);
+				insertCell(table, "Vehicle No: ", invoice.getInvoiceVehicleNumber(), Element.ALIGN_LEFT, 1, bfBold12, bf12,
+						1, "#FFFFFF", 0.5f, 1f);
+				insertCell(table, "State: ", invoice.getInvoiceState(), Element.ALIGN_LEFT, 1, bfBold12, bf12, 1, "#FFFFFF",
+						1f, 0.5f);
+				insertCell(table, "Reverse Charge (Y/N): ", invoice.getInvoiceReverseCharge(), Element.ALIGN_LEFT, 1,
+						bfBold12, bf12, 1, "#EEFF74", 0.5f, 1f);
+			}
+			else {
+				insertCell(table, "Document No: ", invoice.getInvoiceDocumentNumber(), Element.ALIGN_LEFT, 1, bfBold12, bf12, 1,
+						"#FFFFFF", 1f, 0.5f);
+				insertCell(table, "Against Invoice: ", invoice.getInvoiceAgainstInvoice(), Element.ALIGN_LEFT, 1, bfBold12, bf12, 1,
+						"#FFFFFF", 0.5f, 1f);
+				insertCell(table, "Issue Date: ", invoice.getInvoiceIssueDate(), Element.ALIGN_LEFT, 1, bfBold12, bf12, 1,
+						"#FFFFFF", 1f, 0.5f);
+				insertCell(table, "Invoice Date: ", invoice.getInvoiceDate(), Element.ALIGN_LEFT, 1, bfBold12, bf12, 1,
+						"#FFFFFF", 0.5f, 1f);
+				insertCell(table, "State: ", invoice.getInvoiceState(), Element.ALIGN_LEFT, 1, bfBold12, bf12, 1, "#FFFFFF",
+						1f, 0.5f);
+				insertCell(table, "Reverse Charge (Y/N): ", invoice.getInvoiceReverseCharge(), Element.ALIGN_LEFT, 1,
+						bfBold12, bf12, 1, "#EEFF74", 0.5f, 1f);
+			}
 
 			// merge the cells to create a footer for that section
 			insertCell(table, "", Element.ALIGN_LEFT, 2, bfBold12, 1, "#FFFFFF", 1f, 1f, 0f);

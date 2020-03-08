@@ -6,7 +6,7 @@ import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class SalesInvoicePageData {
+public class InvoicePageData {
 
 	@SerializedName("invoiceNo")
 	@Expose
@@ -38,6 +38,15 @@ public class SalesInvoicePageData {
 	@SerializedName("reverseCharge")
 	@Expose
 	private String reverseCharge;
+	@SerializedName("againstInvoice")
+	@Expose
+	private String againstInvoice;
+	@SerializedName("documentNumber")
+	@Expose
+	private String documentNumber;
+	@SerializedName("issueDate")
+	@Expose
+	private String issueDate;
 	@SerializedName("nameBill")
 	@Expose
 	private String nameBill;
@@ -403,6 +412,48 @@ public class SalesInvoicePageData {
 
 	public void setTermsConditions(String termsConditions) {
 		this.termsConditions = termsConditions;
+	}
+
+	/**
+	 * @return the againstInvoice
+	 */
+	public String getAgainstInvoice() {
+		return againstInvoice;
+	}
+
+	/**
+	 * @param againstInvoice the againstInvoice to set
+	 */
+	public void setAgainstInvoice(String againstInvoice) {
+		this.againstInvoice = againstInvoice;
+	}
+
+	/**
+	 * @return the documentNumber
+	 */
+	public String getDocumentNumber() {
+		return documentNumber;
+	}
+
+	/**
+	 * @param documentNumber the documentNumber to set
+	 */
+	public void setDocumentNumber(String documentNumber) {
+		this.documentNumber = documentNumber;
+	}
+
+	/**
+	 * @return the issueDate
+	 */
+	public String getIssueDate() {
+		return issueDate;
+	}
+
+	/**
+	 * @param issueDate the issueDate to set
+	 */
+	public void setIssueDate(String issueDate) {
+		this.issueDate = issueDate;
 	}
 
 	@Override
