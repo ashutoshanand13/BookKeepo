@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import com.itextpdf.io.source.ByteArrayOutputStream;
@@ -52,10 +54,10 @@ public class InvoiceUtil {
 
 		if(invoice.getType().equals("Tax Invoice") || invoice.getType().equals("Export Invoice")) {
 			invoice.setInvoiceNumber(salesInvoiceData.getInvoiceNo());
-			invoice.setInvoiceDate(salesInvoiceData.getInvoiceDate());
-			invoice.setInvoiceDOS(salesInvoiceData.getDateOfSupply());
+			invoice.setInvoiceDate(reverseDate(salesInvoiceData.getInvoiceDate()));
+			invoice.setInvoiceDOS(reverseDate(salesInvoiceData.getDateOfSupply()));
 			invoice.setInvoicePOS(salesInvoiceData.getPlaceOfSupply());
-			invoice.setInvoicePoDate(salesInvoiceData.getPoDate());
+			invoice.setInvoicePoDate(reverseDate(salesInvoiceData.getPoDate()));
 			invoice.setInvoiceState(salesInvoiceData.getState());
 			invoice.setInvoicePoNumber(salesInvoiceData.getPoNo());
 			invoice.setInvoiceTransportMode(salesInvoiceData.getTransportMode());
@@ -64,11 +66,11 @@ public class InvoiceUtil {
 		}
 		else {
 			invoice.setInvoiceAgainstInvoice(salesInvoiceData.getAgainstInvoice());
-			invoice.setInvoiceDate(salesInvoiceData.getInvoiceDate());
+			invoice.setInvoiceDate(reverseDate(salesInvoiceData.getInvoiceDate()));
 			invoice.setInvoiceState(salesInvoiceData.getState());
 			invoice.setInvoiceReverseCharge(salesInvoiceData.getReverseCharge());
 			invoice.setInvoiceDocumentNumber(salesInvoiceData.getDocumentNumber());
-			invoice.setInvoiceIssueDate(salesInvoiceData.getIssueDate());
+			invoice.setInvoiceIssueDate(reverseDate(salesInvoiceData.getIssueDate()));
 		}
 		invoice.setInvoiceTotalAmountBeforeTax(salesInvoiceData.getTotalAmountBeforeTax());
 		invoice.setInvoiceTotalAmountAfterTax(salesInvoiceData.getTotalAmountAfterTax());
@@ -501,5 +503,16 @@ public class InvoiceUtil {
 		// add the call to the table
 		table.addCell(cell);
 	}
+	
+	private static String reverseDate(String date) {
+		if(date.contains("-")) {
+			String[] dateArr = date.split("-");
+			List<String> listOfDate = Arrays.asList(dateArr); 
+			Collections.reverse(listOfDate); 
+			String[] reversed = listOfDate.toArray(dateArr);
+			date = String.join("-", reversed);
 
+		}
+		return date;
+	}
 }

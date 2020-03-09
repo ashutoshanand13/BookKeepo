@@ -42,7 +42,7 @@ public class ItemController {
 	}
 	
 	@RequestMapping(value = "/home/additem", method = RequestMethod.POST)
-	public ModelAndView addCompany(@Valid @ModelAttribute("item") InvoiceProductDetails item, BindingResult bindingResult,
+	public ModelAndView addItem(@Valid @ModelAttribute("item") InvoiceProductDetails item, BindingResult bindingResult,
 			Principal principal) {
 		ModelAndView modelAndView = new ModelAndView();
 		String user=principal.getName();
