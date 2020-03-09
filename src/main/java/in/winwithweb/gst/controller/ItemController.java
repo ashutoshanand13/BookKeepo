@@ -37,7 +37,7 @@ public class ItemController {
 		modelAndView.addObject("itemList", itemService.findByProductOwner(user));
 		modelAndView.addObject("item", new InvoiceProductDetails());
 		
-		modelAndView.setViewName("additem");
+		modelAndView.setViewName("addItem");
 		return modelAndView;
 	}
 	
@@ -67,7 +67,7 @@ public class ItemController {
 			modelAndView.addObject("item", new InvoiceProductDetails());
 		}
 		modelAndView.addObject("itemList", itemService.findByProductOwner(user));
-		modelAndView.setViewName("additem");
+		modelAndView.setViewName("addItem");
 		return modelAndView;
 	}
 	
