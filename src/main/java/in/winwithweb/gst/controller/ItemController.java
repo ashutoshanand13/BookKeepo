@@ -37,12 +37,12 @@ public class ItemController {
 		modelAndView.addObject("itemList", itemService.findByProductOwner(user));
 		modelAndView.addObject("item", new InvoiceProductDetails());
 		
-		modelAndView.setViewName("additem");
+		modelAndView.setViewName("addItem");
 		return modelAndView;
 	}
 	
 	@RequestMapping(value = "/home/additem", method = RequestMethod.POST)
-	public ModelAndView addCompany(@Valid @ModelAttribute("item") InvoiceProductDetails item, BindingResult bindingResult,
+	public ModelAndView addItem(@Valid @ModelAttribute("item") InvoiceProductDetails item, BindingResult bindingResult,
 			Principal principal) {
 		ModelAndView modelAndView = new ModelAndView();
 		String user=principal.getName();
@@ -67,7 +67,7 @@ public class ItemController {
 			modelAndView.addObject("item", new InvoiceProductDetails());
 		}
 		modelAndView.addObject("itemList", itemService.findByProductOwner(user));
-		modelAndView.setViewName("additem");
+		modelAndView.setViewName("addItem");
 		return modelAndView;
 	}
 	

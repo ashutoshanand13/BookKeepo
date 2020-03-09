@@ -176,7 +176,6 @@ function setAlert(message) {
 							xhrFields : {
 								responseType : "blob"
 							},
-							async : false,
 							success : function(blob) {
 								var link = document.createElement('a');
 								link.href = window.URL.createObjectURL(blob);
@@ -187,9 +186,9 @@ function setAlert(message) {
 								setValues();
 								gstShip=false;
 								gstBill=false;
-								$('#overlay').delay(500).fadeOut();
 							}
 						});
+						$('#overlay').delay(500).fadeOut();
    }
  });
 
@@ -202,7 +201,7 @@ function setValues() {
 	        $tblrow.find("#srNo").val(index+1);
 	        $tblrow.on('change', function () {
 	        	var product = $tblrow.find("#productDesc").val();
-	        	debugger;
+	        	
 	        	if(product !== "") {
 					$.ajax({
 						type : "GET",
