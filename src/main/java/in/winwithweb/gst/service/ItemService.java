@@ -38,8 +38,10 @@ public class ItemService {
 	public InvoiceProductDetails findByProductDescription(String productDescription, String owner) {
 		List<InvoiceProductDetails> temp = itemRepository.findByProductOwner(owner).stream().filter(p -> p.getProductDescription().equalsIgnoreCase(productDescription))
 				.collect(Collectors.toList());
-		 
-		 return temp.get(0);
+		 if (temp.size() >0)
+			 return temp.get(0);
+		 else
+			 return null;
 	}
 
 	public void saveItem(InvoiceProductDetails item) {
