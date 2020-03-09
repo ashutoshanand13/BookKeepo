@@ -168,7 +168,7 @@ public class InvoiceUtil {
 			// create PDF table with the given widths
 			
 			Paragraph header = new Paragraph();
-			header.add("Tax Invoice - "+invoice.getInvoiceType()+"\n\n");
+			header.add(invoice.getType()+" - "+invoice.getInvoiceType()+"\n\n");
 			header.setAlignment(Element.ALIGN_CENTER);
 			
 			PdfPTable tableHeader = new PdfPTable(columnWidthHeader);
@@ -266,8 +266,7 @@ public class InvoiceUtil {
 			insertCell(itemTable, "Total Amount", Element.ALIGN_CENTER, 1, bfBold12, 1, "#BFD6E9", 0.5f, 1f, 30f);
 
 			int count = 1;
-			int totalQty = 0;
-			double totalAmount = 0, totalTaxValue = 0, totalCgst = 0, totalSgst = 0, totalIgst = 0, ttlTotalAmount = 0;
+			double totalAmount = 0, totalTaxValue = 0, totalCgst = 0, totalSgst = 0, totalIgst = 0, ttlTotalAmount = 0, totalQty = 0;
 			for (InvoiceProductDetails product : invoice.getInvoiceProductDetails()) {
 				insertCell(itemTable, String.valueOf(count), Element.ALIGN_CENTER, 1, bf12, 1, "#FFFFFF", 1f, 0.5f, 0f);
 				insertCell(itemTable, product.getProductDescription(), Element.ALIGN_CENTER, 1, bf12, 1, "#FFFFFF",
@@ -299,7 +298,7 @@ public class InvoiceUtil {
 				}
 				insertCell(itemTable, product.getProductTotalAmount(), Element.ALIGN_CENTER, 1, bf12, 1, "#FFFFFF",
 						0.5f, 1f, 0f);
-				totalQty = totalQty + Integer.valueOf(product.getProductQuantity());
+				totalQty = totalQty + Double.valueOf(product.getProductQuantity());
 				totalAmount = totalAmount + Double.valueOf(product.getProductAmount());
 				totalTaxValue = totalTaxValue + Double.valueOf(product.getProductTaxValue());
 				totalCgst = totalCgst + Double.valueOf(product.getProductCgst());

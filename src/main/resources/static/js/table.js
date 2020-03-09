@@ -19,7 +19,7 @@
  
  var gstRegex = /^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$/;
  
- const newTr = '<tr>            <td class="pt-3-half"><input type="text" id="srNo" name="excluded:skip" placeholder="Sr No" readonly="readonly"></td>            <td class="pt-3-half"><textarea cols="40" rows="5" id="productDesc" style="height:60px;" name="excluded:skip" placeholder="Product Description"></textarea></td>            <td class="pt-3-half"><input type="text" id="hsnCode" name="excluded:skip" placeholder="HSN Code"></td>            <td class="pt-3-half"><input type="text" id="uom" name="excluded:skip" placeholder="UOM"></td>            <td class="pt-3-half"><input type="number" id="qty" name="excluded:skip" placeholder="QTY"></td>            <td class="pt-3-half"><input type="number" id="rate" name="excluded:skip" placeholder="Rate"></td>            <td class="pt-3-half"><input type="text" id="amount" name="excluded:skip" placeholder="Amount" readonly="readonly"></td>            <td class="pt-3-half"><input type="number" id="discount" name="excluded:skip" placeholder="Discount"></td>            <td class="pt-3-half"><input type="number" id="gstRate" name="excluded:skip" placeholder="GST Rate"></td>            <td class="pt-3-half"><input type="text" id="taxableValue" name="excluded:skip" placeholder="Taxable Value" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="cgst" name="excluded:skip" placeholder="CGST" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="sgst" name="excluded:skip" placeholder="SGST" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="igst" name="excluded:skip" placeholder="IGST" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="totalAmount" name="excluded:skip" placeholder="Total Amount" readonly="readonly"></td>			<td>			<figure style="display:flex;">              <span class="table-add"><img class="autoResizeImage" style="margin-right: 2px;" src="/images/add.png" alt=""></span>              <span class="table-remove"><img class="autoResizeImage" style="margin-left: 2px;" src="/images/remove.png" alt=""></span>              </figure>            </td>          </tr>';
+ const newTr = '<tr>            <td class="pt-3-half"><input type="text" id="srNo" name="excluded:skip" placeholder="Sr No" readonly="readonly"></td>            <td class="pt-3-half"><input list="data" id="productDesc" class="form-control" placeholder="Product Description" required="required" autocomplete="off"></td>            <td class="pt-3-half"><input type="text" id="hsnCode" name="excluded:skip" placeholder="HSN Code"></td>            <td class="pt-3-half"><input type="text" id="uom" name="excluded:skip" placeholder="UOM"></td>            <td class="pt-3-half"><input type="text" onfocus="(this.type="number")" onblur="(this.type="text")" min="0" id="qty" name="excluded:skip" placeholder="QTY" required="required"></td>            <td class="pt-3-half"><input type="text" onfocus="(this.type="number")" onblur="(this.type="text")" min="0" id="rate" name="excluded:skip" placeholder="Rate" required="required"></td>            <td class="pt-3-half"><input type="text" id="amount" name="excluded:skip" placeholder="Amount" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" onfocus="(this.type="number")" onblur="(this.type="text")" min="0" id="discount" name="excluded:skip" placeholder="Discount" required="required"></td>            <td class="pt-3-half"><input type="text" onfocus="(this.type="number")" onblur="(this.type="text")" min="0" id="gstRate" name="excluded:skip" placeholder="GST Rate" required="required"></td>            <td class="pt-3-half"><input type="text" id="taxableValue" name="excluded:skip" placeholder="Taxable Value" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="cgst" name="excluded:skip" placeholder="CGST" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="sgst" name="excluded:skip" placeholder="SGST" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="igst" name="excluded:skip" placeholder="IGST" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="totalAmount" name="excluded:skip" placeholder="Total Amount" readonly="readonly"></td>			<td>			<figure style="display:flex;">              <span class="table-add"><img class="autoResizeImage" style="margin-right: 2px;" src="/images/add.png" alt=""></span>              <span class="table-remove"><img class="autoResizeImage" style="margin-left: 2px;" src="/images/remove.png" alt=""></span>              </figure>            </td>          </tr>';
 
  $tableID.on('click', '.table-remove', function () {
 if ($tableID.find('tbody tr').length !== 1) {
@@ -165,7 +165,7 @@ function setAlert(message) {
 						var json = JSON.stringify($('#form').serializeJSON())
 								.replace(/\\/g, "").replace("\"[", "[")
 								.replace("]\"", "]");
-						debugger;
+
 						$('#overlay').fadeIn();
 						$.ajax({
 							url : url,
@@ -176,6 +176,7 @@ function setAlert(message) {
 							xhrFields : {
 								responseType : "blob"
 							},
+							async : false,
 							success : function(blob) {
 								var link = document.createElement('a');
 								link.href = window.URL.createObjectURL(blob);
@@ -200,15 +201,35 @@ function setValues() {
 
 	        $tblrow.find("#srNo").val(index+1);
 	        $tblrow.on('change', function () {
+	        	var product = $tblrow.find("#productDesc").val();
+	        	debugger;
+	        	if(product !== "") {
+					$.ajax({
+						type : "GET",
+						contentType : "application/json",
+						url : "getItemData?itemDesc=" +product,
+						dataType : 'json',
+						async : false,
+						success : function(data) {
+							$tblrow.find("[id=gstRate]").val(parseFloat(data.productGstRate).toFixed(2));
+							$tblrow.find("[id=hsnCode]").val(data.productHnscode);
+							$tblrow.find("[id=uom]").val(data.productUom);
+							$tblrow.find("[id=discount]").val(parseFloat(data.productDiscount).toFixed(2));
+							$tblrow.find("[id=rate]").val(parseFloat(data.productRate).toFixed(2));
+							$tblrow.find("[id=qty]").val(parseFloat(data.productQuantity).toFixed(2));
+						}
+						});
+	        	}
+	        	
 	            var qty = $tblrow.find("[id=qty]").val();
 	            if(!isNaN(qty)){
-	            	ttlQty[index]=parseFloat(qty);
+	            	ttlQty[$tblrow.find("#srNo").val()-1]=parseFloat(qty);
 	            	$("[name=ttlQty]").val(checkValueNaN(getSum(ttlQty).toFixed(2)));
 	            }
 	            var rate = $tblrow.find("[id=rate]").val();
 	            var amount = parseFloat(qty) * parseFloat(rate);
 	            if (!isNaN(amount)) {
-	            	ttlAmount[index]=amount;
+	            	ttlAmount[$tblrow.find("#srNo").val()-1]=amount;
 	                $tblrow.find("#amount").val(amount.toFixed(2));
 
 	                $("[name=ttlAmount]").val(getSum(ttlAmount).toFixed(2));
@@ -221,7 +242,7 @@ function setValues() {
 	            
 	            if(!isNaN(taxableValue)) {
 	            	$tblrow.find('#taxableValue').val(taxableValue.toFixed(2));
-	            	ttlTaxableValue[index]=taxableValue;
+	            	ttlTaxableValue[$tblrow.find("#srNo").val()-1]=taxableValue;
 	            	$("[name=ttlTaxableValue]").val(getSum(ttlTaxableValue).toFixed(2));
 	            }
 	            var igst = taxableValue * (parseFloat(gst,10)/100);
@@ -232,9 +253,9 @@ function setValues() {
 	            	$tblrow.find('#igst').val(igst.toFixed(2));
 	            	$tblrow.find('#cgst').val(cgst.toFixed(2));
 	            	$tblrow.find('#sgst').val(sgst.toFixed(2));
-	            	ttlIgst[index]=igst;
-	            	ttlCgst[index]=cgst;
-	            	ttlSgst[index]=sgst;
+	            	ttlIgst[$tblrow.find("#srNo").val()-1]=igst;
+	            	ttlCgst[$tblrow.find("#srNo").val()-1]=cgst;
+	            	ttlSgst[$tblrow.find("#srNo").val()-1]=sgst;
 	            	$("[name=ttlIgst]").val(getSum(ttlIgst).toFixed(2));
 	            	$("[name=ttlCgst]").val(getSum(ttlCgst).toFixed(2));
 	            	$("[name=ttlSgst]").val(getSum(ttlSgst).toFixed(2));
@@ -244,7 +265,7 @@ function setValues() {
 	            var totalAmount = taxableValue+igst;
 	            if(!isNaN(totalAmount)) {
 	            	$tblrow.find('#totalAmount').val(totalAmount.toFixed(2));
-	            	ttlTotalAmount[index]=totalAmount;
+	            	ttlTotalAmount[$tblrow.find("#srNo").val()-1]=totalAmount;
 	            	$("[name=ttlTotalAmount]").val(getSum(ttlTotalAmount).toFixed(2));
 	            }
 	            
@@ -257,11 +278,9 @@ function setValues() {
 	    	    if(parseInt($("[name=ttlTotalAmount]").val(),10)!==0 && $("[name=ttlTotalAmount]").val()!=="") {
 	    		    getAmountInWords();
 	    		    }
-	        });
-	        
-	    });
-	    
-	}
+	        }); 
+	    });    
+}
 
 function getSum(arr) {
 	var total = 0;
@@ -272,7 +291,7 @@ function getSum(arr) {
 }
 
 
-function resetValues(){
+function resetValues() {
 	 ttlAmount = [];
 	 ttlQty = [];
 	 ttlTaxableValue = [];
@@ -422,14 +441,6 @@ function setDate(data) {
 $("[name=nameBill]").change(function() {
 	var accountName = $("[name=nameBill]").val();
 	
-	if(accountName === "Select Account") {
-		$("[name=nameBill").val("");
-		$("[name=addressBill").val("");
-		$("[name=gstinBill").val("");
-		$("[name=stateBill").val("");
-		
-	} 
-	else {
 		$.ajax({
 			type : "GET",
 			contentType : "application/json",
@@ -449,7 +460,6 @@ $("[name=nameBill]").change(function() {
 				$("[name=gstinShip").blur();
 			}
 			});
-	}
 });
 
 $("#againstInvoicedropdown").change(function() {
