@@ -9,8 +9,15 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
-	$('#example').DataTable();
+	var table = $('#example').DataTable({
+		   dom: 'lrtip'
+		});
+
+		$('#table-filter').on('change', function(){
+		   table.search(this.value).draw();   
+		});
 });
+
 </script>
 
 </head>
@@ -29,11 +36,20 @@ $(document).ready(function() {
 	<div class="form-items showinvoices">
 		<h3 class="form-title doubleunderlinetext" align="center">Download Created Invoices</h3>
 		<div id = "alert_showinvoice"></div>
+		Show: 
+<select id="table-filter">
+<option value="">All</option>
+<option>Tax Invoice</option>
+<option>Credit Note</option>
+<option>Debit Note</option>
+<option>Export Invoice</option>
+</select>
 		<table id="example" class="display" style="width: 100%">
 					<thead>
 						<tr>
 							<th>Invoice Id</th>
 							<th>Invoice Date</th>
+							<th>Invoice Type</th>
 							<th>Invoice Number</th>
 							<th>Invoice Amount</th>
 							<th>Download</th>
@@ -44,6 +60,7 @@ $(document).ready(function() {
 						<tr data-th-each="invoice : ${invoiceList}">
 							<td data-th-text="${invoice.id}"></td>
 							<td data-th-text="${invoice.invoiceDate}"></td>
+							<td data-th-text="${invoice.type}"></td>
 							<td data-th-text="${invoice.invoiceNumber}"></td>
 							<td data-th-text="${invoice.invoiceTotalAmountAfterTax}"></td>
 							<td><a th:href="@{/home/showInvoice/__${invoice.id}__}" onclick="showAlert()">Click Here</a></td>

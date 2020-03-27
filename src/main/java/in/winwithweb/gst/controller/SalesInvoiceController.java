@@ -131,7 +131,7 @@ public class SalesInvoiceController {
 	@RequestMapping(value = { "/home/showInvoice" }, method = RequestMethod.GET)
 	public ModelAndView showInvoice(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("invoiceList", invoiceService.findByInvoiceOwner(request.getUserPrincipal().getName(), "Tax Invoice"));
+		modelAndView.addObject("invoiceList", invoiceService.findByInvoiceOwner(request.getUserPrincipal().getName()));
 		modelAndView.setViewName("showInvoice");
 		return modelAndView;
 	}
