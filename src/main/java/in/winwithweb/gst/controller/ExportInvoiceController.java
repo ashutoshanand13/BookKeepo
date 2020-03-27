@@ -32,6 +32,7 @@ import in.winwithweb.gst.model.sales.InvoiceDetails;
 import in.winwithweb.gst.service.AccountService;
 import in.winwithweb.gst.service.CompanyDetailsService;
 import in.winwithweb.gst.service.InvoiceService;
+import in.winwithweb.gst.service.ItemService;
 import in.winwithweb.gst.util.CommonUtils;
 import in.winwithweb.gst.util.InvoiceUtil;
 
@@ -53,6 +54,9 @@ public class ExportInvoiceController {
 	
 	@Autowired
 	private AccountService accountService;
+	
+	@Autowired
+	private ItemService itemService;
 	
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 
@@ -79,6 +83,7 @@ public class ExportInvoiceController {
 				e.printStackTrace();
 			}
 			modelAndView.addObject("logoImage",base64Encoded);
+			modelAndView.addObject("itemList", itemService.findByProductOwner(user));
 			modelAndView.setViewName("exportInvoice");
 		}
 		return modelAndView;
