@@ -188,12 +188,14 @@
 							</tr>
 						</thead>
 						<tbody>
+						<datalist id="data">
+								<option th:each="item : ${itemList}" th:value="${item}"
+									th:text="${item}"></option>
+							</datalist>
 							<tr>
 								<td class="pt-3-half"><input type="text" id="srNo"
 									name="excluded:skip" placeholder="Sr No" readonly="readonly"></td>
-								<td class="pt-3-half"><textarea cols="40" rows="5"
-										id="productDesc" style="height: 60px;" name="excluded:skip"
-										placeholder="Product Description" required="required"></textarea></td>
+								<td class="pt-3-half"><input list="data" id="productDesc" class="form-control" placeholder="Product Description" required="required" autocomplete="off"></td>
 								<td class="pt-3-half"><input type="text" id="hsnCode"
 									name="excluded:skip" placeholder="HSN Code" required="required"></td>
 								<td class="pt-3-half"><input type="text" id="uom"
