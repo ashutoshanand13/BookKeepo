@@ -78,7 +78,12 @@ public class InvoiceUtil {
 			invoice.setInvoicePartyState(salesInvoiceData.getPartyState());
 			invoice.setInvoicePartyGstin(salesInvoiceData.getPartyGstin());
 			invoice.setInvoicePartyState(salesInvoiceData.getPartyState());
-			
+			invoice.setInvoicePartyDate(reverseDate(salesInvoiceData.getPartyDate()));
+			invoice.setInvoicePoDate(reverseDate(salesInvoiceData.getPoDate()));
+			invoice.setInvoicePoNumber(salesInvoiceData.getPoNo());
+			invoice.setInvoiceTransportMode(salesInvoiceData.getTransportMode());
+			invoice.setInvoiceVehicleNumber(salesInvoiceData.getVehicleNo());
+			invoice.setInvoiceReverseCharge(salesInvoiceData.getReverseCharge());
 			if(salesInvoiceData.getInvoiceNo() != null && salesInvoiceData.getInvoiceNo().isEmpty()) {
 				invoice.setInvoiceNumber(salesInvoiceData.getInvoiceNo());
 			}
@@ -111,10 +116,15 @@ public class InvoiceUtil {
 		}
 
 		invoice.setInvoiceCompanyDetails(companyDetails);
-		if (salesInvoiceData.getGstinShip().substring(0, 2).equals(salesInvoiceData.getGstinBill().substring(0, 2))) {
+		if (salesInvoiceData.getGstinShip() != null || salesInvoiceData.getGstinBill() != null) {
+			if (salesInvoiceData.getGstinShip().substring(0, 2)
+					.equals(salesInvoiceData.getGstinBill().substring(0, 2))) {
+				invoice.setInvoiceType("Intra State");
+			} else {
+				invoice.setInvoiceType("Inter State");
+			}
+		}else {
 			invoice.setInvoiceType("Intra State");
-		} else {
-			invoice.setInvoiceType("Inter State");
 		}
 
 		for (ItemList item : salesInvoiceData.getItemList()) {
