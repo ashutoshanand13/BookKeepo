@@ -14,8 +14,8 @@
  var gstShip = false;
  var shippingType ='';
  
- var controllerMap = { salesInvoice: "/home/salesinvoice", exportInvoice: "/home/exportinvoice", debitNote:"/home/debitnote", creditNote:"/home/creditnote" };
- var fileMap = { salesInvoice: "salesinvoice.pdf", exportInvoice: "exportinvoice.pdf", debitNote:"debitnote.pdf", creditNote:"creditNote.pdf" };
+ var controllerMap = { salesInvoice: "/home/salesinvoice", exportInvoice: "/home/exportinvoice", debitNote:"/home/debitnote", creditNote:"/home/creditnote" , purchaseOrder:"/home/addpurchaseorder"  , purchaseInvoice:"/home/addpurchaseinvoice"};
+ var fileMap = { salesInvoice: "salesinvoice.pdf", exportInvoice: "exportinvoice.pdf", debitNote:"debitnote.pdf", creditNote:"creditNote.pdf", purchaseOrder:"purchaseOrder.pdf", purchaseInvoice:"purchaseInvoice.pdf" };
  
  var gstRegex = /^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$/;
  
