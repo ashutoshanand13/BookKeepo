@@ -144,6 +144,11 @@ function setAlert(message) {
    
    var f = $("#form")[0];
    
+   if(name==='purchaseOrder' ||name==='purchaseInvoice'){
+	   gstBill=true;
+	   gstShip=true;
+   }
+   
    if(gstBill && gstShip && f.reportValidity()) {
 		$('#tableJson table').map(function(i, table){
 			   var $rows = $("#" +table.id).find('tr:not(:hidden)');
@@ -190,6 +195,8 @@ function setAlert(message) {
 						});
 						$('#overlay').delay(500).fadeOut();
    }
+   gstBill=false;
+   gstShip=false;
  });
 
 function setValues() {

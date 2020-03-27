@@ -90,7 +90,7 @@ public class PurchaseOrderController {
 	}
 	
 	@RequestMapping(value = "/home/addpurchaseorder", method = RequestMethod.POST, produces = MediaType.APPLICATION_PDF_VALUE)
-	public void setupSalesInvoiceData(@RequestBody String salesInvoiceJson, Principal principal,
+	public void setupPurchaseOrderData(@RequestBody String salesInvoiceJson, Principal principal,
 			HttpServletResponse response) throws IOException {
 		InvoicePageData salesInvoiceData = null;
 		try {
