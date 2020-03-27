@@ -250,9 +250,9 @@ public class InvoiceUtil {
 				insertCell(table, "Party Details", Element.ALIGN_CENTER, 1, bfBold12, 1, "#BFD6E9", 1f, 0.5f, 0f);
 				
 				if(invoice.getType().equals("Purchase Order")) {
-					insertCell(table, "PO Details", Element.ALIGN_CENTER, 1, bfBold12, 2, "#BFD6E9", 0.5f, 1f, 0f);
+					insertCell(table, "PO Details", Element.ALIGN_CENTER, 2, bfBold12, 1, "#BFD6E9", 0.5f, 1f, 0f);
 					insertCell(table, "Name: ", invoice.getInvoicePartyName(), Element.ALIGN_LEFT,
-							2, bfBold12, bf12, 1, "#FFFFFF", 1f, 0.5f);
+							1, bfBold12, bf12, 1, "#FFFFFF", 1f, 0.5f);
 					insertCell(table, "PO No: ", invoice.getInvoicePoNumber(), Element.ALIGN_LEFT, 2, bfBold12, bf12, 1,
 							"#FFFFFF", 0.5f, 1f);
 					insertCell(table, "Address: ", invoice.getInvoicePartyAddress(),
