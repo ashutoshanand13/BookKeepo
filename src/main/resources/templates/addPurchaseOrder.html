@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{postLoginCommonPage}">
+
+<head>
+<title>Add Item</title>
+</head>
+<div class="img-holder fluid-height"
+	layout:fragment="screen_description">
+	<div class="bg"></div>
+	<h3>Get more things done with BookKeepo platform.</h3>
+	<p>
+		Access to the most powerful tool in the entire design and web
+		industry.<br> <br> Nam libero tempore, cum soluta nobis est
+		eligendi optio cumque nihil impedit quo minus id quod maxime placeat
+		facere possimus, omnis voluptas assumenda est, omnis dolor
+		repellendus.
+	</p>
+</div>
+<div layout:fragment="form_content" id="form_content">
+	<div class="form-items">
+		<h3 class="form-title doubleunderlinetext">Add Item Details</h3>
+		<div id="alert" th:if="${message}" th:text="${message} "
+			class="alert alert-info fade-in"></div>
+		<form autocomplete="off" th:action="@{/home/additem}"
+			th:object="${item}" method="post" class="form-horizontal" role="form"
+			enctype="multipart/form-data">
+			<div class="row">
+				<div class="col-md-6 form-group">
+					<div class="form-group">
+						<label>Item List</label> <select
+							class="form-control" id="selectbasic" name="selectbasic">
+							<option th:each="itemValue : ${itemList}" th:value="${itemValue}"
+								th:text="${itemValue}"></option>
+						</select>
+
+					</div>
+				</div>
+				<div class="col-md-6 form-group"></div>
+			</div>
+			<div class="row">
+				<div class="col-md-2 form-group"><label>Item Details</label>
+					<textarea cols="40" rows="5" style="height: 60px;"
+						placeholder="Product Description"
+						th:field="*{productDescription}" required="required"></textarea>
+					<input type="text" onfocus="(this.type='number')" min="0" class="form-control"
+						th:field="*{productGstRate}" placeholder="GST Rate" required>
+				</div>
+				<div class="col-md-2 form-group">
+					<div class="form-group">
+						<label></label>
+						<input type="text" class="form-control"
+						th:field="*{productHnscode}" placeholder="HSN Code" required>
+					</div>
+				</div>
+				<div class="col-md-2 form-group">
+					<div class="form-group">
+						<label></label>
+						<input type="text" class="form-control"
+						th:field="*{productUom}" placeholder="UOM" required>
+					</div>
+				</div>
+				<div class="col-md-2 form-group">
+					<div class="form-group">
+						<label></label>
+						<input type="text" onfocus="(this.type='number')" min="0" class="form-control"
+						th:field="*{productQuantity}" placeholder="Qty" required>
+					</div>
+				</div>
+				<div class="col-md-2 form-group">
+					<div class="form-group">
+						<label></label>
+						<input type="text" onfocus="(this.type='number')" min="0" class="form-control"
+						th:field="*{productRate}" placeholder="Rate" required>
+					</div>
+				</div>
+				<div class="col-md-2 form-group">
+					<div class="form-group">
+						<label></label>
+						<input type="text" onfocus="(this.type='number')" min="0" class="form-control"
+						th:field="*{productDiscount}" placeholder="Discount" required>
+					</div>
+				</div>
+
+
+			</div>
+			<div class="form-button text-right">
+				<button type="reset" class="btn btn-light">Reset</button>
+				<button id="submit" type="submit" class="ibtn">Save</button>
+			</div>
+
+		</form>
+	</div>
+</div>
+<th:block layout:fragment="scripts">
+	<script type="text/javascript">
+	$(document).ready(function() {
+		$("#selectbasic").change(function() {
+			getItem();
+		});
+	});
+	
+	function getItem() {
+		var itemDesc = $("#selectbasic").val();
+		if(itemDesc !== ""){
+			$.ajax({
+				type : "GET",
+				contentType : "application/json",
+				url : "getItemData?itemDesc=" + itemDesc,
+				dataType : 'json',				
+				success : function(data) {
+					$("[name=productDescription").val(data.productDescription);
+					$("[name=productGstRate").val(data.productGstRate);
+					$("[name=productHnscode").val(data.productHnscode);
+					$("[name=productUom").val(data.productUom);
+					$("[name=productDiscount").val(data.productDiscount);
+					$("[name=productRate").val(data.productRate);
+					$("[name=productQuantity").val(data.productQuantity);
+				}
+				});
+		}
+	};
+	</script>
+</th:block>
