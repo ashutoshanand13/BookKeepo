@@ -84,7 +84,7 @@ public class InvoiceUtil {
 			invoice.setInvoiceTransportMode(salesInvoiceData.getTransportMode());
 			invoice.setInvoiceVehicleNumber(salesInvoiceData.getVehicleNo());
 			invoice.setInvoiceReverseCharge(salesInvoiceData.getReverseCharge());
-			if(salesInvoiceData.getInvoiceNo() != null && salesInvoiceData.getInvoiceNo().isEmpty()) {
+			if(salesInvoiceData.getInvoiceNo() != null && !salesInvoiceData.getInvoiceNo().isEmpty()) {
 				invoice.setInvoiceNumber(salesInvoiceData.getInvoiceNo());
 			}
 		}
