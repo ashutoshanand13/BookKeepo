@@ -125,6 +125,21 @@ public class InvoicePageData {
 	@SerializedName("termsConditions")
 	@Expose
 	private String termsConditions;
+	@SerializedName("partyName")
+	@Expose
+	private String partyName;
+	@SerializedName("partyAddress")
+	@Expose
+	private String partyAddress;
+	@SerializedName("partyDate")
+	@Expose
+	private String partyDate;
+	@SerializedName("partyGstin")
+	@Expose
+	private String partyGstin;
+	@SerializedName("partyState")
+	@Expose
+	private String partyState;
 
 	public String getInvoiceNo() {
 		return invoiceNo;
@@ -454,6 +469,76 @@ public class InvoicePageData {
 	 */
 	public void setIssueDate(String issueDate) {
 		this.issueDate = issueDate;
+	}
+
+	/**
+	 * @return the partyName
+	 */
+	public String getPartyName() {
+		return partyName;
+	}
+
+	/**
+	 * @param partyName the partyName to set
+	 */
+	public void setPartyName(String partyName) {
+		this.partyName = partyName;
+	}
+
+	/**
+	 * @return the partyAddress
+	 */
+	public String getPartyAddress() {
+		return partyAddress;
+	}
+
+	/**
+	 * @param partyAddress the partyAddress to set
+	 */
+	public void setPartyAddress(String partyAddress) {
+		this.partyAddress = partyAddress;
+	}
+
+	/**
+	 * @return the partyDate
+	 */
+	public String getPartyDate() {
+		return partyDate;
+	}
+
+	/**
+	 * @param partyDate the partyDate to set
+	 */
+	public void setPartyDate(String partyDate) {
+		this.partyDate = partyDate;
+	}
+
+	/**
+	 * @return the partyGstin
+	 */
+	public String getPartyGstin() {
+		return partyGstin;
+	}
+
+	/**
+	 * @param partyGstin the partyGstin to set
+	 */
+	public void setPartyGstin(String partyGstin) {
+		this.partyGstin = partyGstin;
+	}
+
+	/**
+	 * @return the partyState
+	 */
+	public String getPartyState() {
+		return partyState;
+	}
+
+	/**
+	 * @param partyState the partyState to set
+	 */
+	public void setPartyState(String partyState) {
+		this.partyState = partyState;
 	}
 
 	@Override
