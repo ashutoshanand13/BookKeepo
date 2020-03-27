@@ -261,7 +261,7 @@ public class InvoiceUtil {
 							"#FFFFFF", 0.5f, 1f);
 				}
 				else {
-					insertCell(table, "Invoice Details", Element.ALIGN_CENTER, 1, bfBold12, 2, "#BFD6E9", 0.5f, 1f, 0f);
+					insertCell(table, "Invoice Details", Element.ALIGN_CENTER, 2, bfBold12, 1, "#BFD6E9", 0.5f, 1f, 0f);
 					insertCell(table, "Name: ", invoice.getInvoicePartyName(), Element.ALIGN_LEFT,
 							1, bfBold12, bf12, 1, "#FFFFFF", 1f, 0.5f);
 					insertCell(table, "Invoice No: ", invoice.getInvoiceNumber(), Element.ALIGN_LEFT, 2, bfBold12, bf12, 1,
