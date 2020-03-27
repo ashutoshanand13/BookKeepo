@@ -284,10 +284,10 @@ public class InvoiceUtil {
 
 			if(!(invoice.getType().equals("Purchase Invoice") || invoice.getType().equals("Purchase Order"))) {
 				insertCell(table, "Bill to Party", Element.ALIGN_CENTER, 1, bfBold12, 1, "#BFD6E9", 1f, 0.5f, 0f);
-				insertCell(table, "Ship to Party", Element.ALIGN_CENTER, 1, bfBold12, 2, "#BFD6E9", 0.5f, 1f, 0f);
+				insertCell(table, "Ship to Party", Element.ALIGN_CENTER, 2, bfBold12, 1, "#BFD6E9", 0.5f, 1f, 0f);
 	
 				insertCell(table, "Name: ", invoice.getInvoiceAddressDetails().getInvoiceBillerName(), Element.ALIGN_LEFT,
-						2, bfBold12, bf12, 1, "#FFFFFF", 1f, 0.5f);
+						1, bfBold12, bf12, 1, "#FFFFFF", 1f, 0.5f);
 				insertCell(table, "Name: ", invoice.getInvoiceAddressDetails().getInvoicePartyName(), Element.ALIGN_LEFT, 2,
 						bfBold12, bf12, 1, "#FFFFFF", 0.5f, 1f);
 				insertCell(table, "Address: ", invoice.getInvoiceAddressDetails().getInvoiceBillerAddressName(),
