@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import in.winwithweb.gst.model.Reports;
 import in.winwithweb.gst.service.InvoiceService;
+import in.winwithweb.gst.util.CommonUtils;
 
 /**
  * @author sachingoyal
@@ -24,7 +25,7 @@ import in.winwithweb.gst.service.InvoiceService;
 
 @Controller
 public class ReportController {
-	
+
 	@Autowired
 	InvoiceService invoiceService;
 
@@ -39,6 +40,16 @@ public class ReportController {
 	@RequestMapping(value = { "/home/reports" }, method = RequestMethod.POST)
 	public ModelAndView generateReport(@Valid Reports reports, HttpServletRequest request, Principal principal) {
 		ModelAndView modelAndView = new ModelAndView();
+
+		if (CommonUtils.isPopulated(reports.getStartDate()) && CommonUtils.isPopulated(reports.getEndDate())
+				&& !CommonUtils.isValidEndDate(reports.getStartDate(), reports.getEndDate())) {
+			modelAndView.addObject("reports", reports);
+			modelAndView.setViewName("reports");
+			modelAndView.addObject("message", "End date should not be less the Start date");
+
+			return modelAndView;
+
+		}
 
 		System.out.println(reports.getEndDate());
 

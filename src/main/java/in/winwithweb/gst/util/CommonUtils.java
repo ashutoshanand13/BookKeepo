@@ -2,6 +2,7 @@ package in.winwithweb.gst.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Properties;
 import java.util.UUID;
@@ -202,7 +203,8 @@ public class CommonUtils {
 			message.setFrom(new InternetAddress(enailfrom));
 
 			message.setSubject(subject);
-			message.setContent(body,"text/html");;
+			message.setContent(body, "text/html");
+			;
 
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
 			Transport.send(message);
@@ -211,5 +213,25 @@ public class CommonUtils {
 			e.printStackTrace();
 		}
 
+	}
+
+	public static boolean isValidEndDate(String startDate, String endDate) {
+
+		boolean isValid = false;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+		try {
+			if (sdf.parse(startDate).before(sdf.parse(endDate)) || sdf.parse(startDate).equals(sdf.parse(endDate))) {
+				isValid = true;
+			}
+		} catch (Exception e) {
+
+		}
+		return isValid;
+
+	}
+
+	public static boolean isPopulated(String string) {
+		return string != null && string.trim().equals("");
 	}
 }
