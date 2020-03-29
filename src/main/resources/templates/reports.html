@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{postLoginCommonPage}">
+
+<head>
+<title>Generate Reports</title>
+</head>
+<div class="img-holder fluid-height"
+	layout:fragment="screen_description">
+	<div class="bg"></div>
+	<h3>Get more things done with BookKeepo platform.</h3>
+	<p>
+		Access to the most powerful tool in the entire design and web
+		industry.<br> <br> Nam libero tempore, cum soluta nobis est
+		eligendi optio cumque nihil impedit quo minus id quod maxime placeat
+		facere possimus, omnis voluptas assumenda est, omnis dolor
+		repellendus.
+	</p>
+</div>
+<div layout:fragment="form_content" id="form_content">
+	<div class="form-items">
+		<h3 class="form-title doubleunderlinetext">Generate Reports</h3>
+		<!--  		<div id="alert" th:if="${message}" th:text="${message} "
+			class="alert alert-info fade-in"></div> -->
+		<form autocomplete="off" th:action="@{/home/reports}"
+			th:object="${reports}" method="post" class="form-horizontal"
+			role="form">
+			<div class="row">
+				<div class="col-md-3 form-group">
+					<div class="form-group">
+						<label>Chose Category </label>
+
+						<div th:each="model : ${T(in.winwithweb.gst.model.Type).values()}">
+							<div class="custom-control custom-radio custom-control-inline">
+								<input type="radio" th:field="*{type}" th:value="${model}"
+									class="form-control"> <label
+									class="custom-control-label" th:for="${#ids.prev('type')}"
+									th:text="${model.getType()}">Category</label>
+							</div>
+
+						</div>
+					</div>
+
+				</div>
+
+				<div class="col-md-3 form-group">
+					<div class="form-group">
+						<label>Chose Document Type </label>
+
+						<div
+							th:each="model : ${T(in.winwithweb.gst.model.DocumentType).values()}">
+							<div class="custom-control custom-radio custom-control-inline">
+								<input type="radio" th:field="*{documentType}"
+									th:value="${model}" class="form-control"> <label
+									class="custom-control-label"
+									th:for="${#ids.prev('documentType')}"
+									th:text="${model.getDocumentType()}">Document Type</label>
+							</div>
+
+						</div>
+					</div>
+
+				</div>
+
+				<div class="col-md-3 form-group">
+					<div class="form-group">
+						<label>Chose Start Date </label> <input type="date"
+							th:field="*{startDate}" class="form-control">
+
+
+					</div>
+
+					<div class="form-group">
+						<label>Chose End Date </label> <input type="date"
+							th:field="*{endDate}" class="form-control">
+
+
+					</div>
+
+				</div>
+
+
+
+			</div>
+			<div class="form-button text-right">
+				<button type="reset" class="btn btn-light">Reset</button>
+				<button id="submit" type="submit" class="ibtn">Save</button>
+			</div>
+
+		</form>
+	</div>
+</div>
