@@ -6,7 +6,7 @@ import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class SalesInvoicePageData {
+public class InvoicePageData {
 
 	@SerializedName("invoiceNo")
 	@Expose
@@ -38,6 +38,15 @@ public class SalesInvoicePageData {
 	@SerializedName("reverseCharge")
 	@Expose
 	private String reverseCharge;
+	@SerializedName("againstInvoice")
+	@Expose
+	private String againstInvoice;
+	@SerializedName("documentNumber")
+	@Expose
+	private String documentNumber;
+	@SerializedName("issueDate")
+	@Expose
+	private String issueDate;
 	@SerializedName("nameBill")
 	@Expose
 	private String nameBill;
@@ -116,6 +125,21 @@ public class SalesInvoicePageData {
 	@SerializedName("termsConditions")
 	@Expose
 	private String termsConditions;
+	@SerializedName("partyName")
+	@Expose
+	private String partyName;
+	@SerializedName("partyAddress")
+	@Expose
+	private String partyAddress;
+	@SerializedName("partyDate")
+	@Expose
+	private String partyDate;
+	@SerializedName("partyGstin")
+	@Expose
+	private String partyGstin;
+	@SerializedName("partyState")
+	@Expose
+	private String partyState;
 
 	public String getInvoiceNo() {
 		return invoiceNo;
@@ -403,6 +427,118 @@ public class SalesInvoicePageData {
 
 	public void setTermsConditions(String termsConditions) {
 		this.termsConditions = termsConditions;
+	}
+
+	/**
+	 * @return the againstInvoice
+	 */
+	public String getAgainstInvoice() {
+		return againstInvoice;
+	}
+
+	/**
+	 * @param againstInvoice the againstInvoice to set
+	 */
+	public void setAgainstInvoice(String againstInvoice) {
+		this.againstInvoice = againstInvoice;
+	}
+
+	/**
+	 * @return the documentNumber
+	 */
+	public String getDocumentNumber() {
+		return documentNumber;
+	}
+
+	/**
+	 * @param documentNumber the documentNumber to set
+	 */
+	public void setDocumentNumber(String documentNumber) {
+		this.documentNumber = documentNumber;
+	}
+
+	/**
+	 * @return the issueDate
+	 */
+	public String getIssueDate() {
+		return issueDate;
+	}
+
+	/**
+	 * @param issueDate the issueDate to set
+	 */
+	public void setIssueDate(String issueDate) {
+		this.issueDate = issueDate;
+	}
+
+	/**
+	 * @return the partyName
+	 */
+	public String getPartyName() {
+		return partyName;
+	}
+
+	/**
+	 * @param partyName the partyName to set
+	 */
+	public void setPartyName(String partyName) {
+		this.partyName = partyName;
+	}
+
+	/**
+	 * @return the partyAddress
+	 */
+	public String getPartyAddress() {
+		return partyAddress;
+	}
+
+	/**
+	 * @param partyAddress the partyAddress to set
+	 */
+	public void setPartyAddress(String partyAddress) {
+		this.partyAddress = partyAddress;
+	}
+
+	/**
+	 * @return the partyDate
+	 */
+	public String getPartyDate() {
+		return partyDate;
+	}
+
+	/**
+	 * @param partyDate the partyDate to set
+	 */
+	public void setPartyDate(String partyDate) {
+		this.partyDate = partyDate;
+	}
+
+	/**
+	 * @return the partyGstin
+	 */
+	public String getPartyGstin() {
+		return partyGstin;
+	}
+
+	/**
+	 * @param partyGstin the partyGstin to set
+	 */
+	public void setPartyGstin(String partyGstin) {
+		this.partyGstin = partyGstin;
+	}
+
+	/**
+	 * @return the partyState
+	 */
+	public String getPartyState() {
+		return partyState;
+	}
+
+	/**
+	 * @param partyState the partyState to set
+	 */
+	public void setPartyState(String partyState) {
+		this.partyState = partyState;
 	}
 
 	@Override

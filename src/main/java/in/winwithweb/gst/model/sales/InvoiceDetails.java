@@ -37,6 +37,18 @@ public class InvoiceDetails {
 	@Column(name = "invoice_number")
 	private String invoiceNumber;
 	
+	@Column(name = "type")
+	private String type;
+	
+	@Column(name = "invoice_against_invoice")
+	private String invoiceAgainstInvoice;
+	
+	@Column(name = "invoice_issue_date")
+	private String invoiceIssueDate;
+	
+	@Column(name = "invoice_document_number")
+	private String invoiceDocumentNumber;
+	
 	@Column(name = "invoice_date")
 	private String invoiceDate;
 	
@@ -90,6 +102,21 @@ public class InvoiceDetails {
 	
 	@Column(name = "invoice_total_amount_words")
 	private String invoiceTotalAmountWords;
+	
+	@Column(name = "invoice_party_name")
+	private String invoicePartyName;
+	
+	@Column(name = "invoice_party_address")
+	private String invoicePartyAddress;
+	
+	@Column(name = "invoice_party_date")
+	private String invoicePartyDate;
+	
+	@Column(name = "invoice_party_gstin")
+	private String invoicePartyGstin;
+	
+	@Column(name = "invoice_party_state")
+	private String invoicePartyState;
 	
 	@OneToMany(cascade=CascadeType.ALL)
     @JoinColumn(name="invoice_products_referece_no")
@@ -412,6 +439,132 @@ public class InvoiceDetails {
 	 */
 	public void setInvoiceCompanyDetails(Company invoiceCompanyDetails) {
 		this.invoiceCompanyDetails = invoiceCompanyDetails;
+	}
+
+	/**
+	 * @return the type
+	 */
+	public String getType() {
+		return type;
+	}
+
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	/**
+	 * @return the invoicePartyName
+	 */
+	public String getInvoicePartyName() {
+		return invoicePartyName;
+	}
+
+	/**
+	 * @param invoicePartyName the invoicePartyName to set
+	 */
+	public void setInvoicePartyName(String invoicePartyName) {
+		this.invoicePartyName = invoicePartyName;
+	}
+
+	/**
+	 * @return the invoicePartyAddress
+	 */
+	public String getInvoicePartyAddress() {
+		return invoicePartyAddress;
+	}
+
+	/**
+	 * @param invoicePartyAddress the invoicePartyAddress to set
+	 */
+	public void setInvoicePartyAddress(String invoicePartyAddress) {
+		this.invoicePartyAddress = invoicePartyAddress;
+	}
+
+	/**
+	 * @return the invoicePartyDate
+	 */
+	public String getInvoicePartyDate() {
+		return invoicePartyDate;
+	}
+
+	/**
+	 * @param invoicePartyDate the invoicePartyDate to set
+	 */
+	public void setInvoicePartyDate(String invoicePartyDate) {
+		this.invoicePartyDate = invoicePartyDate;
+	}
+
+	/**
+	 * @return the invoicePartyGstin
+	 */
+	public String getInvoicePartyGstin() {
+		return invoicePartyGstin;
+	}
+
+	/**
+	 * @param invoicePartyGstin the invoicePartyGstin to set
+	 */
+	public void setInvoicePartyGstin(String invoicePartyGstin) {
+		this.invoicePartyGstin = invoicePartyGstin;
+	}
+
+	/**
+	 * @return the invoicePartyState
+	 */
+	public String getInvoicePartyState() {
+		return invoicePartyState;
+	}
+
+	/**
+	 * @param invoicePartyState the invoicePartyState to set
+	 */
+	public void setInvoicePartyState(String invoicePartyState) {
+		this.invoicePartyState = invoicePartyState;
+	}
+
+	/**
+	 * @return the invoiceAgainstInvoice
+	 */
+	public String getInvoiceAgainstInvoice() {
+		return invoiceAgainstInvoice;
+	}
+
+	/**
+	 * @param invoiceAgainstInvoice the invoiceAgainstInvoice to set
+	 */
+	public void setInvoiceAgainstInvoice(String invoiceAgainstInvoice) {
+		this.invoiceAgainstInvoice = invoiceAgainstInvoice;
+	}
+
+	/**
+	 * @return the invoiceIssueDate
+	 */
+	public String getInvoiceIssueDate() {
+		return invoiceIssueDate;
+	}
+
+	/**
+	 * @param invoiceIssueDate the invoiceIssueDate to set
+	 */
+	public void setInvoiceIssueDate(String invoiceIssueDate) {
+		this.invoiceIssueDate = invoiceIssueDate;
+	}
+
+	/**
+	 * @return the invoiceDocumentNumber
+	 */
+	public String getInvoiceDocumentNumber() {
+		return invoiceDocumentNumber;
+	}
+
+	/**
+	 * @param invoiceDocumentNumber the invoiceDocumentNumber to set
+	 */
+	public void setInvoiceDocumentNumber(String invoiceDocumentNumber) {
+		this.invoiceDocumentNumber = invoiceDocumentNumber;
 	}
 
 }

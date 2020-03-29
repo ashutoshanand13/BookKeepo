@@ -4,7 +4,7 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{postLoginCommonPage}">
 <head>
-<title>Credit Note</title>
+<title>Purchase Order</title>
 </head>
 
 <div layout:fragment="invoice_fragment" id="form_content">
@@ -14,21 +14,15 @@
 				class="table table-width table-responsive-md text-center" >
 				<thead class="table-width">
 					<tr bgcolor="#BFD6E9">
-						<th class="text-center" width="100%" height="60" colspan="2"><h3
-								class="text-center font-weight-bold text-uppercase">Invoice Details</h3></th>
+						<th class="text-center" width="100%" height="60" colspan="3"><h3
+								class="text-center font-weight-bold text-uppercase">Purchase Order</h3></th>
 					</tr>
 				</thead>
-				<colgroup>
-					<col span="1" style="width: 40%;">
-					<col span="1" style="width: 60%;">
-				</colgroup>
 				<tbody>
 					<tr style="border: 0px;">
-						<td rowspan="2" style="vertical-align : middle;"><img id="logo" height="100px"
+						<td rowspan="1" style="vertical-align : middle;"><img id="logo" height="100px" width="200px"
 							th:src="|data:image/png;base64,${logoImage}"></td>
-					</tr>
-					<tr>
-						<td>
+						<td align="left">
 							<p class="companydetails" th:text="${company.companyName}"></p>
 							<p class="companydetails" th:text="${company.companyTelephone}"></p>
 							<p class="companydetails" th:text="${company.companyGstin}"></p>
@@ -36,76 +30,81 @@
 							<p class="companydetails" th:text="${company.companyAddress}"></p>
 							<p class="companydetails" th:text="${company.companyState}"></p>
 						</td>
+						<td>
+							<p class="centerfromtop">Original for Recipient</p>
+						</td>
 					</tr>
-					<!-- <tr style="border: 0px;">
-						<td th:text="${company.companyName}"></td>
-					</tr>
-					<tr style="border: 0px;">
-						<td class="pt-3-half" th:text="${company.companyAddress}"></td>
-					</tr>
-					<tr style="border: 0px;">
-						<td class="pt-3-half" th:text="${company.companyState}"></td>
-					</tr>
-					<tr style="border: 0px;">
-						<td class="pt-3-half" th:text="${company.companyTelephone}"></td>
-					</tr>
-					<tr style="border: 0px;">
-						<td class="pt-3-half" th:text="${company.companyGstin}"></td>
-					</tr>
-					<tr style="border: 0px;">
-						<td class="pt-3-half" th:text="${company.companyEmail}"></td>
-					</tr> -->
 				</tbody>
 			</table>
 
-			<table id="invoiceDetailsTable" border="1"
+			 <table id="invoiceDetailsTable" border="1"
 				class="table table-width table-responsive-md text-center">
 				<thead class="table-width">
 					<tr bgcolor="#BFD6E9">
 						<th class="text-center" width="100%" colspan="2"><h6
-								class="text-center font-weight-bold text-uppercase py-3">Credit
-								Note</h6></th>
+								class="text-center font-weight-bold text-uppercase py-3">Purchase Order</h6></th>
+					</tr>
+					<tr bgcolor="#BFD6E9">
+						<th class="text-center"><span style='font-weight: bold;'>Party Details</span></th>
+						<th class="text-center"><span style='font-weight: bold;'>PO Details</span></th>
 					</tr>
 				</thead>
 				<tbody class="table-width">
 					<tr>
 						<td class="pt-3-half"><input type="text" class="form-control"
-							name="documentNumber" placeholder="Document No." required="required"></td>
-						<td class="pt-3-half"><select class="form-control" 
-						id="againstInvoicedropdown" name="againstInvoice" style="font-size: 10px;">
-						<option th:each="invoice : ${invoiceList}" th:value="${invoice}"
-							th:text="${invoice}"></option>
-					</select></td>
+							name="partyName" placeholder="Name" required="required"></td>
+						<td class="pt-3-half"><input type="text" class="form-control"
+							name="poNo" placeholder="PO No." required="required"></td>
 					</tr>
 					<tr>
 						<td class="pt-3-half"><input type="text" class="form-control"
-							name="issueDate" onfocus="(this.type='date')"
-							onblur="if(!this.value)this.type='text'" placeholder="Issue Date"
-							required="required"></td>
+							name="partyAddress" placeholder="Address" required="required"></td>
 						<td class="pt-3-half"><input type="text" class="form-control"
-							name="invoiceDate" onfocus="(this.type='date')"
-							onblur="if(!this.value) this.type='text'" placeholder="Date of Invoice"
+							name="poDate" onfocus="(this.type='date')"
+							onblur="if(!this.value)this.type='text'" placeholder="PO Date"
 							required="required"></td>
 					</tr>
 					<tr>
 						<td class="pt-3-half"><input type="text" class="form-control"
-							name="state" placeholder="State" required="required"></td>
+							name="partyDate" onfocus="(this.type='date')"
+							onblur="if(!this.value)this.type='text'" placeholder="Date"
+							required="required"></td>
+						<td class="pt-3-half"><input type="text" class="form-control"
+							name="transportMode" placeholder="Transport Mode"
+							required="required"></td>
+					</tr>
+					<tr>
+						<td class="pt-3-half"><input type="text" class="form-control"
+							name="partyGstin" placeholder="GSTIN" onblur="validateGST(this)"
+							pattern="^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$"
+							required="required"
+							oninvalid="this.setCustomValidity('GST Identification Number is not valid. It should be in this 11AAAAA1111Z1A1 format')" oninput="setCustomValidity('')"></td>
+						<td class="pt-3-half"><input type="text" class="form-control"
+							name="vehicleNo" placeholder="Vehicle No" required="required"></td>
+					</tr>
+					<tr>
+						<td class="pt-3-half"><input type="text" class="form-control"
+							name="partyState" placeholder="State" required="required"></td>
 						<td class="pt-3-half" bgcolor="#EEFF74"><input type="text"
 							class="form-control" name="reverseCharge"
 							placeholder="Reverse Charge (Y/N)" onKeyDown="inputValidate()" maxlength="1" required="required"></td>
 					</tr>
 				</tbody>
-			</table>
+			</table> 
 
-			<table id="partyDetailsTable" border="1"
+			<!-- <table id="partyDetailsTable" border="1"
 				class="table table-width table-responsive-md text-center">
+				<thead class="table-width">
+					<tr bgcolor="#BFD6E9">
+						<th class="text-center" width="100%" colspan="2"><h6
+								class="text-center font-weight-bold text-uppercase py-3">Purchase Order</h6></th>
+					</tr>
+				</thead>
 
 				<thead>
 					<tr bgcolor="#BFD6E9">
-						<th class="text-center"><span style='font-weight: bold;'>Bill
-								to Party</span></th>
-						<th class="text-center"><span style='font-weight: bold;'>Ship
-								to Party</span></th>
+						<th class="text-center"><span style='font-weight: bold;'>Party Details</span></th>
+						<th class="text-center"><span style='font-weight: bold;'>PO Details</span></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -119,7 +118,7 @@
 							</datalist>
 						</td>
 						<td class="pt-3-half"><input type="text" class="form-control"
-							name="nameShip" placeholder="Name" required="required"></td>
+							name="nameShip" placeholder="Namessss" required="required"></td>
 					</tr>
 					<tr>
 						<td class="pt-3-half"><input type="text" class="form-control"
@@ -148,7 +147,7 @@
 
 				</tbody>
 
-			</table>
+			</table> -->
 
 			<div id = "alert_placeholder"></div>
 
@@ -203,31 +202,27 @@
 							<tr>
 								<td class="pt-3-half"><input type="text" id="srNo"
 									name="excluded:skip" placeholder="Sr No" readonly="readonly"></td>
-								<td class="pt-3-half"><input list="data" id="productDesc" class="form-control" placeholder="Product Description" required="required" autocomplete="off"></td>
+								<td class="pt-3-half">
+								<input list="data" id="productDesc" class="form-control" placeholder="Product Description" required="required" autocomplete="off"> 
+							    </td>
 								<td class="pt-3-half"><input type="text" id="hsnCode"
 									name="excluded:skip" placeholder="HSN Code" required="required"></td>
 								<td class="pt-3-half"><input type="text" id="uom"
 									name="excluded:skip" placeholder="UOM" required="required"></td>
-								<td class="pt-3-half"><input type="text" onfocus="(this.type='number')"min="0" id="qty"
+								<td class="pt-3-half"><input type="text" onfocus="(this.type='number')" onblur="(this.type='text')" min="0" id="qty"
 									name="excluded:skip" placeholder="QTY" required="required"></td>
-								<td class="pt-3-half"><input type="text" onfocus="(this.type='number')" min="0"
+								<td class="pt-3-half"><input type="text" onfocus="(this.type='number')" onblur="(this.type='text')" min="0"
 									id="rate" name="excluded:skip" placeholder="Rate"
 									required="required"></td>
 								<td class="pt-3-half"><input type="text" id="amount"
 									name="excluded:skip" placeholder="Amount" readonly="readonly"></td>
-								<td class="pt-3-half"><input type="text" onfocus="(this.type='number')" min="0"
+								<td class="pt-3-half"><input type="text" onfocus="(this.type='number')" onblur="(this.type='text')" min="0"
 									id="discount" name="excluded:skip" placeholder="Discount"
 									required="required"></td>
-								<td class="pt-3-half"><input type="text" onfocus="(this.type='number')" min="0"
+								<td class="pt-3-half"><input type="text" onfocus="(this.type='number')" onblur="(this.type='text')" min="0"
 									id="gstRate" name="excluded:skip" placeholder="GST Rate"
 									required="required"> 
-									<!-- <select name="selectbasic" class="pt-3-half salesformcontent" id="gstRate" required="required">
-							<option class="form-control" value="0">0%</option>
-							<option class="form-control" value="5">5%</option>
-							<option class="form-control" value="12">12%</option>
-							<option class="form-control" value="18">18%</option>
-							<option class="form-control" value="28">28%</option>
-						</select> --></td>
+								</td>
 								<td class="pt-3-half"><input type="text" id="taxableValue"
 									name="excluded:skip" placeholder="Taxable Value"
 									readonly="readonly"></td>
@@ -359,8 +354,9 @@
 				</div>
 				<div class="row">
 				<div class="col-md-5 form-group"></div>
-				<div class="col-md-2 form-group"><button id="export-btn" name="creditNote"
-					class="btn btn-info btn-rounded btn-sm my-0">Create Invoice</button></div>
+				<div class="col-md-2 form-group"><button id="export-btn" name="purchaseOrder"
+					class="btn btn-info btn-rounded btn-sm my-0">Create Invoice</button>
+					</div>
 				<div class="col-md-4 form-group"></div>
 					</div>
 			</div>
@@ -394,24 +390,5 @@ window.onbeforeunload = function() {
 	           e.returnValue = false; 
 	   
  }
- 
- jQuery(document).ready(function($) {
-	  var selectValue = $('select#againstInvoicedropdown');
-	  selectValue.prop('required', true);
-	  /* Check if there is no selected value on ready if not mark select as invalid */
-	  if(selectValue.val() === "Against Invoice"){
-	       selectValue[0].setCustomValidity('Please select an Invoice');  
-	  }
-	  else {
-		  selectValue[0].setCustomValidity(''); 
-	  }
-	  selectValue.on('change', function(){      
-	    if(selectValue.val() === "Against Invoice"){
-	        selectValue[0].setCustomValidity('Please select an Invoice');
-	    }else{      
-	        selectValue[0].setCustomValidity('');
-	    }    
-	  })
-	});
 </script>
 </th:block>

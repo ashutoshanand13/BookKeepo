@@ -42,8 +42,7 @@ public class AccountService {
 
 	public List<String> fetchAccountName() {
 		List<Accounts> accountList = accountRepository.findAll();
-		List<String> accountName = new ArrayList<String>();
-		accountName.add("Select Account");
+		List<String> accountName = new ArrayList<>();
 		for (Accounts account : accountList) {
 			accountName.add(account.getAccountName());
 		}
@@ -66,5 +65,9 @@ public class AccountService {
 		} else {
 			return "No Pan Found";
 		}
+	}
+	
+	public Accounts findByAccountName(String accountName) {
+		return accountRepository.findByAccountName(accountName);
 	}
 }

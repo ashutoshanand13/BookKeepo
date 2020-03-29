@@ -4,7 +4,7 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{postLoginCommonPage}">
 <head>
-<title>Sales Invoice</title>
+<title>Debit Note</title>
 </head>
 
 <div layout:fragment="invoice_fragment" id="form_content">
@@ -67,12 +67,15 @@
 								Note</h6></th>
 					</tr>
 				</thead>
-				<tbody class="table-width">
+								<tbody class="table-width">
 					<tr>
 						<td class="pt-3-half"><input type="text" class="form-control"
 							name="documentNumber" placeholder="Document No." required="required"></td>
-						<td class="pt-3-half"><input type="text" class="form-control"
-							name="againstInvoice" placeholder="Against Invoice" required="required"></td>
+						<td class="pt-3-half"><select class="form-control" 
+						id="againstInvoicedropdown" name="againstInvoice" style="font-size: 10px;">
+						<option th:each="invoice : ${invoiceList}" th:value="${invoice}"
+							th:text="${invoice}"></option>
+					</select></td>
 					</tr>
 					<tr>
 						<td class="pt-3-half"><input type="text" class="form-control"
@@ -80,8 +83,8 @@
 							onblur="if(!this.value)this.type='text'" placeholder="Issue Date"
 							required="required"></td>
 						<td class="pt-3-half"><input type="text" class="form-control"
-							name="dateOfInvoice" onfocus="(this.type='date')"
-							onblur="if(!this.value)this.type='text'" placeholder="Date of Invoice"
+							name="invoiceDate" onfocus="(this.type='date')"
+							onblur="if(!this.value) this.type='text'" placeholder="Date of Invoice"
 							required="required"></td>
 					</tr>
 					<tr>
@@ -107,8 +110,14 @@
 				</thead>
 				<tbody>
 					<tr>
-						<td class="pt-3-half"><input type="text" class="form-control"
-							name="nameBill" placeholder="Name" required="required"></td>
+						<td class="pt-3-half">							
+							<input list="select" class="form-control"
+							name="nameBill" placeholder="Name" autocomplete="off"> <datalist
+								id="select">
+								<option th:each="account : ${accountList}" th:value="${account}"
+									th:text="${account}"></option>
+							</datalist>
+						</td>
 						<td class="pt-3-half"><input type="text" class="form-control"
 							name="nameShip" placeholder="Name" required="required"></td>
 					</tr>
@@ -187,12 +196,14 @@
 							</tr>
 						</thead>
 						<tbody>
+						<datalist id="data">
+								<option th:each="item : ${itemList}" th:value="${item}"
+									th:text="${item}"></option>
+							</datalist>
 							<tr>
 								<td class="pt-3-half"><input type="text" id="srNo"
 									name="excluded:skip" placeholder="Sr No" readonly="readonly"></td>
-								<td class="pt-3-half"><textarea cols="40" rows="5"
-										id="productDesc" style="height: 60px;" name="excluded:skip"
-										placeholder="Product Description" required="required"></textarea></td>
+								<td class="pt-3-half"><input list="data" id="productDesc" class="form-control" placeholder="Product Description" required="required" autocomplete="off"></td>
 								<td class="pt-3-half"><input type="text" id="hsnCode"
 									name="excluded:skip" placeholder="HSN Code" required="required"></td>
 								<td class="pt-3-half"><input type="text" id="uom"
@@ -384,5 +395,23 @@ window.onbeforeunload = function() {
 	   
  }
  
+ jQuery(document).ready(function($) {
+	  var selectValue = $('select#againstInvoicedropdown');
+	  selectValue.prop('required', true);
+	  /* Check if there is no selected value on ready if not mark select as invalid */
+	  if(selectValue.val() === "Against Invoice"){
+	       selectValue[0].setCustomValidity('Please select an Invoice');  
+	  }
+	  else {
+		  selectValue[0].setCustomValidity(''); 
+	  }
+	  selectValue.on('change', function(){      
+	    if(selectValue.val() === "Against Invoice"){
+	        selectValue[0].setCustomValidity('Please select an Invoice');
+	    }else{      
+	        selectValue[0].setCustomValidity('');
+	    }    
+	  })
+	});
 </script>
 </th:block>
