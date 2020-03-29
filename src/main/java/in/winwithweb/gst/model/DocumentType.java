@@ -9,7 +9,7 @@ package in.winwithweb.gst.model;
  */
 public enum DocumentType {
 
-	INTRASTATE("Intra State"), INTERSTATE("Inter State"), EXPORTINVOCE("Export Invoice"), ALL("All");
+	INTRASTATE("Intra State"), INTERSTATE("Inter State"), BOTH("Both");
 
 	private final String type;
 
