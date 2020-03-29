@@ -216,10 +216,8 @@ public class CommonUtils {
 	}
 
 	public static boolean isValidEndDate(String startDate, String endDate) {
-
 		boolean isValid = false;
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
 		try {
 			if (sdf.parse(startDate).before(sdf.parse(endDate)) || sdf.parse(startDate).equals(sdf.parse(endDate))) {
 				isValid = true;
@@ -228,7 +226,6 @@ public class CommonUtils {
 
 		}
 		return isValid;
-
 	}
 
 	public static boolean isPopulated(String string) {
