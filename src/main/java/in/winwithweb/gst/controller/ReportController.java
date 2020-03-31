@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import in.winwithweb.gst.model.Reports;
-import in.winwithweb.gst.service.InvoiceService;
+import in.winwithweb.gst.service.ReportService;
 import in.winwithweb.gst.util.CommonUtils;
 
 /**
@@ -27,7 +27,7 @@ import in.winwithweb.gst.util.CommonUtils;
 public class ReportController {
 
 	@Autowired
-	InvoiceService invoiceService;
+	ReportService reportService;
 
 	@RequestMapping(value = { "/home/reports" }, method = RequestMethod.GET)
 	public ModelAndView showReport(HttpServletRequest request) {
@@ -50,14 +50,8 @@ public class ReportController {
 			return modelAndView;
 
 		}
-
-		System.out.println(reports.getEndDate());
-
-		System.out.println(reports.getStartDate());
-
-		System.out.println(reports.getDocumentType().getDocumentType());
-
-		System.out.println(reports.getType().getType());
+		reportService.getReports(principal.getName(), reports);
+		
 
 		return modelAndView;
 	}

@@ -229,6 +229,6 @@ public class CommonUtils {
 	}
 
 	public static boolean isPopulated(String string) {
-		return string != null && string.trim().equals("");
+		return string != null && !string.trim().equals("");
 	}
 }
