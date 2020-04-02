@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import in.winwithweb.gst.model.Reports;
 import in.winwithweb.gst.model.sales.InvoiceDetails;
 import in.winwithweb.gst.repository.InvoiceRepository;
+import in.winwithweb.gst.util.CommonUtils;
 import in.winwithweb.gst.util.InvoiceUtil;
 
 /**
@@ -39,7 +40,11 @@ public class ReportService {
 
 			if (reports.getType().getType().equalsIgnoreCase(invoice.getType()) && InvoiceUtil
 					.checkInvoiceType(invoice.getInvoiceType(), reports.getDocumentType().getDocumentValue())) {
-				reportsData.add(invoice);
+
+				if (InvoiceUtil.isValidDate(reports.getStartDate(), reports.getEndDate(),
+						CommonUtils.convertDateIntoFormat(invoice.getInvoiceDate()))) {
+					reportsData.add(invoice);
+				}
 			}
 		}
 		return reportsData;

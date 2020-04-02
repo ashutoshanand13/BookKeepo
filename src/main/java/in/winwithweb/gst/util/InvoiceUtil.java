@@ -595,4 +595,22 @@ public class InvoiceUtil {
 		}
 		return isIncluded;
 	}
+
+	public static boolean isValidDate(String startDate, String endDate, String invoiveDate) {
+		boolean isValid = false;
+
+		if (!CommonUtils.isPopulated(invoiveDate)) {
+			isValid = true;
+		} else if (!CommonUtils.isPopulated(startDate) && !CommonUtils.isPopulated(endDate)) {
+			isValid = true;
+		} else if (!CommonUtils.isPopulated(startDate) && CommonUtils.isValidEndDate(invoiveDate, endDate)) {
+			isValid = true;
+		} else if (!CommonUtils.isPopulated(endDate) && CommonUtils.isValidEndDate(startDate, invoiveDate)) {
+			isValid = true;
+		} else if (CommonUtils.isPopulated(startDate) && CommonUtils.isPopulated(endDate)
+				&& CommonUtils.isValidDate(startDate, endDate, invoiveDate)) {
+			isValid = true;
+		}
+		return isValid;
+	}
 }
