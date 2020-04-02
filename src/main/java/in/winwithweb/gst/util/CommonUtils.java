@@ -259,4 +259,13 @@ public class CommonUtils {
 	public static boolean isPopulated(String string) {
 		return string != null && !string.trim().equals("");
 	}
+
+	public static String nullToEmpty(String string) {
+		String toReturn = string;
+		if (string == null) {
+			toReturn = "";
+		}
+
+		return toReturn;
+	}
 }
