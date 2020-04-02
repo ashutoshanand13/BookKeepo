@@ -11,12 +11,12 @@ import in.winwithweb.gst.util.Constants;
  */
 public enum Type {
 
-	Tax_Invoice("Tax Invoice", Constants.TAX_INVOICE_COLUMNS),
-	Export_Invoice("Export Invoice", Constants.SALES_INVOICE_COLUMNS),
-	Credit_Note("Credit Note", Constants.DEBIT_NOTE_COLUMNS), Debit_Note("Debit Note", Constants.DEBIT_NOTE_COLUMNS),
-	Purchase_Invoice("Purchase Invoice", Constants.DEBIT_NOTE_COLUMNS),
-	Purchase_Order("Purchase Order", Constants.DEBIT_NOTE_COLUMNS),
-	Sales_Invoice("Sales Invoice", Constants.SALES_INVOICE_COLUMNS);
+	Tax_Invoice("Tax Invoice", Constants.INVOICE_COLUMNS), Export_Invoice("Export Invoice", Constants.INVOICE_COLUMNS),
+	Credit_Note("Credit Note", Constants.CREDIT_DEBIT_NOTE_COLUMNS),
+	Debit_Note("Debit Note", Constants.CREDIT_DEBIT_NOTE_COLUMNS),
+	Purchase_Invoice("Purchase Invoice", Constants.INVOICE_COLUMNS),
+	Purchase_Order("Purchase Order", Constants.INVOICE_COLUMNS),
+	Sales_Invoice("Sales Invoice", Constants.INVOICE_COLUMNS);
 
 	private final String type;
 
