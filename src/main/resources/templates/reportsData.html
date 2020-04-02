@@ -2,12 +2,28 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{postLoginCommonPage}">
+	layout:decorate="~{postLoginCommonPageForReports}">
 
 <head>
 <title>Download Invoice</title>
 
-<script type="text/javascript" th:src="@{/js/jquery-3.3.1.js}"></script>
+<link rel="stylesheet" th:href="@{/css/datatables/jquery.dataTables.min.css}">
+<link rel="stylesheet" th:href="@{/css/datatables/buttons.dataTables.min.css}">
+
+
+<script type="text/javascript" th:src="@{/js/datatables/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/datatables/jszip.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/datatables/pdfmake.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/datatables/vfs_fonts.js}"></script>
+<script type="text/javascript" th:src="@{/js/datatables/jquery.dataTables.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/datatables/dataTables.buttons.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/datatables/buttons.flash.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/datatables/buttons.html5.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/datatables/buttons.print.min.js}"></script>
+
+
+
+
 
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -48,20 +64,29 @@
 			</thead>
 			<tbody>
 				<tr data-th-each="report : ${reports}">
-					<td th:if="${report.documenttype}" data-th-text="${report.documenttype}"></td>
-					<td th:if="${report.documentNo}" data-th-text="${report.documentNo}"></td>
-					<td th:if="${report.documentDate}" data-th-text="${report.documentDate}"></td>
+					<td th:if="${report.documenttype}"
+						data-th-text="${report.documenttype}"></td>
+					<td th:if="${report.documentNo}"
+						data-th-text="${report.documentNo}"></td>
+					<td th:if="${report.documentDate}"
+						data-th-text="${report.documentDate}"></td>
 					<td th:if="${report.invoiceNo}" data-th-text="${report.invoiceNo}"></td>
-					<td th:if="${report.invoiceDate}" data-th-text="${report.invoiceDate}"></td>
-					<td th:if="${report.dateOfSupply}" data-th-text="${report.dateOfSupply}"></td>
-					<td th:if="${report.placeOfSupply}" data-th-text="${report.placeOfSupply}"></td>
-					<td th:if="${report.nameOfParty}" data-th-text="${report.nameOfParty}"></td>
+					<td th:if="${report.invoiceDate}"
+						data-th-text="${report.invoiceDate}"></td>
+					<td th:if="${report.dateOfSupply}"
+						data-th-text="${report.dateOfSupply}"></td>
+					<td th:if="${report.placeOfSupply}"
+						data-th-text="${report.placeOfSupply}"></td>
+					<td th:if="${report.nameOfParty}"
+						data-th-text="${report.nameOfParty}"></td>
 					<td th:if="${report.gstin}" data-th-text="${report.gstin}"></td>
-					<td th:if="${report.taxableVale}" data-th-text="${report.taxableVale}"></td>
+					<td th:if="${report.taxableVale}"
+						data-th-text="${report.taxableVale}"></td>
 					<td th:if="${report.cgst}" data-th-text="${report.cgst}"></td>
 					<td th:if="${report.sgst}" data-th-text="${report.sgst}"></td>
 					<td th:if="${report.igst}" data-th-text="${report.igst}"></td>
-					<td th:if="${report.invoiceAmount}" data-th-text="${report.invoiceAmount}"></td>
+					<td th:if="${report.invoiceAmount}"
+						data-th-text="${report.invoiceAmount}"></td>
 				</tr>
 			</tbody>
 		</table>
