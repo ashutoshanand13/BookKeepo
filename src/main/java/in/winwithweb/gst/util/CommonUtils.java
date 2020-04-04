@@ -2,6 +2,7 @@ package in.winwithweb.gst.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Properties;
 import java.util.UUID;
@@ -19,6 +20,10 @@ import org.springframework.core.io.Resource;
 import org.springframework.util.FileCopyUtils;
 
 public class CommonUtils {
+	
+	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	private static SimpleDateFormat dbformat = new SimpleDateFormat("dd-MM-yyyy");
+
 
 	private static String[] units = { "", " One", " Two", " Three", " Four", " Five", " Six", " Seven", " Eight",
 			" Nine" };
@@ -202,7 +207,8 @@ public class CommonUtils {
 			message.setFrom(new InternetAddress(enailfrom));
 
 			message.setSubject(subject);
-			message.setContent(body,"text/html");;
+			message.setContent(body, "text/html");
+			;
 
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
 			Transport.send(message);
@@ -211,5 +217,55 @@ public class CommonUtils {
 			e.printStackTrace();
 		}
 
+	}
+
+	public static boolean isValidEndDate(String startDate, String endDate) {
+		boolean isValid = false;
+		try {
+			if (sdf.parse(startDate).before(sdf.parse(endDate)) || sdf.parse(startDate).equals(sdf.parse(endDate))) {
+				isValid = true;
+			}
+		} catch (Exception e) {
+
+		}
+		return isValid;
+	}
+
+	public static String convertDateIntoFormat(String date) {
+		String dbDate = null;
+		try {
+			dbDate = sdf.format(dbformat.parse(date));
+		} catch (Exception e) {
+		}
+
+		return dbDate;
+
+	}
+
+	public static boolean isValidDate(String startDate, String endDate, String invoiceDate) {
+		boolean isValid = false;
+		try {
+			if ((sdf.parse(invoiceDate).before(sdf.parse(endDate)) || sdf.parse(endDate).equals(sdf.parse(invoiceDate)))
+					&& (sdf.parse(invoiceDate).after(sdf.parse(startDate))
+							|| sdf.parse(invoiceDate).equals(sdf.parse(startDate)))) {
+				isValid = true;
+			}
+		} catch (Exception e) {
+
+		}
+		return isValid;
+	}
+
+	public static boolean isPopulated(String string) {
+		return string != null && !string.trim().equals("");
+	}
+
+	public static String nullToEmpty(String string) {
+		String toReturn = string;
+		if (string == null) {
+			toReturn = "";
+		}
+
+		return toReturn;
 	}
 }
