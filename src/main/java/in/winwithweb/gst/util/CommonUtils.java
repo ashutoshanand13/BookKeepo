@@ -20,6 +20,10 @@ import org.springframework.core.io.Resource;
 import org.springframework.util.FileCopyUtils;
 
 public class CommonUtils {
+	
+	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	private static SimpleDateFormat dbformat = new SimpleDateFormat("dd-MM-yyyy");
+
 
 	private static String[] units = { "", " One", " Two", " Three", " Four", " Five", " Six", " Seven", " Eight",
 			" Nine" };
@@ -217,7 +221,6 @@ public class CommonUtils {
 
 	public static boolean isValidEndDate(String startDate, String endDate) {
 		boolean isValid = false;
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		try {
 			if (sdf.parse(startDate).before(sdf.parse(endDate)) || sdf.parse(startDate).equals(sdf.parse(endDate))) {
 				isValid = true;
@@ -230,8 +233,6 @@ public class CommonUtils {
 
 	public static String convertDateIntoFormat(String date) {
 		String dbDate = null;
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		SimpleDateFormat dbformat = new SimpleDateFormat("dd-MM-yyyy");
 		try {
 			dbDate = sdf.format(dbformat.parse(date));
 		} catch (Exception e) {
@@ -243,7 +244,6 @@ public class CommonUtils {
 
 	public static boolean isValidDate(String startDate, String endDate, String invoiceDate) {
 		boolean isValid = false;
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		try {
 			if ((sdf.parse(invoiceDate).before(sdf.parse(endDate)) || sdf.parse(endDate).equals(sdf.parse(invoiceDate)))
 					&& (sdf.parse(invoiceDate).after(sdf.parse(startDate))
