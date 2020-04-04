@@ -62,7 +62,8 @@ public class ReportService {
 						data.setInvoiceDate("");
 					}
 
-					if (reports.getType().equals(Type.Sales_Invoice) || reports.getType().equals(Type.Export_Invoice)) {
+					if (reports.getType().equals(Type.Sales_Invoice) || reports.getType().equals(Type.Export_Invoice)
+							|| reports.getType().equals(Type.Tax_Invoice)) {
 						data.setDateOfSupply(CommonUtils.nullToEmpty(invoice.getInvoiceDOS()));
 						data.setPlaceOfSupply(CommonUtils.nullToEmpty(invoice.getInvoicePOS()));
 					}
