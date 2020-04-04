@@ -4,6 +4,7 @@
 package in.winwithweb.gst.controller;
 
 import java.security.Principal;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -15,7 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import in.winwithweb.gst.model.Reports;
-import in.winwithweb.gst.service.InvoiceService;
+import in.winwithweb.gst.model.ReportsData;
+import in.winwithweb.gst.service.ReportService;
 import in.winwithweb.gst.util.CommonUtils;
 
 /**
@@ -27,7 +29,7 @@ import in.winwithweb.gst.util.CommonUtils;
 public class ReportController {
 
 	@Autowired
-	InvoiceService invoiceService;
+	ReportService reportService;
 
 	@RequestMapping(value = { "/home/reports" }, method = RequestMethod.GET)
 	public ModelAndView showReport(HttpServletRequest request) {
@@ -50,15 +52,10 @@ public class ReportController {
 			return modelAndView;
 
 		}
-
-		System.out.println(reports.getEndDate());
-
-		System.out.println(reports.getStartDate());
-
-		System.out.println(reports.getDocumentType().getDocumentType());
-
-		System.out.println(reports.getType().getType());
-
+		List<ReportsData> reportData = reportService.getReports(principal.getName(), reports);
+		modelAndView.addObject("reportsColumns", reports.getType().getColums());
+		modelAndView.addObject("reports", reportData);
+		modelAndView.setViewName("reportsData");
 		return modelAndView;
 	}
 

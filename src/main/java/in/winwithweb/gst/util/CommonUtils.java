@@ -228,7 +228,44 @@ public class CommonUtils {
 		return isValid;
 	}
 
+	public static String convertDateIntoFormat(String date) {
+		String dbDate = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat dbformat = new SimpleDateFormat("dd-MM-yyyy");
+		try {
+			dbDate = sdf.format(dbformat.parse(date));
+		} catch (Exception e) {
+		}
+
+		return dbDate;
+
+	}
+
+	public static boolean isValidDate(String startDate, String endDate, String invoiceDate) {
+		boolean isValid = false;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			if ((sdf.parse(invoiceDate).before(sdf.parse(endDate)) || sdf.parse(endDate).equals(sdf.parse(invoiceDate)))
+					&& (sdf.parse(invoiceDate).after(sdf.parse(startDate))
+							|| sdf.parse(invoiceDate).equals(sdf.parse(startDate)))) {
+				isValid = true;
+			}
+		} catch (Exception e) {
+
+		}
+		return isValid;
+	}
+
 	public static boolean isPopulated(String string) {
-		return string != null && string.trim().equals("");
+		return string != null && !string.trim().equals("");
+	}
+
+	public static String nullToEmpty(String string) {
+		String toReturn = string;
+		if (string == null) {
+			toReturn = "";
+		}
+
+		return toReturn;
 	}
 }
