@@ -61,14 +61,7 @@ public class InvoiceUtil {
 		setCommonInvoiceData(invoice, salesInvoiceData, invoiceBankDetails);
 
 		if (!(invoice.getType().equals("Purchase Invoice") || invoice.getType().equals("Purchase Order"))) {
-			invoiceAddressDetails.setInvoiceBillerName(salesInvoiceData.getNameBill());
-			invoiceAddressDetails.setInvoiceBillerAddressName(salesInvoiceData.getAddressBill());
-			invoiceAddressDetails.setInvoiceBillerGst(salesInvoiceData.getGstinBill());
-			invoiceAddressDetails.setInvoiceBillerState(salesInvoiceData.getStateBill());
-			invoiceAddressDetails.setInvoicePartyName(salesInvoiceData.getNameShip());
-			invoiceAddressDetails.setInvoicePartyAddressName(salesInvoiceData.getAddressShip());
-			invoiceAddressDetails.setInvoicePartyGst(salesInvoiceData.getGstinShip());
-			invoiceAddressDetails.setInvoicePartyState(salesInvoiceData.getStateShip());
+			setInvoiceAddressData(salesInvoiceData, invoiceAddressDetails);
 			invoice.setInvoiceAddressDetails(invoiceAddressDetails);
 		}
 
@@ -90,6 +83,18 @@ public class InvoiceUtil {
 			productList.add(invoiceProductDetails);
 		}
 		invoice.setInvoiceProductDetails(productList);
+	}
+
+	private static void setInvoiceAddressData(InvoicePageData salesInvoiceData,
+			InvoiceAddressDetails invoiceAddressDetails) {
+		invoiceAddressDetails.setInvoiceBillerName(salesInvoiceData.getNameBill());
+		invoiceAddressDetails.setInvoiceBillerAddressName(salesInvoiceData.getAddressBill());
+		invoiceAddressDetails.setInvoiceBillerGst(salesInvoiceData.getGstinBill());
+		invoiceAddressDetails.setInvoiceBillerState(salesInvoiceData.getStateBill());
+		invoiceAddressDetails.setInvoicePartyName(salesInvoiceData.getNameShip());
+		invoiceAddressDetails.setInvoicePartyAddressName(salesInvoiceData.getAddressShip());
+		invoiceAddressDetails.setInvoicePartyGst(salesInvoiceData.getGstinShip());
+		invoiceAddressDetails.setInvoicePartyState(salesInvoiceData.getStateShip());
 	}
 
 	private static void setinvoiceProductData(ItemList item, InvoiceProductDetails invoiceProductDetails) {
