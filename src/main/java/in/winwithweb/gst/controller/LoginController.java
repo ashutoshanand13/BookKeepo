@@ -3,9 +3,6 @@
  */
 package in.winwithweb.gst.controller;
 
-import java.util.Base64;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import in.winwithweb.gst.model.Company;
 import in.winwithweb.gst.model.User;
 import in.winwithweb.gst.service.CompanyDetailsService;
 import in.winwithweb.gst.service.UserService;
-import in.winwithweb.gst.util.CommonUtils;
 
 /**
  * @author sachingoyal
@@ -39,32 +34,6 @@ public class LoginController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String setup(ModelMap model) {
 		return "login";
-	}
-	
-	@RequestMapping(value = "/home/salesinvoice", method = RequestMethod.GET)
-	public ModelAndView setupSales(HttpServletRequest request) {
-		String user=request.getUserPrincipal().getName();
-		ModelAndView modelAndView = new ModelAndView();
-		Company company = companyDetailsService.findByUserName(user);
-		if(company==null) {
-			modelAndView.addObject("message", "Please update company details before creating an Invoice");
-			modelAndView.addObject("company",new Company());
-			modelAndView.addObject("logoImage",CommonUtils.getImgfromResource("/static/images/image-400x400.jpg"));
-			modelAndView.setViewName("addCompany");
-		}
-		else {
-		modelAndView.addObject("company",company);
-		byte[] encodeBase64 = Base64.getEncoder().encode(company.getCompanyLogo());
-		String base64Encoded = null;
-		try {
-			base64Encoded = new String(encodeBase64);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		modelAndView.addObject("logoImage",base64Encoded);
-		modelAndView.setViewName("salesInvoice");
-		}
-		return modelAndView;
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)

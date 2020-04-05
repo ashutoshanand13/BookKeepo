@@ -65,6 +65,9 @@ public class InvoiceProductDetails {
 	
 	@Column(name = "product_total_amount")
 	private String productTotalAmount;
+	
+	@Column(name = "product_owner")
+	private String productOwner;
 
 	/**
 	 * @return the id
@@ -260,6 +263,20 @@ public class InvoiceProductDetails {
 	 */
 	public void setProductTotalAmount(String productTotalAmount) {
 		this.productTotalAmount = productTotalAmount;
+	}
+
+	/**
+	 * @return the productOwner
+	 */
+	public String getProductOwner() {
+		return productOwner;
+	}
+
+	/**
+	 * @param productOwner the productOwner to set
+	 */
+	public void setProductOwner(String productOwner) {
+		this.productOwner = productOwner;
 	}
 
 }
