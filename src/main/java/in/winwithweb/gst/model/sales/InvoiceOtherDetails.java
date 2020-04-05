@@ -5,6 +5,9 @@ package in.winwithweb.gst.model.sales;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -19,8 +22,16 @@ import lombok.Data;
 @Table(name = "invoice_other_details")
 public class InvoiceOtherDetails {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "invoice_other_details_id")
+	private int id;
+
 	@Column(name = "linked_invoice")
-	private InvoiceDetails linkedInvoice;
+	private String linkedInvoice;
+	
+	@Column(name = "linked_invoice_date")
+	private String linkedInvoiceDate;
 
 	@Column(name = "invoice_party_name")
 	private String invoicePartyName;
@@ -37,22 +48,51 @@ public class InvoiceOtherDetails {
 	@Column(name = "invoice_party_state")
 	private String invoicePartyState;
 
+
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	/**
 	 * @return the linkedInvoice
 	 */
-	public InvoiceDetails getLinkedInvoice() {
+	public String getLinkedInvoice() {
 		return linkedInvoice;
 	}
 
 	/**
 	 * @param linkedInvoice the linkedInvoice to set
 	 */
-	public void setLinkedInvoice(InvoiceDetails linkedInvoice) {
+	public void setLinkedInvoice(String linkedInvoice) {
 		this.linkedInvoice = linkedInvoice;
 	}
 
 	/**
-	 * @return the invoicePartyName
+	 * @return the linkedInvoiceDate
+	 */
+	public String getLinkedInvoiceDate() {
+		return linkedInvoiceDate;
+	}
+
+	/**
+	 * @param linkedInvoiceDate the linkedInvoiceDate to set
+	 */
+	public void setLinkedInvoiceDate(String linkedInvoiceDate) {
+		this.linkedInvoiceDate = linkedInvoiceDate;
+	}
+
+	/**
+	 * @return the invoicePar tyName
 	 */
 	public String getInvoicePartyName() {
 		return invoicePartyName;

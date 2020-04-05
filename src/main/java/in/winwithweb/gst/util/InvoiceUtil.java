@@ -273,7 +273,7 @@ public class InvoiceUtil {
 				insertCell(table, "Document No: ", invoice.getInvoiceDocumentNumber(), Element.ALIGN_LEFT, 1, bfBold12,
 						bf12, 1, "#FFFFFF", 1f, 0.5f);
 				insertCell(table, "Against Invoice: ",
-						invoice.getInvoiceOtherDetails().getLinkedInvoice().getInvoiceNumber(), Element.ALIGN_LEFT, 2,
+						invoice.getInvoiceOtherDetails().getLinkedInvoice(), Element.ALIGN_LEFT, 2,
 						bfBold12, bf12, 1, "#FFFFFF", 0.5f, 1f);
 				insertCell(table, "Issue Date: ", invoice.getInvoiceIssueDate(), Element.ALIGN_LEFT, 1, bfBold12, bf12,
 						1, "#FFFFFF", 1f, 0.5f);

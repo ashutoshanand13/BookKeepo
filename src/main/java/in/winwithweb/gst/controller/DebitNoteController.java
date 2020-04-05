@@ -128,7 +128,8 @@ public class DebitNoteController {
 
 		if (CommonUtils.isPopulated(debitNoteData.getAgainstInvoice())) {
 			InvoiceDetails linkedInvoice = invoiceService.findByInvoiceNumber(debitNoteData.getAgainstInvoice());
-			invoice.getInvoiceOtherDetails().setLinkedInvoice(linkedInvoice);
+			invoice.getInvoiceOtherDetails().setLinkedInvoice(linkedInvoice.getInvoiceNumber());
+			invoice.getInvoiceOtherDetails().setLinkedInvoiceDate(linkedInvoice.getInvoiceDate());
 		}
 
 		invoiceService.saveInvoice(invoice);
