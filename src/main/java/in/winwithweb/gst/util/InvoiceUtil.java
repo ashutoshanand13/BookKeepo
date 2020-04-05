@@ -52,39 +52,74 @@ public class InvoiceUtil {
 		InvoiceAddressDetails invoiceAddressDetails = new InvoiceAddressDetails();
 
 		if (invoice.getType().equals("Tax Invoice") || invoice.getType().equals("Export Invoice")) {
-			invoice.setInvoiceNumber(salesInvoiceData.getInvoiceNo());
-			invoice.setInvoiceDate(reverseDate(salesInvoiceData.getInvoiceDate()));
-			invoice.setInvoiceDOS(reverseDate(salesInvoiceData.getDateOfSupply()));
-			invoice.setInvoicePOS(salesInvoiceData.getPlaceOfSupply());
-			invoice.setInvoicePoDate(reverseDate(salesInvoiceData.getPoDate()));
-			invoice.setInvoiceState(salesInvoiceData.getState());
-			invoice.setInvoicePoNumber(salesInvoiceData.getPoNo());
-			invoice.setInvoiceTransportMode(salesInvoiceData.getTransportMode());
-			invoice.setInvoiceVehicleNumber(salesInvoiceData.getVehicleNo());
-			invoice.setInvoiceReverseCharge(salesInvoiceData.getReverseCharge());
+			setTaxandExportInvoiceData(invoice, salesInvoiceData);
 		} else if (invoice.getType().equals("Credit Note") || invoice.getType().equals("Debit Note")) {
-			invoice.setInvoiceAgainstInvoice(salesInvoiceData.getAgainstInvoice());
-			invoice.setInvoiceDate(reverseDate(salesInvoiceData.getInvoiceDate()));
-			invoice.setInvoiceState(salesInvoiceData.getState());
-			invoice.setInvoiceReverseCharge(salesInvoiceData.getReverseCharge());
-			invoice.setInvoiceDocumentNumber(salesInvoiceData.getDocumentNumber());
-			invoice.setInvoiceIssueDate(reverseDate(salesInvoiceData.getIssueDate()));
+			setCreditandDebitNoteData(invoice, salesInvoiceData);
 		} else if (invoice.getType().equals("Purchase Invoice") || invoice.getType().equals("Purchase Order")) {
-			invoice.setInvoicePartyName(salesInvoiceData.getPartyName());
-			invoice.setInvoicePartyAddress(salesInvoiceData.getPartyAddress());
-			invoice.setInvoicePartyState(salesInvoiceData.getPartyState());
-			invoice.setInvoicePartyGstin(salesInvoiceData.getPartyGstin());
-			invoice.setInvoicePartyState(salesInvoiceData.getPartyState());
-			invoice.setInvoicePartyDate(reverseDate(salesInvoiceData.getPartyDate()));
-			invoice.setInvoicePoDate(reverseDate(salesInvoiceData.getPoDate()));
-			invoice.setInvoicePoNumber(salesInvoiceData.getPoNo());
-			invoice.setInvoiceTransportMode(salesInvoiceData.getTransportMode());
-			invoice.setInvoiceVehicleNumber(salesInvoiceData.getVehicleNo());
-			invoice.setInvoiceReverseCharge(salesInvoiceData.getReverseCharge());
-			if (salesInvoiceData.getInvoiceNo() != null && !salesInvoiceData.getInvoiceNo().isEmpty()) {
-				invoice.setInvoiceNumber(salesInvoiceData.getInvoiceNo());
+			setPurchasOrderandPurchasesInvoiceData(invoice, salesInvoiceData);
+		}
+		setCommonInvoiceData(invoice, salesInvoiceData, invoiceBankDetails);
+
+		if (!(invoice.getType().equals("Purchase Invoice") || invoice.getType().equals("Purchase Order"))) {
+			setInvoiceAddressData(salesInvoiceData, invoiceAddressDetails);
+			invoice.setInvoiceAddressDetails(invoiceAddressDetails);
+		}
+
+		invoice.setInvoiceCompanyDetails(companyDetails);
+		if (salesInvoiceData.getGstinBill() != null) {
+			if (companyDetails.getCompanyGstin().substring(0, 2)
+					.equals(salesInvoiceData.getGstinBill().substring(0, 2))) {
+				invoice.setInvoiceType("Intra State");
+			} else {
+				invoice.setInvoiceType("Inter State");
+			}
+		} else {
+			if (companyDetails.getCompanyGstin().substring(0, 2)
+					.equals(salesInvoiceData.getPartyGstin().substring(0, 2))) {
+				invoice.setInvoiceType("Intra State");
+			} else {
+				invoice.setInvoiceType("Inter State");
 			}
 		}
+
+		for (ItemList item : salesInvoiceData.getItemList()) {
+			InvoiceProductDetails invoiceProductDetails = new InvoiceProductDetails();
+			setinvoiceProductData(item, invoiceProductDetails);
+			productList.add(invoiceProductDetails);
+		}
+		invoice.setInvoiceProductDetails(productList);
+	}
+
+	private static void setInvoiceAddressData(InvoicePageData salesInvoiceData,
+			InvoiceAddressDetails invoiceAddressDetails) {
+		invoiceAddressDetails.setInvoiceBillerName(salesInvoiceData.getNameBill());
+		invoiceAddressDetails.setInvoiceBillerAddressName(salesInvoiceData.getAddressBill());
+		invoiceAddressDetails.setInvoiceBillerGst(salesInvoiceData.getGstinBill());
+		invoiceAddressDetails.setInvoiceBillerState(salesInvoiceData.getStateBill());
+		invoiceAddressDetails.setInvoicePartyName(salesInvoiceData.getNameShip());
+		invoiceAddressDetails.setInvoicePartyAddressName(salesInvoiceData.getAddressShip());
+		invoiceAddressDetails.setInvoicePartyGst(salesInvoiceData.getGstinShip());
+		invoiceAddressDetails.setInvoicePartyState(salesInvoiceData.getStateShip());
+	}
+
+	private static void setinvoiceProductData(ItemList item, InvoiceProductDetails invoiceProductDetails) {
+		invoiceProductDetails.setProductDescription(item.getProductDesc());
+		invoiceProductDetails.setProductHnscode(item.getHsnCode());
+		invoiceProductDetails.setProductUom(item.getUom());
+		invoiceProductDetails.setProductQuantity(item.getQty());
+		invoiceProductDetails.setProductRate(item.getRate());
+		invoiceProductDetails.setProductAmount(item.getAmount());
+		invoiceProductDetails.setProductDiscount(item.getDiscount());
+		invoiceProductDetails.setProductGstRate(item.getGstRate());
+		invoiceProductDetails.setProductTaxValue(item.getTaxableValue());
+		invoiceProductDetails.setProductCgst(item.getCgst());
+		invoiceProductDetails.setProductSgst(item.getSgst());
+		invoiceProductDetails.setProductIgst(item.getIgst());
+		invoiceProductDetails.setProductTotalAmount(item.getTotalAmount());
+	}
+
+	private static void setCommonInvoiceData(InvoiceDetails invoice, InvoicePageData salesInvoiceData,
+			InvoiceBankDetails invoiceBankDetails) {
 		invoice.setInvoiceTotalAmountBeforeTax(salesInvoiceData.getTotalAmountBeforeTax());
 		invoice.setInvoiceTotalAmountAfterTax(salesInvoiceData.getTotalAmountAfterTax());
 		invoice.setInvoiceTaxAmount(salesInvoiceData.getTotalTaxAmount());
@@ -99,51 +134,46 @@ public class InvoiceUtil {
 		invoiceBankDetails.setInvoiceIfsCode(salesInvoiceData.getBankifsc());
 		invoiceBankDetails.setInvoiceBankCondition(salesInvoiceData.getTermsConditions());
 		invoice.setInvoiceBankDetails(invoiceBankDetails);
+	}
 
-		if (!(invoice.getType().equals("Purchase Invoice") || invoice.getType().equals("Purchase Order"))) {
-			invoiceAddressDetails.setInvoiceBillerName(salesInvoiceData.getNameBill());
-			invoiceAddressDetails.setInvoiceBillerAddressName(salesInvoiceData.getAddressBill());
-			invoiceAddressDetails.setInvoiceBillerGst(salesInvoiceData.getGstinBill());
-			invoiceAddressDetails.setInvoiceBillerState(salesInvoiceData.getStateBill());
-			invoiceAddressDetails.setInvoicePartyName(salesInvoiceData.getNameShip());
-			invoiceAddressDetails.setInvoicePartyAddressName(salesInvoiceData.getAddressShip());
-			invoiceAddressDetails.setInvoicePartyGst(salesInvoiceData.getGstinShip());
-			invoiceAddressDetails.setInvoicePartyState(salesInvoiceData.getStateShip());
-			invoice.setInvoiceAddressDetails(invoiceAddressDetails);
+	private static void setPurchasOrderandPurchasesInvoiceData(InvoiceDetails invoice,
+			InvoicePageData salesInvoiceData) {
+		invoice.setInvoicePartyName(salesInvoiceData.getPartyName());
+		invoice.setInvoicePartyAddress(salesInvoiceData.getPartyAddress());
+		invoice.setInvoicePartyState(salesInvoiceData.getPartyState());
+		invoice.setInvoicePartyGstin(salesInvoiceData.getPartyGstin());
+		invoice.setInvoicePartyState(salesInvoiceData.getPartyState());
+		invoice.setInvoicePartyDate(reverseDate(salesInvoiceData.getPartyDate()));
+		invoice.setInvoicePoDate(reverseDate(salesInvoiceData.getPoDate()));
+		invoice.setInvoicePoNumber(salesInvoiceData.getPoNo());
+		invoice.setInvoiceTransportMode(salesInvoiceData.getTransportMode());
+		invoice.setInvoiceVehicleNumber(salesInvoiceData.getVehicleNo());
+		invoice.setInvoiceReverseCharge(salesInvoiceData.getReverseCharge());
+		if (salesInvoiceData.getInvoiceNo() != null && !salesInvoiceData.getInvoiceNo().isEmpty()) {
+			invoice.setInvoiceNumber(salesInvoiceData.getInvoiceNo());
 		}
+	}
 
-		invoice.setInvoiceCompanyDetails(companyDetails);
-		if (salesInvoiceData.getGstinShip() != null || salesInvoiceData.getGstinBill() != null) {
-			if (salesInvoiceData.getGstinShip().substring(0, 2)
-					.equals(salesInvoiceData.getGstinBill().substring(0, 2))) {
-				invoice.setInvoiceType("Intra State");
-			} else {
-				invoice.setInvoiceType("Inter State");
-			}
-		} else {
-			invoice.setInvoiceType("Intra State");
-		}
+	private static void setCreditandDebitNoteData(InvoiceDetails invoice, InvoicePageData salesInvoiceData) {
+		invoice.setInvoiceAgainstInvoice(salesInvoiceData.getAgainstInvoice());
+		invoice.setInvoiceDate(reverseDate(salesInvoiceData.getInvoiceDate()));
+		invoice.setInvoiceState(salesInvoiceData.getState());
+		invoice.setInvoiceReverseCharge(salesInvoiceData.getReverseCharge());
+		invoice.setInvoiceDocumentNumber(salesInvoiceData.getDocumentNumber());
+		invoice.setInvoiceIssueDate(reverseDate(salesInvoiceData.getIssueDate()));
+	}
 
-		for (ItemList item : salesInvoiceData.getItemList()) {
-			InvoiceProductDetails invoiceProductDetails = new InvoiceProductDetails();
-			invoiceProductDetails.setProductDescription(item.getProductDesc());
-			invoiceProductDetails.setProductHnscode(item.getHsnCode());
-			invoiceProductDetails.setProductUom(item.getUom());
-			invoiceProductDetails.setProductQuantity(item.getQty());
-			invoiceProductDetails.setProductRate(item.getRate());
-			invoiceProductDetails.setProductAmount(item.getAmount());
-			invoiceProductDetails.setProductDiscount(item.getDiscount());
-			invoiceProductDetails.setProductGstRate(item.getGstRate());
-			invoiceProductDetails.setProductTaxValue(item.getTaxableValue());
-			invoiceProductDetails.setProductCgst(item.getCgst());
-			invoiceProductDetails.setProductSgst(item.getSgst());
-			invoiceProductDetails.setProductIgst(item.getIgst());
-			invoiceProductDetails.setProductTotalAmount(item.getTotalAmount());
-			productList.add(invoiceProductDetails);
-		}
-
-		invoice.setInvoiceProductDetails(productList);
-
+	private static void setTaxandExportInvoiceData(InvoiceDetails invoice, InvoicePageData salesInvoiceData) {
+		invoice.setInvoiceNumber(salesInvoiceData.getInvoiceNo());
+		invoice.setInvoiceDate(reverseDate(salesInvoiceData.getInvoiceDate()));
+		invoice.setInvoiceDOS(reverseDate(salesInvoiceData.getDateOfSupply()));
+		invoice.setInvoicePOS(salesInvoiceData.getPlaceOfSupply());
+		invoice.setInvoicePoDate(reverseDate(salesInvoiceData.getPoDate()));
+		invoice.setInvoiceState(salesInvoiceData.getState());
+		invoice.setInvoicePoNumber(salesInvoiceData.getPoNo());
+		invoice.setInvoiceTransportMode(salesInvoiceData.getTransportMode());
+		invoice.setInvoiceVehicleNumber(salesInvoiceData.getVehicleNo());
+		invoice.setInvoiceReverseCharge(salesInvoiceData.getReverseCharge());
 	}
 
 	public static ByteArrayOutputStream createPDF(InvoiceDetails invoice) {
