@@ -30,7 +30,7 @@
 			<div class="row">
 				<div class="col-md-3 form-group">
 					<div class="form-group">
-						<label>Chose Category </label>
+						<label>Choose Category </label>
 
 						<div th:each="model : ${T(in.winwithweb.gst.model.InvoiceType).values()}">
 							<div class="custom-control custom-radio custom-control-inline">
@@ -47,7 +47,7 @@
 
 				<div class="col-md-3 form-group">
 					<div class="form-group">
-						<label>Chose Document Type </label>
+						<label>Choose Document Type </label>
 
 						<div
 							th:each="model : ${T(in.winwithweb.gst.model.InvoiceSubType).values()}">
@@ -66,14 +66,14 @@
 
 				<div class="col-md-3 form-group">
 					<div class="form-group">
-						<label>Chose Start Date </label> <input type="date"
+						<label>Choose Start Date </label> <input type="date"
 							th:field="*{startDate}" class="form-control">
 
 
 					</div>
 
 					<div class="form-group">
-						<label>Chose End Date </label> <input type="date"
+						<label>Choose End Date </label> <input type="date"
 							th:field="*{endDate}" class="form-control">
 
 
