@@ -32,42 +32,45 @@ public class AccountService {
 		accountRepository.save(account);
 	}
 
-	public Accounts findAccountByGstin(String gstin) {
-		return accountRepository.findByGstin(gstin);
+	public Accounts findAccountByGstin(String gst, String owner) {
+		for(Accounts account : accountRepository.findByAccountOwner(owner)) {
+			if(account.getGstin().equals(gst)) {
+				return account;
+			}
+		}
+		
+		return null;
 	}
 
-	public Accounts findAccountByPan(String pan) {
-		return accountRepository.findByAccountPan(pan);
+	public Accounts findAccountByPan(String pan, String owner) {
+		for(Accounts account : accountRepository.findByAccountOwner(owner)) {
+			if(account.getAccountPan().equals(pan)) {
+				return account;
+			}
+		}
+		
+		return null;
 	}
 
-	public List<String> fetchAccountName() {
+	public List<String> fetchAccountName(String user) {
 		List<Accounts> accountList = accountRepository.findAll();
 		List<String> accountName = new ArrayList<>();
 		for (Accounts account : accountList) {
-			accountName.add(account.getAccountName());
+			if(account.getAccountOwner().equals(user)) {
+				accountName.add(account.getAccountName());
+			}
 		}
 		return accountName;
 	}
-
-	public String findGSTByAccountName(String accountName) {
-		Accounts account = accountRepository.findByAccountName(accountName);
-		if (account != null) {
-			return account.getGstin();
-		} else {
-			return "No GST Found";
-		}
-	}
 	
-	public String findPanByAccountName(String accountName) {
-		Accounts account = accountRepository.findByAccountName(accountName);
-		if (account != null) {
-			return account.getAccountPan();
-		} else {
-			return "No Pan Found";
-		}
-	}
 	
-	public Accounts findByAccountName(String accountName) {
-		return accountRepository.findByAccountName(accountName);
+	public Accounts findByAccount(String accountName, String user) {
+		for(Accounts account : accountRepository.findByAccountOwner(user)) {
+			if(account.getAccountName().equals(accountName)) {
+				return account;
+			}
+		}
+		
+		return null;
 	}
 }

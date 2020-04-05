@@ -8,7 +8,6 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Date;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,9 +23,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 
 import in.winwithweb.gst.model.Company;
+import in.winwithweb.gst.model.InvoiceType;
 import in.winwithweb.gst.model.json.InvoicePageData;
 import in.winwithweb.gst.model.sales.InvoiceDetails;
-import in.winwithweb.gst.service.AccountService;
 import in.winwithweb.gst.service.CompanyDetailsService;
 import in.winwithweb.gst.service.InvoiceService;
 import in.winwithweb.gst.service.ItemService;
@@ -53,9 +52,6 @@ public class PurchaseInvoiceController {
 	Gson gson;
 	
 	@Autowired
-	private AccountService accountService;
-	
-	@Autowired
 	private ItemService itemService;
 	
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
@@ -65,7 +61,6 @@ public class PurchaseInvoiceController {
 		String user=request.getUserPrincipal().getName();
 		ModelAndView modelAndView = new ModelAndView();
 		Company company = companyDetailsService.findByUserName(user);
-		List<String> account = accountService.fetchAccountName();
 		if(company==null) {
 			Company newcompany = new Company("salesInvoice");
 			modelAndView.addObject("message", "Please update company details before creating an Invoice");
@@ -74,7 +69,6 @@ public class PurchaseInvoiceController {
 			modelAndView.setViewName("addCompany");
 		}
 		else {
-		modelAndView.addObject("accountList", account);
 		modelAndView.addObject("company",company);
 		byte[] encodeBase64 = Base64.getEncoder().encode(company.getCompanyLogo());
 		String base64Encoded = null;
@@ -101,7 +95,7 @@ public class PurchaseInvoiceController {
 		}
 
 		InvoiceDetails invoice = new InvoiceDetails();
-		invoice.setType("Purchase Invoice");
+		invoice.setInvoiceType(InvoiceType.Purchase_Invoice.getType());
 		invoice.setInvoiceOwner(principal.getName());
 		invoice.setInvoiceTotalAmountWords(CommonUtils.numberConverter(salesInvoiceData.getTtlTotalAmount()));
 

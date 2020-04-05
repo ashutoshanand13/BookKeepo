@@ -9,20 +9,19 @@ import in.winwithweb.gst.util.Constants;
  * @author sachingoyal
  *
  */
-public enum Type {
+public enum InvoiceType {
 
 	Tax_Invoice("Tax Invoice", Constants.INVOICE_COLUMNS), Export_Invoice("Export Invoice", Constants.INVOICE_COLUMNS),
 	Credit_Note("Credit Note", Constants.CREDIT_DEBIT_NOTE_COLUMNS),
 	Debit_Note("Debit Note", Constants.CREDIT_DEBIT_NOTE_COLUMNS),
 	Purchase_Invoice("Purchase Invoice", Constants.INVOICE_COLUMNS),
-	Purchase_Order("Purchase Order", Constants.INVOICE_COLUMNS),
-	Sales_Invoice("Sales Invoice", Constants.INVOICE_COLUMNS);
+	Purchase_Order("Purchase Order", Constants.INVOICE_COLUMNS);
 
 	private final String type;
 
 	private String[] colums;
 
-	Type(String type, String[] colums) {
+	InvoiceType(String type, String[] colums) {
 		this.type = type;
 		this.colums = colums;
 	}

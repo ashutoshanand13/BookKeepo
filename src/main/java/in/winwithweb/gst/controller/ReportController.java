@@ -53,7 +53,7 @@ public class ReportController {
 
 		}
 		List<ReportsData> reportData = reportService.getReports(principal.getName(), reports);
-		modelAndView.addObject("reportsColumns", reports.getType().getColums());
+		modelAndView.addObject("reportsColumns", reports.getInvoiceType().getColums());
 		modelAndView.addObject("reports", reportData);
 		modelAndView.setViewName("reportsData");
 		return modelAndView;

@@ -3,6 +3,10 @@
  */
 package in.winwithweb.gst.controller;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,12 +28,17 @@ public class PaymentController {
 	private AccountService accountService;
 	
 	@RequestMapping(value = { "/home/addpayment" }, method = RequestMethod.GET)
-	public ModelAndView addPayment() {
+	public ModelAndView addPayment(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
+		String user=request.getUserPrincipal().getName();
+		List<String> accountList = accountService.fetchAccountName(user);
+		if(accountList != null) {
+			accountList.add(0, "Select Account");
+		}
 		Payment payment = new Payment();
 		modelAndView.addObject("payment", payment);
 		modelAndView.setViewName("addPayment");
-		modelAndView.addObject("accountList", accountService.fetchAccountName());
+		modelAndView.addObject("accountList", accountList);
 		return modelAndView;
 	}	
 

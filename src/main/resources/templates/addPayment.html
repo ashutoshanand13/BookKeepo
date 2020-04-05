@@ -64,39 +64,25 @@
 	<script type="text/javascript">
 $(document).ready(function() {
 	$("#selectbasic").change(function() {
-		getGstin();
-		getPanNumber();
+		getAccountData();
 	});
 });
 
-function getGstin() {
-	var accountNbr = $("#selectbasic").val();
+function getAccountData() {
+	var accountName = $("#selectbasic").val();
 	
 	$.ajax({
 		type : "GET",
 		contentType : "application/json",
-		url : "getGstinData?accountNbr=" + accountNbr,
+		url : "getAccountData?accountName=" + accountName,
 		dataType : 'json',				
 		success : function(data) {
-		    var gstin = document.getElementById('gstin');
-		    gstin.value = data;
+			document.getElementById('gstin').value = data.gstin;
+			document.getElementById('accountPan').value = data.accountPan;
+			document.getElementById('accountAddress').value = data.accountAddress;
 		}
 		});
 };
 
-function getPanNumber() {
-	var accountNbr = $("#selectbasic").val();
-	
-	$.ajax({
-		type : "GET",
-		contentType : "application/json",
-		url : "getPanNumberData?accountNbr=" + accountNbr,
-		dataType : 'json',				
-		success : function(data) {
-		    var gstin = document.getElementById('accountPan');
-		    gstin.value = data;
-		}
-		});
-};
 </script>
 </th:block>

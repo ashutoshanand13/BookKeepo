@@ -25,7 +25,7 @@
 						<td align="left">
 							<p class="companydetails" th:text="${company.companyName}"></p>
 							<p class="companydetails" th:text="${company.companyTelephone}"></p>
-							<p class="companydetails" th:text="${company.companyGstin}"></p>
+							<p class="companydetails" id="headerGstin" th:text="${company.companyGstin}"></p>
 							<p class="companydetails" th:text="${company.companyEmail}"></p>
 							<p class="companydetails" th:text="${company.companyAddress}"></p>
 							<p class="companydetails" th:text="${company.companyState}"></p>
@@ -113,7 +113,7 @@
 							required="required"
 							oninvalid="this.setCustomValidity('GST Identification Number is not valid. It should be in this 11AAAAA1111Z1A1 format')" oninput="setCustomValidity('')"></td>
 						<td class="pt-3-half"><input type="text" class="form-control"
-							name="gstinShip" placeholder="GSTIN" onblur="validateGST(this)"
+							name="gstinShip" placeholder="GSTIN"
 							pattern="^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$"
 							required="required"
 							oninvalid="this.setCustomValidity('GST Identification Number is not valid. It should be in this 11AAAAA1111Z1A1 format')" oninput="setCustomValidity('')"></td>

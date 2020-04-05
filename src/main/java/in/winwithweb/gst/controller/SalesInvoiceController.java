@@ -28,6 +28,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 
 import in.winwithweb.gst.model.Company;
+import in.winwithweb.gst.model.InvoiceType;
 import in.winwithweb.gst.model.json.InvoicePageData;
 import in.winwithweb.gst.model.sales.InvoiceDetails;
 import in.winwithweb.gst.service.AccountService;
@@ -46,53 +47,50 @@ public class SalesInvoiceController {
 
 	@Autowired
 	InvoiceService invoiceService;
-	
+
 	@Autowired
 	CompanyDetailsService companyDetailsService;
 
 	@Autowired
 	Gson gson;
-	
+
 	@Autowired
 	private AccountService accountService;
-	
+
 	@Autowired
 	private ItemService itemService;
-	
+
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 
-	
 	@RequestMapping(value = "/home/salesinvoice", method = RequestMethod.GET)
 	public ModelAndView setupSales(HttpServletRequest request) {
-		String user=request.getUserPrincipal().getName();
+		String user = request.getUserPrincipal().getName();
 		ModelAndView modelAndView = new ModelAndView();
 		Company company = companyDetailsService.findByUserName(user);
-		List<String> account = accountService.fetchAccountName();
-		if(company==null) {
+		List<String> account = accountService.fetchAccountName(user);
+		if (company == null) {
 			Company newcompany = new Company("salesInvoice");
 			modelAndView.addObject("message", "Please update company details before creating an Invoice");
-			modelAndView.addObject("company",newcompany);
-			modelAndView.addObject("logoImage",CommonUtils.getImgfromResource("/static/images/image-400x400.jpg"));
+			modelAndView.addObject("company", newcompany);
+			modelAndView.addObject("logoImage", CommonUtils.getImgfromResource("/static/images/image-400x400.jpg"));
 			modelAndView.setViewName("addCompany");
-		}
-		else {
-		modelAndView.addObject("accountList", account);
-		modelAndView.addObject("company",company);
-		byte[] encodeBase64 = Base64.getEncoder().encode(company.getCompanyLogo());
-		String base64Encoded = null;
-		try {
-			base64Encoded = new String(encodeBase64);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		modelAndView.addObject("logoImage",base64Encoded);
-		modelAndView.addObject("itemList", itemService.findByProductOwner(user));
-		modelAndView.setViewName("salesInvoice");
+		} else {
+			modelAndView.addObject("accountList", account);
+			modelAndView.addObject("company", company);
+			byte[] encodeBase64 = Base64.getEncoder().encode(company.getCompanyLogo());
+			String base64Encoded = null;
+			try {
+				base64Encoded = new String(encodeBase64);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			modelAndView.addObject("logoImage", base64Encoded);
+			modelAndView.addObject("itemList", itemService.findByProductOwner(user));
+			modelAndView.setViewName("salesInvoice");
 		}
 		return modelAndView;
 	}
-	
-	
+
 	@RequestMapping(value = "/home/salesinvoice", method = RequestMethod.POST, produces = MediaType.APPLICATION_PDF_VALUE)
 	public void setupSalesInvoiceData(@RequestBody String salesInvoiceJson, Principal principal,
 			HttpServletResponse response) throws IOException {
@@ -104,7 +102,7 @@ public class SalesInvoiceController {
 		}
 
 		InvoiceDetails invoice = new InvoiceDetails();
-		invoice.setType("Tax Invoice");
+		invoice.setInvoiceType(InvoiceType.Tax_Invoice.getType());
 		invoice.setInvoiceOwner(principal.getName());
 		invoice.setInvoiceTotalAmountWords(CommonUtils.numberConverter(salesInvoiceData.getTtlTotalAmount()));
 
@@ -115,11 +113,12 @@ public class SalesInvoiceController {
 
 		ByteArrayOutputStream invoiceData = InvoiceUtil.createPDF(invoice);
 		response.setContentType("application/pdf");
-		
+
 		Date date = new Date();
 		String time = sdf.format(new Timestamp(date.getTime()));
-		
-		response.addHeader("Content-Disposition", "attachment; filename=invoice_"+invoice.getInvoiceNumber()+"_"+time+".pdf");
+
+		response.addHeader("Content-Disposition",
+				"attachment; filename=invoice_" + invoice.getInvoiceNumber() + "_" + time + ".pdf");
 		response.setContentLength(invoiceData.size());
 
 		OutputStream out = response.getOutputStream();
@@ -136,7 +135,7 @@ public class SalesInvoiceController {
 		return modelAndView;
 	}
 
-    @RequestMapping(value = {"/home/showInvoice/{id}"}) 
+	@RequestMapping(value = { "/home/showInvoice/{id}" })
 	public void view(@PathVariable("id") int id, HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
 
@@ -145,11 +144,12 @@ public class SalesInvoiceController {
 		ByteArrayOutputStream invoiceData = InvoiceUtil.createPDF(invoice);
 
 		response.setContentType("application/pdf");
-		
+
 		Date date = new Date();
 		String time = sdf.format(new Timestamp(date.getTime()));
-		
-		response.addHeader("Content-Disposition", "attachment; filename=invoice_"+invoice.getInvoiceNumber()+"_"+time+".pdf");
+
+		response.addHeader("Content-Disposition",
+				"attachment; filename=invoice_" + invoice.getInvoiceNumber() + "_" + time + ".pdf");
 		response.setContentLength(invoiceData.size());
 
 		OutputStream out = null;
@@ -159,5 +159,5 @@ public class SalesInvoiceController {
 		out.flush();
 
 	}
-    
+
 }
