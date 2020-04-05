@@ -66,15 +66,20 @@ public class InvoiceUtil {
 		}
 
 		invoice.setInvoiceCompanyDetails(companyDetails);
-		if (salesInvoiceData.getGstinShip() != null || salesInvoiceData.getGstinBill() != null) {
-			if (salesInvoiceData.getGstinShip().substring(0, 2)
+		if (salesInvoiceData.getGstinBill() != null) {
+			if (companyDetails.getCompanyGstin().substring(0, 2)
 					.equals(salesInvoiceData.getGstinBill().substring(0, 2))) {
 				invoice.setInvoiceType("Intra State");
 			} else {
 				invoice.setInvoiceType("Inter State");
 			}
 		} else {
-			invoice.setInvoiceType("Intra State");
+			if (companyDetails.getCompanyGstin().substring(0, 2)
+					.equals(salesInvoiceData.getPartyGstin().substring(0, 2))) {
+				invoice.setInvoiceType("Intra State");
+			} else {
+				invoice.setInvoiceType("Inter State");
+			}
 		}
 
 		for (ItemList item : salesInvoiceData.getItemList()) {
