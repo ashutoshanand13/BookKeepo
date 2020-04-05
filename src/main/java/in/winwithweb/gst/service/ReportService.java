@@ -68,8 +68,8 @@ public class ReportService {
 
 						data.setInvoiceNo(CommonUtils.nullToEmpty(invoiceOtherDetails.getLinkedInvoice() == null ? ""
 								: invoiceOtherDetails.getLinkedInvoice()));
-						data.setInvoiceDate(invoiceOtherDetails.getLinkedInvoice() == null ? ""
-								: invoiceOtherDetails.getLinkedInvoiceDate());
+						data.setInvoiceDate(CommonUtils.nullToEmpty(invoiceOtherDetails.getLinkedInvoice() == null ? ""
+								: invoiceOtherDetails.getLinkedInvoiceDate()));
 					}
 
 					if (reports.getInvoiceType().equals(InvoiceType.Export_Invoice)
