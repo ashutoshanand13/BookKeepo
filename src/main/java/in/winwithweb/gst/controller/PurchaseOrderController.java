@@ -23,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 
 import in.winwithweb.gst.model.Company;
+import in.winwithweb.gst.model.InvoiceType;
 import in.winwithweb.gst.model.json.InvoicePageData;
 import in.winwithweb.gst.model.sales.InvoiceDetails;
 import in.winwithweb.gst.service.CompanyDetailsService;
@@ -93,7 +94,7 @@ public class PurchaseOrderController {
 		}
 
 		InvoiceDetails invoice = new InvoiceDetails();
-		invoice.setType("Purchase Order");
+		invoice.setInvoiceType(InvoiceType.Purchase_Order.getType());
 		invoice.setInvoiceOwner(principal.getName());
 		invoice.setInvoiceTotalAmountWords(CommonUtils.numberConverter(salesInvoiceData.getTtlTotalAmount()));
 

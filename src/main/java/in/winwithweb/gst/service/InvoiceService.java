@@ -47,7 +47,7 @@ public class InvoiceService {
 	public List<String> findbyInvoiceOwnerType(String name, String type) {
 		List<InvoiceDetails> allInvoice = invoiceRepository.findAll();
 
-		return allInvoice.stream().filter(p -> p.getInvoiceOwner().equals(name) && p.getType().equals(type))
+		return allInvoice.stream().filter(p -> p.getInvoiceOwner().equals(name) && p.getInvoiceType().equals(type))
 				.map(p -> p.getInvoiceNumber()).collect(Collectors.toList());
 	}
 	
@@ -57,7 +57,7 @@ public class InvoiceService {
 
 	public List<InvoiceDetails> findByInvoiceOwner(String name, String type) {
 		List<InvoiceDetails> allInvoice = invoiceRepository.findAll();
-		return allInvoice.stream().filter(p -> p.getInvoiceOwner().equals(name) && p.getType().equals(type))
+		return allInvoice.stream().filter(p -> p.getInvoiceOwner().equals(name) && p.getInvoiceType().equals(type))
 				.collect(Collectors.toList());
 	}
 }

@@ -27,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 
 import in.winwithweb.gst.model.Company;
+import in.winwithweb.gst.model.InvoiceType;
 import in.winwithweb.gst.model.json.InvoicePageData;
 import in.winwithweb.gst.model.sales.InvoiceDetails;
 import in.winwithweb.gst.service.AccountService;
@@ -101,7 +102,7 @@ public class ExportInvoiceController {
 		}
 
 		InvoiceDetails invoice = new InvoiceDetails();
-		invoice.setType("Export Invoice");
+		invoice.setInvoiceType(InvoiceType.Export_Invoice.getType());
 		invoice.setInvoiceOwner(principal.getName());
 		invoice.setInvoiceTotalAmountWords(CommonUtils.numberConverter(exportInvoiceData.getTtlTotalAmount()));
 
