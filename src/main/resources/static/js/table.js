@@ -10,8 +10,7 @@
  var ttlSgst = [];
  var ttlTotalAmount = [];
  var discount = [];
- var gstBill = false;
- var gstShip = false;
+ var isGstValid = false;
  var shippingType ='';
  
  var controllerMap = { salesInvoice: "/home/salesinvoice", exportInvoice: "/home/exportinvoice", debitNote:"/home/debitnote", creditNote:"/home/creditnote" , purchaseOrder:"/home/addpurchaseorder"  , purchaseInvoice:"/home/addpurchaseinvoice"};
@@ -44,22 +43,10 @@ else
 function validateGST(val){
 	removeTableColumnClass();
 	 var value = $(val).val();
-	 if(!gstRegex.test(value) || value === "")
-		 {
-			 if($(val).attr("name").includes("Bill")) {
-				 gstBill=false;
-			 }
-			 else{
-				 gstShip=false;
-			 }
-		 }
-	 else {
-		 if($(val).attr("name").includes("Bill")) {
-			 gstBill=true;
-		 }
-		 else{
-			 gstShip=true;
-		 } 
+	 if(!gstRegex.test(value) || value === "") {
+			isGstValid=false;
+		 } else {
+		 isGstValid=true;
 		 updateTableColumn(true);
 	 }
  }
@@ -75,22 +62,26 @@ function removeTableColumnClass() {
 
 function updateTableColumn(showAlert) {
 	removeTableColumnClass();
-	var gstShipValue = $("[name=gstinBill]").val();
-	var gstBillValue = $("[name=gstinShip]").val();
+	var gstHeader = $('#headerGstin').text();
+	var gstValue = $("[name=gstinBill]").val();
+	
+	if(gstValue === undefined) {
+		var gstValue = $("[name=partyGstin]").val();
+	}
 
-	disableColumns(gstShipValue, gstBillValue);
+	disableColumns(gstHeader, gstValue);
 
 	if (showAlert) {
-		if (gstShipValue.substring(0, 2) === gstBillValue.substring(0, 2)) {
+		if (gstHeader.substring(0, 2) === gstValue.substring(0, 2)) {
 			setAlert("Intra-State Form")
-		} else if(gstShipValue!==""&&gstBillValue!=="") {
+		} else if(gstHeader!==""&&gstValue!=="") {
 			setAlert("Inter-State Form")
 		}
 	}
 }
 
 function disableColumns(ship, bill) {
-	if (gstBill && gstShip) {
+	if (isGstValid) {
 		if (ship.substring(0, 2) === bill.substring(0, 2)) {
 			var container = document.querySelector("#itemTable");
 			var cells = container.querySelectorAll('td:nth-child(13)');
@@ -145,11 +136,10 @@ function setAlert(message) {
    var f = $("#form")[0];
    
    if(name==='purchaseOrder' ||name==='purchaseInvoice'){
-	   gstBill=true;
-	   gstShip=true;
+	   isGstValid=true;
    }
    
-   if(gstBill && gstShip && f.reportValidity()) {
+   if(isGstValid && f.reportValidity()) {
 		$('#tableJson table').map(function(i, table){
 			   var $rows = $("#" +table.id).find('tr:not(:hidden)');
 			   var newFormData = [];
@@ -189,14 +179,12 @@ function setAlert(message) {
 								$("#form")[0].reset();
 								window.scrollTo(0, 0);
 								setValues();
-								gstShip=false;
-								gstBill=false;
+								isGstValid=false;
 							}
 						});
 						$('#overlay').delay(500).fadeOut();
    }
-   gstBill=false;
-   gstShip=false;
+   isGstValid=false;
  });
 
 function setValues() {
@@ -450,7 +438,7 @@ $("[name=nameBill]").change(function() {
 		$.ajax({
 			type : "GET",
 			contentType : "application/json",
-			url : "accountdetails?accountName=" + accountName,
+			url : "getAccountData?accountName=" + accountName,
 			dataType : 'json',				
 			success : function(data) {
 				$("[name=nameBill").val(data.accountName);

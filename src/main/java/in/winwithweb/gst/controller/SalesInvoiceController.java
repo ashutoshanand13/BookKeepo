@@ -67,7 +67,7 @@ public class SalesInvoiceController {
 		String user=request.getUserPrincipal().getName();
 		ModelAndView modelAndView = new ModelAndView();
 		Company company = companyDetailsService.findByUserName(user);
-		List<String> account = accountService.fetchAccountName();
+		List<String> account = accountService.fetchAccountName(user);
 		if(company==null) {
 			Company newcompany = new Company("salesInvoice");
 			modelAndView.addObject("message", "Please update company details before creating an Invoice");
