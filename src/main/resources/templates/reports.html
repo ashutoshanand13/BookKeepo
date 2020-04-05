@@ -32,11 +32,11 @@
 					<div class="form-group">
 						<label>Chose Category </label>
 
-						<div th:each="model : ${T(in.winwithweb.gst.model.Type).values()}">
+						<div th:each="model : ${T(in.winwithweb.gst.model.InvoiceType).values()}">
 							<div class="custom-control custom-radio custom-control-inline">
-								<input type="radio" th:field="*{type}" th:value="${model}"
+								<input type="radio" th:field="*{invoiceType}" th:value="${model}"
 									class="form-control" required="required"> <label
-									class="custom-control-label" th:for="${#ids.prev('type')}"
+									class="custom-control-label" th:for="${#ids.prev('invoiceType')}"
 									th:text="${model.getType()}">Category</label>
 							</div>
 
@@ -50,13 +50,13 @@
 						<label>Chose Document Type </label>
 
 						<div
-							th:each="model : ${T(in.winwithweb.gst.model.DocumentType).values()}">
+							th:each="model : ${T(in.winwithweb.gst.model.InvoiceSubType).values()}">
 							<div class="custom-control custom-radio custom-control-inline">
-								<input type="radio" th:field="*{documentType}"
+								<input type="radio" th:field="*{invoiceSubType}"
 									th:value="${model}" class="form-control" required="required"> <label
 									class="custom-control-label"
-									th:for="${#ids.prev('documentType')}"
-									th:text="${model.getDocumentType()}">Document Type</label>
+									th:for="${#ids.prev('invoiceSubType')}"
+									th:text="${model.getInvoiceSubType()}">Document Type</label>
 							</div>
 
 						</div>

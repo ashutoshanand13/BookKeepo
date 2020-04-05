@@ -11,8 +11,9 @@ import org.springframework.stereotype.Service;
 
 import in.winwithweb.gst.model.Reports;
 import in.winwithweb.gst.model.ReportsData;
-import in.winwithweb.gst.model.Type;
+import in.winwithweb.gst.model.InvoiceType;
 import in.winwithweb.gst.model.sales.InvoiceDetails;
+import in.winwithweb.gst.model.sales.InvoiceOtherDetails;
 import in.winwithweb.gst.repository.InvoiceRepository;
 import in.winwithweb.gst.util.CommonUtils;
 import in.winwithweb.gst.util.InvoiceUtil;
@@ -40,30 +41,39 @@ public class ReportService {
 
 		for (InvoiceDetails invoice : invoiceDetails) {
 
-			if (reports.getType().getType().equalsIgnoreCase(invoice.getType()) && InvoiceUtil
-					.checkInvoiceType(invoice.getInvoiceType(), reports.getDocumentType().getDocumentValue())) {
+			if (reports.getInvoiceType().getType().equalsIgnoreCase(invoice.getInvoiceType())
+					&& InvoiceUtil.checkInvoiceType(invoice.getInvoiceSubType(),
+							reports.getInvoiceSubType().getInvoiceSubTypeValue())) {
 
 				if (InvoiceUtil.isValidDate(reports.getStartDate(), reports.getEndDate(),
 						CommonUtils.convertDateIntoFormat(invoice.getInvoiceDate()))) {
 					ReportsData data = new ReportsData();
-					data.setDocumenttype(CommonUtils.nullToEmpty(invoice.getType()));
+					data.setDocumenttype(CommonUtils.nullToEmpty(invoice.getInvoiceSubType()));
 					data.setDocumentNo(CommonUtils.nullToEmpty(invoice.getInvoiceNumber()));
 					data.setDocumentDate(CommonUtils.nullToEmpty(invoice.getInvoiceDate()));
-					data.setNameOfParty(CommonUtils.nullToEmpty(invoice.getInvoicePartyName()));
-					data.setGstin(CommonUtils.nullToEmpty(invoice.getInvoicePartyGstin()));
+
+					data.setNameOfParty(
+							CommonUtils.nullToEmpty(invoice.getInvoiceAddressDetails().getInvoiceBillerName()));
+					data.setGstin(CommonUtils.nullToEmpty(invoice.getInvoiceAddressDetails().getInvoiceBillerGst()));
 					data.setTaxableVale(CommonUtils.nullToEmpty(invoice.getInvoiceTaxAmount()));
 					data.setCgst(CommonUtils.nullToEmpty(invoice.getInvoiceCgstAmount()));
 					data.setSgst(CommonUtils.nullToEmpty(invoice.getInvoiceSgstAmount()));
 					data.setIgst(CommonUtils.nullToEmpty(invoice.getInvoiceIgstAmount()));
 					data.setInvoiceAmount(CommonUtils.nullToEmpty(invoice.getInvoiceTotalAmountAfterTax()));
 
-					if (reports.getType().equals(Type.Credit_Note) || reports.getType().equals(Type.Debit_Note)) {
-						data.setInvoiceNo(CommonUtils.nullToEmpty(invoice.getInvoiceAgainstInvoice()));
-						data.setInvoiceDate("");
+					if (reports.getInvoiceType().equals(InvoiceType.Credit_Note)
+							|| reports.getInvoiceType().equals(InvoiceType.Debit_Note)) {
+
+						InvoiceOtherDetails invoiceOtherDetails = invoice.getInvoiceOtherDetails();
+
+						data.setInvoiceNo(CommonUtils.nullToEmpty(invoiceOtherDetails.getLinkedInvoice() == null ? ""
+								: invoiceOtherDetails.getLinkedInvoice().getInvoiceNumber()));
+						data.setInvoiceDate(invoiceOtherDetails.getLinkedInvoice() == null ? ""
+								: invoiceOtherDetails.getLinkedInvoice().getInvoiceDate());
 					}
 
-					if (reports.getType().equals(Type.Sales_Invoice) || reports.getType().equals(Type.Export_Invoice)
-							|| reports.getType().equals(Type.Tax_Invoice)) {
+					if (reports.getInvoiceType().equals(InvoiceType.Export_Invoice)
+							|| reports.getInvoiceType().equals(InvoiceType.Tax_Invoice)) {
 						data.setDateOfSupply(CommonUtils.nullToEmpty(invoice.getInvoiceDOS()));
 						data.setPlaceOfSupply(CommonUtils.nullToEmpty(invoice.getInvoicePOS()));
 					}
