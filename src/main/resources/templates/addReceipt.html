@@ -76,3 +76,28 @@
 		</form>
 	</div>
 </div>
+<th:block layout:fragment="scripts">
+	<script type="text/javascript">
+$(document).ready(function() {
+	$("#selectbasic").change(function() {
+		getAccountData();
+	});
+});
+
+function getAccountData() {
+	var accountName = $("#selectbasic").val();
+	
+	$.ajax({
+		type : "GET",
+		contentType : "application/json",
+		url : "getAccountData?accountName=" + accountName,
+		dataType : 'json',				
+		success : function(data) {
+			document.getElementById('gstin').value = data.gstin;
+			document.getElementById('accountAddress').value = data.accountAddress;
+		}
+		});
+};
+
+</script>
+</th:block>

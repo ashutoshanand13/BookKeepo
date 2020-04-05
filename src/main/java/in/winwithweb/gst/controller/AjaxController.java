@@ -36,24 +36,16 @@ public class AjaxController {
 	@Autowired
 	private ItemService itemService;
 	
-	@RequestMapping(value = "/home/getGstinData", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody String getSuperVisiorGstinData(@RequestParam String accountNbr) {
-		return new Gson().toJson(accountService.findGSTByAccountName(accountNbr));
-	}
 	
-	@RequestMapping(value = "/home/getPanNumberData", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody String getSuperVisiorPanData(@RequestParam String accountNbr) {
-		return new Gson().toJson(accountService.findPanByAccountName(accountNbr));
+	@RequestMapping(value = "/home/getAccountData", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody String getAccountData(@RequestParam String accountName, HttpServletRequest request) {
+		String user=request.getUserPrincipal().getName();
+		return new Gson().toJson(accountService.findByAccount(accountName, user));
 	}
 	
 	@RequestMapping(value = "/home/getAmountInWords", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody String getAmountInWords(@RequestParam String amount) {
 		return new Gson().toJson(CommonUtils.numberConverter(amount));
-	}
-	
-	@RequestMapping(value = "/home/accountdetails", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody String getAccountDetails(@RequestParam String accountName) {
-		return new Gson().toJson(accountService.findByAccountName(accountName));
 	}
 
 	@RequestMapping(value = "/home/imagebase64", method = RequestMethod.GET, produces = "text/plain")

@@ -69,7 +69,7 @@ public class CreditNoteController {
 		List<String> ownerInvoices = new ArrayList<>();
 		ownerInvoices.add("Against Invoice");
 		ownerInvoices.addAll(invoiceService.findbyInvoiceOwnerType(user, "Tax Invoice"));
-		List<String> account = accountService.fetchAccountName();
+		List<String> account = accountService.fetchAccountName(user);
 		if(company==null) {
 			modelAndView.addObject("message", "Please update company details before creating an Invoice");
 			modelAndView.addObject("company",new Company("creditNote"));
