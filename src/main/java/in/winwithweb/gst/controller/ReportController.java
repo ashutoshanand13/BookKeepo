@@ -56,6 +56,9 @@ public class ReportController {
 		modelAndView.addObject("reportsColumns", reports.getInvoiceType().getColums());
 		modelAndView.addObject("reports", reportData);
 		modelAndView.setViewName("reportsData");
+		modelAndView.addObject("pagetitle", "Download " + reports.getInvoiceType().getType() + " ("
+				+ reports.getInvoiceSubType().getInvoiceSubTypeValue() + ")");
+
 		return modelAndView;
 	}
 
