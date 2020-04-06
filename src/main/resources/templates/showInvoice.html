@@ -62,7 +62,7 @@ $(document).ready(function() {
 						<tr data-th-each="invoice : ${invoiceList}">
 							<td data-th-text="${invoice.id}"></td>
 							<td data-th-text="${invoice.invoiceDate}"></td>
-							<td data-th-text="${invoice.type}"></td>
+							<td data-th-text="${invoice.invoiceType}"></td>
 							<td data-th-text="${invoice.invoiceNumber}"></td>
 							<td data-th-text="${invoice.invoiceTotalAmountAfterTax}"></td>
 							<td><a th:href="@{/home/showInvoice/__${invoice.id}__}" onclick="showAlert()">Click Here</a></td>

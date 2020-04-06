@@ -9,37 +9,37 @@ package in.winwithweb.gst.model;
  */
 public class Reports {
 
-	private Type type;
-	private DocumentType documentType;
+	private InvoiceType invoiceType;
+	private InvoiceSubType invoiceSubType;
 	private String startDate;
 	private String endDate;
 
 	/**
-	 * @return the type
+	 * @return the invoiceType
 	 */
-	public Type getType() {
-		return type;
+	public InvoiceType getInvoiceType() {
+		return invoiceType;
 	}
 
 	/**
-	 * @param type the type to set
+	 * @param invoiceType the invoiceType to set
 	 */
-	public void setType(Type type) {
-		this.type = type;
+	public void setInvoiceType(InvoiceType invoiceType) {
+		this.invoiceType = invoiceType;
 	}
 
 	/**
-	 * @return the documentType
+	 * @return the invoiceSubType
 	 */
-	public DocumentType getDocumentType() {
-		return documentType;
+	public InvoiceSubType getInvoiceSubType() {
+		return invoiceSubType;
 	}
 
 	/**
-	 * @param documentType the documentType to set
+	 * @param invoiceSubType the invoiceSubType to set
 	 */
-	public void setDocumentType(DocumentType documentType) {
-		this.documentType = documentType;
+	public void setInvoiceSubType(InvoiceSubType invoiceSubType) {
+		this.invoiceSubType = invoiceSubType;
 	}
 
 	/**
