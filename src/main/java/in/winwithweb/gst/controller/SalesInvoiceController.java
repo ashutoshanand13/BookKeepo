@@ -136,7 +136,7 @@ public class SalesInvoiceController {
 	}
 
 	@RequestMapping(value = { "/home/showInvoice/{id}" })
-	public void view(@PathVariable("id") int id, HttpServletRequest request, HttpServletResponse response)
+	public void view(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
 
 		InvoiceDetails invoice = invoiceService.findById(id);

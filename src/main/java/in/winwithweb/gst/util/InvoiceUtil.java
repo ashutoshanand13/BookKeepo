@@ -95,6 +95,8 @@ public class InvoiceUtil {
 			productList.add(invoiceProductDetails);
 		}
 		invoice.setInvoiceProductDetails(productList);
+		
+		invoice.setInvoiceUniqueKey(CommonUtils.getUniqueID());
 	}
 
 	private static void setInvoiceAddressData(InvoicePageData salesInvoiceData,
@@ -154,6 +156,7 @@ public class InvoiceUtil {
 		invoiceOtherDetails.setInvoicePartyGstin(salesInvoiceData.getPartyGstin());
 		invoiceOtherDetails.setInvoicePartyState(salesInvoiceData.getPartyState());
 		invoiceOtherDetails.setInvoicePartyDate(reverseDate(salesInvoiceData.getPartyDate()));
+		
 		invoice.setInvoicePoDate(reverseDate(salesInvoiceData.getPoDate()));
 		invoice.setInvoicePoNumber(salesInvoiceData.getPoNo());
 		invoice.setInvoiceTransportMode(salesInvoiceData.getTransportMode());
@@ -168,7 +171,7 @@ public class InvoiceUtil {
 		invoice.setInvoiceDate(reverseDate(salesInvoiceData.getInvoiceDate()));
 		invoice.setInvoiceState(salesInvoiceData.getState());
 		invoice.setInvoiceReverseCharge(salesInvoiceData.getReverseCharge());
-		invoice.setInvoiceDocumentNumber(salesInvoiceData.getDocumentNumber());
+		invoice.setInvoiceNumber(salesInvoiceData.getDocumentNumber());
 		invoice.setInvoiceIssueDate(reverseDate(salesInvoiceData.getIssueDate()));
 	}
 
@@ -270,7 +273,7 @@ public class InvoiceUtil {
 						bfBold12, bf12, 1, "#EEFF74", 0.5f, 1f);
 			} else if (invoice.getInvoiceType().equals(InvoiceType.Credit_Note.getType())
 					|| invoice.getInvoiceType().equals(InvoiceType.Debit_Note.getType())) {
-				insertCell(table, "Document No: ", invoice.getInvoiceDocumentNumber(), Element.ALIGN_LEFT, 1, bfBold12,
+				insertCell(table, "Document No: ", invoice.getInvoiceNumber(), Element.ALIGN_LEFT, 1, bfBold12,
 						bf12, 1, "#FFFFFF", 1f, 0.5f);
 				insertCell(table, "Against Invoice: ",
 						invoice.getInvoiceOtherDetails().getLinkedInvoice(), Element.ALIGN_LEFT, 2,
