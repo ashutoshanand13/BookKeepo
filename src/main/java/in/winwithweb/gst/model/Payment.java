@@ -31,10 +31,6 @@ public class Payment {
 	@Column(name = "payment_account_gstin")
 	@NotEmpty(message = "*Please provide the account GST")
 	private String gstin;
-	
-	@Column(name = "account_pan")
-	@NotEmpty(message = "*Please provide the account PAN")
-	private String accountPan;
 
 	@Column(name = "payment_account_address")
 	@NotEmpty(message = "*Please provide the account address")
@@ -59,6 +55,9 @@ public class Payment {
 	@Column(name = "payment_description")
 	@NotEmpty(message = "*Please provide the payment description")
 	private String paymentDescription;
+	
+	@Column(name = "payment_owner")
+	private String paymentOwner;
 
 	/**
 	 * @return the id
@@ -187,20 +186,6 @@ public class Payment {
 	}
 
 	/**
-	 * @return the accountPan
-	 */
-	public String getAccountPan() {
-		return accountPan;
-	}
-
-	/**
-	 * @param accountPan the accountPan to set
-	 */
-	public void setAccountPan(String accountPan) {
-		this.accountPan = accountPan;
-	}
-
-	/**
 	 * @return the paymentAmount
 	 */
 	public String getPaymentAmount() {
@@ -213,8 +198,19 @@ public class Payment {
 	public void setPaymentAmount(String paymentAmount) {
 		this.paymentAmount = paymentAmount;
 	}
-	
-	
-	
 
+	/**
+	 * @return the paymentOwner
+	 */
+	public String getPaymentOwner() {
+		return paymentOwner;
+	}
+
+	/**
+	 * @param paymentOwner the paymentOwner to set
+	 */
+	public void setPaymentOwner(String paymentOwner) {
+		this.paymentOwner = paymentOwner;
+	}
+	
 }
