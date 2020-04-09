@@ -40,10 +40,10 @@
 								th:field="*{gstin}" placeholder="GST Number" readonly="readonly"
 								required> <label th:if="${#fields.hasErrors('gstin')}"
 								th:errors="*{gstin}" class="validation-message"></label>
-							<input type="text" id="accountPan" class="form-control" th:field="*{accountPan}"
+							<!-- <input type="text" id="accountPan" class="form-control" th:field="*{accountPan}"
 								placeholder="PAN" readonly="readonly" required> <label
 								th:if="${#fields.hasErrors('accountPan')}"
-								th:errors="*{accountPan}" class="validation-message"></label>
+								th:errors="*{accountPan}" class="validation-message"></label> -->
 								
 					</div>
 					<label>Receipt Details</label>
@@ -69,7 +69,7 @@
 						<label>Address</label>
 					<textarea class="form-control" th:field="*{accountAddress}"
 						readonly="readonly" required></textarea>
-						<div class="form-group"><br/><br/></div>
+						<div class="form-group"></div>
 						<div class="form-group">
 					<label>Payment Information</label> <input type="text"
 						class="form-control" name="name" th:field="*{paymentNumber}"
@@ -110,7 +110,6 @@ function getAccountData() {
 		dataType : 'json',				
 		success : function(data) {
 			document.getElementById('gstin').value = data.gstin;
-			document.getElementById('accountPan').value = data.accountPan;
 			document.getElementById('accountAddress').value = data.accountAddress;
 		}
 		});
