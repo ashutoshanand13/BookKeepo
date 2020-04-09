@@ -61,6 +61,7 @@ public class ReceiptController {
 			accountList.add(0, "Select Account");
 		}
 		modelAndView.addObject("receipts", new Receipts());
+		modelAndView.addObject("message", "Receipt Details Successfully Added");
 		modelAndView.setViewName("addReceipt");
 		modelAndView.addObject("accountList", accountList);
 		return modelAndView;

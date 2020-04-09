@@ -21,8 +21,8 @@
 <div layout:fragment="form_content" id="form_content">
 		<div class="form-items">
 			<h3 class="form-title doubleunderlinetext">Add A Payment</h3>
-			<div th:if="${message}" th:text="${message}" class="alert alert-info"></div>
-			<form autocomplete="off" th:action="@{/home}" th:object="${payment}"
+			<div th:if="${message}" th:text="${message}" class="alert alert-info fade-in"></div>
+			<form autocomplete="off" th:action="@{/home/addpayment}" th:object="${payment}"
 				method="post" class="form-horizontal" role="form">
 
 				
@@ -40,10 +40,6 @@
 								th:field="*{gstin}" placeholder="GST Number" readonly="readonly"
 								required> <label th:if="${#fields.hasErrors('gstin')}"
 								th:errors="*{gstin}" class="validation-message"></label>
-							<!-- <input type="text" id="accountPan" class="form-control" th:field="*{accountPan}"
-								placeholder="PAN" readonly="readonly" required> <label
-								th:if="${#fields.hasErrors('accountPan')}"
-								th:errors="*{accountPan}" class="validation-message"></label> -->
 								
 					</div>
 					<label>Receipt Details</label>
