@@ -19,8 +19,8 @@
 <div layout:fragment="form_content" id="form_content">
 	<div class="form-items">
 		<h3 class="form-title doubleunderlinetext">Add Receipt</h3>
-		<div th:if="${message}" th:text="${message}" class="alert alert-info"></div>
-		<form autocomplete="off" th:action="@{/addReceipt}" th:object="${receipts}" method="post"
+		<div th:if="${message}" th:text="${message}" class="alert alert-info fade-in"></div>
+		<form autocomplete="off" th:action="@{/home/addreceipt}" th:object="${receipts}" method="post"
 			class="form-horizontal" role="form">
 			<div class="row">
 				<div class="col-md-6 form-group">
