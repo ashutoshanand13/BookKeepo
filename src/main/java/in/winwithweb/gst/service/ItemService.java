@@ -35,13 +35,18 @@ public class ItemService {
 		return itemList;
 	}
 
+	public List<InvoiceProductDetails> fetchAllItems(String owner) {
+		return itemRepository.findByProductOwner(owner);
+	}
+
 	public InvoiceProductDetails findByProductDescription(String productDescription, String owner) {
-		List<InvoiceProductDetails> temp = itemRepository.findByProductOwner(owner).stream().filter(p -> p.getProductDescription().equalsIgnoreCase(productDescription))
+		List<InvoiceProductDetails> temp = itemRepository.findByProductOwner(owner).stream()
+				.filter(p -> p.getProductDescription().equalsIgnoreCase(productDescription))
 				.collect(Collectors.toList());
-		 if (temp.size() >0)
-			 return temp.get(0);
-		 else
-			 return null;
+		if (temp.size() > 0)
+			return temp.get(0);
+		else
+			return null;
 	}
 
 	public void saveItem(InvoiceProductDetails item) {

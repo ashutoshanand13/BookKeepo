@@ -55,6 +55,9 @@ public class Receipts {
 	@Column(name = "receipt_description")
 	@NotEmpty(message = "*Please provide the receipt description")
 	private String receiptDescription;
+	
+	@Column(name = "receipt_owner")
+	private String receiptOwner;
 
 	/**
 	 * @return the id
@@ -194,6 +197,20 @@ public class Receipts {
 	 */
 	public void setReceiptDescription(String receiptDescription) {
 		this.receiptDescription = receiptDescription;
+	}
+
+	/**
+	 * @return the receiptOwner
+	 */
+	public String getReceiptOwner() {
+		return receiptOwner;
+	}
+
+	/**
+	 * @param receiptOwner the receiptOwner to set
+	 */
+	public void setReceiptOwner(String receiptOwner) {
+		this.receiptOwner = receiptOwner;
 	}
 
 }
