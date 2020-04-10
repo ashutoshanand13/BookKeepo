@@ -21,4 +21,6 @@ public interface InvoiceRepository extends JpaRepository<InvoiceDetails, Long>{
 	InvoiceDetails findById(int id);
 	
 	InvoiceDetails findByInvoiceNumber(String invoiceNumber);
+	
+	InvoiceDetails findByInvoiceUniqueKey(String key);
 }

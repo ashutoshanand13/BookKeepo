@@ -1,75 +1,87 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{postLoginCommonPage}">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{postLoginCommonPage}">
 
-<head>
-<title>Download Invoice</title>
+	<head>
+		<title>Download Invoice</title>
 
-<script type="text/javascript" th:src="@{/js/jquery-3.3.1.js}"></script>
+		<script type="text/javascript" th:src="@{/js/jquery-3.3.1.js}"></script>
 
-<script type="text/javascript">
-$(document).ready(function() {
-	var table = $('#example').DataTable({
-		   dom: 'lrtip'
-		});
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var table =
+			$('#example').DataTable({
+			dom: 'lrtip'
+			});
 
-		$('#table-filter').on('change', function(){
-		   table.search(this.value).draw();   
-		});
-});
+			$('#table-filter').on('change', function(){
+			table.search(this.value).draw();
+			});
+			});
 
-</script>
+		</script>
 
-</head>
-<div layout:fragment="screen_description">
-	<div class="img-holder">
-		<div class="bg"></div>
-		<h3>Get more things done with BookKeepo platform.</h3>
-		<p>
-			Access to the most powerful tool in the entire design and web industry.<br> <br> Nam
-			libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime
-			placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.
-		</p>
+	</head>
+	<div layout:fragment="screen_description">
+		<div class="img-holder">
+			<div class="bg"></div>
+			<h3>Get more things done with BookKeepo platform.</h3>
+			<p>
+				Access to the most powerful tool in the entire design and web
+				industry.
+				<br>
+					<br> Nam
+						libero tempore, cum soluta nobis est eligendi optio cumque
+						nihil impedit
+						quo minus id quod maxime
+						placeat facere possimus,
+						omnis voluptas assumenda est, omnis dolor
+						repellendus.
+			</p>
+		</div>
 	</div>
-</div>
-<div layout:fragment="form_content" id="form_content">
-	<div class="form-items showinvoices">
-		<h3 class="form-title doubleunderlinetext" align="center">Download Created Invoices</h3>
-		<div id = "alert_showinvoice"></div>
-		Show: 
-<select id="table-filter">
-<option value="">All</option>
-<option>Tax Invoice</option>
-<option>Credit Note</option>
-<option>Debit Note</option>
-<option>Export Invoice</option>
-<option>Purchase Invoice</option>
-<option>Purchase Order</option>
-</select>
-		<table id="example" class="display" style="width: 100%">
-					<thead>
-						<tr>
-							<th>Invoice Id</th>
-							<th>Invoice Date</th>
-							<th>Invoice Type</th>
-							<th>Invoice Number</th>
-							<th>Invoice Amount</th>
-							<th>Download</th>
+	<div layout:fragment="form_content" id="form_content">
+		<div class="form-items showinvoices">
+			<h3 class="form-title doubleunderlinetext" align="center">Download Created
+				Invoices</h3>
+			<div id="alert_showinvoice"></div>
+			Show:
+			<select id="table-filter">
+				<option value="">All</option>
+				<option>Tax Invoice</option>
+				<option>Credit Note</option>
+				<option>Debit Note</option>
+				<option>Export Invoice</option>
+				<option>Purchase Invoice</option>
+				<option>Purchase Order</option>
+			</select>
+			<table id="example" class="display" style="width: 100%">
+				<thead>
+					<tr>
+						<th>Invoice/Document Number</th>
+						<th>Invoice Date</th>
+						<th>Invoice Type</th>
+						<th>Invoice Amount</th>
+						<th>Download</th>
 
-						</tr>
-					</thead>
-					<tbody>
-						<tr data-th-each="invoice : ${invoiceList}">
-							<td data-th-text="${invoice.id}"></td>
-							<td data-th-text="${invoice.invoiceDate}"></td>
-							<td data-th-text="${invoice.invoiceType}"></td>
-							<td data-th-text="${invoice.invoiceNumber}"></td>
-							<td data-th-text="${invoice.invoiceTotalAmountAfterTax}"></td>
-							<td><a th:href="@{/home/showInvoice/__${invoice.id}__}" onclick="showAlert()">Click Here</a></td>
-							
-						</tr>
-					</tbody>
-		</table>
-		
+					</tr>
+				</thead>
+				<tbody>
+					<tr data-th-each="invoice : ${invoiceList}">
+						<td data-th-text="${invoice.invoiceNumber}"></td>
+						<td data-th-text="${invoice.invoiceDate}"></td>
+						<td data-th-text="${invoice.invoiceType}"></td>
+						<td data-th-text="${invoice.invoiceTotalAmountAfterTax}"></td>
+						<td>
+							<a th:href="@{/home/showInvoice/__${invoice.invoiceUniqueKey}__}"
+								onclick="showAlert()">Click Here</a>
+						</td>
+
+					</tr>
+				</tbody>
+			</table>
+
+		</div>
 	</div>
-</div>

@@ -37,7 +37,6 @@ import in.winwithweb.gst.model.json.ItemList;
 import in.winwithweb.gst.model.sales.InvoiceAddressDetails;
 import in.winwithweb.gst.model.sales.InvoiceBankDetails;
 import in.winwithweb.gst.model.sales.InvoiceDetails;
-import in.winwithweb.gst.model.sales.InvoiceOtherDetails;
 import in.winwithweb.gst.model.sales.InvoiceProductDetails;
 
 /**
@@ -50,9 +49,7 @@ public class InvoiceUtil {
 
 	public static void updateInvoice(InvoiceDetails invoice, InvoicePageData salesInvoiceData, Company companyDetails) {
 
-		List<InvoiceProductDetails> productList = new ArrayList<InvoiceProductDetails>();
-		InvoiceBankDetails invoiceBankDetails = new InvoiceBankDetails();
-		InvoiceAddressDetails invoiceAddressDetails = new InvoiceAddressDetails();
+		setCommonInvoiceData(invoice, salesInvoiceData, companyDetails);
 
 		if (invoice.getInvoiceType().equals(InvoiceType.Tax_Invoice.getType())
 				|| invoice.getInvoiceType().equals(InvoiceType.Export_Invoice.getType())) {
@@ -64,49 +61,6 @@ public class InvoiceUtil {
 				|| invoice.getInvoiceType().equals(InvoiceType.Purchase_Order.getType())) {
 			setPurchasOrderandPurchasesInvoiceData(invoice, salesInvoiceData);
 		}
-		setCommonInvoiceData(invoice, salesInvoiceData, invoiceBankDetails);
-
-		if (!(invoice.getInvoiceType().equals(InvoiceType.Purchase_Invoice.getType())
-				|| invoice.getInvoiceType().equals(InvoiceType.Purchase_Order.getType()))) {
-			setInvoiceAddressData(salesInvoiceData, invoiceAddressDetails);
-			invoice.setInvoiceAddressDetails(invoiceAddressDetails);
-		}
-
-		invoice.setInvoiceCompanyDetails(companyDetails);
-		if (salesInvoiceData.getGstinBill() != null) {
-			if (companyDetails.getCompanyGstin().substring(0, 2)
-					.equals(salesInvoiceData.getGstinBill().substring(0, 2))) {
-				invoice.setInvoiceSubType(InvoiceSubType.INTRASTATE.getInvoiceSubType());
-			} else {
-				invoice.setInvoiceSubType(InvoiceSubType.INTERSTATE.getInvoiceSubType());
-			}
-		} else {
-			if (companyDetails.getCompanyGstin().substring(0, 2)
-					.equals(salesInvoiceData.getPartyGstin().substring(0, 2))) {
-				invoice.setInvoiceSubType(InvoiceSubType.INTRASTATE.getInvoiceSubType());
-			} else {
-				invoice.setInvoiceSubType(InvoiceSubType.INTERSTATE.getInvoiceSubType());
-			}
-		}
-
-		for (ItemList item : salesInvoiceData.getItemList()) {
-			InvoiceProductDetails invoiceProductDetails = new InvoiceProductDetails();
-			setinvoiceProductData(item, invoiceProductDetails);
-			productList.add(invoiceProductDetails);
-		}
-		invoice.setInvoiceProductDetails(productList);
-	}
-
-	private static void setInvoiceAddressData(InvoicePageData salesInvoiceData,
-			InvoiceAddressDetails invoiceAddressDetails) {
-		invoiceAddressDetails.setInvoiceBillerName(salesInvoiceData.getNameBill());
-		invoiceAddressDetails.setInvoiceBillerAddressName(salesInvoiceData.getAddressBill());
-		invoiceAddressDetails.setInvoiceBillerGst(salesInvoiceData.getGstinBill());
-		invoiceAddressDetails.setInvoiceBillerState(salesInvoiceData.getStateBill());
-		invoiceAddressDetails.setInvoicePartyName(salesInvoiceData.getNameShip());
-		invoiceAddressDetails.setInvoicePartyAddressName(salesInvoiceData.getAddressShip());
-		invoiceAddressDetails.setInvoicePartyGst(salesInvoiceData.getGstinShip());
-		invoiceAddressDetails.setInvoicePartyState(salesInvoiceData.getStateShip());
 	}
 
 	private static void setinvoiceProductData(ItemList item, InvoiceProductDetails invoiceProductDetails) {
@@ -126,7 +80,8 @@ public class InvoiceUtil {
 	}
 
 	private static void setCommonInvoiceData(InvoiceDetails invoice, InvoicePageData salesInvoiceData,
-			InvoiceBankDetails invoiceBankDetails) {
+			Company companyDetails) {
+
 		invoice.setInvoiceTotalAmountBeforeTax(salesInvoiceData.getTotalAmountBeforeTax());
 		invoice.setInvoiceTotalAmountAfterTax(salesInvoiceData.getTotalAmountAfterTax());
 		invoice.setInvoiceTaxAmount(salesInvoiceData.getTotalTaxAmount());
@@ -136,29 +91,97 @@ public class InvoiceUtil {
 		invoice.setInvoiceTotalAmountBeforeTax(salesInvoiceData.getTotalAmountBeforeTax());
 		invoice.setInvoiceTotalAmountAfterTax(salesInvoiceData.getTotalAmountAfterTax());
 		invoice.setInvoiceTaxAmount(salesInvoiceData.getTotalAddIGst());
+		invoice.setInvoiceUniqueKey(CommonUtils.getUniqueID());
+		invoice.setInvoiceReverseCharge(salesInvoiceData.getReverseCharge());
+		invoice.setInvoiceSubType(getInvoiceSubType(salesInvoiceData, companyDetails));
 
+		invoice.setInvoiceCompanyDetails(companyDetails);
+		invoice.setInvoiceAddressDetails(getInvoiceAddress(invoice, salesInvoiceData));
+		invoice.setInvoiceBankDetails(getBankDetails(salesInvoiceData));
+		invoice.setInvoiceProductDetails(getProductList(salesInvoiceData));
+
+	}
+
+	private static InvoiceAddressDetails getInvoiceAddress(InvoiceDetails invoice, InvoicePageData salesInvoiceData) {
+
+		InvoiceAddressDetails invoiceAddressDetails = new InvoiceAddressDetails();
+
+		if (invoice.getInvoiceType().equals(InvoiceType.Purchase_Invoice.getType())
+				|| invoice.getInvoiceType().equals(InvoiceType.Purchase_Order.getType())) {
+			invoiceAddressDetails.setInvoiceBillerName(salesInvoiceData.getPartyName());
+			invoiceAddressDetails.setInvoiceBillerAddressName(salesInvoiceData.getPartyAddress());
+			invoiceAddressDetails.setInvoiceBillerGst(salesInvoiceData.getPartyGstin());
+			invoiceAddressDetails.setInvoiceBillerState(salesInvoiceData.getPartyState());
+			
+			invoiceAddressDetails.setInvoicePartyName(salesInvoiceData.getPartyName());
+			invoiceAddressDetails.setInvoicePartyAddressName(salesInvoiceData.getPartyAddress());
+			invoiceAddressDetails.setInvoicePartyState(salesInvoiceData.getPartyState());
+			invoiceAddressDetails.setInvoicePartyGst(salesInvoiceData.getPartyGstin());
+
+		} else {
+			invoiceAddressDetails.setInvoiceBillerName(salesInvoiceData.getNameBill());
+			invoiceAddressDetails.setInvoiceBillerAddressName(salesInvoiceData.getAddressBill());
+			invoiceAddressDetails.setInvoiceBillerGst(salesInvoiceData.getGstinBill());
+			invoiceAddressDetails.setInvoiceBillerState(salesInvoiceData.getStateBill());
+
+			invoiceAddressDetails.setInvoicePartyName(salesInvoiceData.getNameShip());
+			invoiceAddressDetails.setInvoicePartyAddressName(salesInvoiceData.getAddressShip());
+			invoiceAddressDetails.setInvoicePartyGst(salesInvoiceData.getGstinShip());
+			invoiceAddressDetails.setInvoicePartyState(salesInvoiceData.getStateShip());
+		}
+
+		return invoiceAddressDetails;
+
+	}
+
+	private static String getInvoiceSubType(InvoicePageData salesInvoiceData, Company companyDetails) {
+		String subType = InvoiceSubType.INTERSTATE.getInvoiceSubType();
+		try {
+			String companyGST = companyDetails.getCompanyGstin();
+			String partyGST = salesInvoiceData.getGstinBill() != null ? salesInvoiceData.getGstinBill()
+					: salesInvoiceData.getPartyGstin();
+			if (companyGST.substring(0, 2).equals(partyGST.substring(0, 2))) {
+				subType = InvoiceSubType.INTRASTATE.getInvoiceSubType();
+			}
+		} catch (Exception e) {
+
+		}
+
+		return subType;
+
+	}
+
+	private static List<InvoiceProductDetails> getProductList(InvoicePageData salesInvoiceData) {
+		List<InvoiceProductDetails> productList = new ArrayList<InvoiceProductDetails>();
+		for (ItemList item : salesInvoiceData.getItemList()) {
+			InvoiceProductDetails invoiceProductDetails = new InvoiceProductDetails();
+			setinvoiceProductData(item, invoiceProductDetails);
+			productList.add(invoiceProductDetails);
+		}
+
+		return productList;
+
+	}
+
+	private static InvoiceBankDetails getBankDetails(InvoicePageData salesInvoiceData) {
+		InvoiceBankDetails invoiceBankDetails = new InvoiceBankDetails();
 		invoiceBankDetails.setInvoiceBankAccount(salesInvoiceData.getBankAccountNumber());
 		invoiceBankDetails.setInvoiceIfsCode(salesInvoiceData.getBankifsc());
 		invoiceBankDetails.setInvoiceBankCondition(salesInvoiceData.getTermsConditions());
-		invoice.setInvoiceBankDetails(invoiceBankDetails);
+		return invoiceBankDetails;
 	}
 
 	private static void setPurchasOrderandPurchasesInvoiceData(InvoiceDetails invoice,
 			InvoicePageData salesInvoiceData) {
 
-		InvoiceOtherDetails invoiceOtherDetails = invoice.getInvoiceOtherDetails();
+		invoice.setInvoiceDate(reverseDate(salesInvoiceData.getPartyDate()));
 
-		invoiceOtherDetails.setInvoicePartyName(salesInvoiceData.getPartyName());
-		invoiceOtherDetails.setInvoicePartyAddress(salesInvoiceData.getPartyAddress());
-		invoiceOtherDetails.setInvoicePartyState(salesInvoiceData.getPartyState());
-		invoiceOtherDetails.setInvoicePartyGstin(salesInvoiceData.getPartyGstin());
-		invoiceOtherDetails.setInvoicePartyState(salesInvoiceData.getPartyState());
-		invoiceOtherDetails.setInvoicePartyDate(reverseDate(salesInvoiceData.getPartyDate()));
 		invoice.setInvoicePoDate(reverseDate(salesInvoiceData.getPoDate()));
+
 		invoice.setInvoicePoNumber(salesInvoiceData.getPoNo());
 		invoice.setInvoiceTransportMode(salesInvoiceData.getTransportMode());
 		invoice.setInvoiceVehicleNumber(salesInvoiceData.getVehicleNo());
-		invoice.setInvoiceReverseCharge(salesInvoiceData.getReverseCharge());
+
 		if (salesInvoiceData.getInvoiceNo() != null && !salesInvoiceData.getInvoiceNo().isEmpty()) {
 			invoice.setInvoiceNumber(salesInvoiceData.getInvoiceNo());
 		}
@@ -167,8 +190,7 @@ public class InvoiceUtil {
 	private static void setCreditandDebitNoteData(InvoiceDetails invoice, InvoicePageData salesInvoiceData) {
 		invoice.setInvoiceDate(reverseDate(salesInvoiceData.getInvoiceDate()));
 		invoice.setInvoiceState(salesInvoiceData.getState());
-		invoice.setInvoiceReverseCharge(salesInvoiceData.getReverseCharge());
-		invoice.setInvoiceDocumentNumber(salesInvoiceData.getDocumentNumber());
+		invoice.setInvoiceNumber(salesInvoiceData.getDocumentNumber());
 		invoice.setInvoiceIssueDate(reverseDate(salesInvoiceData.getIssueDate()));
 	}
 
@@ -182,7 +204,6 @@ public class InvoiceUtil {
 		invoice.setInvoicePoNumber(salesInvoiceData.getPoNo());
 		invoice.setInvoiceTransportMode(salesInvoiceData.getTransportMode());
 		invoice.setInvoiceVehicleNumber(salesInvoiceData.getVehicleNo());
-		invoice.setInvoiceReverseCharge(salesInvoiceData.getReverseCharge());
 	}
 
 	public static ByteArrayOutputStream createPDF(InvoiceDetails invoice) {
@@ -270,11 +291,10 @@ public class InvoiceUtil {
 						bfBold12, bf12, 1, "#EEFF74", 0.5f, 1f);
 			} else if (invoice.getInvoiceType().equals(InvoiceType.Credit_Note.getType())
 					|| invoice.getInvoiceType().equals(InvoiceType.Debit_Note.getType())) {
-				insertCell(table, "Document No: ", invoice.getInvoiceDocumentNumber(), Element.ALIGN_LEFT, 1, bfBold12,
-						bf12, 1, "#FFFFFF", 1f, 0.5f);
-				insertCell(table, "Against Invoice: ",
-						invoice.getInvoiceOtherDetails().getLinkedInvoice(), Element.ALIGN_LEFT, 2,
-						bfBold12, bf12, 1, "#FFFFFF", 0.5f, 1f);
+				insertCell(table, "Document No: ", invoice.getInvoiceNumber(), Element.ALIGN_LEFT, 1, bfBold12, bf12, 1,
+						"#FFFFFF", 1f, 0.5f);
+				insertCell(table, "Against Invoice: ", invoice.getInvoiceOtherDetails().getLinkedInvoice(),
+						Element.ALIGN_LEFT, 2, bfBold12, bf12, 1, "#FFFFFF", 0.5f, 1f);
 				insertCell(table, "Issue Date: ", invoice.getInvoiceIssueDate(), Element.ALIGN_LEFT, 1, bfBold12, bf12,
 						1, "#FFFFFF", 1f, 0.5f);
 				insertCell(table, "Invoice Date: ", invoice.getInvoiceDate(), Element.ALIGN_LEFT, 2, bfBold12, bf12, 1,
@@ -287,40 +307,40 @@ public class InvoiceUtil {
 					|| invoice.getInvoiceType().equals(InvoiceType.Purchase_Order.getType())) {
 				insertCell(table, "Party Details", Element.ALIGN_CENTER, 1, bfBold12, 1, "#BFD6E9", 1f, 0.5f, 0f);
 
-				InvoiceOtherDetails invoiceOtherDetails = invoice.getInvoiceOtherDetails();
+				InvoiceAddressDetails invoiceAddressDetails = invoice.getInvoiceAddressDetails();
 
 				if (invoice.getInvoiceType().equals(InvoiceType.Purchase_Order.getType())) {
 					insertCell(table, "PO Details", Element.ALIGN_CENTER, 2, bfBold12, 1, "#BFD6E9", 0.5f, 1f, 0f);
-					insertCell(table, "Name: ", invoiceOtherDetails.getInvoicePartyName(), Element.ALIGN_LEFT, 1,
+					insertCell(table, "Name: ", invoiceAddressDetails.getInvoicePartyName(), Element.ALIGN_LEFT, 1,
 							bfBold12, bf12, 1, "#FFFFFF", 1f, 0.5f);
 					insertCell(table, "PO No: ", invoice.getInvoicePoNumber(), Element.ALIGN_LEFT, 2, bfBold12, bf12, 1,
 							"#FFFFFF", 0.5f, 1f);
-					insertCell(table, "Address: ", invoiceOtherDetails.getInvoicePartyAddress(), Element.ALIGN_LEFT, 1,
-							bfBold12, bf12, 1, "#FFFFFF", 1f, 0.5f);
+					insertCell(table, "Address: ", invoiceAddressDetails.getInvoicePartyAddressName(),
+							Element.ALIGN_LEFT, 1, bfBold12, bf12, 1, "#FFFFFF", 1f, 0.5f);
 					insertCell(table, "PO Date: ", invoice.getInvoicePoDate(), Element.ALIGN_LEFT, 2, bfBold12, bf12, 1,
 							"#FFFFFF", 0.5f, 1f);
 				} else {
 					insertCell(table, "Invoice Details", Element.ALIGN_CENTER, 2, bfBold12, 1, "#BFD6E9", 0.5f, 1f, 0f);
-					insertCell(table, "Name: ", invoiceOtherDetails.getInvoicePartyName(), Element.ALIGN_LEFT, 1,
+					insertCell(table, "Name: ", invoiceAddressDetails.getInvoicePartyName(), Element.ALIGN_LEFT, 1,
 							bfBold12, bf12, 1, "#FFFFFF", 1f, 0.5f);
 					insertCell(table, "Invoice No: ", invoice.getInvoiceNumber(), Element.ALIGN_LEFT, 2, bfBold12, bf12,
 							1, "#FFFFFF", 1f, 0.5f);
-					insertCell(table, "Address: ", invoiceOtherDetails.getInvoicePartyAddress(), Element.ALIGN_LEFT, 1,
-							bfBold12, bf12, 1, "#FFFFFF", 1f, 0.5f);
+					insertCell(table, "Address: ", invoiceAddressDetails.getInvoicePartyAddressName(),
+							Element.ALIGN_LEFT, 1, bfBold12, bf12, 1, "#FFFFFF", 1f, 0.5f);
 					insertCell(table, "PO No: ", invoice.getInvoicePoNumber(), Element.ALIGN_LEFT, 1, bfBold12, bf12, 1,
 							"#FFFFFF", 0.5f, 1f);
 					insertCell(table, "PO Date: ", invoice.getInvoicePoDate(), Element.ALIGN_LEFT, 1, bfBold12, bf12, 1,
 							"#FFFFFF", 0.5f, 1f);
 				}
-				insertCell(table, "Date: ", invoiceOtherDetails.getInvoicePartyDate(), Element.ALIGN_LEFT, 1, bfBold12,
-						bf12, 1, "#FFFFFF", 0.5f, 1f);
+				insertCell(table, "Date: ", invoice.getInvoiceDate(), Element.ALIGN_LEFT, 1, bfBold12, bf12, 1,
+						"#FFFFFF", 0.5f, 1f);
 				insertCell(table, "Transport Mode: ", invoice.getInvoiceTransportMode(), Element.ALIGN_LEFT, 2,
 						bfBold12, bf12, 1, "#FFFFFF", 0.5f, 1f);
-				insertCell(table, "GSTIN: ", invoiceOtherDetails.getInvoicePartyGstin(), Element.ALIGN_LEFT, 1,
+				insertCell(table, "GSTIN: ", invoiceAddressDetails.getInvoicePartyGst(), Element.ALIGN_LEFT, 1,
 						bfBold12, bf12, 1, "#FFFFFF", 1f, 0.5f);
 				insertCell(table, "Vehicle No: ", invoice.getInvoiceVehicleNumber(), Element.ALIGN_LEFT, 2, bfBold12,
 						bf12, 1, "#FFFFFF", 0.5f, 1f);
-				insertCell(table, "State: ", invoiceOtherDetails.getInvoicePartyState(), Element.ALIGN_LEFT, 1,
+				insertCell(table, "State: ", invoiceAddressDetails.getInvoicePartyState(), Element.ALIGN_LEFT, 1,
 						bfBold12, bf12, 1, "#FFFFFF", 1f, 0.5f);
 				insertCell(table, "Reverse Charge (Y/N): ", invoice.getInvoiceReverseCharge(), Element.ALIGN_LEFT, 2,
 						bfBold12, bf12, 1, "#EEFF74", 0.5f, 1f);

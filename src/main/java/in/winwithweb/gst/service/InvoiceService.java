@@ -40,8 +40,8 @@ public class InvoiceService {
 		return invoiceRepository.findByInvoiceOwner(name);
 	}
 
-	public InvoiceDetails findById(int id) {
-		return invoiceRepository.findById(id);
+	public InvoiceDetails findById(String key) {
+		return invoiceRepository.findByInvoiceUniqueKey(key);
 	}
 
 	public List<String> findbyInvoiceOwnerType(String name, String type) {

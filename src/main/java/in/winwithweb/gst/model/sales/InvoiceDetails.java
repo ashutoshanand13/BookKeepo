@@ -23,7 +23,6 @@ import lombok.Data;
  * @author sachingoyal
  *
  */
-
 @Data
 @Entity
 @Table(name = "invoice_details")
@@ -39,9 +38,6 @@ public class InvoiceDetails {
 
 	@Column(name = "invoice_issue_date")
 	private String invoiceIssueDate;
-
-	@Column(name = "invoice_document_number")
-	private String invoiceDocumentNumber;
 
 	@Column(name = "invoice_date")
 	private String invoiceDate;
@@ -99,6 +95,9 @@ public class InvoiceDetails {
 
 	@Column(name = "invoice_total_amount_words")
 	private String invoiceTotalAmountWords;
+
+	@Column(name = "invoice_key")
+	private String invoiceUniqueKey;
 
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "invoice_products_referece_no")
@@ -338,6 +337,14 @@ public class InvoiceDetails {
 		this.invoiceTaxAmount = invoiceTaxAmount;
 	}
 
+	public String getInvoiceUniqueKey() {
+		return invoiceUniqueKey;
+	}
+
+	public void setInvoiceUniqueKey(String invoiceUniqueKey) {
+		this.invoiceUniqueKey = invoiceUniqueKey;
+	}
+
 	/**
 	 * @return the invoiceProductDetails
 	 */
@@ -455,20 +462,6 @@ public class InvoiceDetails {
 	 */
 	public void setInvoiceIssueDate(String invoiceIssueDate) {
 		this.invoiceIssueDate = invoiceIssueDate;
-	}
-
-	/**
-	 * @return the invoiceDocumentNumber
-	 */
-	public String getInvoiceDocumentNumber() {
-		return invoiceDocumentNumber;
-	}
-
-	/**
-	 * @param invoiceDocumentNumber the invoiceDocumentNumber to set
-	 */
-	public void setInvoiceDocumentNumber(String invoiceDocumentNumber) {
-		this.invoiceDocumentNumber = invoiceDocumentNumber;
 	}
 
 	/**
