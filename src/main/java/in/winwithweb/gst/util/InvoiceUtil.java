@@ -173,17 +173,16 @@ public class InvoiceUtil {
 
 	private static void setPurchasOrderandPurchasesInvoiceData(InvoiceDetails invoice,
 			InvoicePageData salesInvoiceData) {
-
-		invoice.setInvoiceDate(reverseDate(salesInvoiceData.getPartyDate()));
-
+		invoice.setInvoiceDate(reverseDate(salesInvoiceData.getPoDate()));
 		invoice.setInvoicePoDate(reverseDate(salesInvoiceData.getPoDate()));
-
 		invoice.setInvoicePoNumber(salesInvoiceData.getPoNo());
+		invoice.setInvoiceNumber(salesInvoiceData.getPoNo());
 		invoice.setInvoiceTransportMode(salesInvoiceData.getTransportMode());
 		invoice.setInvoiceVehicleNumber(salesInvoiceData.getVehicleNo());
 
 		if (salesInvoiceData.getInvoiceNo() != null && !salesInvoiceData.getInvoiceNo().isEmpty()) {
-			invoice.setInvoiceNumber(salesInvoiceData.getInvoiceNo());
+			invoice.getInvoiceOtherDetails().setLinkedInvoice(salesInvoiceData.getInvoiceNo());
+			invoice.getInvoiceOtherDetails().setLinkedInvoiceDate(reverseDate(salesInvoiceData.getInvoiceDate()));
 		}
 	}
 
