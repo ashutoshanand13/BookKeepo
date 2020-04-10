@@ -41,9 +41,6 @@ public class InvoicePageData {
 	@SerializedName("againstInvoice")
 	@Expose
 	private String againstInvoice;
-	@SerializedName("documentNumber")
-	@Expose
-	private String documentNumber;
 	@SerializedName("issueDate")
 	@Expose
 	private String issueDate;
@@ -443,19 +440,6 @@ public class InvoicePageData {
 		this.againstInvoice = againstInvoice;
 	}
 
-	/**
-	 * @return the documentNumber
-	 */
-	public String getDocumentNumber() {
-		return documentNumber;
-	}
-
-	/**
-	 * @param documentNumber the documentNumber to set
-	 */
-	public void setDocumentNumber(String documentNumber) {
-		this.documentNumber = documentNumber;
-	}
 
 	/**
 	 * @return the issueDate

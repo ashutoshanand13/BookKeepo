@@ -190,7 +190,7 @@ public class InvoiceUtil {
 	private static void setCreditandDebitNoteData(InvoiceDetails invoice, InvoicePageData salesInvoiceData) {
 		invoice.setInvoiceDate(reverseDate(salesInvoiceData.getInvoiceDate()));
 		invoice.setInvoiceState(salesInvoiceData.getState());
-		invoice.setInvoiceNumber(salesInvoiceData.getDocumentNumber());
+		invoice.setInvoiceNumber(salesInvoiceData.getInvoiceNo());
 		invoice.setInvoiceIssueDate(reverseDate(salesInvoiceData.getIssueDate()));
 	}
 
@@ -250,7 +250,7 @@ public class InvoiceUtil {
 			// create PDF table with the given widths
 
 			Paragraph header = new Paragraph();
-			header.add(invoice.getInvoiceType() + " - " + invoice.getInvoiceType() + "\n\n");
+			header.add(invoice.getInvoiceType() + " - " + invoice.getInvoiceSubType() + "\n\n");
 			header.setAlignment(Element.ALIGN_CENTER);
 
 			PdfPTable tableHeader = new PdfPTable(columnWidthHeader);
