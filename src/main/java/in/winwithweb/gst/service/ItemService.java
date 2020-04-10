@@ -29,7 +29,7 @@ public class ItemService {
 
 	public List<String> findByProductOwner(String owner) {
 		ArrayList<String> itemList = new ArrayList<>();
-		itemList.add("");
+		itemList.add("Add New Item");
 		itemList.addAll(itemRepository.findByProductOwner(owner).stream().map(p -> p.getProductDescription())
 				.collect(Collectors.toList()));
 		return itemList;

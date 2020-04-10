@@ -104,7 +104,7 @@
 	
 	function getItem() {
 		var itemDesc = $("#selectbasic").val();
-		if(itemDesc !== ""){
+		if(itemDesc !== "Add New Item"){
 			$.ajax({
 				type : "GET",
 				contentType : "application/json",
@@ -120,6 +120,14 @@
 					$("[name=productQuantity").val(data.productQuantity);
 				}
 				});
+		} else {
+			$("[name=productDescription").val("");
+			$("[name=productGstRate").val("");
+			$("[name=productHnscode").val("");
+			$("[name=productUom").val("");
+			$("[name=productDiscount").val("");
+			$("[name=productRate").val("");
+			$("[name=productQuantity").val("");
 		}
 	};
 	</script>
