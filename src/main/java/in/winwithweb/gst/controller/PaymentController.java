@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import in.winwithweb.gst.model.Payment;
-import in.winwithweb.gst.model.Receipts;
 import in.winwithweb.gst.service.AccountService;
 import in.winwithweb.gst.service.PaymentService;
 

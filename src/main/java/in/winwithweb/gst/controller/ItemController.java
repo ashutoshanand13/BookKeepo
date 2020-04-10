@@ -4,6 +4,7 @@
 package in.winwithweb.gst.controller;
 
 import java.security.Principal;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -34,7 +35,9 @@ public class ItemController {
 	public ModelAndView getItemPage(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
 		String user = request.getUserPrincipal().getName();
-		modelAndView.addObject("itemList", itemService.findByProductOwner(user));
+		List<String> itemList = itemService.findByProductOwner(user);
+		itemList.set(0,"Add New Item");
+		modelAndView.addObject("itemList", itemList);
 		modelAndView.addObject("item", new InvoiceProductDetails());
 
 		modelAndView.setViewName("addItem");
