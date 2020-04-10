@@ -188,7 +188,7 @@ public class InvoiceUtil {
 	}
 
 	private static void setCreditandDebitNoteData(InvoiceDetails invoice, InvoicePageData salesInvoiceData) {
-		invoice.setInvoiceDate(reverseDate(salesInvoiceData.getInvoiceDate()));
+		invoice.setInvoiceDate(salesInvoiceData.getInvoiceDate());
 		invoice.setInvoiceState(salesInvoiceData.getState());
 		invoice.setInvoiceNumber(salesInvoiceData.getInvoiceNo());
 		invoice.setInvoiceIssueDate(reverseDate(salesInvoiceData.getIssueDate()));
