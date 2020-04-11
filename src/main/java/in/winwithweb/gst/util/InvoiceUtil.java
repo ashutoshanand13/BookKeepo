@@ -130,7 +130,7 @@ public class InvoiceUtil {
 			productList.add(invoiceProductDetails);
 		}
 
-		return productList;
+		return productList.isEmpty() ? null : productList;
 
 	}
 
@@ -188,9 +188,9 @@ public class InvoiceUtil {
 
 	private static InvoiceOtherDetails getOtherDetails(InvoicePageData salesInvoiceData) {
 		InvoiceOtherDetails invoiceOtherDetails = new InvoiceOtherDetails();
-		invoiceOtherDetails.setLinkedInvoice(salesInvoiceData.getInvoiceNo());
-		invoiceOtherDetails.setLinkedInvoiceDate(reverseDate(salesInvoiceData.getInvoiceDate()));
-		return invoiceOtherDetails;
+		invoiceOtherDetails.setLinkedInvoice(salesInvoiceData.getAgainstInvoice());
+		invoiceOtherDetails.setLinkedInvoiceDate(reverseDate(salesInvoiceData.getAgainstInvoiceDate()));
+		return invoiceOtherDetails.getLinkedInvoice() == null ? null : invoiceOtherDetails;
 	}
 
 	public static ByteArrayOutputStream createPDF(InvoiceDetails invoice) {
@@ -310,7 +310,7 @@ public class InvoiceUtil {
 					insertCell(table, "Invoice Details", Element.ALIGN_CENTER, 2, bfBold12, 1, "#BFD6E9", 0.5f, 1f, 0f);
 					insertCell(table, "Name: ", invoiceAddressDetails.getInvoicePartyName(), Element.ALIGN_LEFT, 1,
 							bfBold12, bf12, 1, "#FFFFFF", 1f, 0.5f);
-					insertCell(table, "Invoice No: ", invoice.getInvoiceNumber(), Element.ALIGN_LEFT, 2, bfBold12, bf12,
+					insertCell(table, "Invoice No: ", invoice.getInvoiceOtherDetails().getLinkedInvoice(), Element.ALIGN_LEFT, 2, bfBold12, bf12,
 							1, "#FFFFFF", 1f, 0.5f);
 					insertCell(table, "Address: ", invoiceAddressDetails.getInvoicePartyAddressName(),
 							Element.ALIGN_LEFT, 1, bfBold12, bf12, 1, "#FFFFFF", 1f, 0.5f);
@@ -630,7 +630,7 @@ public class InvoiceUtil {
 	}
 
 	private static String reverseDate(String date) {
-		if (date.contains("-")) {
+		if (date != null && date.contains("-")) {
 			String[] dateArr = date.split("-");
 			List<String> listOfDate = Arrays.asList(dateArr);
 			Collections.reverse(listOfDate);
