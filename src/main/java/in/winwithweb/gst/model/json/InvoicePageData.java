@@ -41,9 +41,9 @@ public class InvoicePageData {
 	@SerializedName("againstInvoice")
 	@Expose
 	private String againstInvoice;
-	@SerializedName("issueDate")
+	@SerializedName("againstInvoiceDate")
 	@Expose
-	private String issueDate;
+	private String againstInvoiceDate;
 	@SerializedName("nameBill")
 	@Expose
 	private String nameBill;
@@ -441,15 +441,15 @@ public class InvoicePageData {
 	/**
 	 * @return the issueDate
 	 */
-	public String getIssueDate() {
-		return issueDate;
+	public String getAgainstInvoiceDate() {
+		return againstInvoiceDate;
 	}
 
 	/**
 	 * @param issueDate the issueDate to set
 	 */
-	public void setIssueDate(String issueDate) {
-		this.issueDate = issueDate;
+	public void setAgainstInvoiceDate(String againstInvoiceDate) {
+		this.againstInvoiceDate = againstInvoiceDate;
 	}
 
 	/**

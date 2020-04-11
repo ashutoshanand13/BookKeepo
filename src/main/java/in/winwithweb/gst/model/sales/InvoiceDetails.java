@@ -36,9 +36,6 @@ public class InvoiceDetails {
 	@Column(name = "invoice_number")
 	private String invoiceNumber;
 
-	@Column(name = "invoice_issue_date")
-	private String invoiceIssueDate;
-
 	@Column(name = "invoice_date")
 	private String invoiceDate;
 
@@ -448,20 +445,6 @@ public class InvoiceDetails {
 	 */
 	public void setInvoiceSubType(String invoiceSubType) {
 		this.invoiceSubType = invoiceSubType;
-	}
-
-	/**
-	 * @return the invoiceIssueDate
-	 */
-	public String getInvoiceIssueDate() {
-		return invoiceIssueDate;
-	}
-
-	/**
-	 * @param invoiceIssueDate the invoiceIssueDate to set
-	 */
-	public void setInvoiceIssueDate(String invoiceIssueDate) {
-		this.invoiceIssueDate = invoiceIssueDate;
 	}
 
 	/**
