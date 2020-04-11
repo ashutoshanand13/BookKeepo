@@ -50,7 +50,41 @@ public class InvoiceUtil {
 
 	public static void updateInvoice(InvoiceDetails invoice, InvoicePageData salesInvoiceData, Company companyDetails) {
 
-		setCommonInvoiceData(invoice, salesInvoiceData, companyDetails);
+		invoice.setInvoiceNumber(salesInvoiceData.getInvoiceNo());
+		invoice.setInvoiceDate(reverseDate(salesInvoiceData.getInvoiceDate()));
+		invoice.setInvoiceState(salesInvoiceData.getState());
+
+		invoice.setInvoiceDOS(reverseDate(salesInvoiceData.getDateOfSupply()));
+		invoice.setInvoicePOS(salesInvoiceData.getPlaceOfSupply());
+
+		invoice.setInvoicePoDate(
+				salesInvoiceData.getPoDate() == null ? reverseDate(reverseDate(salesInvoiceData.getInvoiceDate()))
+						: reverseDate(salesInvoiceData.getPoDate()));
+		invoice.setInvoicePoNumber(
+				salesInvoiceData.getPoNo() == null ? salesInvoiceData.getInvoiceNo() : salesInvoiceData.getPoNo());
+
+		invoice.setInvoiceTransportMode(salesInvoiceData.getTransportMode());
+		invoice.setInvoiceVehicleNumber(salesInvoiceData.getVehicleNo());
+
+		invoice.setInvoiceTotalAmountBeforeTax(salesInvoiceData.getTotalAmountBeforeTax());
+		invoice.setInvoiceTotalAmountAfterTax(salesInvoiceData.getTotalAmountAfterTax());
+		invoice.setInvoiceTaxAmount(salesInvoiceData.getTotalTaxAmount());
+		invoice.setInvoiceIgstAmount(salesInvoiceData.getTotalAddIGst());
+		invoice.setInvoiceSgstAmount(salesInvoiceData.getTotalAddSGst());
+		invoice.setInvoiceCgstAmount(salesInvoiceData.getTotalAddCGst());
+		invoice.setInvoiceTotalAmountBeforeTax(salesInvoiceData.getTotalAmountBeforeTax());
+		invoice.setInvoiceTotalAmountAfterTax(salesInvoiceData.getTotalAmountAfterTax());
+		invoice.setInvoiceTaxAmount(salesInvoiceData.getTotalAddIGst());
+		invoice.setInvoiceUniqueKey(CommonUtils.getUniqueID());
+		invoice.setInvoiceReverseCharge(salesInvoiceData.getReverseCharge());
+		invoice.setInvoiceSubType(getInvoiceSubType(salesInvoiceData, companyDetails));
+
+		invoice.setInvoiceCompanyDetails(companyDetails);
+		invoice.setInvoiceAddressDetails(getInvoiceAddress(invoice, salesInvoiceData));
+		invoice.setInvoiceBankDetails(getBankDetails(salesInvoiceData));
+		invoice.setInvoiceProductDetails(getProductList(salesInvoiceData));
+
+		invoice.setInvoiceOtherDetails(getOtherDetails(salesInvoiceData));
 	}
 
 	private static void setinvoiceProductData(ItemList item, InvoiceProductDetails invoiceProductDetails) {
@@ -135,47 +169,6 @@ public class InvoiceUtil {
 		invoiceBankDetails.setInvoiceIfsCode(salesInvoiceData.getBankifsc());
 		invoiceBankDetails.setInvoiceBankCondition(salesInvoiceData.getTermsConditions());
 		return invoiceBankDetails;
-	}
-
-	private static void setCommonInvoiceData(InvoiceDetails invoice, InvoicePageData salesInvoiceData,
-			Company companyDetails) {
-
-		invoice.setInvoiceNumber(salesInvoiceData.getInvoiceNo());
-		invoice.setInvoiceDate(reverseDate(salesInvoiceData.getInvoiceDate()));
-		invoice.setInvoiceState(salesInvoiceData.getState());
-
-		invoice.setInvoiceDOS(reverseDate(salesInvoiceData.getDateOfSupply()));
-		invoice.setInvoicePOS(salesInvoiceData.getPlaceOfSupply());
-
-		invoice.setInvoicePoDate(
-				salesInvoiceData.getPoDate() == null ? reverseDate(reverseDate(salesInvoiceData.getInvoiceDate()))
-						: reverseDate(salesInvoiceData.getPoDate()));
-		invoice.setInvoicePoNumber(
-				salesInvoiceData.getPoNo() == null ? salesInvoiceData.getInvoiceNo() : salesInvoiceData.getPoNo());
-
-		invoice.setInvoiceTransportMode(salesInvoiceData.getTransportMode());
-		invoice.setInvoiceVehicleNumber(salesInvoiceData.getVehicleNo());
-
-		invoice.setInvoiceTotalAmountBeforeTax(salesInvoiceData.getTotalAmountBeforeTax());
-		invoice.setInvoiceTotalAmountAfterTax(salesInvoiceData.getTotalAmountAfterTax());
-		invoice.setInvoiceTaxAmount(salesInvoiceData.getTotalTaxAmount());
-		invoice.setInvoiceIgstAmount(salesInvoiceData.getTotalAddIGst());
-		invoice.setInvoiceSgstAmount(salesInvoiceData.getTotalAddSGst());
-		invoice.setInvoiceCgstAmount(salesInvoiceData.getTotalAddCGst());
-		invoice.setInvoiceTotalAmountBeforeTax(salesInvoiceData.getTotalAmountBeforeTax());
-		invoice.setInvoiceTotalAmountAfterTax(salesInvoiceData.getTotalAmountAfterTax());
-		invoice.setInvoiceTaxAmount(salesInvoiceData.getTotalAddIGst());
-		invoice.setInvoiceUniqueKey(CommonUtils.getUniqueID());
-		invoice.setInvoiceReverseCharge(salesInvoiceData.getReverseCharge());
-		invoice.setInvoiceSubType(getInvoiceSubType(salesInvoiceData, companyDetails));
-
-		invoice.setInvoiceCompanyDetails(companyDetails);
-		invoice.setInvoiceAddressDetails(getInvoiceAddress(invoice, salesInvoiceData));
-		invoice.setInvoiceBankDetails(getBankDetails(salesInvoiceData));
-		invoice.setInvoiceProductDetails(getProductList(salesInvoiceData));
-
-		invoice.setInvoiceOtherDetails(getOtherDetails(salesInvoiceData));
-
 	}
 
 	private static InvoiceOtherDetails getOtherDetails(InvoicePageData salesInvoiceData) {
