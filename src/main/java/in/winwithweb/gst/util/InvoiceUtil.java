@@ -51,11 +51,6 @@ public class InvoiceUtil {
 	public static void updateInvoice(InvoiceDetails invoice, InvoicePageData salesInvoiceData, Company companyDetails) {
 
 		setCommonInvoiceData(invoice, salesInvoiceData, companyDetails);
-
-		if (invoice.getInvoiceType().equals(InvoiceType.Purchase_Invoice.getType())
-				|| invoice.getInvoiceType().equals(InvoiceType.Purchase_Order.getType())) {
-			setPurchasOrderandPurchasesInvoiceData(invoice, salesInvoiceData);
-		}
 	}
 
 	private static void setinvoiceProductData(ItemList item, InvoiceProductDetails invoiceProductDetails) {
@@ -142,12 +137,6 @@ public class InvoiceUtil {
 		return invoiceBankDetails;
 	}
 
-	private static void setPurchasOrderandPurchasesInvoiceData(InvoiceDetails invoice,
-			InvoicePageData salesInvoiceData) {
-		invoice.setInvoicePoNumber(salesInvoiceData.getInvoiceNo());
-		invoice.setInvoicePoDate(reverseDate(salesInvoiceData.getInvoiceDate()));
-	}
-
 	private static void setCommonInvoiceData(InvoiceDetails invoice, InvoicePageData salesInvoiceData,
 			Company companyDetails) {
 
@@ -158,8 +147,11 @@ public class InvoiceUtil {
 		invoice.setInvoiceDOS(reverseDate(salesInvoiceData.getDateOfSupply()));
 		invoice.setInvoicePOS(salesInvoiceData.getPlaceOfSupply());
 
-		invoice.setInvoicePoDate(reverseDate(salesInvoiceData.getPoDate()));
-		invoice.setInvoicePoNumber(salesInvoiceData.getPoNo());
+		invoice.setInvoicePoDate(
+				salesInvoiceData.getPoDate() == null ? reverseDate(reverseDate(salesInvoiceData.getInvoiceDate()))
+						: reverseDate(salesInvoiceData.getPoDate()));
+		invoice.setInvoicePoNumber(
+				salesInvoiceData.getPoNo() == null ? salesInvoiceData.getInvoiceNo() : salesInvoiceData.getPoNo());
 
 		invoice.setInvoiceTransportMode(salesInvoiceData.getTransportMode());
 		invoice.setInvoiceVehicleNumber(salesInvoiceData.getVehicleNo());
@@ -310,8 +302,8 @@ public class InvoiceUtil {
 					insertCell(table, "Invoice Details", Element.ALIGN_CENTER, 2, bfBold12, 1, "#BFD6E9", 0.5f, 1f, 0f);
 					insertCell(table, "Name: ", invoiceAddressDetails.getInvoicePartyName(), Element.ALIGN_LEFT, 1,
 							bfBold12, bf12, 1, "#FFFFFF", 1f, 0.5f);
-					insertCell(table, "Invoice No: ", invoice.getInvoiceOtherDetails().getLinkedInvoice(), Element.ALIGN_LEFT, 2, bfBold12, bf12,
-							1, "#FFFFFF", 1f, 0.5f);
+					insertCell(table, "Invoice No: ", invoice.getInvoiceOtherDetails().getLinkedInvoice(),
+							Element.ALIGN_LEFT, 2, bfBold12, bf12, 1, "#FFFFFF", 1f, 0.5f);
 					insertCell(table, "Address: ", invoiceAddressDetails.getInvoicePartyAddressName(),
 							Element.ALIGN_LEFT, 1, bfBold12, bf12, 1, "#FFFFFF", 1f, 0.5f);
 					insertCell(table, "PO No: ", invoice.getInvoicePoNumber(), Element.ALIGN_LEFT, 1, bfBold12, bf12, 1,
