@@ -110,13 +110,13 @@ public class InvoiceUtil {
 				|| invoice.getInvoiceType().equals(InvoiceType.Purchase_Order.getType())) {
 			invoiceAddressDetails.setInvoiceBillerName(salesInvoiceData.getPartyName());
 			invoiceAddressDetails.setInvoiceBillerAddressName(salesInvoiceData.getPartyAddress());
-			invoiceAddressDetails.setInvoiceBillerGst(salesInvoiceData.getPartyGstin());
+			invoiceAddressDetails.setInvoiceBillerGst(salesInvoiceData.getGstinBill());
 			invoiceAddressDetails.setInvoiceBillerState(salesInvoiceData.getPartyState());
 			
 			invoiceAddressDetails.setInvoicePartyName(salesInvoiceData.getPartyName());
 			invoiceAddressDetails.setInvoicePartyAddressName(salesInvoiceData.getPartyAddress());
 			invoiceAddressDetails.setInvoicePartyState(salesInvoiceData.getPartyState());
-			invoiceAddressDetails.setInvoicePartyGst(salesInvoiceData.getPartyGstin());
+			invoiceAddressDetails.setInvoicePartyGst(salesInvoiceData.getGstinBill());
 
 		} else {
 			invoiceAddressDetails.setInvoiceBillerName(salesInvoiceData.getNameBill());
@@ -138,8 +138,7 @@ public class InvoiceUtil {
 		String subType = InvoiceSubType.INTERSTATE.getInvoiceSubType();
 		try {
 			String companyGST = companyDetails.getCompanyGstin();
-			String partyGST = salesInvoiceData.getGstinBill() != null ? salesInvoiceData.getGstinBill()
-					: salesInvoiceData.getPartyGstin();
+			String partyGST = salesInvoiceData.getGstinBill();
 			if (companyGST.substring(0, 2).equals(partyGST.substring(0, 2))) {
 				subType = InvoiceSubType.INTRASTATE.getInvoiceSubType();
 			}
