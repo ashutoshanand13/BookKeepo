@@ -131,9 +131,6 @@ public class InvoicePageData {
 	@SerializedName("partyDate")
 	@Expose
 	private String partyDate;
-	@SerializedName("partyGstin")
-	@Expose
-	private String partyGstin;
 	@SerializedName("partyState")
 	@Expose
 	private String partyState;
@@ -497,19 +494,6 @@ public class InvoicePageData {
 		this.partyDate = partyDate;
 	}
 
-	/**
-	 * @return the partyGstin
-	 */
-	public String getPartyGstin() {
-		return partyGstin;
-	}
-
-	/**
-	 * @param partyGstin the partyGstin to set
-	 */
-	public void setPartyGstin(String partyGstin) {
-		this.partyGstin = partyGstin;
-	}
 
 	/**
 	 * @return the partyState

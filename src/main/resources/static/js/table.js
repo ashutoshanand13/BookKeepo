@@ -66,10 +66,6 @@ function updateTableColumn(showAlert) {
 	var gstHeader = $('#headerGstin').text();
 	var gstValue = $("[name=gstinBill]").val();
 	
-	if(gstValue === undefined) {
-		var gstValue = $("[name=partyGstin]").val();
-	}
-
 	disableColumns(gstHeader, gstValue);
 
 	if (showAlert) {
