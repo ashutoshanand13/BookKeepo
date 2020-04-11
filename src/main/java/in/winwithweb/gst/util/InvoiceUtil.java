@@ -57,9 +57,8 @@ public class InvoiceUtil {
 		invoice.setInvoiceDOS(reverseDate(salesInvoiceData.getDateOfSupply()));
 		invoice.setInvoicePOS(salesInvoiceData.getPlaceOfSupply());
 
-		invoice.setInvoicePoDate(
-				salesInvoiceData.getPoDate() == null ? reverseDate(reverseDate(salesInvoiceData.getInvoiceDate()))
-						: reverseDate(salesInvoiceData.getPoDate()));
+		invoice.setInvoicePoDate(salesInvoiceData.getPoDate() == null ? reverseDate(salesInvoiceData.getInvoiceDate())
+				: reverseDate(salesInvoiceData.getPoDate()));
 		invoice.setInvoicePoNumber(
 				salesInvoiceData.getPoNo() == null ? salesInvoiceData.getInvoiceNo() : salesInvoiceData.getPoNo());
 
