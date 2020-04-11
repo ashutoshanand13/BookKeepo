@@ -444,8 +444,8 @@ public class InvoiceUtil {
 			insertCell(itemTable, invoice.getInvoiceTotalAmountBeforeTax(), Element.ALIGN_CENTER, 1, bfBold12, 1,
 					"#FFFFFF", 0.5f, 1f, 0f);
 
-			insertCell(itemTable, invoice.getInvoiceTotalAmountWords(), Element.ALIGN_CENTER, 5, bf12, 5, "#FFFFFF", 1f,
-					0.5f, 0f);
+			insertCell(itemTable, CommonUtils.numberConverter(invoice.getInvoiceTotalAmountAfterTax()),
+					Element.ALIGN_CENTER, 5, bf12, 5, "#FFFFFF", 1f, 0.5f, 0f);
 			insertCell(itemTable, "Add:IGST", Element.ALIGN_CENTER, isIntraState ? 7 : 6, bfBold12, 1, "#92D14F", 0.5f,
 					0.5f, 0f);
 			insertCell(itemTable, isIntraState ? "" : invoice.getInvoiceIgstAmount(), Element.ALIGN_CENTER, 1, bfBold12,

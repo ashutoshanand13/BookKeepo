@@ -90,9 +90,6 @@ public class InvoiceDetails {
 	@Column(name = "invoice_sgst_amount")
 	private String invoiceSgstAmount;
 
-	@Column(name = "invoice_total_amount_words")
-	private String invoiceTotalAmountWords;
-
 	@Column(name = "invoice_key")
 	private String invoiceUniqueKey;
 
@@ -371,14 +368,6 @@ public class InvoiceDetails {
 
 	public void setInvoiceSgstAmount(String invoiceSgstAmount) {
 		this.invoiceSgstAmount = invoiceSgstAmount;
-	}
-
-	public String getInvoiceTotalAmountWords() {
-		return invoiceTotalAmountWords;
-	}
-
-	public void setInvoiceTotalAmountWords(String invoiceTotalAmountWords) {
-		this.invoiceTotalAmountWords = invoiceTotalAmountWords;
 	}
 
 	/**
