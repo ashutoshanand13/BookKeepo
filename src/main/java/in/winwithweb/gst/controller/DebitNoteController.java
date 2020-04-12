@@ -120,17 +120,10 @@ public class DebitNoteController {
 		InvoiceDetails invoice = new InvoiceDetails();
 		invoice.setInvoiceType(InvoiceType.Debit_Note.getType());
 		invoice.setInvoiceOwner(principal.getName());
-		invoice.setInvoiceTotalAmountWords(CommonUtils.numberConverter(debitNoteData.getTtlTotalAmount()));
 
 		Company companyDetails = companyDetailsService.findByUserName(principal.getName());
 
 		InvoiceUtil.updateInvoice(invoice, debitNoteData, companyDetails);
-
-		if (CommonUtils.isPopulated(debitNoteData.getAgainstInvoice())) {
-			InvoiceDetails linkedInvoice = invoiceService.findByInvoiceNumber(debitNoteData.getAgainstInvoice());
-			invoice.getInvoiceOtherDetails().setLinkedInvoice(linkedInvoice.getInvoiceNumber());
-			invoice.getInvoiceOtherDetails().setLinkedInvoiceDate(linkedInvoice.getInvoiceDate());
-		}
 
 		invoiceService.saveInvoice(invoice);
 

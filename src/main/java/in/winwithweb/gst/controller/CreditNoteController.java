@@ -120,17 +120,10 @@ public class CreditNoteController {
 		InvoiceDetails invoice = new InvoiceDetails();
 		invoice.setInvoiceType(InvoiceType.Credit_Note.getType());
 		invoice.setInvoiceOwner(principal.getName());
-		invoice.setInvoiceTotalAmountWords(CommonUtils.numberConverter(creditNoteData.getTtlTotalAmount()));
 
 		Company companyDetails = companyDetailsService.findByUserName(principal.getName());
 
 		InvoiceUtil.updateInvoice(invoice, creditNoteData, companyDetails);
-
-		if (CommonUtils.isPopulated(creditNoteData.getAgainstInvoice())) {
-			InvoiceDetails linkedInvoice = invoiceService.findByInvoiceNumber(creditNoteData.getAgainstInvoice());
-			invoice.getInvoiceOtherDetails().setLinkedInvoice(linkedInvoice.getInvoiceNumber());
-			invoice.getInvoiceOtherDetails().setLinkedInvoiceDate(linkedInvoice.getInvoiceDate());
-		}
 
 		invoiceService.saveInvoice(invoice);
 
