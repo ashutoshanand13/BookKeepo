@@ -40,7 +40,7 @@ public class AjaxController {
 	@RequestMapping(value = "/home/getAccountData", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody String getAccountData(@RequestParam String accountName, HttpServletRequest request) {
 		String user=request.getUserPrincipal().getName();
-		return new Gson().toJson(accountService.findByAccount(accountName, user));
+		return new Gson().toJson(accountService.findByGstinAndAccountOwner(accountName, user));
 	}
 	
 	@RequestMapping(value = "/home/getAmountInWords", method = RequestMethod.GET, produces = "application/json")

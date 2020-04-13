@@ -57,20 +57,15 @@ public class AccountService {
 		List<String> accountName = new ArrayList<>();
 		for (Accounts account : accountList) {
 			if(account.getAccountOwner().equals(user)) {
-				accountName.add(account.getAccountName());
+				accountName.add(account.getAccountName()+"-"+account.getGstin());
 			}
 		}
 		return accountName;
 	}
 	
 	
-	public Accounts findByAccount(String accountName, String user) {
-		for(Accounts account : accountRepository.findByAccountOwner(user)) {
-			if(account.getAccountName().equals(accountName)) {
-				return account;
-			}
-		}
-		
-		return null;
+	public Accounts findByGstinAndAccountOwner(String accountName, String user) {
+		String gstin = accountName.split("-")[1];
+		return accountRepository.findByGstinAndAccountOwner(gstin, user);
 	}
 }
