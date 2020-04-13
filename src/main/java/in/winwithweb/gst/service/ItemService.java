@@ -5,7 +5,6 @@ package in.winwithweb.gst.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,16 +56,6 @@ public class ItemService {
 		}
 
 		return itemList;
-	}
-
-	public InvoiceProductDetails findByProductDescription(String productDescription, String owner) {
-		List<InvoiceProductDetails> temp = itemRepository.findByProductOwner(owner).stream()
-				.filter(p -> p.getProductDescription().equalsIgnoreCase(productDescription))
-				.collect(Collectors.toList());
-		if (temp.size() > 0)
-			return temp.get(0);
-		else
-			return null;
 	}
 
 	public void saveItem(InvoiceProductDetails item) {
