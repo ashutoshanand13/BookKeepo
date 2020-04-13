@@ -30,8 +30,8 @@
 						placeholder="Receipt Number" required>
 						<select th:field="*{accountName}" class="form-control"
 						id="selectbasic" name="selectbasic">
-						<option th:each="account : ${accountList}" th:value="${account}"
-							th:text="${account}"></option>
+							<option th:each="account : ${accountList}" th:value="${account.id}"
+									th:text="${account.accountName}"></option>
 						</select> 
 						<textarea class="form-control" th:field="*{accountAddress}"
 						readonly="readonly" placeholder="Address" required></textarea>
