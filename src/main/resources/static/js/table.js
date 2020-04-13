@@ -12,6 +12,7 @@
  var discount = [];
  var isGstValid = false;
  var shippingType ='';
+ var isInvoiceNumberUnique = false;
  
  var controllerMap = { salesInvoice: "/home/salesinvoice", exportInvoice: "/home/exportinvoice", debitNote:"/home/debitnote", creditNote:"/home/creditnote" , purchaseOrder:"/home/addpurchaseorder"  , purchaseInvoice:"/home/addpurchaseinvoice"};
  var fileMap = { salesInvoice: "Sales_Invoice", exportInvoice: "Export_Invoice", debitNote:"Debit_Note", creditNote:"Credit_Note", purchaseOrder:"Purchase_Order", purchaseInvoice:"Purchase_Invoice" };
@@ -133,11 +134,7 @@ function setAlert(message) {
 
    var f = $("#form")[0];
    
-   if(name==='purchaseOrder' ||name==='purchaseInvoice'){
-	   isGstValid=true;
-   }
-   
-   if(isGstValid && f.reportValidity()) {
+   if(isGstValid && f.reportValidity() && isInvoiceNumberUnique) {
 		$('#tableJson table').map(function(i, table){
 			   var $rows = $("#" +table.id).find('tr:not(:hidden)');
 			   var newFormData = [];
@@ -439,17 +436,17 @@ $("[name=nameBill]").change(function() {
 			url : "getAccountData?accountName=" + accountName,
 			dataType : 'json',				
 			success : function(data) {
-				$("[name=nameBill").val(data.accountName);
-				$("[name=nameShip").val(data.accountName);
-				$("[name=addressBill").val(data.accountAddress);
-				$("[name=addressShip").val(data.accountAddress);
-				$("[name=gstinBill").val(data.gstin);
-				$("[name=gstinShip").val(data.gstin);
-				$("[name=stateBill").val(data.accountState);
-				$("[name=stateShip").val(data.accountState);
-				$("[name=gstinBill").focus();
-				$("[name=gstinShip").focus();
-				$("[name=gstinShip").blur();
+				$("[name=nameBill]").val(data.accountName);
+				$("[name=nameShip]").val(data.accountName);
+				$("[name=addressBill]").val(data.accountAddress);
+				$("[name=addressShip]").val(data.accountAddress);
+				$("[name=gstinBill]").val(data.gstin);
+				$("[name=gstinShip]").val(data.gstin);
+				$("[name=stateBill]").val(data.accountState);
+				$("[name=stateShip]").val(data.accountState);
+				$("[name=gstinBill]").focus();
+				$("[name=gstinShip]").focus();
+				$("[name=gstinShip]").blur();
 			}
 			});
 });
@@ -464,18 +461,43 @@ $("#againstInvoicedropdown").change(function() {
 			url : "invoicedetails?invoiceNo=" + invoiceNumber,
 			dataType : 'json',				
 			success : function(data) {
-				$("[name=invoiceDate").val(data.invoiceDate);
-				$("[name=state").val(data.invoiceState);
-				$("[name=reverseCharge").val(data.invoiceReverseCharge);
-				$("[name=invoiceDate").blur();
+				$("[name=againstInvoiceDate]").val(data.invoiceDate);
+				$("[name=state]").val(data.invoiceState);
+				$("[name=reverseCharge]").val(data.invoiceReverseCharge);
+				$("[name=againstInvoiceDate]").blur();
 			}
 			});
 		
 	} 
 	else {
-		$("[name=invoiceDate").val("");
-		$("[name=state").val("");
-		$("[name=reverseCharge").val("");
-		$("[name=invoiceDate").blur();
+		$("[name=againstInvoiceDate]").val("");
+		$("[name=state]").val("");
+		$("[name=reverseCharge]").val("");
+		$("[name=againstInvoiceDate]").blur();
 	}
 });
+
+function checkInvoiceNo(data) {
+	var invoiceNo = $(data).val();
+	var pageName = $("[name=pageName]").val();
+
+	if(invoiceNo !== "") {
+		$.ajax({
+			type : "GET",
+			contentType : "application/json",
+			url : "invoiceunique?invoiceNo=" + invoiceNo+"&pageName="+pageName,
+			dataType : 'json',				
+			success : function(data) {
+				if(data === null) {
+					isInvoiceNumberUnique = true;
+				}
+				else {
+					isInvoiceNumberUnique = false;
+					alert("Invoice Number already exists");
+				}
+			}
+			});
+	}
+	
+	
+}

@@ -88,6 +88,7 @@ public class DebitNoteController {
 				e.printStackTrace();
 			}
 			modelAndView.addObject("logoImage", base64Encoded);
+			modelAndView.addObject("pageName", InvoiceType.Tax_Invoice.getType());
 			modelAndView.setViewName("salesInvoice");
 		} else {
 			modelAndView.addObject("accountList", account);
@@ -102,6 +103,7 @@ public class DebitNoteController {
 			}
 			modelAndView.addObject("logoImage", base64Encoded);
 			modelAndView.addObject("itemList", itemService.findByProductOwner(user));
+			modelAndView.addObject("pageName", InvoiceType.Debit_Note.getType());
 			modelAndView.setViewName("debitNote");
 		}
 		return modelAndView;
