@@ -31,8 +31,8 @@
 				<div class="form-group">
 					<label>Account Name</label> <select th:field="*{accountName}" class="form-control"
 						id="selectbasic" name="selectbasic">
-						<option th:each="account : ${accountList}" th:value="${account}"
-							th:text="${account}"></option>
+						<option th:each="account : ${accountList}" th:value="${account.id}"
+									th:text="${account.accountName}"></option>
 					</select>
 					</div>
 					<div class="form-group">

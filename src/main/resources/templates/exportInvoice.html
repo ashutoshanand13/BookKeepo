@@ -111,8 +111,8 @@
 							<input list="select" class="form-control"
 							name="nameBill" placeholder="Name" autocomplete="off"> <datalist
 								id="select">
-								<option th:each="account : ${accountList}" th:value="${account}"
-									th:text="${account}"></option>
+								<option th:each="account : ${accountList}" th:value="${account.id}"
+									th:text="${account.accountName}"></option>
 							</datalist>
 						</td>
 						<td class="pt-3-half"><input type="text" class="form-control"
@@ -194,8 +194,8 @@
 						</thead>
 						<tbody>
 						<datalist id="data">
-								<option th:each="item : ${itemList}" th:value="${item}"
-									th:text="${item}"></option>
+								<option th:each="item : ${itemList}" th:value="${item.id}"
+									th:text="${item.productDescription}"></option>
 							</datalist>
 							<tr>
 								<td class="pt-3-half"><input type="text" id="srNo"

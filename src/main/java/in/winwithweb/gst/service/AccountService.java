@@ -33,39 +33,52 @@ public class AccountService {
 	}
 
 	public Accounts findAccountByGstin(String gst, String owner) {
-		for(Accounts account : accountRepository.findByAccountOwner(owner)) {
-			if(account.getGstin().equals(gst)) {
+		for (Accounts account : accountRepository.findByAccountOwner(owner)) {
+			if (account.getGstin().equals(gst)) {
 				return account;
 			}
 		}
-		
+
 		return null;
 	}
 
 	public Accounts findAccountByPan(String pan, String owner) {
-		for(Accounts account : accountRepository.findByAccountOwner(owner)) {
-			if(account.getAccountPan().equals(pan)) {
+		for (Accounts account : accountRepository.findByAccountOwner(owner)) {
+			if (account.getAccountPan().equals(pan)) {
 				return account;
 			}
 		}
-		
+
 		return null;
 	}
 
-	public List<String> fetchAccountName(String user) {
-		List<Accounts> accountList = accountRepository.findAll();
-		List<String> accountName = new ArrayList<>();
-		for (Accounts account : accountList) {
-			if(account.getAccountOwner().equals(user)) {
-				accountName.add(account.getAccountName()+"-"+account.getGstin());
-			}
+	public List<Accounts> fetchAccountName(String user) {
+		List<Accounts> accountList = new ArrayList<Accounts>();
+		Accounts accounts = new Accounts();
+		accounts.setId(0);
+		accounts.setAccountName("Select Account");
+		accountList.add(accounts);
+
+		List<Accounts> dbAccountList = accountRepository.findByAccountOwner(user);
+
+		if (!dbAccountList.isEmpty()) {
+			accountList.addAll(dbAccountList);
 		}
-		return accountName;
+
+		return accountList;
 	}
-	
-	
+
+	public List<Accounts> fetchAccountNameForInvoice(String user) {
+		List<Accounts> accountList = accountRepository.findByAccountOwner(user);
+		return accountList;
+	}
+
 	public Accounts findByGstinAndAccountOwner(String accountName, String user) {
 		String gstin = accountName.split("-")[1];
 		return accountRepository.findByGstinAndAccountOwner(gstin, user);
+	}
+
+	public Accounts findById(int id) {
+		return accountRepository.findById(id);
 	}
 }
