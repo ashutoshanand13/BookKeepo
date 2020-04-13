@@ -36,14 +36,17 @@ public class AjaxController {
 	@Autowired
 	private ItemService itemService;
 
+	@Autowired
+	Gson gson;
+
 	@RequestMapping(value = "/home/getAccountData", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody String getAccountData(@RequestParam int accountName, HttpServletRequest request) {
-		return new Gson().toJson(accountService.findById(accountName));
+		return gson.toJson(accountService.findById(accountName));
 	}
 
 	@RequestMapping(value = "/home/getAmountInWords", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody String getAmountInWords(@RequestParam String amount) {
-		return new Gson().toJson(CommonUtils.numberConverter(amount));
+		return gson.toJson(CommonUtils.numberConverter(amount));
 	}
 
 	@RequestMapping(value = "/home/imagebase64", method = RequestMethod.GET, produces = "text/plain")
@@ -53,20 +56,20 @@ public class AjaxController {
 
 	@RequestMapping(value = "/home/invoicedetails", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody String getInvoiceDetails(@RequestParam String invoiceNo, HttpServletRequest request) {
-		return new Gson().toJson(
+		return gson.toJson(
 				invoiceService.findByInvoiceNumberAndInvoiceOwner(invoiceNo, request.getUserPrincipal().getName()));
 	}
 
 	@RequestMapping(value = "/home/getItemData", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody String getItemDetails(@RequestParam int itemId, HttpServletRequest request) {
-		return new Gson().toJson(itemService.findById(itemId));
+		return gson.toJson(itemService.findById(itemId));
 	}
 
 	@RequestMapping(value = "/home/invoiceunique", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody String getInvoice(@RequestParam String invoiceNo, @RequestParam String pageName,
 			HttpServletRequest request) {
-		return new Gson().toJson(
-				invoiceService.findByPageNameAndInvoiceNo(invoiceNo, pageName, request.getUserPrincipal().getName()));
+		return gson.toJson(invoiceService.findByInvoiceNumberAndInvoiceOwnerAndInvoiceType(invoiceNo, pageName,
+				request.getUserPrincipal().getName()));
 	}
 
 }
