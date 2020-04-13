@@ -27,16 +27,36 @@ public class ItemService {
 		this.itemRepository = itemRepository;
 	}
 
-	public List<String> findByProductOwner(String owner) {
-		ArrayList<String> itemList = new ArrayList<>();
-		itemList.add("");
-		itemList.addAll(itemRepository.findByProductOwner(owner).stream().map(p -> p.getProductDescription())
-				.collect(Collectors.toList()));
+	public List<InvoiceProductDetails> findByProductOwner(String owner) {
+		List<InvoiceProductDetails> itemList = new ArrayList<>();
+		InvoiceProductDetails InvoiceProductDetails = new InvoiceProductDetails();
+		InvoiceProductDetails.setId(0);
+		InvoiceProductDetails.setProductDescription("");
+
+		List<InvoiceProductDetails> dbItemList = itemRepository.findByProductOwner(owner);
+		if (!dbItemList.isEmpty()) {
+			itemList.addAll(dbItemList);
+		}
 		return itemList;
 	}
 
 	public List<InvoiceProductDetails> fetchAllItems(String owner) {
 		return itemRepository.findByProductOwner(owner);
+	}
+
+	public List<InvoiceProductDetails> fetchAllItemsForItem(String owner) {
+		List<InvoiceProductDetails> itemList = new ArrayList<InvoiceProductDetails>();
+		InvoiceProductDetails InvoiceProductDetails = new InvoiceProductDetails();
+		InvoiceProductDetails.setId(0);
+		InvoiceProductDetails.setProductDescription("Add New Item");
+		itemList.add(InvoiceProductDetails);
+
+		List<InvoiceProductDetails> dbItemList = itemRepository.findByProductOwner(owner);
+		if (!dbItemList.isEmpty()) {
+			itemList.addAll(dbItemList);
+		}
+
+		return itemList;
 	}
 
 	public InvoiceProductDetails findByProductDescription(String productDescription, String owner) {
@@ -51,5 +71,9 @@ public class ItemService {
 
 	public void saveItem(InvoiceProductDetails item) {
 		itemRepository.save(item);
+	}
+
+	public InvoiceProductDetails findById(int id) {
+		return itemRepository.findById(id);
 	}
 }
