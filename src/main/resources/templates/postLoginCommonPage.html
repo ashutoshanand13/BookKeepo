@@ -50,9 +50,7 @@
 					<div class="dropdown-menu dropdown-menu-right dropdown-default"
 						aria-labelledby="navbarDropdownMenuLink-333">
 						<a th:class="dropdown-item"
-					th:href="@{/home/salesinvoice}">Create Sales Invoice</a>
-						<a th:class="dropdown-item"
-					th:href="@{/home/showInvoice}">Show Invoices</a> 
+					th:href="@{/home/salesinvoice}">Sales Invoice</a>
 						<a th:class="dropdown-item"
 					th:href="@{/home/creditnote}">Credit Note</a>
 						<a th:class="dropdown-item"
@@ -67,8 +65,20 @@
 				</li>
 				<li><a th:class="nav-link"
 					th:href="@{/home/additem}">Add Item</a></li>
-					<li><a th:class="nav-link"
-					th:href="@{/home/reports}">Reports</a></li>
+					<li class="nav-item dropdown"><a
+					class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333"
+					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Reports</a>
+					<div class="dropdown-menu dropdown-menu-right dropdown-default"
+						aria-labelledby="navbarDropdownMenuLink-333">
+						<a th:class="dropdown-item"
+					th:href="@{/home/showInvoice}">Show Invoices</a> 
+						<a th:class="dropdown-item"
+					th:href="@{/home/reports}">Generate Reports</a> 
+						<a th:class="dropdown-item"
+					th:href="@{/home/showitem}">Item Reports</a>
+					</div>
+				</li>
 			</ul>
 			
 			<ul class="navbar-nav ml-auto nav-flex-icons">
