@@ -49,7 +49,7 @@ public class PaymentController {
 		ModelAndView modelAndView = new ModelAndView();
 		payment.setPaymentOwner(principal.getName());
 		paymentService.saveAccount(payment);
-		List<Accounts> accountList = accountService.fetchAccountNameForInvoice(principal.getName());
+		List<Accounts> accountList = accountService.fetchAccountName(principal.getName());
 		modelAndView.addObject("payment", new Payment());
 		modelAndView.addObject("message", "Payment Details Successfully Added");
 		modelAndView.setViewName("addPayment");
