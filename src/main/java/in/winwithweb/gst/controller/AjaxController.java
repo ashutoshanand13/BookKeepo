@@ -54,13 +54,18 @@ public class AjaxController {
 	}
 	
 	@RequestMapping(value = "/home/invoicedetails", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody String getInvoiceDetails(@RequestParam String invoiceNo) {
-		return new Gson().toJson(invoiceService.findByInvoiceNumber(invoiceNo));
+	public @ResponseBody String getInvoiceDetails(@RequestParam String invoiceNo, HttpServletRequest request) {
+		return new Gson().toJson(invoiceService.findByInvoiceNumberAndInvoiceOwner(invoiceNo, request.getUserPrincipal().getName()));
 	}
 	
 	@RequestMapping(value = "/home/getItemData", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody String getItemDetails(@RequestParam String itemDesc, HttpServletRequest request) {
 		return new Gson().toJson(itemService.findByProductDescription(itemDesc, request.getUserPrincipal().getName()));
+	}
+	
+	@RequestMapping(value = "/home/invoiceunique", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody String getInvoice(@RequestParam String invoiceNo, @RequestParam String pageName, HttpServletRequest request) {
+		return new Gson().toJson(invoiceService.findByPageNameAndInvoiceNo(invoiceNo, pageName, request.getUserPrincipal().getName()));
 	}
 	
 }

@@ -76,6 +76,18 @@ public class ReportService {
 							|| reports.getInvoiceType().equals(InvoiceType.Tax_Invoice)) {
 						data.setDateOfSupply(CommonUtils.nullToEmpty(invoice.getInvoiceDOS()));
 						data.setPlaceOfSupply(CommonUtils.nullToEmpty(invoice.getInvoicePOS()));
+						data.setDocumenttype(reports.getInvoiceType().equals(InvoiceType.Export_Invoice)
+								? CommonUtils.nullToEmpty(invoice.getInvoiceType())
+								: CommonUtils.nullToEmpty(invoice.getInvoiceSubType()));
+
+					}
+
+					if (reports.getInvoiceType().equals(InvoiceType.Purchase_Invoice)
+							|| reports.getInvoiceType().equals(InvoiceType.Purchase_Order)) {
+
+						data.setNameOfParty(
+								CommonUtils.nullToEmpty(invoice.getInvoiceAddressDetails().getInvoicePartyName()));
+						data.setGstin(CommonUtils.nullToEmpty(invoice.getInvoiceAddressDetails().getInvoicePartyGst()));
 					}
 
 					reportsData.add(data);
