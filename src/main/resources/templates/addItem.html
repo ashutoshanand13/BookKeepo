@@ -32,8 +32,8 @@
 					<div class="form-group">
 						<label>Item List</label> <select
 							class="form-control" id="selectbasic" name="selectbasic">
-							<option th:each="itemValue : ${itemList}" th:value="${itemValue}"
-								th:text="${itemValue}"></option>
+							<option th:each="itemValue : ${itemList}" th:value="${itemValue.id}"
+								th:text="${itemValue.productDescription}"></option>
 						</select>
 
 					</div>
@@ -83,7 +83,8 @@
 						th:field="*{productDiscount}" placeholder="Discount" required>
 					</div>
 				</div>
-
+										<input type="hidden" th:field="*{id}"></th>
+				
 
 			</div>
 			<div class="form-button text-right">
@@ -103,12 +104,12 @@
 	});
 	
 	function getItem() {
-		var itemDesc = $("#selectbasic").val();
-		if(itemDesc !== "Add New Item"){
+		var itemId = $("#selectbasic").val();
+		if(itemId !== '0'){
 			$.ajax({
 				type : "GET",
 				contentType : "application/json",
-				url : "getItemData?itemDesc=" + itemDesc,
+				url : "getItemData?itemId=" + itemId,
 				dataType : 'json',				
 				success : function(data) {
 					$("[name=productDescription").val(data.productDescription);
@@ -118,6 +119,7 @@
 					$("[name=productDiscount").val(data.productDiscount);
 					$("[name=productRate").val(data.productRate);
 					$("[name=productQuantity").val(data.productQuantity);
+					$("[name=id").val(data.id);
 				}
 				});
 		} else {
@@ -128,6 +130,7 @@
 			$("[name=productDiscount").val("");
 			$("[name=productRate").val("");
 			$("[name=productQuantity").val("");
+			$("[name=id").val(0);
 		}
 	};
 	</script>

@@ -192,11 +192,11 @@ function setValues() {
 	        $tblrow.on('change', function () {
 	        	var product = $tblrow.find("#productDesc").val();
 	        	
-	        	if(product !== "") {
+	        	if(product !== "0") {
 					$.ajax({
 						type : "GET",
 						contentType : "application/json",
-						url : "getItemData?itemDesc=" +product,
+						url : "getItemData?itemId=" +product,
 						dataType : 'json',
 						async : false,
 						success : function(data) {
@@ -206,6 +206,7 @@ function setValues() {
 							$tblrow.find("[id=discount]").val(parseFloat(data.productDiscount).toFixed(2));
 							$tblrow.find("[id=rate]").val(parseFloat(data.productRate).toFixed(2));
 							$tblrow.find("[id=qty]").val(parseFloat(data.productQuantity).toFixed(2));
+							$tblrow.find("[id=productDesc]").val(data.productDescription);
 						}
 						});
 	        	}

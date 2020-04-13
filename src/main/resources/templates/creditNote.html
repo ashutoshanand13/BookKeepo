@@ -181,8 +181,8 @@
 						</thead>
 						<tbody>
 						<datalist id="data">
-								<option th:each="item : ${itemList}" th:value="${item}"
-									th:text="${item}"></option>
+								<option th:each="item : ${itemList}" th:value="${item.id}"
+									th:text="${item.productDescription}"></option>
 							</datalist>
 							<tr>
 								<td class="pt-3-half"><input type="text" id="srNo"
