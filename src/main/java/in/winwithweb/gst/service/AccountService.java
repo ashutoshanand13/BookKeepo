@@ -33,23 +33,11 @@ public class AccountService {
 	}
 
 	public Accounts findAccountByGstin(String gst, String owner) {
-		for (Accounts account : accountRepository.findByAccountOwner(owner)) {
-			if (account.getGstin().equals(gst)) {
-				return account;
-			}
-		}
-
-		return null;
+		return accountRepository.findByAccountOwnerAndGstin(owner, gst);
 	}
 
 	public Accounts findAccountByPan(String pan, String owner) {
-		for (Accounts account : accountRepository.findByAccountOwner(owner)) {
-			if (account.getAccountPan().equals(pan)) {
-				return account;
-			}
-		}
-
-		return null;
+		return accountRepository.findByAccountOwnerAndAccountPan(owner, pan);
 	}
 
 	public List<Accounts> fetchAccountName(String user) {
@@ -71,11 +59,6 @@ public class AccountService {
 	public List<Accounts> fetchAccountNameForInvoice(String user) {
 		List<Accounts> accountList = accountRepository.findByAccountOwner(user);
 		return accountList;
-	}
-
-	public Accounts findByGstinAndAccountOwner(String accountName, String user) {
-		String gstin = accountName.split("-")[1];
-		return accountRepository.findByGstinAndAccountOwner(gstin, user);
 	}
 
 	public Accounts findById(int id) {

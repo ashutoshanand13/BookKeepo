@@ -17,12 +17,17 @@ import in.winwithweb.gst.model.Accounts;
 
 @Repository("accountRepository")
 public interface AccountRepository extends JpaRepository<Accounts, Long> {
-	
+
 	List<Accounts> findByAccountOwner(String owner);
-	
+
 	Accounts findByAccountName(String accountName);
 
 	Accounts findByGstinAndAccountOwner(String gstin, String user);
-	
+
 	Accounts findById(int id);
+
+	Accounts findByAccountOwnerAndAccountPan(String accountOwner, String accountPan);
+
+	Accounts findByAccountOwnerAndGstin(String accountOwner, String gstin);
+
 }
