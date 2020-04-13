@@ -20,7 +20,8 @@
 				<thead class="table-width">
 					<tr bgcolor="#BFD6E9">
 						<th class="text-center" width="100%" height="60" colspan="3"><h3
-								class="text-center font-weight-bold text-uppercase">Purchase Order</h3></th>
+								class="text-center font-weight-bold text-uppercase">[[${pageName}]]</h3>
+								<input type="hidden" name="pageName" th:value="${pageName}"/></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -64,7 +65,7 @@
 						<td class="pt-3-half"><input type="text" class="form-control"
 							name="partyName" placeholder="Name" required="required"></td>
 						<td class="pt-3-half"><input type="text" class="form-control"
-							name="invoiceNo" placeholder="PO No." required="required"></td>
+							name="invoiceNo" placeholder="PO No." required="required" onblur="checkInvoiceNo(this)"></td>
 							<td class="pt-3-half"><input type="text" class="form-control"
 							name="invoiceDate" onfocus="(this.type='date')"
 							onblur="if(!this.value)this.type='text'" placeholder="PO Date"

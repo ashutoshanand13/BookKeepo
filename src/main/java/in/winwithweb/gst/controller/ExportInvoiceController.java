@@ -85,6 +85,7 @@ public class ExportInvoiceController {
 			}
 			modelAndView.addObject("logoImage",base64Encoded);
 			modelAndView.addObject("itemList", itemService.findByProductOwner(user));
+			modelAndView.addObject("pageName", InvoiceType.Export_Invoice.getType());
 			modelAndView.setViewName("exportInvoice");
 		}
 		return modelAndView;

@@ -52,7 +52,8 @@
 				<thead class="table-width">
 					<tr bgcolor="#BFD6E9">
 						<th class="text-center" width="100%" colspan="3"><h6
-								class="text-center font-weight-bold text-uppercase py-3">Purchase Invoice</h6></th>
+								class="text-center font-weight-bold text-uppercase py-3">[[${pageName}]]</h6>
+								<input type="hidden" name="pageName" th:value="${pageName}"/></th>
 					</tr>
 					<tr bgcolor="#BFD6E9">
 						<th class="text-center"><span style='font-weight: bold;'>Party Details</span></th>
@@ -74,7 +75,7 @@
 						<td class="pt-3-half"><input type="text" class="form-control"
 							name="partyAddress" placeholder="Address" required="required"></td>
 						<td class="pt-3-half"><input type="text" class="form-control"
-							name="invoiceNo" placeholder="PO No." required="required"></td>
+							name="invoiceNo" placeholder="PO No." required="required" onblur="checkInvoiceNo(this)"></td>
 						<td class="pt-3-half"><input type="text" class="form-control"
 							name="invoiceDate" onfocus="(this.type='date')"
 							onblur="if(!this.value)this.type='text'" placeholder="PO Date"

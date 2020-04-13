@@ -78,6 +78,7 @@ public class PurchaseOrderController {
 		}
 		modelAndView.addObject("logoImage",base64Encoded);
 		modelAndView.addObject("itemList", itemService.findByProductOwner(user));
+		modelAndView.addObject("pageName", InvoiceType.Purchase_Order.getType());
 		modelAndView.setViewName("addPurchaseOrder");
 		}
 		return modelAndView;

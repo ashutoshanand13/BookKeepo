@@ -79,6 +79,7 @@ public class PurchaseInvoiceController {
 		}
 		modelAndView.addObject("logoImage",base64Encoded);
 		modelAndView.addObject("itemList", itemService.findByProductOwner(user));
+		modelAndView.addObject("pageName", InvoiceType.Purchase_Invoice.getType());
 		modelAndView.setViewName("addPurchaseInvoice");
 		}
 		return modelAndView;
