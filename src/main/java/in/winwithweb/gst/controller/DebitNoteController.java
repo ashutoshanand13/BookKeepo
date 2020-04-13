@@ -71,7 +71,7 @@ public class DebitNoteController {
 		List<Accounts> account = accountService.fetchAccountNameForInvoice(user);
 		List<String> ownerInvoices = new ArrayList<>();
 		ownerInvoices.add("Against Invoice");
-		ownerInvoices.addAll(invoiceService.findbyInvoiceOwnerType(user, InvoiceType.Tax_Invoice.getType()));
+		ownerInvoices.addAll(invoiceService.findByInvoiceOwnerAndInvoiceType(user, InvoiceType.Tax_Invoice.getType()));
 		if (company == null) {
 			modelAndView.addObject("message", "Please update company details before creating an Invoice");
 			modelAndView.addObject("company", new Company("debitNote"));
