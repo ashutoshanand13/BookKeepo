@@ -68,7 +68,9 @@ public class ItemController {
 			modelAndView.addObject("message", "Item Added Successfully");
 			modelAndView.addObject("item", new InvoiceProductDetails());
 		}
-		modelAndView.addObject("itemList", itemService.findByProductOwner(user));
+		List<String> itemList = itemService.findByProductOwner(user);
+		itemList.set(0,"Add New Item");
+		modelAndView.addObject("itemList", itemList);
 		modelAndView.setViewName("addItem");
 		return modelAndView;
 	}
