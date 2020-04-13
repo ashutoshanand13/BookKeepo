@@ -35,8 +35,7 @@ public class ItemController {
 	public ModelAndView getItemPage(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
 		String user = request.getUserPrincipal().getName();
-		List<String> itemList = itemService.findByProductOwner(user);
-		itemList.set(0,"Add New Item");
+		List<InvoiceProductDetails> itemList = itemService.fetchAllItemsForItem(user);
 		modelAndView.addObject("itemList", itemList);
 		modelAndView.addObject("item", new InvoiceProductDetails());
 
@@ -49,7 +48,7 @@ public class ItemController {
 			Principal principal) {
 		ModelAndView modelAndView = new ModelAndView();
 		String user = principal.getName();
-		InvoiceProductDetails isItemExists = itemService.findByProductDescription(item.getProductDescription(), user);
+		InvoiceProductDetails isItemExists = itemService.findById(item.getId());
 
 		if (isItemExists != null) {
 			isItemExists.setProductDescription(item.getProductDescription());
@@ -68,9 +67,7 @@ public class ItemController {
 			modelAndView.addObject("message", "Item Added Successfully");
 			modelAndView.addObject("item", new InvoiceProductDetails());
 		}
-		List<String> itemList = itemService.findByProductOwner(user);
-		itemList.set(0,"Add New Item");
-		modelAndView.addObject("itemList", itemList);
+		modelAndView.addObject("itemList", itemService.fetchAllItemsForItem(user));
 		modelAndView.setViewName("addItem");
 		return modelAndView;
 	}

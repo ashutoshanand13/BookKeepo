@@ -88,6 +88,7 @@ public class CreditNoteController {
 				e.printStackTrace();
 			}
 			modelAndView.addObject("logoImage", base64Encoded);
+			modelAndView.addObject("itemList", itemService.findByProductOwner(user));
 			modelAndView.addObject("pageName", InvoiceType.Tax_Invoice.getType());
 			modelAndView.setViewName("salesInvoice");
 		} else {

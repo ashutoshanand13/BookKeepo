@@ -26,23 +26,22 @@ import in.winwithweb.gst.util.CommonUtils;
 
 @Controller
 public class AjaxController {
-	
+
 	@Autowired
 	private AccountService accountService;
-	
+
 	@Autowired
 	private InvoiceService invoiceService;
-	
+
 	@Autowired
 	private ItemService itemService;
-	
-	
+
 	@RequestMapping(value = "/home/getAccountData", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody String getAccountData(@RequestParam String accountName, HttpServletRequest request) {
-		String user=request.getUserPrincipal().getName();
+		String user = request.getUserPrincipal().getName();
 		return new Gson().toJson(accountService.findByAccount(accountName, user));
 	}
-	
+
 	@RequestMapping(value = "/home/getAmountInWords", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody String getAmountInWords(@RequestParam String amount) {
 		return new Gson().toJson(CommonUtils.numberConverter(amount));
@@ -52,20 +51,23 @@ public class AjaxController {
 	public @ResponseBody String getImageBase64() {
 		return CommonUtils.getImgfromResource("/static/images/image-400x400.jpg");
 	}
-	
+
 	@RequestMapping(value = "/home/invoicedetails", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody String getInvoiceDetails(@RequestParam String invoiceNo, HttpServletRequest request) {
-		return new Gson().toJson(invoiceService.findByInvoiceNumberAndInvoiceOwner(invoiceNo, request.getUserPrincipal().getName()));
+		return new Gson().toJson(
+				invoiceService.findByInvoiceNumberAndInvoiceOwner(invoiceNo, request.getUserPrincipal().getName()));
 	}
-	
+
 	@RequestMapping(value = "/home/getItemData", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody String getItemDetails(@RequestParam String itemDesc, HttpServletRequest request) {
-		return new Gson().toJson(itemService.findByProductDescription(itemDesc, request.getUserPrincipal().getName()));
+	public @ResponseBody String getItemDetails(@RequestParam int itemId, HttpServletRequest request) {
+		return new Gson().toJson(itemService.findById(itemId));
 	}
-	
+
 	@RequestMapping(value = "/home/invoiceunique", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody String getInvoice(@RequestParam String invoiceNo, @RequestParam String pageName, HttpServletRequest request) {
-		return new Gson().toJson(invoiceService.findByPageNameAndInvoiceNo(invoiceNo, pageName, request.getUserPrincipal().getName()));
+	public @ResponseBody String getInvoice(@RequestParam String invoiceNo, @RequestParam String pageName,
+			HttpServletRequest request) {
+		return new Gson().toJson(
+				invoiceService.findByPageNameAndInvoiceNo(invoiceNo, pageName, request.getUserPrincipal().getName()));
 	}
-	
+
 }
