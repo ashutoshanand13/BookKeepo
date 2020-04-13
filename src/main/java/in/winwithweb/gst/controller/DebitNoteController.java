@@ -88,6 +88,7 @@ public class DebitNoteController {
 				e.printStackTrace();
 			}
 			modelAndView.addObject("logoImage", base64Encoded);
+			modelAndView.addObject("pageName", InvoiceType.Tax_Invoice.getType());
 			modelAndView.setViewName("salesInvoice");
 		} else {
 			modelAndView.addObject("accountList", account);
@@ -102,6 +103,7 @@ public class DebitNoteController {
 			}
 			modelAndView.addObject("logoImage", base64Encoded);
 			modelAndView.addObject("itemList", itemService.findByProductOwner(user));
+			modelAndView.addObject("pageName", InvoiceType.Debit_Note.getType());
 			modelAndView.setViewName("debitNote");
 		}
 		return modelAndView;
@@ -120,17 +122,10 @@ public class DebitNoteController {
 		InvoiceDetails invoice = new InvoiceDetails();
 		invoice.setInvoiceType(InvoiceType.Debit_Note.getType());
 		invoice.setInvoiceOwner(principal.getName());
-		invoice.setInvoiceTotalAmountWords(CommonUtils.numberConverter(debitNoteData.getTtlTotalAmount()));
 
 		Company companyDetails = companyDetailsService.findByUserName(principal.getName());
 
 		InvoiceUtil.updateInvoice(invoice, debitNoteData, companyDetails);
-
-		if (CommonUtils.isPopulated(debitNoteData.getAgainstInvoice())) {
-			InvoiceDetails linkedInvoice = invoiceService.findByInvoiceNumber(debitNoteData.getAgainstInvoice());
-			invoice.getInvoiceOtherDetails().setLinkedInvoice(linkedInvoice.getInvoiceNumber());
-			invoice.getInvoiceOtherDetails().setLinkedInvoiceDate(linkedInvoice.getInvoiceDate());
-		}
 
 		invoiceService.saveInvoice(invoice);
 

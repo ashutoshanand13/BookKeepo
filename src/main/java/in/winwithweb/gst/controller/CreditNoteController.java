@@ -88,6 +88,7 @@ public class CreditNoteController {
 				e.printStackTrace();
 			}
 			modelAndView.addObject("logoImage", base64Encoded);
+			modelAndView.addObject("pageName", InvoiceType.Tax_Invoice.getType());
 			modelAndView.setViewName("salesInvoice");
 		} else {
 			modelAndView.addObject("accountList", account);
@@ -102,6 +103,7 @@ public class CreditNoteController {
 			}
 			modelAndView.addObject("logoImage", base64Encoded);
 			modelAndView.addObject("itemList", itemService.findByProductOwner(user));
+			modelAndView.addObject("pageName", InvoiceType.Credit_Note.getType());
 			modelAndView.setViewName("creditNote");
 		}
 		return modelAndView;
@@ -120,17 +122,10 @@ public class CreditNoteController {
 		InvoiceDetails invoice = new InvoiceDetails();
 		invoice.setInvoiceType(InvoiceType.Credit_Note.getType());
 		invoice.setInvoiceOwner(principal.getName());
-		invoice.setInvoiceTotalAmountWords(CommonUtils.numberConverter(creditNoteData.getTtlTotalAmount()));
 
 		Company companyDetails = companyDetailsService.findByUserName(principal.getName());
 
 		InvoiceUtil.updateInvoice(invoice, creditNoteData, companyDetails);
-
-		if (CommonUtils.isPopulated(creditNoteData.getAgainstInvoice())) {
-			InvoiceDetails linkedInvoice = invoiceService.findByInvoiceNumber(creditNoteData.getAgainstInvoice());
-			invoice.getInvoiceOtherDetails().setLinkedInvoice(linkedInvoice.getInvoiceNumber());
-			invoice.getInvoiceOtherDetails().setLinkedInvoiceDate(linkedInvoice.getInvoiceDate());
-		}
 
 		invoiceService.saveInvoice(invoice);
 

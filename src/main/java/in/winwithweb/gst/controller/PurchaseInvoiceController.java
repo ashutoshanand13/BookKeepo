@@ -79,6 +79,7 @@ public class PurchaseInvoiceController {
 		}
 		modelAndView.addObject("logoImage",base64Encoded);
 		modelAndView.addObject("itemList", itemService.findByProductOwner(user));
+		modelAndView.addObject("pageName", InvoiceType.Purchase_Invoice.getType());
 		modelAndView.setViewName("addPurchaseInvoice");
 		}
 		return modelAndView;
@@ -97,7 +98,6 @@ public class PurchaseInvoiceController {
 		InvoiceDetails invoice = new InvoiceDetails();
 		invoice.setInvoiceType(InvoiceType.Purchase_Invoice.getType());
 		invoice.setInvoiceOwner(principal.getName());
-		invoice.setInvoiceTotalAmountWords(CommonUtils.numberConverter(salesInvoiceData.getTtlTotalAmount()));
 
 		Company companyDetails = companyDetailsService.findByUserName(principal.getName());
 

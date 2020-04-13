@@ -86,6 +86,7 @@ public class SalesInvoiceController {
 			}
 			modelAndView.addObject("logoImage", base64Encoded);
 			modelAndView.addObject("itemList", itemService.findByProductOwner(user));
+			modelAndView.addObject("pageName", InvoiceType.Tax_Invoice.getType());
 			modelAndView.setViewName("salesInvoice");
 		}
 		return modelAndView;
@@ -104,7 +105,6 @@ public class SalesInvoiceController {
 		InvoiceDetails invoice = new InvoiceDetails();
 		invoice.setInvoiceType(InvoiceType.Tax_Invoice.getType());
 		invoice.setInvoiceOwner(principal.getName());
-		invoice.setInvoiceTotalAmountWords(CommonUtils.numberConverter(salesInvoiceData.getTtlTotalAmount()));
 
 		Company companyDetails = companyDetailsService.findByUserName(principal.getName());
 
@@ -136,7 +136,7 @@ public class SalesInvoiceController {
 	}
 
 	@RequestMapping(value = { "/home/showInvoice/{id}" })
-	public void view(@PathVariable("id") int id, HttpServletRequest request, HttpServletResponse response)
+	public void view(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
 
 		InvoiceDetails invoice = invoiceService.findById(id);

@@ -81,15 +81,13 @@ public class ReportService {
 								: CommonUtils.nullToEmpty(invoice.getInvoiceSubType()));
 
 					}
-					
-					if(reports.getInvoiceType().equals(InvoiceType.Purchase_Invoice)
+
+					if (reports.getInvoiceType().equals(InvoiceType.Purchase_Invoice)
 							|| reports.getInvoiceType().equals(InvoiceType.Purchase_Order)) {
-						
-						data.setDocumentNo(CommonUtils.nullToEmpty(invoice.getInvoiceDocumentNumber()));
 
 						data.setNameOfParty(
-								CommonUtils.nullToEmpty(invoice.getInvoiceOtherDetails().getInvoicePartyName()));
-						data.setGstin(CommonUtils.nullToEmpty(invoice.getInvoiceOtherDetails().getInvoicePartyGstin()));						
+								CommonUtils.nullToEmpty(invoice.getInvoiceAddressDetails().getInvoicePartyName()));
+						data.setGstin(CommonUtils.nullToEmpty(invoice.getInvoiceAddressDetails().getInvoicePartyGst()));
 					}
 
 					reportsData.add(data);

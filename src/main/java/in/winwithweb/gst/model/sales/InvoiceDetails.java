@@ -23,7 +23,6 @@ import lombok.Data;
  * @author sachingoyal
  *
  */
-
 @Data
 @Entity
 @Table(name = "invoice_details")
@@ -36,12 +35,6 @@ public class InvoiceDetails {
 
 	@Column(name = "invoice_number")
 	private String invoiceNumber;
-
-	@Column(name = "invoice_issue_date")
-	private String invoiceIssueDate;
-
-	@Column(name = "invoice_document_number")
-	private String invoiceDocumentNumber;
 
 	@Column(name = "invoice_date")
 	private String invoiceDate;
@@ -97,8 +90,8 @@ public class InvoiceDetails {
 	@Column(name = "invoice_sgst_amount")
 	private String invoiceSgstAmount;
 
-	@Column(name = "invoice_total_amount_words")
-	private String invoiceTotalAmountWords;
+	@Column(name = "invoice_key")
+	private String invoiceUniqueKey;
 
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "invoice_products_referece_no")
@@ -338,6 +331,14 @@ public class InvoiceDetails {
 		this.invoiceTaxAmount = invoiceTaxAmount;
 	}
 
+	public String getInvoiceUniqueKey() {
+		return invoiceUniqueKey;
+	}
+
+	public void setInvoiceUniqueKey(String invoiceUniqueKey) {
+		this.invoiceUniqueKey = invoiceUniqueKey;
+	}
+
 	/**
 	 * @return the invoiceProductDetails
 	 */
@@ -367,14 +368,6 @@ public class InvoiceDetails {
 
 	public void setInvoiceSgstAmount(String invoiceSgstAmount) {
 		this.invoiceSgstAmount = invoiceSgstAmount;
-	}
-
-	public String getInvoiceTotalAmountWords() {
-		return invoiceTotalAmountWords;
-	}
-
-	public void setInvoiceTotalAmountWords(String invoiceTotalAmountWords) {
-		this.invoiceTotalAmountWords = invoiceTotalAmountWords;
 	}
 
 	/**
@@ -441,34 +434,6 @@ public class InvoiceDetails {
 	 */
 	public void setInvoiceSubType(String invoiceSubType) {
 		this.invoiceSubType = invoiceSubType;
-	}
-
-	/**
-	 * @return the invoiceIssueDate
-	 */
-	public String getInvoiceIssueDate() {
-		return invoiceIssueDate;
-	}
-
-	/**
-	 * @param invoiceIssueDate the invoiceIssueDate to set
-	 */
-	public void setInvoiceIssueDate(String invoiceIssueDate) {
-		this.invoiceIssueDate = invoiceIssueDate;
-	}
-
-	/**
-	 * @return the invoiceDocumentNumber
-	 */
-	public String getInvoiceDocumentNumber() {
-		return invoiceDocumentNumber;
-	}
-
-	/**
-	 * @param invoiceDocumentNumber the invoiceDocumentNumber to set
-	 */
-	public void setInvoiceDocumentNumber(String invoiceDocumentNumber) {
-		this.invoiceDocumentNumber = invoiceDocumentNumber;
 	}
 
 	/**

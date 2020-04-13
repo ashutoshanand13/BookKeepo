@@ -20,10 +20,9 @@ import org.springframework.core.io.Resource;
 import org.springframework.util.FileCopyUtils;
 
 public class CommonUtils {
-	
+
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	private static SimpleDateFormat dbformat = new SimpleDateFormat("dd-MM-yyyy");
-
 
 	private static String[] units = { "", " One", " Two", " Three", " Four", " Five", " Six", " Seven", " Eight",
 			" Nine" };
@@ -165,12 +164,22 @@ public class CommonUtils {
 
 	public static String numberConverter(String num) {
 
+		StringBuilder numberInwords = new StringBuilder();
+		if (num.contains("-")) {
+			num = num.replace("-", "");
+			numberInwords.append("Negative ");
+		}
+
 		if (num.split("\\.")[1].equals("00")) {
-			return (CommonUtils.convertNumberToWords(Integer.parseInt(num.split("\\.")[0])) + " rupees");
+			return numberInwords
+					.append((CommonUtils.convertNumberToWords(Integer.parseInt(num.split("\\.")[0])) + " rupees"))
+					.toString();
 		} else {
 			String[] stringarray = num.split("\\.");
-			return (CommonUtils.convertNumberToWords(Integer.parseInt(stringarray[0])) + " rupees and"
-					+ CommonUtils.convertNumberToWords(Integer.parseInt(stringarray[1])) + " Paisa");
+			return numberInwords
+					.append((CommonUtils.convertNumberToWords(Integer.parseInt(stringarray[0])) + " rupees and"
+							+ CommonUtils.convertNumberToWords(Integer.parseInt(stringarray[1])) + " Paisa"))
+					.toString();
 		}
 	}
 

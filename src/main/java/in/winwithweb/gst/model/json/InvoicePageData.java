@@ -41,12 +41,9 @@ public class InvoicePageData {
 	@SerializedName("againstInvoice")
 	@Expose
 	private String againstInvoice;
-	@SerializedName("documentNumber")
+	@SerializedName("againstInvoiceDate")
 	@Expose
-	private String documentNumber;
-	@SerializedName("issueDate")
-	@Expose
-	private String issueDate;
+	private String againstInvoiceDate;
 	@SerializedName("nameBill")
 	@Expose
 	private String nameBill;
@@ -134,9 +131,6 @@ public class InvoicePageData {
 	@SerializedName("partyDate")
 	@Expose
 	private String partyDate;
-	@SerializedName("partyGstin")
-	@Expose
-	private String partyGstin;
 	@SerializedName("partyState")
 	@Expose
 	private String partyState;
@@ -443,32 +437,19 @@ public class InvoicePageData {
 		this.againstInvoice = againstInvoice;
 	}
 
-	/**
-	 * @return the documentNumber
-	 */
-	public String getDocumentNumber() {
-		return documentNumber;
-	}
-
-	/**
-	 * @param documentNumber the documentNumber to set
-	 */
-	public void setDocumentNumber(String documentNumber) {
-		this.documentNumber = documentNumber;
-	}
 
 	/**
 	 * @return the issueDate
 	 */
-	public String getIssueDate() {
-		return issueDate;
+	public String getAgainstInvoiceDate() {
+		return againstInvoiceDate;
 	}
 
 	/**
 	 * @param issueDate the issueDate to set
 	 */
-	public void setIssueDate(String issueDate) {
-		this.issueDate = issueDate;
+	public void setAgainstInvoiceDate(String againstInvoiceDate) {
+		this.againstInvoiceDate = againstInvoiceDate;
 	}
 
 	/**
@@ -513,19 +494,6 @@ public class InvoicePageData {
 		this.partyDate = partyDate;
 	}
 
-	/**
-	 * @return the partyGstin
-	 */
-	public String getPartyGstin() {
-		return partyGstin;
-	}
-
-	/**
-	 * @param partyGstin the partyGstin to set
-	 */
-	public void setPartyGstin(String partyGstin) {
-		this.partyGstin = partyGstin;
-	}
 
 	/**
 	 * @return the partyState

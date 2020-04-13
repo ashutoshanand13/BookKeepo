@@ -85,6 +85,7 @@ public class ExportInvoiceController {
 			}
 			modelAndView.addObject("logoImage",base64Encoded);
 			modelAndView.addObject("itemList", itemService.findByProductOwner(user));
+			modelAndView.addObject("pageName", InvoiceType.Export_Invoice.getType());
 			modelAndView.setViewName("exportInvoice");
 		}
 		return modelAndView;
@@ -104,7 +105,6 @@ public class ExportInvoiceController {
 		InvoiceDetails invoice = new InvoiceDetails();
 		invoice.setInvoiceType(InvoiceType.Export_Invoice.getType());
 		invoice.setInvoiceOwner(principal.getName());
-		invoice.setInvoiceTotalAmountWords(CommonUtils.numberConverter(exportInvoiceData.getTtlTotalAmount()));
 
 		Company companyDetails = companyDetailsService.findByUserName(principal.getName());
 

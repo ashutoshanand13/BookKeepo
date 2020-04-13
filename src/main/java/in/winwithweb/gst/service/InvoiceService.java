@@ -40,8 +40,8 @@ public class InvoiceService {
 		return invoiceRepository.findByInvoiceOwner(name);
 	}
 
-	public InvoiceDetails findById(int id) {
-		return invoiceRepository.findById(id);
+	public InvoiceDetails findById(String key) {
+		return invoiceRepository.findByInvoiceUniqueKey(key);
 	}
 
 	public List<String> findbyInvoiceOwnerType(String name, String type) {
@@ -51,13 +51,17 @@ public class InvoiceService {
 				.map(p -> p.getInvoiceNumber()).collect(Collectors.toList());
 	}
 	
-	public InvoiceDetails findByInvoiceNumber(String invoiceNumber) {
-		return invoiceRepository.findByInvoiceNumber(invoiceNumber);
+	public InvoiceDetails findByInvoiceNumberAndInvoiceOwner(String invoiceNumber, String owner) {
+		return invoiceRepository.findByInvoiceNumberAndInvoiceOwner(invoiceNumber, owner);
 	}
 
 	public List<InvoiceDetails> findByInvoiceOwner(String name, String type) {
 		List<InvoiceDetails> allInvoice = invoiceRepository.findAll();
 		return allInvoice.stream().filter(p -> p.getInvoiceOwner().equals(name) && p.getInvoiceType().equals(type))
 				.collect(Collectors.toList());
+	}
+	
+	public InvoiceDetails findByPageNameAndInvoiceNo(String invoiceNo, String pageName, String owner) {
+		return invoiceRepository.findByPageNameAndInvoiceNo(invoiceNo, pageName, owner);
 	}
 }
