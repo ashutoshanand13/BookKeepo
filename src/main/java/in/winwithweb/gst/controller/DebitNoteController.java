@@ -27,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 
+import in.winwithweb.gst.model.Accounts;
 import in.winwithweb.gst.model.Company;
 import in.winwithweb.gst.model.InvoiceType;
 import in.winwithweb.gst.model.json.InvoicePageData;
@@ -67,7 +68,7 @@ public class DebitNoteController {
 		String user = request.getUserPrincipal().getName();
 		ModelAndView modelAndView = new ModelAndView();
 		Company company = companyDetailsService.findByUserName(user);
-		List<String> account = accountService.fetchAccountName(user);
+		List<Accounts> account = accountService.fetchAccountNameForInvoice(user);
 		List<String> ownerInvoices = new ArrayList<>();
 		ownerInvoices.add("Against Invoice");
 		ownerInvoices.addAll(invoiceService.findbyInvoiceOwnerType(user, InvoiceType.Tax_Invoice.getType()));
