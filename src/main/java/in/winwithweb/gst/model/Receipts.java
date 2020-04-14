@@ -1,10 +1,13 @@
 package in.winwithweb.gst.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
@@ -24,18 +27,6 @@ public class Receipts {
 	@NotEmpty(message = "*Please provide the receipt number")
 	private String receiptNumber;
 
-	@Column(name = "receipt_account_name")
-	@NotEmpty(message = "*Please provide the account name")
-	private String accountName;
-
-	@Column(name = "receipt_account_gstin")
-	@NotEmpty(message = "*Please provide the account GST")
-	private String gstin;
-	
-	@Column(name = "receipt_account_address")
-	@NotEmpty(message = "*Please provide the account address")
-	private String accountAddress;
-
 	@Column(name = "receipt_reference")
 	@NotEmpty(message = "*Please provide the receipt reference")
 	private String receiptReference;
@@ -47,7 +38,7 @@ public class Receipts {
 	@Column(name = "receipt_mode")
 	@NotEmpty(message = "*Please provide the receipt mode")
 	private String receiptMode;
-	
+
 	@Column(name = "receipt_amount")
 	@NotEmpty(message = "*Please provide the receipt amount")
 	private String receiptAmount;
@@ -55,9 +46,13 @@ public class Receipts {
 	@Column(name = "receipt_description")
 	@NotEmpty(message = "*Please provide the receipt description")
 	private String receiptDescription;
-	
+
 	@Column(name = "receipt_owner")
 	private String receiptOwner;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "receipt_account_reference_no")
+	private Accounts accountRefNo;
 
 	/**
 	 * @return the id
@@ -88,34 +83,6 @@ public class Receipts {
 	}
 
 	/**
-	 * @return the accountName
-	 */
-	public String getAccountName() {
-		return accountName;
-	}
-
-	/**
-	 * @param accountName the accountName to set
-	 */
-	public void setAccountName(String accountName) {
-		this.accountName = accountName;
-	}
-
-	/**
-	 * @return the gstin
-	 */
-	public String getGstin() {
-		return gstin;
-	}
-
-	/**
-	 * @param gstin the gstin to set
-	 */
-	public void setGstin(String gstin) {
-		this.gstin = gstin;
-	}
-
-	/**
 	 * @return the receiptAmount
 	 */
 	public String getReceiptAmount() {
@@ -127,20 +94,6 @@ public class Receipts {
 	 */
 	public void setReceiptAmount(String receiptAmount) {
 		this.receiptAmount = receiptAmount;
-	}
-
-	/**
-	 * @return the accountAddress
-	 */
-	public String getAccountAddress() {
-		return accountAddress;
-	}
-
-	/**
-	 * @param accountAddress the accountAddress to set
-	 */
-	public void setAccountAddress(String accountAddress) {
-		this.accountAddress = accountAddress;
 	}
 
 	/**
@@ -211,6 +164,20 @@ public class Receipts {
 	 */
 	public void setReceiptOwner(String receiptOwner) {
 		this.receiptOwner = receiptOwner;
+	}
+
+	/**
+	 * @return the accountRefNo
+	 */
+	public Accounts getAccountRefNo() {
+		return accountRefNo;
+	}
+
+	/**
+	 * @param accountRefNo the accountRefNo to set
+	 */
+	public void setAccountRefNo(Accounts accountRefNo) {
+		this.accountRefNo = accountRefNo;
 	}
 
 }

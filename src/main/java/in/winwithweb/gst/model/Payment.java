@@ -1,10 +1,13 @@
 package in.winwithweb.gst.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
@@ -24,18 +27,6 @@ public class Payment {
 	@NotEmpty(message = "*Please provide the payment number")
 	private String paymentNumber;
 
-	@Column(name = "payment_account_name")
-	@NotEmpty(message = "*Please provide the account name")
-	private String accountName;
-
-	@Column(name = "payment_account_gstin")
-	@NotEmpty(message = "*Please provide the account GST")
-	private String gstin;
-
-	@Column(name = "payment_account_address")
-	@NotEmpty(message = "*Please provide the account address")
-	private String accountAddress;
-
 	@Column(name = "payment_reference")
 	@NotEmpty(message = "*Please provide the payment reference")
 	private String paymentReference;
@@ -47,7 +38,7 @@ public class Payment {
 	@Column(name = "payment_mode")
 	@NotEmpty(message = "*Please provide the payment mode")
 	private String paymentMode;
-	
+
 	@Column(name = "payment_amount")
 	@NotEmpty(message = "*Please provide the Payment amount")
 	private String paymentAmount;
@@ -55,9 +46,13 @@ public class Payment {
 	@Column(name = "payment_description")
 	@NotEmpty(message = "*Please provide the payment description")
 	private String paymentDescription;
-	
+
 	@Column(name = "payment_owner")
 	private String paymentOwner;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "payment_account_reference_no")
+	private Accounts accountRefNo;
 
 	/**
 	 * @return the id
@@ -85,48 +80,6 @@ public class Payment {
 	 */
 	public void setPaymentNumber(String paymentNumber) {
 		this.paymentNumber = paymentNumber;
-	}
-
-	/**
-	 * @return the accountName
-	 */
-	public String getAccountName() {
-		return accountName;
-	}
-
-	/**
-	 * @param accountName the accountName to set
-	 */
-	public void setAccountName(String accountName) {
-		this.accountName = accountName;
-	}
-
-	/**
-	 * @return the gstin
-	 */
-	public String getGstin() {
-		return gstin;
-	}
-
-	/**
-	 * @param gstin the gstin to set
-	 */
-	public void setGstin(String gstin) {
-		this.gstin = gstin;
-	}
-
-	/**
-	 * @return the accountAddress
-	 */
-	public String getAccountAddress() {
-		return accountAddress;
-	}
-
-	/**
-	 * @param accountAddress the accountAddress to set
-	 */
-	public void setAccountAddress(String accountAddress) {
-		this.accountAddress = accountAddress;
 	}
 
 	/**
@@ -212,5 +165,19 @@ public class Payment {
 	public void setPaymentOwner(String paymentOwner) {
 		this.paymentOwner = paymentOwner;
 	}
-	
+
+	/**
+	 * @return the accountRefNo
+	 */
+	public Accounts getAccountRefNo() {
+		return accountRefNo;
+	}
+
+	/**
+	 * @param accountRefNo the accountRefNo to set
+	 */
+	public void setAccountRefNo(Accounts accountRefNo) {
+		this.accountRefNo = accountRefNo;
+	}
+
 }
