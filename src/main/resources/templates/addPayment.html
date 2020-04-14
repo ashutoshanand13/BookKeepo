@@ -99,6 +99,7 @@ $(document).ready(function() {
 function getAccountData() {
 	var accountName = $("#selectbasic").val();
 	
+	if(accountName !== "0"){
 	$.ajax({
 		type : "GET",
 		contentType : "application/json",
@@ -109,6 +110,10 @@ function getAccountData() {
 			document.getElementById('accountAddress').value = data.accountAddress;
 		}
 		});
+	} else {
+		document.getElementById('gstin').value = "";
+		document.getElementById('accountAddress').value = "";
+	}
 };
 
 </script>
