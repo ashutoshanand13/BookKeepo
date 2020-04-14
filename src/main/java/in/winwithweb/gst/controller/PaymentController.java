@@ -48,6 +48,7 @@ public class PaymentController {
 			Principal principal) {
 		ModelAndView modelAndView = new ModelAndView();
 		payment.setPaymentOwner(principal.getName());
+		payment.setAccountRefNo(accountService.findById(payment.getAccountRefNo().getId()));
 		paymentService.saveAccount(payment);
 		List<Accounts> accountList = accountService.fetchAccountName(principal.getName());
 		modelAndView.addObject("payment", new Payment());
