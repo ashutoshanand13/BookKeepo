@@ -71,4 +71,13 @@ public class PaymentController {
 		modelAndView.addObject("accountList", accountList);
 	}
 
+	@RequestMapping(value = { "/home/showpayment" }, method = RequestMethod.GET)
+	public ModelAndView showPayments(Principal principal) {
+		ModelAndView modelAndView = new ModelAndView();
+		String user = principal.getName();
+		modelAndView.addObject("paymentList", paymentService.fetchAllPayment(user));
+		modelAndView.setViewName("paymentData");
+		return modelAndView;
+	}
+
 }
