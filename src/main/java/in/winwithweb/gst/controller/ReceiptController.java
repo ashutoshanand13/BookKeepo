@@ -53,7 +53,9 @@ public class ReceiptController {
 	public ModelAndView addNewReceipt(@Valid @ModelAttribute("receipts") Receipts receipt, BindingResult bindingResult,
 			Principal principal) {
 		ModelAndView modelAndView = new ModelAndView();
+
 		receipt.setReceiptOwner(principal.getName());
+		receipt.setAccountRefNo(accountService.findById(receipt.getAccountRefNo().getId()));
 		receiptService.saveAccount(receipt);
 		List<Accounts> accountList = accountService.fetchAccountName(principal.getName());
 		modelAndView.addObject("receipts", new Receipts());
