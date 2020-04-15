@@ -60,7 +60,7 @@ public class ItemController {
 			isItemExists.setProductDiscount(item.getProductDiscount());
 			itemService.saveItem(isItemExists);
 			modelAndView.addObject("message", "Item Updated Successfully");
-			modelAndView.addObject("item", item);
+			modelAndView.addObject("item", new InvoiceProductDetails());
 		} else {
 			item.setProductOwner(user);
 			itemService.saveItem(item);
