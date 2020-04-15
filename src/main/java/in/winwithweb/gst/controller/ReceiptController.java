@@ -65,4 +65,12 @@ public class ReceiptController {
 		return modelAndView;
 	}
 
+	@RequestMapping(value = { "/home/showreceipt" }, method = RequestMethod.GET)
+	public ModelAndView showReceipt(Principal principal) {
+		ModelAndView modelAndView = new ModelAndView();
+		String user = principal.getName();
+		modelAndView.addObject("receiptList", receiptService.fetchAllReceipt(user));
+		modelAndView.setViewName("receiptData");
+		return modelAndView;
+	}
 }
