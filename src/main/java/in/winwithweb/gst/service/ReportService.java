@@ -97,7 +97,7 @@ public class ReportService {
 		return InvoiceSubType.BOTH.equals(reports.getInvoiceSubType())
 				? invoiceRepository.findByInvoiceOwnerAndInvoiceType(name, reports.getInvoiceType().getType())
 				: invoiceRepository.findByInvoiceOwnerAndInvoiceTypeAndInvoiceSubType(name,
-						reports.getInvoiceType().getType(), reports.getInvoiceSubType().getInvoiceSubTypeValue());
+						reports.getInvoiceType().getType(), reports.getInvoiceSubType().getInvoiceSubType());
 
 	}
 
