@@ -35,15 +35,15 @@ public class ReportService {
 	}
 
 	public List<ReportsData> getReports(String name, Reports reports) {
-		List<InvoiceDetails> invoiceDetails = invoiceRepository.findByInvoiceOwner(name);
+		List<InvoiceDetails> invoiceDetails = invoiceRepository.findByInvoiceOwnerAndInvoiceType(name,
+				reports.getInvoiceType().getType());
 
 		List<ReportsData> reportsData = new ArrayList<>();
 
 		for (InvoiceDetails invoice : invoiceDetails) {
 
-			if (reports.getInvoiceType().getType().equalsIgnoreCase(invoice.getInvoiceType())
-					&& InvoiceUtil.checkInvoiceType(invoice.getInvoiceSubType(),
-							reports.getInvoiceSubType().getInvoiceSubTypeValue())) {
+			if (InvoiceUtil.checkInvoiceType(invoice.getInvoiceSubType(),
+					reports.getInvoiceSubType().getInvoiceSubTypeValue())) {
 
 				if (InvoiceUtil.isValidDate(reports.getStartDate(), reports.getEndDate(),
 						CommonUtils.convertDateIntoFormat(invoice.getInvoiceDate()))) {
