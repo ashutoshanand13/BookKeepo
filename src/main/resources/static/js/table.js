@@ -478,8 +478,8 @@ $("#againstInvoicedropdown").change(function() {
 	}
 });
 
-function checkInvoiceNo(data) {
-	var invoiceNo = $(data).val();
+function checkInvoiceNo(value) {
+	var invoiceNo = $(value).val();
 	var pageName = $("[name=pageName]").val();
 
 	if(invoiceNo !== "") {
@@ -495,6 +495,7 @@ function checkInvoiceNo(data) {
 				else {
 					isInvoiceNumberUnique = false;
 					alert("Invoice Number already exists");
+					$(value).val("");
 				}
 			}
 			});
