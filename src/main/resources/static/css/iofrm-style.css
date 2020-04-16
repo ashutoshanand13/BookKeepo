@@ -213,6 +213,27 @@ html, body {
 .form-holder {
     margin-left: 550px;
     width: 100%;
+    height: 95%;
+}
+
+.form-holder-beforelogin {
+    margin-left: 550px;
+    width: 100%;
+    height: 100%;
+}
+
+.form-holder-beforelogin .form-content{
+    position: relative;
+    text-align: center;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    min-height: 100%;
 }
 
 .form-holder .form-content {
@@ -393,6 +414,7 @@ html, body {
     background-color: #fff;
     border: 0;
     font-size: 10px;
+    font-weight: 300;
     color: #8D8D8D;
     outline: none;
     resize: none;
@@ -400,6 +422,10 @@ html, body {
     -webkit-transition: none;
     transition: none;
     margin-bottom: 14px;
+}
+
+.form-content select {
+    font-weight: 300;
 }
 
 .form-content textarea:hover, .form-content textarea:focus {
