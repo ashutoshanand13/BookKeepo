@@ -302,3 +302,7 @@ button {
 .hide input{
   text-indent: -99em;
 }
+
+.empty-space{
+	height:10px;
+}
