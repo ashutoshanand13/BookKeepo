@@ -28,17 +28,16 @@
 						<label>Receipt Information</label> <input type="text"
 						class="form-control" name="name" th:field="*{receiptNumber}"
 						placeholder="Receipt Number" required>
-						<select th:field="*{accountName}" class="form-control"
+						<select th:field="*{accountRefNo.id}" class="form-control"
 						id="selectbasic" name="selectbasic">
-						<option th:each="account : ${accountList}" th:value="${account}"
-							th:text="${account}"></option>
+							<option th:each="account : ${accountList}" th:value="${account.id}"
+									th:text="${account.accountName}"></option>
 						</select> 
-						<textarea class="form-control" th:field="*{accountAddress}"
-						readonly="readonly" placeholder="Address" required></textarea>
+						<textarea class="form-control"
+						readonly="readonly" id="accountAddress" placeholder="Address" required></textarea>
 						<input type="text" id="gstin" class="form-control"
-								th:field="*{gstin}" placeholder="GST Number" readonly="readonly"
-								required> <label th:if="${#fields.hasErrors('gstin')}"
-								th:errors="*{gstin}" class="validation-message"></label>
+								 placeholder="GST Number" readonly="readonly"
+								required>
 						<select
 							name="selectbasic" class="form-control" th:field="*{receiptReference}" required="required">
 							<option class="form-control" value="">Select Receipt Reference</option>
@@ -87,16 +86,21 @@ $(document).ready(function() {
 function getAccountData() {
 	var accountName = $("#selectbasic").val();
 	
-	$.ajax({
-		type : "GET",
-		contentType : "application/json",
-		url : "getAccountData?accountName=" + accountName,
-		dataType : 'json',				
-		success : function(data) {
-			document.getElementById('gstin').value = data.gstin;
-			document.getElementById('accountAddress').value = data.accountAddress;
+	if(accountName !== "0"){
+		$.ajax({
+			type : "GET",
+			contentType : "application/json",
+			url : "getAccountData?accountName=" + accountName,
+			dataType : 'json',				
+			success : function(data) {
+				document.getElementById('gstin').value = data.gstin;
+				document.getElementById('accountAddress').value = data.accountAddress;
+			}
+			});
+		} else {
+			document.getElementById('gstin').value = "";
+			document.getElementById('accountAddress').value = "";
 		}
-		});
 };
 
 </script>

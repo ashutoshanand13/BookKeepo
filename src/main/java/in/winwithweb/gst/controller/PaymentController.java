@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import in.winwithweb.gst.model.Accounts;
 import in.winwithweb.gst.model.Payment;
 import in.winwithweb.gst.service.AccountService;
 import in.winwithweb.gst.service.PaymentService;
@@ -28,13 +29,13 @@ import in.winwithweb.gst.service.PaymentService;
 
 @Controller
 public class PaymentController {
-	
+
 	@Autowired
 	private AccountService accountService;
-	
+
 	@Autowired
 	private PaymentService paymentService;
-	
+
 	@RequestMapping(value = { "/home/addpayment" }, method = RequestMethod.GET)
 	public ModelAndView getPaymentScreen(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
@@ -43,35 +44,40 @@ public class PaymentController {
 	}
 
 	@RequestMapping(value = { "/home/addpayment" }, method = RequestMethod.POST)
-	public ModelAndView addNewReceipt(@Valid @ModelAttribute("payment") Payment payment, BindingResult bindingResult, Principal principal) {
+	public ModelAndView addNewReceipt(@Valid @ModelAttribute("payment") Payment payment, BindingResult bindingResult,
+			Principal principal) {
 		ModelAndView modelAndView = new ModelAndView();
 		payment.setPaymentOwner(principal.getName());
+		payment.setAccountRefNo(accountService.findById(payment.getAccountRefNo().getId()));
 		paymentService.saveAccount(payment);
-		List<String> accountList = accountService.fetchAccountName(principal.getName());
-		if(accountList != null) {
-			accountList.add(0, "Select Account");
-		}
+		List<Accounts> accountList = accountService.fetchAccountName(principal.getName());
 		modelAndView.addObject("payment", new Payment());
 		modelAndView.addObject("message", "Payment Details Successfully Added");
 		modelAndView.setViewName("addPayment");
 		modelAndView.addObject("accountList", accountList);
 		return modelAndView;
 	}
-	
+
 	/**
 	 * @param request
 	 * @param modelAndView
 	 */
 	protected void makePageReadyforLoad(HttpServletRequest request, ModelAndView modelAndView) {
-		String user=request.getUserPrincipal().getName();
-		List<String> accountList = accountService.fetchAccountName(user);
-		if(accountList != null) {
-			accountList.add(0, "Select Account");
-		}
+		String user = request.getUserPrincipal().getName();
+		List<Accounts> accountList = accountService.fetchAccountName(user);
 		Payment payment = new Payment();
 		modelAndView.addObject("payment", payment);
 		modelAndView.setViewName("addPayment");
 		modelAndView.addObject("accountList", accountList);
+	}
+
+	@RequestMapping(value = { "/home/showpayment" }, method = RequestMethod.GET)
+	public ModelAndView showPayments(Principal principal) {
+		ModelAndView modelAndView = new ModelAndView();
+		String user = principal.getName();
+		modelAndView.addObject("paymentList", paymentService.fetchAllPayment(user));
+		modelAndView.setViewName("paymentData");
+		return modelAndView;
 	}
 
 }

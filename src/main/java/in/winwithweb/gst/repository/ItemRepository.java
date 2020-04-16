@@ -19,4 +19,6 @@ public interface ItemRepository extends JpaRepository<InvoiceProductDetails, Lon
 	
 	List<InvoiceProductDetails> findByProductOwner(String owner);
 	
+	InvoiceProductDetails findById(int id);
+	
 }

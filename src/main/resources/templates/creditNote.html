@@ -67,16 +67,15 @@
 							onblur="if(!this.value)this.type='text'" placeholder="Issue Date"
 							required="required"></td>
 						<td class="pt-3-half"><input type="text" class="form-control"
-							name="againstInvoiceDate" onfocus="(this.type='date')"
-							onblur="if(!this.value) this.type='text'" placeholder="Date of Invoice"
-							required="required"></td>
+							name="againstInvoiceDate" placeholder="Date of Invoice"
+							required="required" readonly="readonly"></td>
 					</tr>
 					<tr>
 						<td class="pt-3-half"><input type="text" class="form-control"
-							name="state" placeholder="State" required="required"></td>
+							name="state" placeholder="State" required="required" readonly="readonly"></td>
 						<td class="pt-3-half" bgcolor="#EEFF74"><input type="text"
 							class="form-control" name="reverseCharge"
-							placeholder="Reverse Charge (Y/N)" onKeyDown="inputValidate()" maxlength="1" required="required"></td>
+							placeholder="Reverse Charge (Y/N)" onKeyDown="inputValidate()" maxlength="1" required="required" readonly="readonly"></td>
 					</tr>
 				</tbody>
 			</table>
@@ -98,8 +97,8 @@
 							<input list="select" class="form-control"
 							name="nameBill" placeholder="Name" autocomplete="off"> <datalist
 								id="select">
-								<option th:each="account : ${accountList}" th:value="${account}"
-									th:text="${account}"></option>
+								<option th:each="account : ${accountList}" th:value="${account.id}"
+									th:text="${account.accountName}"></option>
 							</datalist>
 						</td>
 						<td class="pt-3-half"><input type="text" class="form-control"
@@ -181,8 +180,8 @@
 						</thead>
 						<tbody>
 						<datalist id="data">
-								<option th:each="item : ${itemList}" th:value="${item}"
-									th:text="${item}"></option>
+								<option th:each="item : ${itemList}" th:value="${item.id}"
+									th:text="${item.productDescription}"></option>
 							</datalist>
 							<tr>
 								<td class="pt-3-half"><input type="text" id="srNo"
@@ -363,10 +362,6 @@ window.onload = function() {
 	setValues();
 };
 
-window.onbeforeunload = function() {
-    return "Are you sure you want to leave this page?"; // you can make this dynamic, ofcourse...
- };
- 
  function inputValidate(){
 	   var e = event || window.event;  
 	   var key = e.keyCode || e.which;                              

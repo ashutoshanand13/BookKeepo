@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import in.winwithweb.gst.model.Accounts;
 import in.winwithweb.gst.model.Receipts;
 import in.winwithweb.gst.service.AccountService;
 import in.winwithweb.gst.service.ReceiptService;
@@ -31,35 +32,32 @@ public class ReceiptController {
 
 	@Autowired
 	private AccountService accountService;
-	
+
 	@Autowired
 	private ReceiptService receiptService;
 
 	@RequestMapping(value = { "/home/addreceipt" }, method = RequestMethod.GET)
 	public ModelAndView getAddReceipt(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
-		String user=request.getUserPrincipal().getName();
-		List<String> accountList = accountService.fetchAccountName(user);
-		if(accountList != null) {
-			accountList.add(0, "Select Account");
-		}
+		String user = request.getUserPrincipal().getName();
+		List<Accounts> accountList = accountService.fetchAccountName(user);
+
 		Receipts receipt = new Receipts();
 		modelAndView.addObject("receipts", receipt);
 		modelAndView.setViewName("addReceipt");
 		modelAndView.addObject("accountList", accountList);
 		return modelAndView;
 	}
-	
-	
+
 	@RequestMapping(value = "/home/addreceipt", method = RequestMethod.POST)
-	public ModelAndView addNewReceipt(@Valid @ModelAttribute("receipts") Receipts receipt, BindingResult bindingResult, Principal principal) {
+	public ModelAndView addNewReceipt(@Valid @ModelAttribute("receipts") Receipts receipt, BindingResult bindingResult,
+			Principal principal) {
 		ModelAndView modelAndView = new ModelAndView();
+
 		receipt.setReceiptOwner(principal.getName());
+		receipt.setAccountRefNo(accountService.findById(receipt.getAccountRefNo().getId()));
 		receiptService.saveAccount(receipt);
-		List<String> accountList = accountService.fetchAccountName(principal.getName());
-		if(accountList != null) {
-			accountList.add(0, "Select Account");
-		}
+		List<Accounts> accountList = accountService.fetchAccountName(principal.getName());
 		modelAndView.addObject("receipts", new Receipts());
 		modelAndView.addObject("message", "Receipt Details Successfully Added");
 		modelAndView.setViewName("addReceipt");
@@ -67,4 +65,12 @@ public class ReceiptController {
 		return modelAndView;
 	}
 
+	@RequestMapping(value = { "/home/showreceipt" }, method = RequestMethod.GET)
+	public ModelAndView showReceipt(Principal principal) {
+		ModelAndView modelAndView = new ModelAndView();
+		String user = principal.getName();
+		modelAndView.addObject("receiptList", receiptService.fetchAllReceipt(user));
+		modelAndView.setViewName("receiptData");
+		return modelAndView;
+	}
 }
