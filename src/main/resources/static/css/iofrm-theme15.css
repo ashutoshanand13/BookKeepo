@@ -50,7 +50,8 @@
 }
 
 .form-holder {
-    margin-left: 386px;
+    margin-left: 35%;
+    margin-top: 2%;
 }
 
 .form-holder .form-content ::-webkit-input-placeholder {
@@ -300,4 +301,8 @@ button {
 
 .hide input{
   text-indent: -99em;
+}
+
+.empty-space{
+	height:10px;
 }
