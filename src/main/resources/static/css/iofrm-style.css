@@ -222,6 +222,13 @@ html, body {
     height: 100%;
 }
 
+.form-holder-reports {
+    width: 80%;
+    height: 100%;
+    margin-left: -34%; //@TODO
+    margin-bottom: 10%;
+}
+
 .form-holder-beforelogin .form-content{
     position: relative;
     text-align: center;
@@ -860,7 +867,7 @@ div.form-body password.loginformfields
 }
 
 div.form-body div.showinvoices{
-	margin-top: -500px;
+	margin-top: 0px;
 }
 
 div.form-body div.showreports{
@@ -880,4 +887,9 @@ div.form-content p.centerfromtop{
     line-height: 20px;
     text-align: right;
     margin-top: 20%;
+}
+div.form-content label.field-description{
+	font-weight: 350 ;
+    font-size: 13px ;
+    margin-bottom: 0px;
 }
