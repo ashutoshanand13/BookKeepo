@@ -125,7 +125,13 @@ function setAlert(message) {
 	$("#alert_placeholder").fadeTo(2000, 500).slideUp(500);
 }
 
- $BTN.on('click', function () {
+function submitHandler(e){
+	e.preventDefault();
+	}
+
+ $BTN.on('click', function (event) {
+	 
+	 document.querySelector('form').addEventListener('submit', submitHandler);
    var json = '';
    var name = $(this).attr("name");
    var url = controllerMap[name];
@@ -155,10 +161,12 @@ function setAlert(message) {
 						var json = JSON.stringify($('#form').serializeJSON())
 								.replace(/\\/g, "").replace("\"[", "[")
 								.replace("]\"", "]");
-
+						
 						$('#overlay').fadeIn();
+						
 						$.ajax({
 							url : url,
+							async : true,
 							contentType : "application/text; charset=utf-8",
 							type : 'POST',
 							datatype : 'text',
@@ -171,15 +179,17 @@ function setAlert(message) {
 								link.href = window.URL.createObjectURL(blob);
 								link.download = fileName;
 								link.click();
-								$("#form")[0].reset();
+								f.reset();
+								$('input').focus();
+								$('input').blur();
 								window.scrollTo(0, 0);
 								setValues();
 								isGstValid=false;
+								isInvoiceNumberUnique=false;
 							}
 						});
 						$('#overlay').delay(500).fadeOut();
    }
-   isGstValid=false;
  });
 
 function setValues() {
@@ -496,6 +506,7 @@ function checkInvoiceNo(value) {
 					isInvoiceNumberUnique = false;
 					alert("Invoice Number already exists");
 					$(value).val("");
+					$(value).focus();
 				}
 			}
 			});
