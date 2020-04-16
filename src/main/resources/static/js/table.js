@@ -15,7 +15,7 @@
  var isInvoiceNumberUnique = false;
  
  var controllerMap = { salesInvoice: "/home/salesinvoice", exportInvoice: "/home/exportinvoice", debitNote:"/home/debitnote", creditNote:"/home/creditnote" , purchaseOrder:"/home/addpurchaseorder"  , purchaseInvoice:"/home/addpurchaseinvoice"};
- var fileMap = { salesInvoice: "Sales_Invoice", exportInvoice: "Export_Invoice", debitNote:"Debit_Note", creditNote:"Credit_Note", purchaseOrder:"Purchase_Order", purchaseInvoice:"Purchase_Invoice" };
+ var fileMap = { salesInvoice: "Tax_Invoice", exportInvoice: "Export_Invoice", debitNote:"Debit_Note", creditNote:"Credit_Note", purchaseOrder:"Purchase_Order", purchaseInvoice:"Purchase_Invoice" };
  var extensionMap = { salesInvoice: "invoiceNo", exportInvoice: "invoiceNo", debitNote:"invoiceNo", creditNote:"invoiceNo", purchaseOrder:"poNo", purchaseInvoice:"invoiceNo" };
  
  var gstRegex = /^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$/;
