@@ -129,7 +129,7 @@ function submitHandler(e){
 	e.preventDefault();
 	}
 
- $BTN.on('click', function (event) {
+ $BTN.on('click', function () {
 	 
 	 document.querySelector('form').addEventListener('submit', submitHandler);
    var json = '';
