@@ -22,6 +22,7 @@
 <div layout:fragment="form_content" id="form_content">
 	<div class="form-items">
 		<h3 class="form-title doubleunderlinetext">Generate Reports</h3>
+		<div id = "alert_placeholder"></div>
 		 		<div id="alert" th:if="${message}" th:text="${message} "
 			class="alert alert-info fade-in"></div> 
 		<form autocomplete="off" th:action="@{/home/reports}"
@@ -92,3 +93,18 @@
 		</form>
 	</div>
 </div>
+<th:block layout:fragment="scripts">
+	<script>
+	$('#submit').on('click', function (event) {
+		var invoiceType = $('input[name=invoiceType]:checked').val();
+		var invoiceSubType = $('input[name=invoiceSubType]:checked').val();
+		debugger;
+		if(invoiceType === undefined || invoiceSubType === undefined){
+			$('#alert_placeholder').html(
+					'<div class="alert alert-info fade-in"><span><center>Please select Category and Document Type</center></span></div>')
+			$("#alert_placeholder").fadeTo(2000, 500).slideUp(500);
+		}
+	});
+
+</script>
+</th:block>
