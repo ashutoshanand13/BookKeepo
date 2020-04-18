@@ -503,13 +503,53 @@ function checkInvoiceNo(value) {
 				}
 				else {
 					isInvoiceNumberUnique = false;
-					alert("Invoice Number already exists");
+					alert("Invoice Number/ Document Number already exists");
 					$(value).val("");
 					$(value).focus();
 				}
 			}
 			});
 	}
-	
-	
+}
+
+
+function checkPaymentNo(value) {
+	var paymentNo = $(value).val();
+
+	if(paymentNo !== "") {
+		$.ajax({
+			type : "GET",
+			contentType : "application/json",
+			url : "paymentunique?paymentNo=" + paymentNo,
+			dataType : 'json',				
+			success : function(data) {
+				if(data !== null){
+					alert("Payment Number already exists");
+					$(value).val("");
+					$(value).focus();
+				}
+			}
+			});
+	}
+}
+
+
+function checkReceiptNo(value) {
+	var receiptNo = $(value).val();
+
+	if(receiptNo !== "") {
+		$.ajax({
+			type : "GET",
+			contentType : "application/json",
+			url : "receiptunique?receiptNo=" + receiptNo,
+			dataType : 'json',				
+			success : function(data) {
+				if(data !== null){
+					alert("Receipt Number already exists");
+					$(value).val("");
+					$(value).focus();
+				}
+			}
+			});
+	}
 }

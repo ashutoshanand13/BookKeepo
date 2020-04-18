@@ -27,7 +27,7 @@
 					<div class="form-group">
 						<label>Receipt Information</label> <input type="text"
 						class="form-control" name="name" th:field="*{receiptNumber}"
-						placeholder="Receipt Number" required>
+						placeholder="Receipt Number" onblur="checkReceiptNo(this)" required>
 						<select th:field="*{accountRefNo.id}" class="form-control"
 						id="selectbasic" name="selectbasic">
 							<option th:each="account : ${accountList}" th:value="${account.id}"
@@ -59,7 +59,7 @@
 							<option class="form-control" value="Cash">Cash</option>
 							<option class="form-control" value="Bank">Bank</option>
 						</select>
-						<input type="number"
+						<input type="text" onfocus="(this.type='number')" onblur="(this.type='text')" min="0"
 						class="form-control" name="receiptAmount" th:field="*{receiptAmount}"
 						placeholder="Receipt Amount" required>
 						<textarea class="form-control" name="receiptDescription" th:field="*{receiptDescription}" placeholder="Receipt Description"
