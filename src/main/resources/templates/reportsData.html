@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{postLoginCommonPage}">
+	layout:decorate="~{postLoginCommonInvoicePage}">
 
 <head>
 <title th:text="${pagetitle}"></title>
 
 </head>
-<div layout:fragment="form_content" id="form_content">
-	<div class="form-items showreports">
+<div layout:fragment="invoice_fragment" id="form_content">
+	<div class="form-items table-width2 showreports">
 		<h3 class="form-title doubleunderlinetext" align="center">Reports</h3>
 		<div id="alert_showinvoice"></div>		
 
@@ -61,9 +61,6 @@
 	<script type="text/javascript" th:src="@{/js/datatables/jquery.min.js}"></script>
 	<script type="text/javascript" th:src="@{/js/datatables/jszip.min.js}"></script>
 	<script type="text/javascript"
-		th:src="@{/js/datatables/pdfmake.min.js}"></script>
-	<script type="text/javascript" th:src="@{/js/datatables/vfs_fonts.js}"></script>
-	<script type="text/javascript"
 		th:src="@{/js/datatables/jquery.dataTables.min.js}"></script>
 	<script type="text/javascript"
 		th:src="@{/js/datatables/dataTables.buttons.min.js}"></script>
@@ -77,7 +74,7 @@
 		$(document).ready(function() {
 			$('#example').DataTable({
 				dom : 'Bfrtip',
-				buttons : [ 'copy', 'csv', 'excel', 'pdf', 'print' ]
+				buttons : [ 'copy', 'csv', 'excel','print' ]
 			});
 		});
 	</script>
