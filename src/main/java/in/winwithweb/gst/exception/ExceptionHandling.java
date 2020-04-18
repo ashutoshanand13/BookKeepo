@@ -12,8 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import in.winwithweb.gst.util.CommonUtils;
-
 /**
  * @author sachingoyal
  *
@@ -35,14 +33,14 @@ public class ExceptionHandling implements ErrorController {
 			Integer statusCode = Integer.valueOf(status.toString());
 
 			if (statusCode == HttpStatus.NOT_FOUND.value()) {
-				CommonUtils.sendEmail(emailTo, emailFrom, "Exception Occured", "Page not found error occured");
+				//CommonUtils.sendEmail(emailTo, emailFrom, "Exception Occured", "Page not found error occured");
 				return "404";
 			} else if (statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
-				CommonUtils.sendEmail(emailTo, emailFrom, "Exception Occured", "Internal Server error occured");
+				//CommonUtils.sendEmail(emailTo, emailFrom, "Exception Occured", "Internal Server error occured");
 				return "error";
 			}
 		}
-		CommonUtils.sendEmail(emailTo, emailFrom, "Exception Occured", "Internal Server error occured");
+		//CommonUtils.sendEmail(emailTo, emailFrom, "Exception Occured", "Internal Server error occured");
 		return "error";
 	}
 

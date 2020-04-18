@@ -98,7 +98,6 @@
 	$('#submit').on('click', function (event) {
 		var invoiceType = $('input[name=invoiceType]:checked').val();
 		var invoiceSubType = $('input[name=invoiceSubType]:checked').val();
-		debugger;
 		if(invoiceType === undefined || invoiceSubType === undefined){
 			$('#alert_placeholder').html(
 					'<div class="alert alert-info fade-in"><span><center>Please select Category and Document Type</center></span></div>')

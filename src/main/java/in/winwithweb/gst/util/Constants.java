@@ -12,6 +12,7 @@ public class Constants {
 	public static String SUPPLY_OUTWARDS_REPORTS[] = { "Document type", "Document no.", "Document date",
 			"Date of supply", "Place of Supply", "Name of party", "GSTIN of party", "Taxable Value", "CGST", "SGST",
 			"IGST", "Total invoice amount" };
+	
 
 	public static String SUPPLY_INWARDS_REPORTS[] = { "Document type", "Document no.", "Document date", "Name of party",
 			"GSTIN of party", "Taxable Value", "CGST", "SGST", "IGST", "Total invoice amount" };
