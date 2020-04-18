@@ -23,118 +23,96 @@ import lombok.Data;
  * @author sachingoyal
  *
  */
-
 @Data
 @Entity
 @Table(name = "invoice_details")
 public class InvoiceDetails {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "invoice_id")
 	private int id;
-	
+
 	@Column(name = "invoice_number")
 	private String invoiceNumber;
-	
-	@Column(name = "type")
-	private String type;
-	
-	@Column(name = "invoice_against_invoice")
-	private String invoiceAgainstInvoice;
-	
-	@Column(name = "invoice_issue_date")
-	private String invoiceIssueDate;
-	
-	@Column(name = "invoice_document_number")
-	private String invoiceDocumentNumber;
-	
+
 	@Column(name = "invoice_date")
 	private String invoiceDate;
-	
+
 	@Column(name = "invoice_owner")
 	private String invoiceOwner;
-	
+
 	@Column(name = "invoice_type")
 	private String invoiceType;
-	
+
+	@Column(name = "invoice_sub_type")
+	private String invoiceSubType;
+
 	@Column(name = "invoice_dos")
 	private String invoiceDOS;
-	
+
 	@Column(name = "invoice_po_date")
 	private String invoicePoDate;
 
 	@Column(name = "invoice_pos")
 	private String invoicePOS;
-	
+
 	@Column(name = "invoice_state")
 	private String invoiceState;
-	
+
 	@Column(name = "invoice_po_number")
 	private String invoicePoNumber;
-	
+
 	@Column(name = "invoice_transport_mode")
 	private String invoiceTransportMode;
-	
+
 	@Column(name = "invoice_vehicle_number")
 	private String invoiceVehicleNumber;
-	
+
 	@Column(name = "invoice_reverse_charge")
 	private String invoiceReverseCharge;
-	
+
 	@Column(name = "invoice_total_amount_before_tax")
 	private String invoiceTotalAmountBeforeTax;
-	
+
 	@Column(name = "invoice_total_amount_after_tax")
 	private String invoiceTotalAmountAfterTax;
-	
+
 	@Column(name = "invoice_tax_amount")
 	private String invoiceTaxAmount;
-	
+
 	@Column(name = "invoice_igst_amount")
 	private String invoiceIgstAmount;
-	
+
 	@Column(name = "invoice_cgst_amount")
 	private String invoiceCgstAmount;
-	
+
 	@Column(name = "invoice_sgst_amount")
 	private String invoiceSgstAmount;
-	
-	@Column(name = "invoice_total_amount_words")
-	private String invoiceTotalAmountWords;
-	
-	@Column(name = "invoice_party_name")
-	private String invoicePartyName;
-	
-	@Column(name = "invoice_party_address")
-	private String invoicePartyAddress;
-	
-	@Column(name = "invoice_party_date")
-	private String invoicePartyDate;
-	
-	@Column(name = "invoice_party_gstin")
-	private String invoicePartyGstin;
-	
-	@Column(name = "invoice_party_state")
-	private String invoicePartyState;
-	
-	@OneToMany(cascade=CascadeType.ALL)
-    @JoinColumn(name="invoice_products_referece_no")
-    private List<InvoiceProductDetails> invoiceProductDetails;
-	
-	@OneToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name="invoice_bank_reference_no")
-    private InvoiceBankDetails invoiceBankDetails;
-	
-	@OneToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name="invoice_address_reference_no")
-    private InvoiceAddressDetails invoiceAddressDetails;
-	
-	@OneToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name="invoice_company_reference_no")
-    private Company invoiceCompanyDetails;
-		
-	
+
+	@Column(name = "invoice_key")
+	private String invoiceUniqueKey;
+
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "invoice_products_referece_no")
+	private List<InvoiceProductDetails> invoiceProductDetails;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "invoice_bank_reference_no")
+	private InvoiceBankDetails invoiceBankDetails;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "invoice_address_reference_no")
+	private InvoiceAddressDetails invoiceAddressDetails;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "invoice_company_reference_no")
+	private Company invoiceCompanyDetails;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "invoice_other_details_reference_no")
+	private InvoiceOtherDetails invoiceOtherDetails;
+
 	/**
 	 * @return the id
 	 */
@@ -353,6 +331,14 @@ public class InvoiceDetails {
 		this.invoiceTaxAmount = invoiceTaxAmount;
 	}
 
+	public String getInvoiceUniqueKey() {
+		return invoiceUniqueKey;
+	}
+
+	public void setInvoiceUniqueKey(String invoiceUniqueKey) {
+		this.invoiceUniqueKey = invoiceUniqueKey;
+	}
+
 	/**
 	 * @return the invoiceProductDetails
 	 */
@@ -384,14 +370,6 @@ public class InvoiceDetails {
 		this.invoiceSgstAmount = invoiceSgstAmount;
 	}
 
-	public String getInvoiceTotalAmountWords() {
-		return invoiceTotalAmountWords;
-	}
-
-	public void setInvoiceTotalAmountWords(String invoiceTotalAmountWords) {
-		this.invoiceTotalAmountWords = invoiceTotalAmountWords;
-	}
-
 	/**
 	 * @param invoiceProductDetails the invoiceProductDetails to set
 	 */
@@ -417,6 +395,9 @@ public class InvoiceDetails {
 	 * @return the invoiceAddressDetails
 	 */
 	public InvoiceAddressDetails getInvoiceAddressDetails() {
+		if (invoiceAddressDetails == null) {
+			invoiceAddressDetails = new InvoiceAddressDetails();
+		}
 		return invoiceAddressDetails;
 	}
 
@@ -442,129 +423,34 @@ public class InvoiceDetails {
 	}
 
 	/**
-	 * @return the type
+	 * @return the invoiceSubType
 	 */
-	public String getType() {
-		return type;
+	public String getInvoiceSubType() {
+		return invoiceSubType;
 	}
 
 	/**
-	 * @param type the type to set
+	 * @param invoiceSubType the invoiceSubType to set
 	 */
-	public void setType(String type) {
-		this.type = type;
+	public void setInvoiceSubType(String invoiceSubType) {
+		this.invoiceSubType = invoiceSubType;
 	}
 
 	/**
-	 * @return the invoicePartyName
+	 * @return the invoiceOtherDetails
 	 */
-	public String getInvoicePartyName() {
-		return invoicePartyName;
+	public InvoiceOtherDetails getInvoiceOtherDetails() {
+		if (invoiceOtherDetails == null) {
+			invoiceOtherDetails = new InvoiceOtherDetails();
+		}
+		return invoiceOtherDetails;
 	}
 
 	/**
-	 * @param invoicePartyName the invoicePartyName to set
+	 * @param invoiceOtherDetails the invoiceOtherDetails to set
 	 */
-	public void setInvoicePartyName(String invoicePartyName) {
-		this.invoicePartyName = invoicePartyName;
-	}
-
-	/**
-	 * @return the invoicePartyAddress
-	 */
-	public String getInvoicePartyAddress() {
-		return invoicePartyAddress;
-	}
-
-	/**
-	 * @param invoicePartyAddress the invoicePartyAddress to set
-	 */
-	public void setInvoicePartyAddress(String invoicePartyAddress) {
-		this.invoicePartyAddress = invoicePartyAddress;
-	}
-
-	/**
-	 * @return the invoicePartyDate
-	 */
-	public String getInvoicePartyDate() {
-		return invoicePartyDate;
-	}
-
-	/**
-	 * @param invoicePartyDate the invoicePartyDate to set
-	 */
-	public void setInvoicePartyDate(String invoicePartyDate) {
-		this.invoicePartyDate = invoicePartyDate;
-	}
-
-	/**
-	 * @return the invoicePartyGstin
-	 */
-	public String getInvoicePartyGstin() {
-		return invoicePartyGstin;
-	}
-
-	/**
-	 * @param invoicePartyGstin the invoicePartyGstin to set
-	 */
-	public void setInvoicePartyGstin(String invoicePartyGstin) {
-		this.invoicePartyGstin = invoicePartyGstin;
-	}
-
-	/**
-	 * @return the invoicePartyState
-	 */
-	public String getInvoicePartyState() {
-		return invoicePartyState;
-	}
-
-	/**
-	 * @param invoicePartyState the invoicePartyState to set
-	 */
-	public void setInvoicePartyState(String invoicePartyState) {
-		this.invoicePartyState = invoicePartyState;
-	}
-
-	/**
-	 * @return the invoiceAgainstInvoice
-	 */
-	public String getInvoiceAgainstInvoice() {
-		return invoiceAgainstInvoice;
-	}
-
-	/**
-	 * @param invoiceAgainstInvoice the invoiceAgainstInvoice to set
-	 */
-	public void setInvoiceAgainstInvoice(String invoiceAgainstInvoice) {
-		this.invoiceAgainstInvoice = invoiceAgainstInvoice;
-	}
-
-	/**
-	 * @return the invoiceIssueDate
-	 */
-	public String getInvoiceIssueDate() {
-		return invoiceIssueDate;
-	}
-
-	/**
-	 * @param invoiceIssueDate the invoiceIssueDate to set
-	 */
-	public void setInvoiceIssueDate(String invoiceIssueDate) {
-		this.invoiceIssueDate = invoiceIssueDate;
-	}
-
-	/**
-	 * @return the invoiceDocumentNumber
-	 */
-	public String getInvoiceDocumentNumber() {
-		return invoiceDocumentNumber;
-	}
-
-	/**
-	 * @param invoiceDocumentNumber the invoiceDocumentNumber to set
-	 */
-	public void setInvoiceDocumentNumber(String invoiceDocumentNumber) {
-		this.invoiceDocumentNumber = invoiceDocumentNumber;
+	public void setInvoiceOtherDetails(InvoiceOtherDetails invoiceOtherDetails) {
+		this.invoiceOtherDetails = invoiceOtherDetails;
 	}
 
 }

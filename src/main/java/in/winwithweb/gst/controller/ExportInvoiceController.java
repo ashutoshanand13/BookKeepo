@@ -26,7 +26,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 
+import in.winwithweb.gst.model.Accounts;
 import in.winwithweb.gst.model.Company;
+import in.winwithweb.gst.model.InvoiceType;
 import in.winwithweb.gst.model.json.InvoicePageData;
 import in.winwithweb.gst.model.sales.InvoiceDetails;
 import in.winwithweb.gst.service.AccountService;
@@ -65,7 +67,7 @@ public class ExportInvoiceController {
 		String user=request.getUserPrincipal().getName();
 		ModelAndView modelAndView = new ModelAndView();
 		Company company = companyDetailsService.findByUserName(user);
-		List<String> account = accountService.fetchAccountName(user);
+		List<Accounts> account = accountService.fetchAccountNameForInvoice(user);
 		if(company==null) {
 			modelAndView.addObject("message", "Please update company details before creating an Invoice");
 			modelAndView.addObject("company",new Company("exportInvoice"));
@@ -84,6 +86,7 @@ public class ExportInvoiceController {
 			}
 			modelAndView.addObject("logoImage",base64Encoded);
 			modelAndView.addObject("itemList", itemService.findByProductOwner(user));
+			modelAndView.addObject("pageName", InvoiceType.Export_Invoice.getType());
 			modelAndView.setViewName("exportInvoice");
 		}
 		return modelAndView;
@@ -101,9 +104,8 @@ public class ExportInvoiceController {
 		}
 
 		InvoiceDetails invoice = new InvoiceDetails();
-		invoice.setType("Export Invoice");
+		invoice.setInvoiceType(InvoiceType.Export_Invoice.getType());
 		invoice.setInvoiceOwner(principal.getName());
-		invoice.setInvoiceTotalAmountWords(CommonUtils.numberConverter(exportInvoiceData.getTtlTotalAmount()));
 
 		Company companyDetails = companyDetailsService.findByUserName(principal.getName());
 

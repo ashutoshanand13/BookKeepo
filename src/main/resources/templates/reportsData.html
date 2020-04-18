@@ -2,15 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{postLoginCommonPage}">
+	layout:decorate="~{postLoginCommonInvoicePage}">
 
 <head>
-<title>Download Invoice</title>
+<title th:text="${pagetitle}"></title>
+
 </head>
-<div layout:fragment="form_content" id="form_content">
-	<div class="form-items showreports">
+<div layout:fragment="invoice_fragment" id="form_content">
+	<div class="form-items table-width2 showreports">
 		<h3 class="form-title doubleunderlinetext" align="center">Reports</h3>
-		<div id="alert_showinvoice"></div>
+		<div id="alert_showinvoice"></div>		
 
 		<table id="example" class="display" style="width: 100%">
 			<thead>
@@ -53,23 +54,31 @@
 	</div>
 </div>
 <th:block layout:fragment="scripts">
-<link rel="stylesheet" th:href="@{/css/datatables/jquery.dataTables.min.css}">
-<link rel="stylesheet" th:href="@{/css/datatables/buttons.dataTables.min.css}">
-<script type="text/javascript" th:src="@{/js/datatables/jquery.min.js}"></script>
-<script type="text/javascript" th:src="@{/js/datatables/jszip.min.js}"></script>
-<script type="text/javascript" th:src="@{/js/datatables/pdfmake.min.js}"></script>
-<script type="text/javascript" th:src="@{/js/datatables/vfs_fonts.js}"></script>
-<script type="text/javascript" th:src="@{/js/datatables/jquery.dataTables.min.js}"></script>
-<script type="text/javascript" th:src="@{/js/datatables/dataTables.buttons.min.js}"></script>
-<script type="text/javascript" th:src="@{/js/datatables/buttons.flash.min.js}"></script>
-<script type="text/javascript" th:src="@{/js/datatables/buttons.html5.min.js}"></script>
-<script type="text/javascript" th:src="@{/js/datatables/buttons.print.min.js}"></script>
-<script type="text/javascript">
-	$(document).ready(function() {
-		$('#example').DataTable({
-			dom : 'Bfrtip',
-			buttons : [ 'copy', 'csv', 'excel', 'pdf', 'print' ]
+	<link rel="stylesheet"
+		th:href="@{/css/datatables/jquery.dataTables.min.css}">
+	<link rel="stylesheet"
+		th:href="@{/css/datatables/buttons.dataTables.min.css}">
+	<script type="text/javascript" th:src="@{/js/datatables/jquery.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/datatables/jszip.min.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/js/datatables/pdfmake.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/datatables/vfs_fonts.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/js/datatables/jquery.dataTables.min.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/js/datatables/dataTables.buttons.min.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/js/datatables/buttons.flash.min.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/js/datatables/buttons.html5.min.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/js/datatables/buttons.print.min.js}"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#example').DataTable({
+				dom : 'Bfrtip',
+				buttons : [ 'copy', 'csv', 'excel', 'pdf', 'print' ]
+			});
 		});
-	});
-</script>
+	</script>
 </th:block>

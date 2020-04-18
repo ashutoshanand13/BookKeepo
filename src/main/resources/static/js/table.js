@@ -12,9 +12,11 @@
  var discount = [];
  var isGstValid = false;
  var shippingType ='';
+ var isInvoiceNumberUnique = false;
  
  var controllerMap = { salesInvoice: "/home/salesinvoice", exportInvoice: "/home/exportinvoice", debitNote:"/home/debitnote", creditNote:"/home/creditnote" , purchaseOrder:"/home/addpurchaseorder"  , purchaseInvoice:"/home/addpurchaseinvoice"};
- var fileMap = { salesInvoice: "salesinvoice.pdf", exportInvoice: "exportinvoice.pdf", debitNote:"debitnote.pdf", creditNote:"creditNote.pdf", purchaseOrder:"purchaseOrder.pdf", purchaseInvoice:"purchaseInvoice.pdf" };
+ var fileMap = { salesInvoice: "Tax_Invoice", exportInvoice: "Export_Invoice", debitNote:"Debit_Note", creditNote:"Credit_Note", purchaseOrder:"Purchase_Order", purchaseInvoice:"Purchase_Invoice" };
+ var extensionMap = { salesInvoice: "invoiceNo", exportInvoice: "invoiceNo", debitNote:"invoiceNo", creditNote:"invoiceNo", purchaseOrder:"poNo", purchaseInvoice:"invoiceNo" };
  
  var gstRegex = /^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$/;
  
@@ -65,10 +67,6 @@ function updateTableColumn(showAlert) {
 	var gstHeader = $('#headerGstin').text();
 	var gstValue = $("[name=gstinBill]").val();
 	
-	if(gstValue === undefined) {
-		var gstValue = $("[name=partyGstin]").val();
-	}
-
 	disableColumns(gstHeader, gstValue);
 
 	if (showAlert) {
@@ -127,19 +125,22 @@ function setAlert(message) {
 	$("#alert_placeholder").fadeTo(2000, 500).slideUp(500);
 }
 
+function submitHandler(e){
+	e.preventDefault();
+	}
+
  $BTN.on('click', function () {
+	 
+	 document.querySelector('form').addEventListener('submit', submitHandler);
    var json = '';
    var name = $(this).attr("name");
    var url = controllerMap[name];
    var fileName = fileMap[name];
-   
+   fileName = fileName+"_"+$("[name="+extensionMap[name]+"]").val()+".pdf";
+
    var f = $("#form")[0];
    
-   if(name==='purchaseOrder' ||name==='purchaseInvoice'){
-	   isGstValid=true;
-   }
-   
-   if(isGstValid && f.reportValidity()) {
+   if(isGstValid && f.reportValidity() && isInvoiceNumberUnique) {
 		$('#tableJson table').map(function(i, table){
 			   var $rows = $("#" +table.id).find('tr:not(:hidden)');
 			   var newFormData = [];
@@ -160,10 +161,12 @@ function setAlert(message) {
 						var json = JSON.stringify($('#form').serializeJSON())
 								.replace(/\\/g, "").replace("\"[", "[")
 								.replace("]\"", "]");
-
+						
 						$('#overlay').fadeIn();
+						
 						$.ajax({
 							url : url,
+							async : true,
 							contentType : "application/text; charset=utf-8",
 							type : 'POST',
 							datatype : 'text',
@@ -176,15 +179,17 @@ function setAlert(message) {
 								link.href = window.URL.createObjectURL(blob);
 								link.download = fileName;
 								link.click();
-								$("#form")[0].reset();
+								f.reset();
+								$('input').focus();
+								$('input').blur();
 								window.scrollTo(0, 0);
 								setValues();
 								isGstValid=false;
+								isInvoiceNumberUnique=false;
 							}
 						});
 						$('#overlay').delay(500).fadeOut();
    }
-   isGstValid=false;
  });
 
 function setValues() {
@@ -197,11 +202,11 @@ function setValues() {
 	        $tblrow.on('change', function () {
 	        	var product = $tblrow.find("#productDesc").val();
 	        	
-	        	if(product !== "") {
+	        	if(product !== "0") {
 					$.ajax({
 						type : "GET",
 						contentType : "application/json",
-						url : "getItemData?itemDesc=" +product,
+						url : "getItemData?itemId=" +product,
 						dataType : 'json',
 						async : false,
 						success : function(data) {
@@ -211,6 +216,7 @@ function setValues() {
 							$tblrow.find("[id=discount]").val(parseFloat(data.productDiscount).toFixed(2));
 							$tblrow.find("[id=rate]").val(parseFloat(data.productRate).toFixed(2));
 							$tblrow.find("[id=qty]").val(parseFloat(data.productQuantity).toFixed(2));
+							$tblrow.find("[id=productDesc]").val(data.productDescription);
 						}
 						});
 	        	}
@@ -441,17 +447,17 @@ $("[name=nameBill]").change(function() {
 			url : "getAccountData?accountName=" + accountName,
 			dataType : 'json',				
 			success : function(data) {
-				$("[name=nameBill").val(data.accountName);
-				$("[name=nameShip").val(data.accountName);
-				$("[name=addressBill").val(data.accountAddress);
-				$("[name=addressShip").val(data.accountAddress);
-				$("[name=gstinBill").val(data.gstin);
-				$("[name=gstinShip").val(data.gstin);
-				$("[name=stateBill").val(data.accountState);
-				$("[name=stateShip").val(data.accountState);
-				$("[name=gstinBill").focus();
-				$("[name=gstinShip").focus();
-				$("[name=gstinShip").blur();
+				$("[name=nameBill]").val(data.accountName);
+				$("[name=nameShip]").val(data.accountName);
+				$("[name=addressBill]").val(data.accountAddress);
+				$("[name=addressShip]").val(data.accountAddress);
+				$("[name=gstinBill]").val(data.gstin);
+				$("[name=gstinShip]").val(data.gstin);
+				$("[name=stateBill]").val(data.accountState);
+				$("[name=stateShip]").val(data.accountState);
+				$("[name=gstinBill]").focus();
+				$("[name=gstinShip]").focus();
+				$("[name=gstinShip]").blur();
 			}
 			});
 });
@@ -466,18 +472,45 @@ $("#againstInvoicedropdown").change(function() {
 			url : "invoicedetails?invoiceNo=" + invoiceNumber,
 			dataType : 'json',				
 			success : function(data) {
-				$("[name=invoiceDate").val(data.invoiceDate);
-				$("[name=state").val(data.invoiceState);
-				$("[name=reverseCharge").val(data.invoiceReverseCharge);
-				$("[name=invoiceDate").blur();
+				$("[name=againstInvoiceDate]").val(data.invoiceDate);
+				$("[name=state]").val(data.invoiceState);
+				$("[name=reverseCharge]").val(data.invoiceReverseCharge);
+				$("[name=againstInvoiceDate]").blur();
 			}
 			});
 		
 	} 
 	else {
-		$("[name=invoiceDate").val("");
-		$("[name=state").val("");
-		$("[name=reverseCharge").val("");
-		$("[name=invoiceDate").blur();
+		$("[name=againstInvoiceDate]").val("");
+		$("[name=state]").val("");
+		$("[name=reverseCharge]").val("");
+		$("[name=againstInvoiceDate]").blur();
 	}
 });
+
+function checkInvoiceNo(value) {
+	var invoiceNo = $(value).val();
+	var pageName = $("[name=pageName]").val();
+
+	if(invoiceNo !== "") {
+		$.ajax({
+			type : "GET",
+			contentType : "application/json",
+			url : "invoiceunique?invoiceNo=" + invoiceNo+"&pageName="+pageName,
+			dataType : 'json',				
+			success : function(data) {
+				if(data === null) {
+					isInvoiceNumberUnique = true;
+				}
+				else {
+					isInvoiceNumberUnique = false;
+					alert("Invoice Number already exists");
+					$(value).val("");
+					$(value).focus();
+				}
+			}
+			});
+	}
+	
+	
+}

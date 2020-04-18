@@ -27,7 +27,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 
+import in.winwithweb.gst.model.Accounts;
 import in.winwithweb.gst.model.Company;
+import in.winwithweb.gst.model.InvoiceType;
 import in.winwithweb.gst.model.json.InvoicePageData;
 import in.winwithweb.gst.model.sales.InvoiceDetails;
 import in.winwithweb.gst.service.AccountService;
@@ -43,43 +45,42 @@ import in.winwithweb.gst.util.InvoiceUtil;
  */
 @Controller
 public class DebitNoteController {
-	
+
 	@Autowired
 	CompanyDetailsService companyDetailsService;
-	
+
 	@Autowired
 	InvoiceService invoiceService;
-	
+
 	@Autowired
 	private AccountService accountService;
-	
+
 	@Autowired
 	Gson gson;
-	
+
 	@Autowired
 	private ItemService itemService;
-	
+
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
-	
+
 	@RequestMapping(value = "/home/debitnote", method = RequestMethod.GET)
 	public ModelAndView setupSales(HttpServletRequest request) {
-		String user=request.getUserPrincipal().getName();
+		String user = request.getUserPrincipal().getName();
 		ModelAndView modelAndView = new ModelAndView();
 		Company company = companyDetailsService.findByUserName(user);
-		List<String> account = accountService.fetchAccountName(user);
+		List<Accounts> account = accountService.fetchAccountNameForInvoice(user);
 		List<String> ownerInvoices = new ArrayList<>();
 		ownerInvoices.add("Against Invoice");
-		ownerInvoices.addAll(invoiceService.findbyInvoiceOwnerType(user, "Tax Invoice"));
-		if(company==null) {
+		ownerInvoices.addAll(invoiceService.findByInvoiceOwnerAndInvoiceType(user, InvoiceType.Tax_Invoice.getType()));
+		if (company == null) {
 			modelAndView.addObject("message", "Please update company details before creating an Invoice");
-			modelAndView.addObject("company",new Company("debitNote"));
-			modelAndView.addObject("logoImage",CommonUtils.getImgfromResource("/static/images/image-400x400.jpg"));
+			modelAndView.addObject("company", new Company("debitNote"));
+			modelAndView.addObject("logoImage", CommonUtils.getImgfromResource("/static/images/image-400x400.jpg"));
 			modelAndView.setViewName("addCompany");
-		}
-		else if(ownerInvoices.size() == 1) {
+		} else if (ownerInvoices.size() == 1) {
 			modelAndView.addObject("message", "Please add an Invoice");
 			modelAndView.addObject("accountList", account);
-			modelAndView.addObject("company",company);
+			modelAndView.addObject("company", company);
 			byte[] encodeBase64 = Base64.getEncoder().encode(company.getCompanyLogo());
 			String base64Encoded = null;
 			try {
@@ -87,30 +88,32 @@ public class DebitNoteController {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			modelAndView.addObject("logoImage",base64Encoded);
+			modelAndView.addObject("logoImage", base64Encoded);
+			modelAndView.addObject("itemList", itemService.findByProductOwner(user));
+			modelAndView.addObject("pageName", InvoiceType.Tax_Invoice.getType());
 			modelAndView.setViewName("salesInvoice");
-		}
-		else {
-		modelAndView.addObject("accountList", account);
-		modelAndView.addObject("invoiceList", ownerInvoices);
-		modelAndView.addObject("company",company);
-		byte[] encodeBase64 = Base64.getEncoder().encode(company.getCompanyLogo());
-		String base64Encoded = null;
-		try {
-			base64Encoded = new String(encodeBase64);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		modelAndView.addObject("logoImage",base64Encoded);
-		modelAndView.addObject("itemList", itemService.findByProductOwner(user));
-		modelAndView.setViewName("debitNote");
+		} else {
+			modelAndView.addObject("accountList", account);
+			modelAndView.addObject("invoiceList", ownerInvoices);
+			modelAndView.addObject("company", company);
+			byte[] encodeBase64 = Base64.getEncoder().encode(company.getCompanyLogo());
+			String base64Encoded = null;
+			try {
+				base64Encoded = new String(encodeBase64);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			modelAndView.addObject("logoImage", base64Encoded);
+			modelAndView.addObject("itemList", itemService.findByProductOwner(user));
+			modelAndView.addObject("pageName", InvoiceType.Debit_Note.getType());
+			modelAndView.setViewName("debitNote");
 		}
 		return modelAndView;
 	}
-	
+
 	@RequestMapping(value = "/home/debitnote", method = RequestMethod.POST, produces = MediaType.APPLICATION_PDF_VALUE)
-	public void setupDebitNoteData(@RequestBody String debitNoteJson, Principal principal,
-			HttpServletResponse response) throws IOException {
+	public void setupDebitNoteData(@RequestBody String debitNoteJson, Principal principal, HttpServletResponse response)
+			throws IOException {
 		InvoicePageData debitNoteData = null;
 		try {
 			debitNoteData = gson.fromJson(debitNoteJson, InvoicePageData.class);
@@ -119,22 +122,23 @@ public class DebitNoteController {
 		}
 
 		InvoiceDetails invoice = new InvoiceDetails();
-		invoice.setType("Debit Note");
+		invoice.setInvoiceType(InvoiceType.Debit_Note.getType());
 		invoice.setInvoiceOwner(principal.getName());
-		invoice.setInvoiceTotalAmountWords(CommonUtils.numberConverter(debitNoteData.getTtlTotalAmount()));
 
 		Company companyDetails = companyDetailsService.findByUserName(principal.getName());
 
 		InvoiceUtil.updateInvoice(invoice, debitNoteData, companyDetails);
+
 		invoiceService.saveInvoice(invoice);
 
 		ByteArrayOutputStream invoiceData = InvoiceUtil.createPDF(invoice);
 		response.setContentType("application/pdf");
-		
+
 		Date date = new Date();
 		String time = sdf.format(new Timestamp(date.getTime()));
-		
-		response.addHeader("Content-Disposition", "attachment; filename=invoice_"+invoice.getInvoiceNumber()+"_"+time+".pdf");
+
+		response.addHeader("Content-Disposition",
+				"attachment; filename=invoice_" + invoice.getInvoiceNumber() + "_" + time + ".pdf");
 		response.setContentLength(invoiceData.size());
 
 		OutputStream out = response.getOutputStream();

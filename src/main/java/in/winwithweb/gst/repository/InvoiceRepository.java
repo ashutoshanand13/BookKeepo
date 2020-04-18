@@ -15,10 +15,20 @@ import in.winwithweb.gst.model.sales.InvoiceDetails;
  *
  */
 @Repository("invoiceRepository")
-public interface InvoiceRepository extends JpaRepository<InvoiceDetails, Long>{
+public interface InvoiceRepository extends JpaRepository<InvoiceDetails, Long> {
 	List<InvoiceDetails> findByInvoiceOwner(String name);
-	
+
 	InvoiceDetails findById(int id);
-	
-	InvoiceDetails findByInvoiceNumber(String invoiceNumber);
+
+	InvoiceDetails findByInvoiceNumberAndInvoiceOwner(String invoiceNumber, String owner);
+
+	InvoiceDetails findByInvoiceUniqueKey(String key);
+
+	List<InvoiceDetails> findByInvoiceOwnerAndInvoiceType(String invoiceOwner, String invoiceType);
+
+	InvoiceDetails findByInvoiceNumberAndInvoiceOwnerAndInvoiceType(String invoiceNo, String owner, String type);
+
+	List<InvoiceDetails> findByInvoiceOwnerAndInvoiceTypeAndInvoiceSubType(String invoiceOwner, String invoiceType,
+			String invoiceSubType);
+
 }

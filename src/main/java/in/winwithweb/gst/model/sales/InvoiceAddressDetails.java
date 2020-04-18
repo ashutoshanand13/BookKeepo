@@ -33,7 +33,6 @@ public class InvoiceAddressDetails {
 	@Column(name = "invoice_biller_address_name")
 	private String invoiceBillerAddressName;
 	
-	
 	@Column(name = "invoice_biller_gstin")
 	private String invoiceBillerGst;
 	

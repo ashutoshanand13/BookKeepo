@@ -21,7 +21,7 @@
 </div>
 <div layout:fragment="form_content" id="form_content">
 	<div class="form-items">
-		<h3 class="form-title doubleunderlinetext">Add Item Details</h3>
+		<h3 class="form-title doubleunderlinetext">Add/Update Item Details</h3>
 		<div id="alert" th:if="${message}" th:text="${message} "
 			class="alert alert-info fade-in"></div>
 		<form autocomplete="off" th:action="@{/home/additem}"
@@ -32,59 +32,55 @@
 					<div class="form-group">
 						<label>Item List</label> <select
 							class="form-control" id="selectbasic" name="selectbasic">
-							<option th:each="itemValue : ${itemList}" th:value="${itemValue}"
-								th:text="${itemValue}"></option>
+							<option th:each="itemValue : ${itemList}" th:value="${itemValue.id}"
+								th:text="${itemValue.productDescription}"></option>
 						</select>
 
 					</div>
 				</div>
-				<div class="col-md-6 form-group"></div>
 			</div>
 			<div class="row">
-				<div class="col-md-2 form-group"><label>Item Details</label>
+				<div class="col-md-4 form-group"><label class="field-description">Item Details</label>
 					<textarea cols="40" rows="5" style="height: 60px;"
-						placeholder="Product Description"
 						th:field="*{productDescription}" required="required"></textarea>
+					<label class="field-description">GST Rate</label>
 					<input type="text" onfocus="(this.type='number')" min="0" class="form-control"
-						th:field="*{productGstRate}" placeholder="GST Rate" required>
+						th:field="*{productGstRate}" required>
 				</div>
-				<div class="col-md-2 form-group">
+				<div class="col-md-4 form-group">
 					<div class="form-group">
-						<label></label>
+						<label class="field-description">HSN</label>
 						<input type="text" class="form-control"
-						th:field="*{productHnscode}" placeholder="HSN Code" required>
-					</div>
-				</div>
-				<div class="col-md-2 form-group">
-					<div class="form-group">
-						<label></label>
+						th:field="*{productHnscode}"required>
+						<div class="empty-space"></div>
+						<div class="empty-space"></div>
+						<div class="empty-space"></div>
+						<label class="field-description">UOM</label>
 						<input type="text" class="form-control"
-						th:field="*{productUom}" placeholder="UOM" required>
+						th:field="*{productUom}" required>
 					</div>
 				</div>
 				<div class="col-md-2 form-group">
 					<div class="form-group">
-						<label></label>
+					<label class="field-description">Quantity</label>
 						<input type="text" onfocus="(this.type='number')" min="0" class="form-control"
-						th:field="*{productQuantity}" placeholder="Qty" required>
+						th:field="*{productQuantity}" required>
+						<div class="empty-space"></div>
+						<div class="empty-space"></div>
+						<div class="empty-space"></div>
+					<label class="field-description">Rate</label>
+						<input type="text" onfocus="(this.type='number')" min="0" class="form-control"
+						th:field="*{productRate}" required>
 					</div>
 				</div>
 				<div class="col-md-2 form-group">
 					<div class="form-group">
-						<label></label>
+						<label class="field-description">Discount</label>
 						<input type="text" onfocus="(this.type='number')" min="0" class="form-control"
-						th:field="*{productRate}" placeholder="Rate" required>
+						th:field="*{productDiscount}" required>
 					</div>
 				</div>
-				<div class="col-md-2 form-group">
-					<div class="form-group">
-						<label></label>
-						<input type="text" onfocus="(this.type='number')" min="0" class="form-control"
-						th:field="*{productDiscount}" placeholder="Discount" required>
-					</div>
-				</div>
-
-
+										<input type="hidden" th:field="*{id}">
 			</div>
 			<div class="form-button text-right">
 				<button type="reset" class="btn btn-light">Reset</button>
@@ -103,12 +99,12 @@
 	});
 	
 	function getItem() {
-		var itemDesc = $("#selectbasic").val();
-		if(itemDesc !== ""){
+		var itemId = $("#selectbasic").val();
+		if(itemId !== '0'){
 			$.ajax({
 				type : "GET",
 				contentType : "application/json",
-				url : "getItemData?itemDesc=" + itemDesc,
+				url : "getItemData?itemId=" + itemId,
 				dataType : 'json',				
 				success : function(data) {
 					$("[name=productDescription").val(data.productDescription);
@@ -118,8 +114,18 @@
 					$("[name=productDiscount").val(data.productDiscount);
 					$("[name=productRate").val(data.productRate);
 					$("[name=productQuantity").val(data.productQuantity);
+					$("[name=id").val(data.id);
 				}
 				});
+		} else {
+			$("[name=productDescription").val("");
+			$("[name=productGstRate").val("");
+			$("[name=productHnscode").val("");
+			$("[name=productUom").val("");
+			$("[name=productDiscount").val("");
+			$("[name=productRate").val("");
+			$("[name=productQuantity").val("");
+			$("[name=id").val(0);
 		}
 	};
 	</script>

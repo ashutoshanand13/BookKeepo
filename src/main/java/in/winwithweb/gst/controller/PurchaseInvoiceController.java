@@ -23,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 
 import in.winwithweb.gst.model.Company;
+import in.winwithweb.gst.model.InvoiceType;
 import in.winwithweb.gst.model.json.InvoicePageData;
 import in.winwithweb.gst.model.sales.InvoiceDetails;
 import in.winwithweb.gst.service.CompanyDetailsService;
@@ -78,6 +79,7 @@ public class PurchaseInvoiceController {
 		}
 		modelAndView.addObject("logoImage",base64Encoded);
 		modelAndView.addObject("itemList", itemService.findByProductOwner(user));
+		modelAndView.addObject("pageName", InvoiceType.Purchase_Invoice.getType());
 		modelAndView.setViewName("addPurchaseInvoice");
 		}
 		return modelAndView;
@@ -94,9 +96,8 @@ public class PurchaseInvoiceController {
 		}
 
 		InvoiceDetails invoice = new InvoiceDetails();
-		invoice.setType("Purchase Invoice");
+		invoice.setInvoiceType(InvoiceType.Purchase_Invoice.getType());
 		invoice.setInvoiceOwner(principal.getName());
-		invoice.setInvoiceTotalAmountWords(CommonUtils.numberConverter(salesInvoiceData.getTtlTotalAmount()));
 
 		Company companyDetails = companyDetailsService.findByUserName(principal.getName());
 

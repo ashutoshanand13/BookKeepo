@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{postLoginCommonPage}">
+	layout:decorate="~{postLoginCommonInvoicePage}">
 <head>
 <title>Purchase Order</title>
 </head>
@@ -12,10 +12,16 @@
 		<div class="form-content form-items needs-validation">
 			<table id="headerDetailsTable" style="border: 1px solid black;"
 				class="table table-width table-responsive-md text-center" >
+				<colgroup>
+						<col width="33%">
+						<col width="34%">
+						<col width="33%">
+						</colgroup>
 				<thead class="table-width">
 					<tr bgcolor="#BFD6E9">
 						<th class="text-center" width="100%" height="60" colspan="3"><h3
-								class="text-center font-weight-bold text-uppercase">Purchase Order</h3></th>
+								class="text-center font-weight-bold text-uppercase">[[${pageName}]]</h3>
+								<input type="hidden" name="pageName" th:value="${pageName}"/></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -39,14 +45,19 @@
 
 			 <table id="invoiceDetailsTable" border="1"
 				class="table table-width table-responsive-md text-center">
+				<colgroup>
+						<col width="50%">
+						<col width="25%">
+						<col width="25%">
+						</colgroup>
 				<thead class="table-width">
 					<tr bgcolor="#BFD6E9">
-						<th class="text-center" width="100%" colspan="2"><h6
+						<th class="text-center" width="100%" colspan="3"><h6
 								class="text-center font-weight-bold text-uppercase py-3">Purchase Order</h6></th>
 					</tr>
 					<tr bgcolor="#BFD6E9">
 						<th class="text-center"><span style='font-weight: bold;'>Party Details</span></th>
-						<th class="text-center"><span style='font-weight: bold;'>PO Details</span></th>
+						<th class="text-center" colspan="2"><span style='font-weight: bold;'>PO Details</span></th>
 					</tr>
 				</thead>
 				<tbody class="table-width">
@@ -54,77 +65,18 @@
 						<td class="pt-3-half"><input type="text" class="form-control"
 							name="partyName" placeholder="Name" required="required"></td>
 						<td class="pt-3-half"><input type="text" class="form-control"
-							name="poNo" placeholder="PO No." required="required"></td>
-					</tr>
-					<tr>
-						<td class="pt-3-half"><input type="text" class="form-control"
-							name="partyAddress" placeholder="Address" required="required"></td>
-						<td class="pt-3-half"><input type="text" class="form-control"
-							name="poDate" onfocus="(this.type='date')"
+							name="invoiceNo" placeholder="PO No." required="required" onblur="checkInvoiceNo(this)"></td>
+							<td class="pt-3-half"><input type="text" class="form-control"
+							name="invoiceDate" onfocus="(this.type='date')"
 							onblur="if(!this.value)this.type='text'" placeholder="PO Date"
 							required="required"></td>
 					</tr>
 					<tr>
 						<td class="pt-3-half"><input type="text" class="form-control"
-							name="partyDate" onfocus="(this.type='date')"
-							onblur="if(!this.value)this.type='text'" placeholder="Date"
-							required="required"></td>
-						<td class="pt-3-half"><input type="text" class="form-control"
+							name="partyAddress" placeholder="Address" required="required"></td>
+							<td class="pt-3-half" colspan="2"><input type="text" class="form-control"
 							name="transportMode" placeholder="Transport Mode"
 							required="required"></td>
-					</tr>
-					<tr>
-						<td class="pt-3-half"><input type="text" class="form-control"
-							name="partyGstin" placeholder="GSTIN" onblur="validateGST(this)"
-							pattern="^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$"
-							required="required"
-							oninvalid="this.setCustomValidity('GST Identification Number is not valid. It should be in this 11AAAAA1111Z1A1 format')" oninput="setCustomValidity('')"></td>
-						<td class="pt-3-half"><input type="text" class="form-control"
-							name="vehicleNo" placeholder="Vehicle No" required="required"></td>
-					</tr>
-					<tr>
-						<td class="pt-3-half"><input type="text" class="form-control"
-							name="partyState" placeholder="State" required="required"></td>
-						<td class="pt-3-half" bgcolor="#EEFF74"><input type="text"
-							class="form-control" name="reverseCharge"
-							placeholder="Reverse Charge (Y/N)" onKeyDown="inputValidate()" maxlength="1" required="required"></td>
-					</tr>
-				</tbody>
-			</table> 
-
-			<!-- <table id="partyDetailsTable" border="1"
-				class="table table-width table-responsive-md text-center">
-				<thead class="table-width">
-					<tr bgcolor="#BFD6E9">
-						<th class="text-center" width="100%" colspan="2"><h6
-								class="text-center font-weight-bold text-uppercase py-3">Purchase Order</h6></th>
-					</tr>
-				</thead>
-
-				<thead>
-					<tr bgcolor="#BFD6E9">
-						<th class="text-center"><span style='font-weight: bold;'>Party Details</span></th>
-						<th class="text-center"><span style='font-weight: bold;'>PO Details</span></th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td class="pt-3-half">							
-							<input list="select" class="form-control"
-							name="nameBill" placeholder="Name" autocomplete="off"> <datalist
-								id="select">
-								<option th:each="account : ${accountList}" th:value="${account}"
-									th:text="${account}"></option>
-							</datalist>
-						</td>
-						<td class="pt-3-half"><input type="text" class="form-control"
-							name="nameShip" placeholder="Namessss" required="required"></td>
-					</tr>
-					<tr>
-						<td class="pt-3-half"><input type="text" class="form-control"
-							name="addressBill" placeholder="Address" required="required"></td>
-						<td class="pt-3-half"><input type="text" class="form-control"
-							name="addressShip" placeholder="Address" required="required"></td>
 					</tr>
 					<tr>
 						<td class="pt-3-half"><input type="text" class="form-control"
@@ -132,23 +84,19 @@
 							pattern="^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$"
 							required="required"
 							oninvalid="this.setCustomValidity('GST Identification Number is not valid. It should be in this 11AAAAA1111Z1A1 format')" oninput="setCustomValidity('')"></td>
-						<td class="pt-3-half"><input type="text" class="form-control"
-							name="gstinShip" placeholder="GSTIN" onblur="validateGST(this)"
-							pattern="^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$"
-							required="required"
-							oninvalid="this.setCustomValidity('GST Identification Number is not valid. It should be in this 11AAAAA1111Z1A1 format')" oninput="setCustomValidity('')"></td>
+						<td class="pt-3-half" colspan="2"><input type="text" class="form-control"
+							name="vehicleNo" placeholder="Vehicle No" required="required"></td>
 					</tr>
 					<tr>
 						<td class="pt-3-half"><input type="text" class="form-control"
-							name="stateBill" placeholder="State" required="required"></td>
-						<td class="pt-3-half"><input type="text" class="form-control"
-							name="stateShip" placeholder="State" required="required"></td>
+							name="partyState" placeholder="State" required="required"></td>
+						<td class="pt-3-half" bgcolor="#EEFF74" colspan="2"><input type="text"
+							class="form-control" name="reverseCharge"
+							placeholder="Reverse Charge (Y/N)" onKeyDown="inputValidate()" maxlength="1" required="required"></td>
 					</tr>
-
 				</tbody>
-
-			</table> -->
-
+			</table> 
+			
 			<div id = "alert_placeholder"></div>
 
 			<div id="tableJson">
@@ -196,8 +144,8 @@
 						</thead>
 						<tbody>
 						<datalist id="data">
-								<option th:each="item : ${itemList}" th:value="${item}"
-									th:text="${item}"></option>
+								<option th:each="item : ${itemList}" th:value="${item.id}"
+									th:text="${item.productDescription}"></option>
 							</datalist>
 							<tr>
 								<td class="pt-3-half"><input type="text" id="srNo"
@@ -375,10 +323,6 @@ window.onload = function() {
 	setValues();
 };
 
-window.onbeforeunload = function() {
-    return "Are you sure you want to leave this page?"; // you can make this dynamic, ofcourse...
- };
- 
  function inputValidate(){
 	   var e = event || window.event;  
 	   var key = e.keyCode || e.which;                              

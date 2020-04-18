@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{postLoginCommonPage}">
+	layout:decorate="~{postLoginCommonInvoicePage}">
 <head>
 <title>Export Invoice</title>
 </head>
@@ -12,6 +12,11 @@
 		<div class="form-content form-items needs-validation">
 			<table id="headerDetailsTable" style="border: 1px solid black;"
 				class="table table-width table-responsive-md text-center" >
+				<colgroup>
+						<col width="33%">
+						<col width="34%">
+						<col width="33%">
+						</colgroup>
 				<thead class="table-width">
 					<tr bgcolor="#BFD6E9">
 						<th class="text-center" width="100%" height="60" colspan="3"><h3
@@ -42,14 +47,14 @@
 				<thead class="table-width">
 					<tr bgcolor="#BFD6E9">
 						<th class="text-center" width="100%" colspan="2"><h6
-								class="text-center font-weight-bold text-uppercase py-3">Export
-								Invoice</h6></th>
+								class="text-center font-weight-bold text-uppercase py-3">[[${pageName}]]</h6>
+								<input type="hidden" name="pageName" th:value="${pageName}"/></th>
 					</tr>
 				</thead>
 				<tbody class="table-width">
 					<tr>
 						<td class="pt-3-half"><input type="text" class="form-control"
-							name="invoiceNo" placeholder="Invoice No." required="required"></td>
+							name="invoiceNo" placeholder="Invoice No." required="required" onblur="checkInvoiceNo(this)"></td>
 						<td class="pt-3-half"><input type="text" class="form-control"
 							name="poNo" placeholder="PO No." required="required"></td>
 					</tr>
@@ -106,8 +111,8 @@
 							<input list="select" class="form-control"
 							name="nameBill" placeholder="Name" autocomplete="off"> <datalist
 								id="select">
-								<option th:each="account : ${accountList}" th:value="${account}"
-									th:text="${account}"></option>
+								<option th:each="account : ${accountList}" th:value="${account.id}"
+									th:text="${account.accountName}"></option>
 							</datalist>
 						</td>
 						<td class="pt-3-half"><input type="text" class="form-control"
@@ -189,8 +194,8 @@
 						</thead>
 						<tbody>
 						<datalist id="data">
-								<option th:each="item : ${itemList}" th:value="${item}"
-									th:text="${item}"></option>
+								<option th:each="item : ${itemList}" th:value="${item.id}"
+									th:text="${item.productDescription}"></option>
 							</datalist>
 							<tr>
 								<td class="pt-3-half"><input type="text" id="srNo"
@@ -370,10 +375,6 @@
 window.onload = function() {
 	setValues();
 };
-
-window.onbeforeunload = function() {
-    return "Are you sure you want to leave this page?"; // you can make this dynamic, ofcourse...
- };
  
  function inputValidate(){
 	   var e = event || window.event;  

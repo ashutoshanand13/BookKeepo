@@ -4,6 +4,7 @@
 package in.winwithweb.gst.controller;
 
 import java.security.Principal;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -26,29 +27,30 @@ import in.winwithweb.gst.service.ItemService;
 
 @Controller
 public class ItemController {
-	
+
 	@Autowired
 	private ItemService itemService;
 
 	@RequestMapping(value = { "/home/additem" }, method = RequestMethod.GET)
 	public ModelAndView getItemPage(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
-		String user=request.getUserPrincipal().getName();
-		modelAndView.addObject("itemList", itemService.findByProductOwner(user));
+		String user = request.getUserPrincipal().getName();
+		List<InvoiceProductDetails> itemList = itemService.fetchAllItemsForItem(user);
+		modelAndView.addObject("itemList", itemList);
 		modelAndView.addObject("item", new InvoiceProductDetails());
-		
+
 		modelAndView.setViewName("addItem");
 		return modelAndView;
 	}
-	
+
 	@RequestMapping(value = "/home/additem", method = RequestMethod.POST)
 	public ModelAndView addItem(@Valid @ModelAttribute("item") InvoiceProductDetails item, BindingResult bindingResult,
 			Principal principal) {
 		ModelAndView modelAndView = new ModelAndView();
-		String user=principal.getName();
-		InvoiceProductDetails isItemExists = itemService.findByProductDescription(item.getProductDescription(), user);
-		
-		if(isItemExists != null) {
+		String user = principal.getName();
+		InvoiceProductDetails isItemExists = itemService.findById(item.getId());
+
+		if (isItemExists != null) {
 			isItemExists.setProductDescription(item.getProductDescription());
 			isItemExists.setProductHnscode(item.getProductHnscode());
 			isItemExists.setProductUom(item.getProductUom());
@@ -58,17 +60,25 @@ public class ItemController {
 			isItemExists.setProductDiscount(item.getProductDiscount());
 			itemService.saveItem(isItemExists);
 			modelAndView.addObject("message", "Item Updated Successfully");
-			modelAndView.addObject("item", item);
-		} 
-		else {
+			modelAndView.addObject("item", new InvoiceProductDetails());
+		} else {
 			item.setProductOwner(user);
 			itemService.saveItem(item);
 			modelAndView.addObject("message", "Item Added Successfully");
 			modelAndView.addObject("item", new InvoiceProductDetails());
 		}
-		modelAndView.addObject("itemList", itemService.findByProductOwner(user));
+		modelAndView.addObject("itemList", itemService.fetchAllItemsForItem(user));
 		modelAndView.setViewName("addItem");
 		return modelAndView;
 	}
-	
+
+	@RequestMapping(value = { "/home/showitem" }, method = RequestMethod.GET)
+	public ModelAndView showItem(Principal principal) {
+		ModelAndView modelAndView = new ModelAndView();
+		String user = principal.getName();
+		modelAndView.addObject("itemList", itemService.fetchAllItems(user));
+		modelAndView.setViewName("itemData");
+		return modelAndView;
+	}
+
 }
