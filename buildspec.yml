@@ -13,5 +13,3 @@ artifacts:
   type: zip
   files:
     - 'build/libs/*.jar'
-  base-directory: 'build/libs'
-    
