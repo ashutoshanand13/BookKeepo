@@ -11,4 +11,4 @@ phases:
      - gradle build
 artifacts:
   files:
-    - 'build/libs/*.jar'
+    - '*.jar'
