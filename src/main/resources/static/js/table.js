@@ -16,7 +16,6 @@
  
  var controllerMap = { salesInvoice: "/home/salesinvoice", exportInvoice: "/home/exportinvoice", debitNote:"/home/debitnote", creditNote:"/home/creditnote" , purchaseOrder:"/home/addpurchaseorder"  , purchaseInvoice:"/home/addpurchaseinvoice"};
  var fileMap = { salesInvoice: "Tax_Invoice", exportInvoice: "Export_Invoice", debitNote:"Debit_Note", creditNote:"Credit_Note", purchaseOrder:"Purchase_Order", purchaseInvoice:"Purchase_Invoice" };
- var extensionMap = { salesInvoice: "invoiceNo", exportInvoice: "invoiceNo", debitNote:"invoiceNo", creditNote:"invoiceNo", purchaseOrder:"poNo", purchaseInvoice:"invoiceNo" };
  
  var gstRegex = /^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$/;
  
@@ -136,7 +135,7 @@ function submitHandler(e){
    var name = $(this).attr("name");
    var url = controllerMap[name];
    var fileName = fileMap[name];
-   fileName = fileName+"_"+$("[name="+extensionMap[name]+"]").val()+".pdf";
+   fileName = fileName+"_"+$("[name=invoiceNo]").val()+".pdf";
 
    var f = $("#form")[0];
    
@@ -504,13 +503,53 @@ function checkInvoiceNo(value) {
 				}
 				else {
 					isInvoiceNumberUnique = false;
-					alert("Invoice Number already exists");
+					alert("Invoice Number/ Document Number already exists");
 					$(value).val("");
 					$(value).focus();
 				}
 			}
 			});
 	}
-	
-	
+}
+
+
+function checkPaymentNo(value) {
+	var paymentNo = $(value).val();
+
+	if(paymentNo !== "") {
+		$.ajax({
+			type : "GET",
+			contentType : "application/json",
+			url : "paymentunique?paymentNo=" + paymentNo,
+			dataType : 'json',				
+			success : function(data) {
+				if(data !== null){
+					alert("Payment Number already exists");
+					$(value).val("");
+					$(value).focus();
+				}
+			}
+			});
+	}
+}
+
+
+function checkReceiptNo(value) {
+	var receiptNo = $(value).val();
+
+	if(receiptNo !== "") {
+		$.ajax({
+			type : "GET",
+			contentType : "application/json",
+			url : "receiptunique?receiptNo=" + receiptNo,
+			dataType : 'json',				
+			success : function(data) {
+				if(data !== null){
+					alert("Receipt Number already exists");
+					$(value).val("");
+					$(value).focus();
+				}
+			}
+			});
+	}
 }

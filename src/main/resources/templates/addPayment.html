@@ -68,9 +68,9 @@
 						<div class="form-group">
 					<label>Payment Information</label> <input type="text"
 						class="form-control" name="name" th:field="*{paymentNumber}"
-						placeholder="Payment Number" required>
+						placeholder="Payment Number" onblur="checkPaymentNo(this)" required>
 				</div>
-						<input type="number"
+						<input type="text" onfocus="(this.type='number')" onblur="(this.type='text')" min="0"
 						class="form-control" name="paymentAmount" th:field="*{paymentAmount}"
 						placeholder="Payment Amount" required>
 						<textarea class="form-control" name="paymentDescription" th:field="*{paymentDescription}" placeholder="Payment Description"

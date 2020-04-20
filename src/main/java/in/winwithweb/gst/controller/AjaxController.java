@@ -17,6 +17,8 @@ import com.google.gson.Gson;
 import in.winwithweb.gst.service.AccountService;
 import in.winwithweb.gst.service.InvoiceService;
 import in.winwithweb.gst.service.ItemService;
+import in.winwithweb.gst.service.PaymentService;
+import in.winwithweb.gst.service.ReceiptService;
 import in.winwithweb.gst.util.CommonUtils;
 
 /**
@@ -35,6 +37,12 @@ public class AjaxController {
 
 	@Autowired
 	private ItemService itemService;
+	
+	@Autowired
+	PaymentService paymentService;
+	
+	@Autowired 
+	ReceiptService receiptService;
 
 	@Autowired
 	Gson gson;
@@ -70,6 +78,16 @@ public class AjaxController {
 			HttpServletRequest request) {
 		return gson.toJson(invoiceService.findByInvoiceNumberAndInvoiceOwnerAndInvoiceType(invoiceNo, pageName,
 				request.getUserPrincipal().getName()));
+	}
+	
+	@RequestMapping(value = "/home/paymentunique", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody String getPayment(@RequestParam String paymentNo, HttpServletRequest request) {
+		return gson.toJson(paymentService.findByPaymentNumberAndPaymentOwner(paymentNo,request.getUserPrincipal().getName()));
+	}
+
+	@RequestMapping(value = "/home/receiptunique", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody String getReceipt(@RequestParam String receiptNo, HttpServletRequest request) {
+		return gson.toJson(receiptService.findByReceiptNumberAndReceiptOwner(receiptNo,request.getUserPrincipal().getName()));
 	}
 
 }
