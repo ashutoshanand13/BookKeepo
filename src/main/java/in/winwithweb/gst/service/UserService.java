@@ -54,7 +54,7 @@ public class UserService {
 	}
 
 	public void deleteInActiveUser() {
-		List<User> inActiveUser = userRepository.findAll();
+		List<User> inActiveUser = userRepository.findByActive(0);
 		userRepository.deleteAll(inActiveUser);
 	}
 
