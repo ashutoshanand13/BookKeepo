@@ -12,6 +12,7 @@ public class UserDetails {
 	private String email;
 	private String oldPassword;
 	private String newPassword;
+	private String trouble;
 
 	public String getEmail() {
 		return email;
@@ -35,6 +36,20 @@ public class UserDetails {
 
 	public void setNewPassword(String newPassword) {
 		this.newPassword = newPassword;
+	}
+
+	/**
+	 * @return the trouble
+	 */
+	public String getTrouble() {
+		return trouble;
+	}
+
+	/**
+	 * @param trouble the trouble to set
+	 */
+	public void setTrouble(String trouble) {
+		this.trouble = trouble;
 	}
 
 }
