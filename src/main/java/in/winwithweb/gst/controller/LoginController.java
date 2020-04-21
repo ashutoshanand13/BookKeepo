@@ -97,7 +97,7 @@ public class LoginController {
 			modelAndView.addObject("user", new User());
 			modelAndView.addObject("message", "Registration Successful");
 			modelAndView.setViewName("login");
-			emailservice.sendEmail(user, emailFrom, actSubject, actBody.replace("www.bookkeepo.com", "localhost"));
+			emailservice.sendEmail(user, emailFrom, actSubject, actBody);
 
 		}
 		return modelAndView;
