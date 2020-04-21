@@ -7,7 +7,7 @@ package in.winwithweb.gst.util;
  * @author sachingoyal
  *
  */
-public class SecurityContants {
+public class SecurityConstants {
 	
 	public static final String SECURITY_KEY = "hgdgyeyqoqppqmssmsmmalatehe";
 	
