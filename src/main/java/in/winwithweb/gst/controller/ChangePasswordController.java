@@ -41,6 +41,12 @@ public class ChangePasswordController {
 	@Value("${email.from}")
 	private String emailFrom;
 
+	@Value("${email.subject.account.act}")
+	private String actSubject;
+
+	@Value("${email.body.account.act}")
+	private String actBody;
+
 	@RequestMapping(value = { "/home/changePassword" }, method = RequestMethod.GET)
 	public ModelAndView getChangePasswordPage(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
@@ -100,11 +106,20 @@ public class ChangePasswordController {
 
 		} else {
 			modelAndView.addObject("user", new UserDetails());
-			String newPassword = CommonUtils.getUniqueID();
-			modelAndView.addObject("message", "New Password sent on your email.");
-			userExists.setPassword(bCryptPasswordEncoder.encode(newPassword));
-			emailservice.forgetPassword(userExists, emailFrom, forgetPssSub, forgetPssBdy, newPassword);
-			userService.updateUser(userExists);
+
+			if ("0".equals(user.getTrouble())) {
+				String newPassword = CommonUtils.getUniqueID();
+				modelAndView.addObject("message", "New Password sent on your email.");
+				userExists.setPassword(bCryptPasswordEncoder.encode(newPassword));
+				emailservice.forgetPassword(userExists, emailFrom, forgetPssSub, forgetPssBdy, newPassword);
+				userService.updateUser(userExists);
+			} else {
+				String newToken = CommonUtils.generateToken(userExists.getName());
+				modelAndView.addObject("message", "Activation Link Sent successfully");
+				userExists.setToken(newToken);
+				emailservice.sendEmail(userExists, emailFrom, actSubject, actBody);
+				userService.updateUser(userExists);
+			}
 		}
 
 		return modelAndView;
