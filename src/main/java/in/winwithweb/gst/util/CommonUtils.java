@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
+import java.util.Date;
 import java.util.Properties;
 import java.util.UUID;
 
@@ -18,6 +19,10 @@ import javax.mail.internet.MimeMessage;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.util.FileCopyUtils;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 public class CommonUtils {
 
@@ -276,5 +281,27 @@ public class CommonUtils {
 		}
 
 		return toReturn;
+	}
+
+	public static boolean isTokenExpired(String token) {
+		Claims claims = Jwts.parser().setSigningKey(SecurityContants.SECURITY_KEY).parseClaimsJws(token).getBody();
+		Date expDate = claims.getExpiration();
+		return expDate.before(new Date());
+	}
+
+	public static String generateToken(String id) {
+		return Jwts.builder().setSubject(id)
+				.setExpiration(new Date(System.currentTimeMillis() + SecurityContants.EXPIRATION_TIME))
+				.signWith(SignatureAlgorithm.HS512, SecurityContants.SECURITY_KEY).compact();
+	}
+
+	public static boolean isValidToken(String token, String dbToken) {
+		boolean isValidToken = false;
+		if (token != null && token.equals(dbToken) && !isTokenExpired(token)) {
+			isValidToken = true;
+		}
+
+		return isValidToken;
+
 	}
 }
