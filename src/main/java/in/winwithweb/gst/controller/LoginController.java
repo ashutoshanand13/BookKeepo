@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import in.winwithweb.gst.model.User;
 import in.winwithweb.gst.service.CompanyDetailsService;
+import in.winwithweb.gst.service.EmailService;
 import in.winwithweb.gst.service.UserService;
 import in.winwithweb.gst.util.CommonUtils;
 
@@ -36,6 +38,18 @@ public class LoginController {
 
 	@Autowired
 	CompanyDetailsService companyDetailsService;
+
+	@Autowired
+	EmailService emailservice;
+
+	@Value("${email.from}")
+	private String emailFrom;
+
+	@Value("${email.subject.account.act}")
+	private String actSubject;
+
+	@Value("${email.body.account.act}")
+	private String actBody;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String setup(ModelMap model) {
@@ -83,6 +97,7 @@ public class LoginController {
 			modelAndView.addObject("user", new User());
 			modelAndView.addObject("message", "Registration Successful");
 			modelAndView.setViewName("login");
+			emailservice.sendEmail(user, emailFrom, actSubject, actBody);
 
 		}
 		return modelAndView;
@@ -95,7 +110,7 @@ public class LoginController {
 		modelAndView.setViewName("login");
 		User userExists = userService.findUserByEmail(email);
 		if (userExists == null) {
-			modelAndView.addObject("message", "Email is not registered with Bookkeepo");
+			modelAndView.addObject("message", "Email is not registered with BookKeepo");
 		} else {
 			boolean isValidToken = CommonUtils.isValidToken(token, userExists.getToken());
 			if (isValidToken) {
