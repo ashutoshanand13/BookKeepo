@@ -235,15 +235,15 @@ public class CommonUtils {
 	}
 
 	public static boolean isTokenExpired(String token) {
-		Claims claims = Jwts.parser().setSigningKey(SecurityContants.SECURITY_KEY).parseClaimsJws(token).getBody();
+		Claims claims = Jwts.parser().setSigningKey(SecurityConstants.SECURITY_KEY).parseClaimsJws(token).getBody();
 		Date expDate = claims.getExpiration();
 		return expDate.before(new Date());
 	}
 
 	public static String generateToken(String id) {
 		return Jwts.builder().setSubject(id)
-				.setExpiration(new Date(System.currentTimeMillis() + SecurityContants.EXPIRATION_TIME))
-				.signWith(SignatureAlgorithm.HS512, SecurityContants.SECURITY_KEY).compact();
+				.setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
+				.signWith(SignatureAlgorithm.HS512, SecurityConstants.SECURITY_KEY).compact();
 	}
 
 	public static boolean isValidToken(String token, String dbToken) {
