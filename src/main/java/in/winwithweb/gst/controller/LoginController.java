@@ -97,7 +97,7 @@ public class LoginController {
 			modelAndView.addObject("user", new User());
 			modelAndView.addObject("message", "Registration Successful");
 			modelAndView.setViewName("login");
-			emailservice.sendEmail(user, emailFrom, actSubject, actBody);
+			emailservice.sendEmail(user, emailFrom, actSubject, actBody.replace("www.bookkeepo.com", "localhost"));
 
 		}
 		return modelAndView;
@@ -115,7 +115,7 @@ public class LoginController {
 			boolean isValidToken = CommonUtils.isValidToken(token, userExists.getToken());
 			if (isValidToken) {
 				userExists.setActive(1);
-				userService.saveUser(userExists);
+				userService.updateUser(userExists);
 				modelAndView.addObject("message", "Your BookKeepo account is successfully Activated");
 			} else {
 				modelAndView.addObject("message",

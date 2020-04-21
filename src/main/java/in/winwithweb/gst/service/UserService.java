@@ -5,6 +5,7 @@ package in.winwithweb.gst.service;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -46,6 +47,15 @@ public class UserService {
 		Role userRole = roleRepository.findByRole("USER");
 		user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
 		userRepository.save(user);
+	}
+
+	public void updateUser(User user) {
+		userRepository.save(user);
+	}
+
+	public void deleteInActiveUser() {
+		List<User> inActiveUser = userRepository.findByActive(0);
+		userRepository.deleteAll(inActiveUser);
 	}
 
 }
