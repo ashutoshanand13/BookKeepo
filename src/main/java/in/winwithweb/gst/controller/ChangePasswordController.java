@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import in.winwithweb.gst.model.User;
 import in.winwithweb.gst.model.UserDetails;
+import in.winwithweb.gst.service.EmailService;
 import in.winwithweb.gst.service.UserService;
 import in.winwithweb.gst.util.CommonUtils;
 
@@ -28,10 +29,13 @@ public class ChangePasswordController {
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-	@Value("${email.forgetPassword.subject}")
+	@Autowired
+	private EmailService emailservice;
+
+	@Value("${email.subject.forgetPassword}")
 	private String forgetPssSub;
 
-	@Value("${email.forgetPassword.body}")
+	@Value("${email.body.forgetPassword}")
 	private String forgetPssBdy;
 
 	@Value("${email.from}")
@@ -52,7 +56,7 @@ public class ChangePasswordController {
 
 		User userExists = userService.findUserByEmail(request.getUserPrincipal().getName());
 		modelAndView.setViewName("changePassword");
-		
+
 		modelAndView.addObject("userDetails", user);
 
 		if (userExists == null || !bCryptPasswordEncoder.matches(user.getOldPassword(), userExists.getPassword())) {
@@ -96,14 +100,11 @@ public class ChangePasswordController {
 
 		} else {
 			modelAndView.addObject("user", new UserDetails());
-
 			String newPassword = CommonUtils.getUniqueID();
 			modelAndView.addObject("message", "New Password sent on your email.");
-
-			CommonUtils.sendEmail(userExists.getEmail(), emailFrom, forgetPssSub,
-					forgetPssBdy.replace("<Password>", newPassword));
-			userExists.setPassword(newPassword);
-			userService.saveUser(userExists);
+			userExists.setPassword(bCryptPasswordEncoder.encode(newPassword));
+			emailservice.forgetPassword(userExists, emailFrom, forgetPssSub, forgetPssBdy, newPassword);
+			userService.updateUser(userExists);
 		}
 
 		return modelAndView;
