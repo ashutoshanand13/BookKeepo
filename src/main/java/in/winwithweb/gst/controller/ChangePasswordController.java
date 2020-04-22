@@ -4,7 +4,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -15,9 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import in.winwithweb.gst.model.User;
 import in.winwithweb.gst.model.UserDetails;
-import in.winwithweb.gst.service.EmailService;
 import in.winwithweb.gst.service.UserService;
-import in.winwithweb.gst.util.CommonUtils;
 
 @Configuration
 @Controller
@@ -28,24 +25,6 @@ public class ChangePasswordController {
 
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-	@Autowired
-	private EmailService emailservice;
-
-	@Value("${email.subject.forgetPassword}")
-	private String forgetPssSub;
-
-	@Value("${email.body.forgetPassword}")
-	private String forgetPssBdy;
-
-	@Value("${email.from}")
-	private String emailFrom;
-
-	@Value("${email.subject.account.act}")
-	private String actSubject;
-
-	@Value("${email.body.account.act}")
-	private String actBody;
 
 	@RequestMapping(value = { "/home/changePassword" }, method = RequestMethod.GET)
 	public ModelAndView getChangePasswordPage(HttpServletRequest request) {
@@ -78,48 +57,6 @@ public class ChangePasswordController {
 			userExists.setPassword(user.getNewPassword());
 			userService.saveUser(userExists);
 
-		}
-
-		return modelAndView;
-	}
-
-	@RequestMapping(value = "/forgotPassword", method = RequestMethod.GET)
-	public ModelAndView forgotPassword() {
-		ModelAndView modelAndView = new ModelAndView();
-		UserDetails user = new UserDetails();
-		modelAndView.addObject("user", user);
-		modelAndView.setViewName("forgotPassword");
-		return modelAndView;
-	}
-
-	@RequestMapping(value = "/forgotPassword", method = RequestMethod.POST)
-	public ModelAndView forgotPassword(@Valid UserDetails user, BindingResult bindingResult) {
-		ModelAndView modelAndView = new ModelAndView();
-
-		User userExists = userService.findUserByEmail(user.getEmail());
-		modelAndView.addObject("user", user);
-		modelAndView.setViewName("forgotPassword");
-
-		if (userExists == null) {
-			modelAndView.addObject("user", user);
-			modelAndView.addObject("message", "This email is not register with BookKeepo !");
-
-		} else {
-			modelAndView.addObject("user", new UserDetails());
-
-			if ("0".equals(user.getTrouble())) {
-				String newPassword = CommonUtils.getUniqueID();
-				modelAndView.addObject("message", "New Password sent on your email.");
-				userExists.setPassword(bCryptPasswordEncoder.encode(newPassword));
-				emailservice.forgetPassword(userExists, emailFrom, forgetPssSub, forgetPssBdy, newPassword);
-				userService.updateUser(userExists);
-			} else {
-				String newToken = CommonUtils.generateToken(userExists.getName());
-				modelAndView.addObject("message", "Activation Link Sent successfully");
-				userExists.setToken(newToken);
-				emailservice.sendEmail(userExists, emailFrom, actSubject, actBody);
-				userService.updateUser(userExists);
-			}
 		}
 
 		return modelAndView;
