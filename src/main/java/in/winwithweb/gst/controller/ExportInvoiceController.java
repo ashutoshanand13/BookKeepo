@@ -70,7 +70,7 @@ public class ExportInvoiceController {
 		List<Accounts> account = accountService.fetchAccountNameForInvoice(user);
 		if(company==null) {
 			modelAndView.addObject("message", "Please update company details before creating an Invoice");
-			modelAndView.addObject("company",new Company("exportInvoice"));
+			modelAndView.addObject("company",new Company("/home/exportinvoice"));
 			modelAndView.addObject("logoImage",CommonUtils.getImgfromResource("/static/images/image-400x400.jpg"));
 			modelAndView.setViewName("addCompany");
 		}
