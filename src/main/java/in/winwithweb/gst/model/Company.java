@@ -58,16 +58,36 @@ public class Company {
 	@Transient
 	private String pageName;
 
+	@Transient
+	private String companyStringLogo;
+
 	public Company() {
 
 	}
-	
+
+	public Company(String userName, String companyStringLogo) {
+		this.userName = userName;
+		this.companyStringLogo = companyStringLogo;
+
+	}
+
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public Company(String pageName) {
 		this.pageName = pageName;
 	}
-
-
-
 
 	public String getUserName() {
 		return userName;
@@ -217,14 +237,12 @@ public class Company {
 		this.companyBankTNC = companyBankTNC;
 	}
 
-
 	/**
 	 * @return the pageName
 	 */
 	public String getPageName() {
 		return pageName;
 	}
-
 
 	/**
 	 * @param pageName the pageName to set
@@ -233,6 +251,18 @@ public class Company {
 		this.pageName = pageName;
 	}
 
-	
+	/**
+	 * @return the companyStringLogo
+	 */
+	public String getCompanyStringLogo() {
+		return companyStringLogo;
+	}
+
+	/**
+	 * @param companyStringLogo the companyStringLogo to set
+	 */
+	public void setCompanyStringLogo(String companyStringLogo) {
+		this.companyStringLogo = companyStringLogo;
+	}
 
 }
