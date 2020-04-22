@@ -51,7 +51,7 @@ public class CompanyController {
 				company.setCompanyLogo(companyLogo.getBytes());
 				company.setCompanyStringLogo(CommonUtils.getImgfromByteArray(company.getCompanyLogo()));
 			} else {
-				company.setCompanyLogo(company.getCompanyStringLogo().getBytes());
+				company.setCompanyLogo(CommonUtils.getByteArrayfromImage(company.getCompanyStringLogo()));
 			}
 		} catch (IOException e) {
 		}
