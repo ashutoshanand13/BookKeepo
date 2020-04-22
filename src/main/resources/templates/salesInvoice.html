@@ -41,7 +41,9 @@
 					</tr>
 				</tbody>
 			</table>
-
+<div id = "custom_alert"></div>
+<div id="alert" th:if="${message}" th:text="${message} "
+			class="text-center alert table-width alert-info fade-in"></div>
 			<table id="invoiceDetailsTable" border="1"
 				class="table table-width table-responsive-md text-center">
 				<thead class="table-width">

@@ -188,6 +188,11 @@ function submitHandler(e){
 							}
 						});
 						$('#overlay').delay(500).fadeOut();
+						$('#custom_alert').html(
+								'<div class="alert alert-info text-center table-width fade-in" role="alert">'
+								  +'Invoice successfully saved. View all invoices <a href="/home/showInvoice" class="alert-link">here</a>.'+
+								  '</div>')
+						$("#custom_alert").fadeTo(5000, 500).slideUp(500);
    }
  });
 

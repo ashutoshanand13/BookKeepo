@@ -62,7 +62,7 @@ public class PurchaseInvoiceController {
 		ModelAndView modelAndView = new ModelAndView();
 		Company company = companyDetailsService.findByUserName(user);
 		if(company==null) {
-			Company newcompany = new Company("salesInvoice");
+			Company newcompany = new Company("/home/addpurchaseinvoice");
 			modelAndView.addObject("message", "Please update company details before creating an Invoice");
 			modelAndView.addObject("company",newcompany);
 			modelAndView.addObject("logoImage",CommonUtils.getImgfromResource("/static/images/image-400x400.jpg"));
