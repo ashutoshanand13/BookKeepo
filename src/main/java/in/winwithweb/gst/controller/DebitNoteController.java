@@ -74,11 +74,11 @@ public class DebitNoteController {
 		ownerInvoices.addAll(invoiceService.findByInvoiceOwnerAndInvoiceType(user, InvoiceType.Tax_Invoice.getType()));
 		if (company == null) {
 			modelAndView.addObject("message", "Please update company details before creating an Invoice");
-			modelAndView.addObject("company", new Company("debitNote"));
+			modelAndView.addObject("company", new Company("/home/debitnote"));
 			modelAndView.addObject("logoImage", CommonUtils.getImgfromResource("/static/images/image-400x400.jpg"));
 			modelAndView.setViewName("addCompany");
 		} else if (ownerInvoices.size() == 1) {
-			modelAndView.addObject("message", "Please add an Invoice");
+			modelAndView.addObject("message", "Please add a Tax Invoice First");
 			modelAndView.addObject("accountList", account);
 			modelAndView.addObject("company", company);
 			byte[] encodeBase64 = Base64.getEncoder().encode(company.getCompanyLogo());

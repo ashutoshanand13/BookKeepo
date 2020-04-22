@@ -4,20 +4,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
-import java.util.Properties;
+import java.util.Date;
 import java.util.UUID;
-
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.util.FileCopyUtils;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 public class CommonUtils {
 
@@ -62,6 +58,14 @@ public class CommonUtils {
 			e.printStackTrace();
 		}
 		return base64Encoded;
+	}
+	
+	/*
+	 * 
+	 */
+	public static byte[] getByteArrayfromImage(String image) {
+		byte[] decode = Base64.getDecoder().decode(image);
+		return decode;
 	}
 
 	public static String convertNumberToWords(int n) {
@@ -188,46 +192,6 @@ public class CommonUtils {
 
 	}
 
-	public static void sendEmail(String email, String enailfrom, String subject, String body) {
-
-		Properties properties = new Properties();
-		properties.setProperty("mail.smtp.host", "email-smtp.ap-south-1.amazonaws.com");
-		properties.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-		properties.setProperty("mail.smtp.socketFactory.fallback", "false");
-		properties.setProperty("mail.smtp.port", "465");
-		properties.setProperty("mail.smtp.socketFactory.port", "465");
-		properties.put("mail.smtp.starttls.enable", "true");
-		properties.put("mail.smtp.auth", "true");
-		properties.put("mail.debug", "true");
-		properties.put("mail.store.protocol", "pop3");
-		properties.put("mail.transport.protocol", "smtp");
-		properties.put("mail.debug.auth", "true");
-		properties.setProperty("mail.pop3.socketFactory.fallback", "false");
-		Session session = Session.getDefaultInstance(properties, new javax.mail.Authenticator() {
-			@Override
-			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication("AKIAUN7QVBU46IV7GO23",
-						"BDoenGzgcCuHsT0vkkCKGNCge7NAYev2L6Kb5z0RxNn4");
-			}
-		});
-		try {
-
-			MimeMessage message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(enailfrom));
-
-			message.setSubject(subject);
-			message.setContent(body, "text/html");
-			;
-
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
-			Transport.send(message);
-
-		} catch (MessagingException e) {
-			e.printStackTrace();
-		}
-
-	}
-
 	public static boolean isValidEndDate(String startDate, String endDate) {
 		boolean isValid = false;
 		try {
@@ -276,5 +240,27 @@ public class CommonUtils {
 		}
 
 		return toReturn;
+	}
+
+	public static boolean isTokenExpired(String token) {
+		Claims claims = Jwts.parser().setSigningKey(SecurityConstants.SECURITY_KEY).parseClaimsJws(token).getBody();
+		Date expDate = claims.getExpiration();
+		return expDate.before(new Date());
+	}
+
+	public static String generateToken(String id) {
+		return Jwts.builder().setSubject(id)
+				.setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
+				.signWith(SignatureAlgorithm.HS512, SecurityConstants.SECURITY_KEY).compact();
+	}
+
+	public static boolean isValidToken(String token, String dbToken) {
+		boolean isValidToken = false;
+		if (token != null && token.equals(dbToken) && !isTokenExpired(token)) {
+			isValidToken = true;
+		}
+
+		return isValidToken;
+
 	}
 }
