@@ -59,6 +59,14 @@ public class CommonUtils {
 		}
 		return base64Encoded;
 	}
+	
+	/*
+	 * 
+	 */
+	public static byte[] getByteArrayfromImage(String image) {
+		byte[] decode = Base64.getDecoder().decode(image);
+		return decode;
+	}
 
 	public static String convertNumberToWords(int n) {
 
