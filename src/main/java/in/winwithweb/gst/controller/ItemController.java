@@ -33,51 +33,32 @@ public class ItemController {
 
 	@RequestMapping(value = { "/home/additem" }, method = RequestMethod.GET)
 	public ModelAndView getItemPage(HttpServletRequest request) {
-		ModelAndView modelAndView = new ModelAndView();
+		ModelAndView modelAndView = new ModelAndView("addItem");
 		String user = request.getUserPrincipal().getName();
 		List<InvoiceProductDetails> itemList = itemService.fetchAllItemsForItem(user);
 		modelAndView.addObject("itemList", itemList);
 		modelAndView.addObject("item", new InvoiceProductDetails());
-
-		modelAndView.setViewName("addItem");
 		return modelAndView;
 	}
 
 	@RequestMapping(value = "/home/additem", method = RequestMethod.POST)
 	public ModelAndView addItem(@Valid @ModelAttribute("item") InvoiceProductDetails item, BindingResult bindingResult,
 			Principal principal) {
-		ModelAndView modelAndView = new ModelAndView();
+		ModelAndView modelAndView = new ModelAndView("addItem");
 		String user = principal.getName();
-		InvoiceProductDetails isItemExists = itemService.findById(item.getId());
-
-		if (isItemExists != null) {
-			isItemExists.setProductDescription(item.getProductDescription());
-			isItemExists.setProductHnscode(item.getProductHnscode());
-			isItemExists.setProductUom(item.getProductUom());
-			isItemExists.setProductQuantity(item.getProductQuantity());
-			isItemExists.setProductRate(item.getProductRate());
-			isItemExists.setProductGstRate(item.getProductGstRate());
-			isItemExists.setProductDiscount(item.getProductDiscount());
-			itemService.saveItem(isItemExists);
-			modelAndView.addObject("message", "Item Updated Successfully");
-			modelAndView.addObject("item", new InvoiceProductDetails());
-		} else {
-			item.setProductOwner(user);
-			itemService.saveItem(item);
-			modelAndView.addObject("message", "Item Added Successfully");
-			modelAndView.addObject("item", new InvoiceProductDetails());
-		}
+		item.setProductOwner(principal.getName());
+		itemService.saveItem(item);
+		modelAndView.addObject("message", "Item Updated Successfully");
+		modelAndView.addObject("item", new InvoiceProductDetails());
 		modelAndView.addObject("itemList", itemService.fetchAllItemsForItem(user));
-		modelAndView.setViewName("addItem");
 		return modelAndView;
 	}
 
 	@RequestMapping(value = { "/home/showitem" }, method = RequestMethod.GET)
 	public ModelAndView showItem(Principal principal) {
-		ModelAndView modelAndView = new ModelAndView();
+		ModelAndView modelAndView = new ModelAndView("itemData");
 		String user = principal.getName();
 		modelAndView.addObject("itemList", itemService.fetchAllItems(user));
-		modelAndView.setViewName("itemData");
 		return modelAndView;
 	}
 
