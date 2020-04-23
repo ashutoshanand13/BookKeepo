@@ -3,8 +3,8 @@
  */
 package in.winwithweb.gst.service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,15 +45,17 @@ public class InvoiceService {
 	}
 
 	public List<String> findByInvoiceOwnerAndInvoiceType(String name, String type) {
+		List<String> invoiceList = new ArrayList<String>();
+		invoiceList.add("Select Against Invoice");
 		List<InvoiceDetails> allInvoice = invoiceRepository.findByInvoiceOwnerAndInvoiceType(name, type);
-		return allInvoice.stream().map(p -> p.getInvoiceNumber()).collect(Collectors.toList());
+		for (InvoiceDetails invoice : allInvoice) {
+			invoiceList.add(invoice.getInvoiceNumber());
+		}
+		return invoiceList;
 	}
 
-	public InvoiceDetails findByInvoiceNumberAndInvoiceOwner(String invoiceNumber, String owner) {
-		return invoiceRepository.findByInvoiceNumberAndInvoiceOwner(invoiceNumber, owner);
-	}
-
-	public InvoiceDetails findByInvoiceNumberAndInvoiceOwnerAndInvoiceType(String invoiceNo, String type, String owner) {
+	public InvoiceDetails findByInvoiceNumberAndInvoiceOwnerAndInvoiceType(String invoiceNo, String type,
+			String owner) {
 		return invoiceRepository.findByInvoiceNumberAndInvoiceOwnerAndInvoiceType(invoiceNo, owner, type);
 	}
 }

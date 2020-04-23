@@ -55,11 +55,10 @@ public class CommonUtils {
 		try {
 			base64Encoded = new String(encodeBase64);
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		return base64Encoded;
 	}
-	
+
 	/*
 	 * 
 	 */

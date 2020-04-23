@@ -134,6 +134,10 @@ public class InvoicePageData {
 	@SerializedName("partyState")
 	@Expose
 	private String partyState;
+	
+	@SerializedName("pageName")
+	@Expose
+	private String pageName;
 
 	public String getInvoiceNo() {
 		return invoiceNo;
@@ -507,6 +511,22 @@ public class InvoicePageData {
 	 */
 	public void setPartyState(String partyState) {
 		this.partyState = partyState;
+	}
+	
+	
+
+	/**
+	 * @return the pageName
+	 */
+	public String getPageName() {
+		return pageName;
+	}
+
+	/**
+	 * @param pageName the pageName to set
+	 */
+	public void setPageName(String pageName) {
+		this.pageName = pageName;
 	}
 
 	@Override

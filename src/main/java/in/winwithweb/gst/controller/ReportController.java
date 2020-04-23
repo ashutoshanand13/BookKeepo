@@ -3,22 +3,33 @@
  */
 package in.winwithweb.gst.controller;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.security.Principal;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import in.winwithweb.gst.model.Reports;
 import in.winwithweb.gst.model.ReportsData;
+import in.winwithweb.gst.model.sales.InvoiceDetails;
+import in.winwithweb.gst.service.InvoiceService;
 import in.winwithweb.gst.service.ReportService;
 import in.winwithweb.gst.util.CommonUtils;
+import in.winwithweb.gst.util.InvoiceUtil;
 
 /**
  * @author sachingoyal
@@ -29,7 +40,12 @@ import in.winwithweb.gst.util.CommonUtils;
 public class ReportController {
 
 	@Autowired
+	private InvoiceService invoiceService;
+
+	@Autowired
 	ReportService reportService;
+
+	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 
 	@RequestMapping(value = { "/home/reports" }, method = RequestMethod.GET)
 	public ModelAndView showReport(HttpServletRequest request) {
@@ -60,6 +76,39 @@ public class ReportController {
 				+ reports.getInvoiceSubType().getInvoiceSubTypeValue() + ")");
 
 		return modelAndView;
+	}
+
+	@RequestMapping(value = { "/home/showInvoice" }, method = RequestMethod.GET)
+	public ModelAndView showInvoice(HttpServletRequest request) {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("invoiceList", invoiceService.findByInvoiceOwner(request.getUserPrincipal().getName()));
+		modelAndView.setViewName("showInvoice");
+		return modelAndView;
+	}
+
+	@RequestMapping(value = { "/home/showInvoice/{id}" })
+	public void view(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
+
+		InvoiceDetails invoice = invoiceService.findById(id);
+
+		ByteArrayOutputStream invoiceData = InvoiceUtil.createPDF(invoice);
+
+		response.setContentType("application/pdf");
+
+		Date date = new Date();
+		String time = sdf.format(new Timestamp(date.getTime()));
+
+		response.addHeader("Content-Disposition", "attachment; filename=" + invoice.getInvoiceType() + "_"
+				+ invoice.getInvoiceNumber() + "_" + time + ".pdf");
+		response.setContentLength(invoiceData.size());
+
+		OutputStream out = null;
+		out = response.getOutputStream();
+		invoiceData.writeTo(out);
+		out.close();
+		out.flush();
+
 	}
 
 }
