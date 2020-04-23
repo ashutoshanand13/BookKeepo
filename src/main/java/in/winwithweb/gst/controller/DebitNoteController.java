@@ -48,7 +48,7 @@ public class DebitNoteController {
 		List<String> ownerInvoices = invoiceService.findByInvoiceOwnerAndInvoiceType(user,
 				InvoiceType.Tax_Invoice.getType());
 		if (company == null) {
-			modelAndView.setViewName("redirect:/home/updatecompany/debitNote");
+			modelAndView.setViewName("redirect:/home/updatecompany/debitnote");
 		} else if (ownerInvoices.size() == 1) {
 			modelAndView.setViewName("redirect:/home/salesinvoice/Please create tax invoice first!");
 		} else {
