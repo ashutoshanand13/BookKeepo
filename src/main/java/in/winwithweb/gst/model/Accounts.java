@@ -1,5 +1,7 @@
 package in.winwithweb.gst.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,7 +26,7 @@ public class Accounts {
 	@Column(name = "account_name")
 	@NotEmpty(message = "*Please provide the account name")
 	private String accountName;
-	
+
 	@Column(name = "account_owner")
 	private String accountOwner;
 
@@ -55,6 +57,9 @@ public class Accounts {
 	@Column(name = "account_pincode")
 	@NotEmpty(message = "*Please provide the account pincode")
 	private String accountPincode;
+
+	@Column(name = "account_creation_date")
+	private Date accountCreationDate;
 
 	@Column(name = "account_email")
 	@Email(message = "*Please provide a valid Email")
@@ -213,6 +218,20 @@ public class Accounts {
 	 */
 	public void setAccountOwner(String accountOwner) {
 		this.accountOwner = accountOwner;
+	}
+
+	/**
+	 * @return the accountCreationDate
+	 */
+	public Date getAccountCreationDate() {
+		return accountCreationDate;
+	}
+
+	/**
+	 * @param accountCreationDate the accountCreationDate to set
+	 */
+	public void setAccountCreationDate(Date accountCreationDate) {
+		this.accountCreationDate = accountCreationDate;
 	}
 
 }

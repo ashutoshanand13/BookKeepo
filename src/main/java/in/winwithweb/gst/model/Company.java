@@ -1,5 +1,7 @@
 package in.winwithweb.gst.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -54,6 +56,9 @@ public class Company {
 	@Lob
 	@Column(name = "company_logo", length = 2097152)
 	private byte[] companyLogo;
+
+	@Column(name = "company_creation_date")
+	private Date companyCreationDate;
 
 	@Transient
 	private String pageName;
@@ -263,6 +268,20 @@ public class Company {
 	 */
 	public void setCompanyStringLogo(String companyStringLogo) {
 		this.companyStringLogo = companyStringLogo;
+	}
+
+	/**
+	 * @return the companyCreationDate
+	 */
+	public Date getCompanyCreationDate() {
+		return companyCreationDate;
+	}
+
+	/**
+	 * @param companyCreationDate the companyCreationDate to set
+	 */
+	public void setCompanyCreationDate(Date companyCreationDate) {
+		this.companyCreationDate = companyCreationDate;
 	}
 
 }
