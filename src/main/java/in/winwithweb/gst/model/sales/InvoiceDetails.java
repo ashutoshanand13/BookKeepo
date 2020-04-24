@@ -3,6 +3,7 @@
  */
 package in.winwithweb.gst.model.sales;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -38,6 +39,9 @@ public class InvoiceDetails {
 
 	@Column(name = "invoice_date")
 	private String invoiceDate;
+
+	@Column(name = "invoice_creation_date")
+	private Date invoiceCreationDate;
 
 	@Column(name = "invoice_owner")
 	private String invoiceOwner;
@@ -153,6 +157,20 @@ public class InvoiceDetails {
 	 */
 	public void setInvoiceDate(String invoiceDate) {
 		this.invoiceDate = invoiceDate;
+	}
+
+	/**
+	 * @return the invoiceCreationDate
+	 */
+	public Date getInvoiceCreationDate() {
+		return invoiceCreationDate;
+	}
+
+	/**
+	 * @param invoiceCreationDate the invoiceCreationDate to set
+	 */
+	public void setInvoiceCreationDate(Date invoiceCreationDate) {
+		this.invoiceCreationDate = invoiceCreationDate;
 	}
 
 	/**
