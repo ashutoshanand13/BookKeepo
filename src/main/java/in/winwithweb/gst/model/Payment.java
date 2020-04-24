@@ -1,5 +1,7 @@
 package in.winwithweb.gst.model;
 
+import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -49,6 +51,9 @@ public class Payment {
 
 	@Column(name = "payment_owner")
 	private String paymentOwner;
+
+	@Column(name = "payment_creation_date")
+	private Date paymentCreationDate;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "payment_account_reference_no")
@@ -164,6 +169,20 @@ public class Payment {
 	 */
 	public void setPaymentOwner(String paymentOwner) {
 		this.paymentOwner = paymentOwner;
+	}
+
+	/**
+	 * @return the paymentCreationDate
+	 */
+	public Date getPaymentCreationDate() {
+		return paymentCreationDate;
+	}
+
+	/**
+	 * @param paymentCreationDate the paymentCreationDate to set
+	 */
+	public void setPaymentCreationDate(Date paymentCreationDate) {
+		this.paymentCreationDate = paymentCreationDate;
 	}
 
 	/**

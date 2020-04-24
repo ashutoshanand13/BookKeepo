@@ -3,8 +3,6 @@
  */
 package in.winwithweb.gst.controller;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import in.winwithweb.gst.model.Accounts;
 import in.winwithweb.gst.model.Company;
 import in.winwithweb.gst.model.InvoiceType;
 import in.winwithweb.gst.service.AccountService;
@@ -42,14 +39,10 @@ public class ExportInvoiceController {
 		String user = request.getUserPrincipal().getName();
 		ModelAndView modelAndView = new ModelAndView();
 		Company company = companyDetailsService.findByUserName(user);
-		List<Accounts> account = accountService.fetchAccountNameForInvoice(user);
 		if (company == null) {
-			modelAndView.addObject("message", "Please update company details before creating an Invoice");
-			modelAndView.addObject("company", new Company("/home/exportinvoice"));
-			modelAndView.addObject("logoImage", CommonUtils.getImgfromResource("/static/images/image-400x400.jpg"));
-			modelAndView.setViewName("addCompany");
+			modelAndView.setViewName("redirect:/home/updatecompany/exportinvoice");
 		} else {
-			modelAndView.addObject("accountList", account);
+			modelAndView.addObject("accountList", accountService.fetchAccountNameForInvoice(user));
 			modelAndView.addObject("company", company);
 			modelAndView.addObject("logoImage", CommonUtils.getImgfromByteArray(company.getCompanyLogo()));
 			modelAndView.addObject("itemList", itemService.findByProductOwner(user));
