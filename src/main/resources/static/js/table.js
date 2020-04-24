@@ -14,7 +14,7 @@
  var shippingType ='';
  var isInvoiceNumberUnique = false;
  
- var controllerMap = { salesInvoice: "/home/salesinvoice", exportInvoice: "/home/exportinvoice", debitNote:"/home/debitnote", creditNote:"/home/creditnote" , purchaseOrder:"/home/addpurchaseorder"  , purchaseInvoice:"/home/addpurchaseinvoice"};
+ var controllerMap = { salesInvoice: "/home/submitInvoice", exportInvoice: "/home/submitInvoice", debitNote:"/home/submitInvoice", creditNote:"/home/submitInvoice" , purchaseOrder:"/home/submitInvoice"  , purchaseInvoice:"/home/submitInvoice"};
  var fileMap = { salesInvoice: "Tax_Invoice", exportInvoice: "Export_Invoice", debitNote:"Debit_Note", creditNote:"Credit_Note", purchaseOrder:"Purchase_Order", purchaseInvoice:"Purchase_Invoice" };
  
  var gstRegex = /^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$/;
@@ -188,6 +188,11 @@ function submitHandler(e){
 							}
 						});
 						$('#overlay').delay(500).fadeOut();
+						$('#custom_alert').html(
+								'<div class="alert alert-info text-center table-width fade-in" role="alert">'
+								  +'Invoice successfully saved. View all invoices <a href="/home/showInvoice" class="alert-link">here</a>.'+
+								  '</div>')
+						$("#custom_alert").fadeTo(5000, 500).slideUp(500);
    }
  });
 
@@ -205,7 +210,7 @@ function setValues() {
 					$.ajax({
 						type : "GET",
 						contentType : "application/json",
-						url : "getItemData?itemId=" +product,
+						url : "/home/getItemData?itemId=" +product,
 						dataType : 'json',
 						async : false,
 						success : function(data) {
@@ -423,7 +428,7 @@ function getAmountInWords() {
 	$.ajax({
 		type : "GET",
 		contentType : "application/json",
-		url : "getAmountInWords?amount=" + amount,
+		url : "/home/getAmountInWords?amount=" + amount,
 		dataType : 'json',				
 		success : function(data) {
 			$('#amountWords').html(data);
@@ -443,7 +448,7 @@ $("[name=nameBill]").change(function() {
 		$.ajax({
 			type : "GET",
 			contentType : "application/json",
-			url : "getAccountData?accountName=" + accountName,
+			url : "/home/getAccountData?accountName=" + accountName,
 			dataType : 'json',				
 			success : function(data) {
 				$("[name=nameBill]").val(data.accountName);
@@ -468,7 +473,7 @@ $("#againstInvoicedropdown").change(function() {
 		$.ajax({
 			type : "GET",
 			contentType : "application/json",
-			url : "invoicedetails?invoiceNo=" + invoiceNumber,
+			url : "/home/invoicedetails?invoiceNo=" + invoiceNumber,
 			dataType : 'json',				
 			success : function(data) {
 				$("[name=againstInvoiceDate]").val(data.invoiceDate);
@@ -495,7 +500,7 @@ function checkInvoiceNo(value) {
 		$.ajax({
 			type : "GET",
 			contentType : "application/json",
-			url : "invoiceunique?invoiceNo=" + invoiceNo+"&pageName="+pageName,
+			url : "/home/invoiceunique?invoiceNo=" + invoiceNo+"&pageName="+pageName,
 			dataType : 'json',				
 			success : function(data) {
 				if(data === null) {

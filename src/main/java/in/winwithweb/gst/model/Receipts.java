@@ -1,5 +1,7 @@
 package in.winwithweb.gst.model;
 
+import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -49,6 +51,9 @@ public class Receipts {
 
 	@Column(name = "receipt_owner")
 	private String receiptOwner;
+
+	@Column(name = "receipt_creation_date")
+	private Date receiptCreationDate;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "receipt_account_reference_no")
@@ -164,6 +169,20 @@ public class Receipts {
 	 */
 	public void setReceiptOwner(String receiptOwner) {
 		this.receiptOwner = receiptOwner;
+	}
+
+	/**
+	 * @return the receiptCreationDate
+	 */
+	public Date getReceiptCreationDate() {
+		return receiptCreationDate;
+	}
+
+	/**
+	 * @param receiptCreationDate the receiptCreationDate to set
+	 */
+	public void setReceiptCreationDate(Date receiptCreationDate) {
+		this.receiptCreationDate = receiptCreationDate;
 	}
 
 	/**
