@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 
+import in.winwithweb.gst.model.InvoiceType;
 import in.winwithweb.gst.service.AccountService;
 import in.winwithweb.gst.service.InvoiceService;
 import in.winwithweb.gst.service.ItemService;
@@ -37,11 +38,11 @@ public class AjaxController {
 
 	@Autowired
 	private ItemService itemService;
-	
+
 	@Autowired
 	PaymentService paymentService;
-	
-	@Autowired 
+
+	@Autowired
 	ReceiptService receiptService;
 
 	@Autowired
@@ -64,8 +65,8 @@ public class AjaxController {
 
 	@RequestMapping(value = "/home/invoicedetails", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody String getInvoiceDetails(@RequestParam String invoiceNo, HttpServletRequest request) {
-		return gson.toJson(
-				invoiceService.findByInvoiceNumberAndInvoiceOwner(invoiceNo, request.getUserPrincipal().getName()));
+		return gson.toJson(invoiceService.findByInvoiceNumberAndInvoiceOwnerAndInvoiceType(invoiceNo,
+				InvoiceType.Tax_Invoice.getType(), request.getUserPrincipal().getName()));
 	}
 
 	@RequestMapping(value = "/home/getItemData", method = RequestMethod.GET, produces = "application/json")
@@ -79,15 +80,17 @@ public class AjaxController {
 		return gson.toJson(invoiceService.findByInvoiceNumberAndInvoiceOwnerAndInvoiceType(invoiceNo, pageName,
 				request.getUserPrincipal().getName()));
 	}
-	
+
 	@RequestMapping(value = "/home/paymentunique", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody String getPayment(@RequestParam String paymentNo, HttpServletRequest request) {
-		return gson.toJson(paymentService.findByPaymentNumberAndPaymentOwner(paymentNo,request.getUserPrincipal().getName()));
+		return gson.toJson(
+				paymentService.findByPaymentNumberAndPaymentOwner(paymentNo, request.getUserPrincipal().getName()));
 	}
 
 	@RequestMapping(value = "/home/receiptunique", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody String getReceipt(@RequestParam String receiptNo, HttpServletRequest request) {
-		return gson.toJson(receiptService.findByReceiptNumberAndReceiptOwner(receiptNo,request.getUserPrincipal().getName()));
+		return gson.toJson(
+				receiptService.findByReceiptNumberAndReceiptOwner(receiptNo, request.getUserPrincipal().getName()));
 	}
 
 }
