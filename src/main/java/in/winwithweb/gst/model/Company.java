@@ -60,6 +60,9 @@ public class Company {
 	@Column(name = "company_creation_date")
 	private Date companyCreationDate;
 
+	@Column(name = "company_last_modified")
+	private Date companyLastModified;
+
 	@Transient
 	private String pageName;
 
@@ -282,6 +285,20 @@ public class Company {
 	 */
 	public void setCompanyCreationDate(Date companyCreationDate) {
 		this.companyCreationDate = companyCreationDate;
+	}
+
+	/**
+	 * @return the companyLastModified
+	 */
+	public Date getCompanyLastModified() {
+		return companyLastModified;
+	}
+
+	/**
+	 * @param companyLastModified the companyLastModified to set
+	 */
+	public void setCompanyLastModified(Date companyLastModified) {
+		this.companyLastModified = companyLastModified;
 	}
 
 }
