@@ -11,7 +11,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.Data;
 
@@ -52,7 +56,9 @@ public class Receipts {
 	@Column(name = "receipt_owner")
 	private String receiptOwner;
 
-	@Column(name = "receipt_creation_date")
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "receipt_creation_date", nullable = false, updatable = false)
 	private Date receiptCreationDate;
 
 	@OneToOne(cascade = CascadeType.ALL)
