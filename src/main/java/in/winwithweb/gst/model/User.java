@@ -13,9 +13,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Length;
 
 import lombok.Data;
@@ -58,7 +61,9 @@ public class User {
 	@Column(name = "user_token", length = 500)
 	private String token;
 
-	@Column(name = "user_creation_date")
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "user_creation_date", nullable = false, updatable = false)
 	private Date userCreationDate;
 
 	@ManyToMany(cascade = CascadeType.ALL)

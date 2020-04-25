@@ -11,7 +11,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.Data;
 
@@ -52,7 +56,9 @@ public class Payment {
 	@Column(name = "payment_owner")
 	private String paymentOwner;
 
-	@Column(name = "payment_creation_date")
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "payment_creation_date", nullable = false, updatable = false)
 	private Date paymentCreationDate;
 
 	@OneToOne(cascade = CascadeType.ALL)
