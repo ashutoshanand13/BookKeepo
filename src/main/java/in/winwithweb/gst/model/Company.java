@@ -9,7 +9,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.Data;
 
@@ -57,10 +62,14 @@ public class Company {
 	@Column(name = "company_logo", length = 2097152)
 	private byte[] companyLogo;
 
-	@Column(name = "company_creation_date")
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "company_creation_date", nullable = false, updatable = false)
 	private Date companyCreationDate;
 
-	@Column(name = "company_last_modified")
+	@UpdateTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "company_last_modified", nullable = false)
 	private Date companyLastModified;
 
 	@Transient
