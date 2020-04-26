@@ -50,7 +50,6 @@ public class Receipts {
 	private String receiptAmount;
 
 	@Column(name = "receipt_description")
-	@NotEmpty(message = "*Please provide the receipt description")
 	private String receiptDescription;
 
 	@Column(name = "receipt_owner")
