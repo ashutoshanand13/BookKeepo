@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import in.winwithweb.gst.configurations.LoginRegisterMessages;
+import in.winwithweb.gst.configurations.MessageProperties;
 import in.winwithweb.gst.model.User;
 import in.winwithweb.gst.model.UserDetails;
 import in.winwithweb.gst.service.CompanyDetailsService;
@@ -47,21 +49,12 @@ public class LoginController {
 
 	@Autowired
 	EmailService emailservice;
-
-	@Value("${email.from}")
-	private String emailFrom;
-
-	@Value("${email.subject.account.act}")
-	private String actSubject;
-
-	@Value("${email.body.account.act}")
-	private String actBody;
-
-	@Value("${email.subject.forgetPassword}")
-	private String forgetPssSub;
-
-	@Value("${email.body.forgetPassword}")
-	private String forgetPssBdy;
+	
+	@Autowired
+	MessageProperties messageproperties;
+	
+	@Autowired
+	LoginRegisterMessages loginregistermessageproperties;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String setup(ModelMap model) {
@@ -74,11 +67,11 @@ public class LoginController {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("login");
 		if (error != null) {
-			modelAndView.addObject("message", "Invalid Email or Password!");
+			modelAndView.addObject("message", loginregistermessageproperties.getInCorrectLoginMessage());
 		}
 
 		if (logout != null) {
-			modelAndView.addObject("message", "Logout Successfully!");
+			modelAndView.addObject("message", loginregistermessageproperties.getLogoutSuccessMessage());
 		}
 
 		return modelAndView;
@@ -99,18 +92,18 @@ public class LoginController {
 		User userExists = userService.findUserByEmail(user.getEmail());
 		if (userExists != null) {
 			bindingResult.rejectValue("email", "error.user",
-					"There is already a user registered with the email provided");
+					loginregistermessageproperties.getUserAlreadyExistsMessage());
 		}
 		if (bindingResult.hasErrors()) {
 			modelAndView.setViewName("register");
 		} else {
 			userService.saveUser(user);
 			modelAndView.addObject("successMessage",
-					"User has been registered successfully! Kindly activate your account!");
+					loginregistermessageproperties.getRegistrationSuccessMessage());
 			modelAndView.addObject("user", new User());
-			modelAndView.addObject("message", "Registration Successful");
+			modelAndView.addObject("message", loginregistermessageproperties.getRegistrationSuccessMessage());
 			modelAndView.setViewName("login");
-			emailservice.sendEmail(user, emailFrom, actSubject, actBody);
+			emailservice.sendEmail(user, messageproperties.getEmailFrom(), messageproperties.getAcctactivationSubject(), messageproperties.getAcctactivationBody());
 
 		}
 		return modelAndView;
@@ -123,16 +116,16 @@ public class LoginController {
 		modelAndView.setViewName("login");
 		User userExists = userService.findUserByEmail(email);
 		if (userExists == null) {
-			modelAndView.addObject("message", "Email is not registered with BookKeepo");
+			modelAndView.addObject("message", loginregistermessageproperties.getUserNotFoundMessage());
 		} else {
 			boolean isValidToken = CommonUtils.isValidToken(token, userExists.getToken());
 			if (isValidToken) {
 				userExists.setActive(1);
 				userService.updateUser(userExists);
-				modelAndView.addObject("message", "Your BookKeepo account is successfully Activated");
+				modelAndView.addObject("message", loginregistermessageproperties.getSuccessAcctActivationMessage());
 			} else {
 				modelAndView.addObject("message",
-						"Your account is not activated. Please connect with system administrator for more details.");
+						loginregistermessageproperties.getFailedAcctActivationMessage());
 			}
 		}
 		return modelAndView;
@@ -158,22 +151,22 @@ public class LoginController {
 
 		if (userExists == null) {
 			modelAndView.addObject("user", user);
-			modelAndView.addObject("message", "This email is not register with BookKeepo !");
+			modelAndView.addObject("message", loginregistermessageproperties.getUserNotFoundMessage());
 
 		} else {
 			modelAndView.addObject("user", new UserDetails());
 
 			if (Constants.FORGET_PASSWORD_IDENTIFIER.equals(user.getTrouble())) {
 				String newPassword = CommonUtils.getUniqueID();
-				modelAndView.addObject("message", "New Password sent on your email.");
+				modelAndView.addObject("message", loginregistermessageproperties.getNewPasswordSentMessage());
 				userExists.setPassword(bCryptPasswordEncoder.encode(newPassword));
-				emailservice.forgetPassword(userExists, emailFrom, forgetPssSub, forgetPssBdy, newPassword);
+				emailservice.forgetPassword(userExists, messageproperties.getEmailFrom(), messageproperties.getForgetPasswordSubject(), messageproperties.getForgetPasswordBody(), newPassword);
 				userService.updateUser(userExists);
 			} else {
 				String newToken = CommonUtils.generateToken(userExists.getName());
-				modelAndView.addObject("message", "Activation Link Sent successfully");
+				modelAndView.addObject("message", loginregistermessageproperties.getActivationLinkSentMessage());
 				userExists.setToken(newToken);
-				emailservice.sendEmail(userExists, emailFrom, actSubject, actBody);
+				emailservice.sendEmail(userExists, messageproperties.getEmailFrom(),  messageproperties.getAcctactivationSubject(), messageproperties.getAcctactivationBody());
 				userService.updateUser(userExists);
 			}
 		}
