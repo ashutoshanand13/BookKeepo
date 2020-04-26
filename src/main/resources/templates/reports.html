@@ -33,7 +33,7 @@
 					<div class="form-group">
 						<label>Choose Category </label>
 
-						<div th:each="model : ${T(in.winwithweb.gst.model.InvoiceType).values()}">
+						<div th:each="model : ${T(com.bookkeepo.accounting.model.InvoiceType).values()}">
 							<div class="custom-control custom-radio custom-control-inline">
 								<input type="radio" th:field="*{invoiceType}" th:value="${model}"
 									class="form-control" required="required"> <label
@@ -51,7 +51,7 @@
 						<label>Choose Document Type </label>
 
 						<div
-							th:each="model : ${T(in.winwithweb.gst.model.InvoiceSubType).values()}">
+							th:each="model : ${T(com.bookkeepo.accounting.model.InvoiceSubType).values()}">
 							<div class="custom-control custom-radio custom-control-inline">
 								<input type="radio" th:field="*{invoiceSubType}"
 									th:value="${model}" class="form-control" required="required"> <label
