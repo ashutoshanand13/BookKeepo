@@ -8,8 +8,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.Data;
 
@@ -58,7 +62,9 @@ public class Accounts {
 	@NotEmpty(message = "*Please provide the account pincode")
 	private String accountPincode;
 
-	@Column(name = "account_creation_date")
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "account_creation_date", nullable = false, updatable = false)
 	private Date accountCreationDate;
 
 	@Column(name = "account_email")

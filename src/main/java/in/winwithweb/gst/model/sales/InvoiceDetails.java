@@ -16,6 +16,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import in.winwithweb.gst.model.Company;
 import lombok.Data;
@@ -40,7 +44,9 @@ public class InvoiceDetails {
 	@Column(name = "invoice_date")
 	private String invoiceDate;
 
-	@Column(name = "invoice_creation_date")
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "invoice_creation_date", nullable = false, updatable = false)
 	private Date invoiceCreationDate;
 
 	@Column(name = "invoice_owner")
