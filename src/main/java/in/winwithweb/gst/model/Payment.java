@@ -50,7 +50,6 @@ public class Payment {
 	private String paymentAmount;
 
 	@Column(name = "payment_description")
-	@NotEmpty(message = "*Please provide the payment description")
 	private String paymentDescription;
 
 	@Column(name = "payment_owner")
