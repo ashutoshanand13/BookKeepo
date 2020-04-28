@@ -25,9 +25,7 @@
 			<div class="row">
 				<div class="col-md-6 form-group">
 					<div class="form-group">
-						<label>Receipt Information</label> <input type="text"
-						class="form-control" name="name" th:field="*{receiptNumber}"
-						placeholder="Receipt Number" onblur="checkReceiptNo(this)" required>
+						<label>Receipt Information</label>
 						<select th:field="*{accountRefNo.id}" class="form-control"
 						id="selectbasic" name="selectbasic">
 							<option th:each="account : ${accountList}" th:value="${account.id}"
