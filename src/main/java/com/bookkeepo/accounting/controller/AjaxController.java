@@ -16,8 +16,6 @@ import com.bookkeepo.accounting.model.InvoiceType;
 import com.bookkeepo.accounting.service.AccountService;
 import com.bookkeepo.accounting.service.InvoiceService;
 import com.bookkeepo.accounting.service.ItemService;
-import com.bookkeepo.accounting.service.PaymentService;
-import com.bookkeepo.accounting.service.ReceiptService;
 import com.bookkeepo.accounting.util.CommonUtils;
 import com.google.gson.Gson;
 
@@ -37,12 +35,6 @@ public class AjaxController {
 
 	@Autowired
 	private ItemService itemService;
-
-	@Autowired
-	PaymentService paymentService;
-
-	@Autowired
-	ReceiptService receiptService;
 
 	@Autowired
 	Gson gson;
