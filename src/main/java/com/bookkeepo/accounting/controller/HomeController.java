@@ -38,6 +38,7 @@ public class HomeController {
 		for (InvoiceDetails invoice : invoiceList) {
 			if (invoice.getInvoiceCompanyDetails() != null) {
 				invoice.setInvoiceAssoCompanyDetails(InvoiceUtil.getComanyDetails(invoice.getInvoiceCompanyDetails()));
+				invoice.setInvoiceCompanyDetails(null);
 				invoiceService.saveInvoice(invoice);
 			}
 		}
