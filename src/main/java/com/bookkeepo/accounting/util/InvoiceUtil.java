@@ -15,6 +15,7 @@ import java.util.List;
 import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.entity.InvoiceAddressDetails;
 import com.bookkeepo.accounting.entity.InvoiceBankDetails;
+import com.bookkeepo.accounting.entity.InvoiceCompanyDetails;
 import com.bookkeepo.accounting.entity.InvoiceDetails;
 import com.bookkeepo.accounting.entity.InvoiceOtherDetails;
 import com.bookkeepo.accounting.entity.InvoiceProductDetails;
@@ -76,13 +77,27 @@ public class InvoiceUtil {
 		invoice.setInvoiceUniqueKey(CommonUtils.getUniqueID());
 		invoice.setInvoiceReverseCharge(salesInvoiceData.getReverseCharge());
 		invoice.setInvoiceSubType(getInvoiceSubType(salesInvoiceData, companyDetails));
-
-		invoice.setInvoiceCompanyDetails(companyDetails);
+		invoice.setInvoiceAssoCompanyDetails(getComanyDetails(companyDetails));
 		invoice.setInvoiceAddressDetails(getInvoiceAddress(invoice, salesInvoiceData));
 		invoice.setInvoiceBankDetails(getBankDetails(salesInvoiceData));
 		invoice.setInvoiceProductDetails(getProductList(salesInvoiceData));
 
 		invoice.setInvoiceOtherDetails(getOtherDetails(salesInvoiceData));
+	}
+
+	public static InvoiceCompanyDetails getComanyDetails(Company companyDetails) {
+		InvoiceCompanyDetails invoiceCompanyDetails = new InvoiceCompanyDetails();
+		invoiceCompanyDetails.setCompanyName(companyDetails.getCompanyName());
+		invoiceCompanyDetails.setCompanyGstin(companyDetails.getCompanyGstin());
+		invoiceCompanyDetails.setCompanyState(companyDetails.getCompanyState());
+		invoiceCompanyDetails.setCompanyAddress(companyDetails.getCompanyAddress());
+		invoiceCompanyDetails.setCompanyEmail(companyDetails.getCompanyEmail());
+		invoiceCompanyDetails.setCompanyTelephone(companyDetails.getCompanyTelephone());
+		invoiceCompanyDetails.setCompanyBankAC(companyDetails.getCompanyBankAC());
+		invoiceCompanyDetails.setCompanyBankIFSC(companyDetails.getCompanyBankIFSC());
+		invoiceCompanyDetails.setCompanyBankTNC(companyDetails.getCompanyBankTNC());
+		invoiceCompanyDetails.setCompanyLogo(companyDetails.getCompanyLogo());
+		return invoiceCompanyDetails;
 	}
 
 	private static void setinvoiceProductData(ItemList item, InvoiceProductDetails invoiceProductDetails) {
@@ -293,12 +308,12 @@ public class InvoiceUtil {
 							bfBold12, bf12, 1, "#FFFFFF", 0.5f, 1f);
 					insertCell(table, "GSTIN: ", invoiceAddressDetails.getInvoicePartyGst(), Element.ALIGN_LEFT, 1,
 							bfBold12, bf12, 1, "#FFFFFF", 1f, 0.5f);
-					insertCell(table, "Vehicle No: ", invoice.getInvoiceVehicleNumber(), Element.ALIGN_LEFT, 2, bfBold12,
-							bf12, 1, "#FFFFFF", 0.5f, 1f);
+					insertCell(table, "Vehicle No: ", invoice.getInvoiceVehicleNumber(), Element.ALIGN_LEFT, 2,
+							bfBold12, bf12, 1, "#FFFFFF", 0.5f, 1f);
 					insertCell(table, "State: ", invoiceAddressDetails.getInvoicePartyState(), Element.ALIGN_LEFT, 1,
 							bfBold12, bf12, 1, "#FFFFFF", 1f, 0.5f);
-					insertCell(table, "Reverse Charge (Y/N): ", invoice.getInvoiceReverseCharge(), Element.ALIGN_LEFT, 2,
-							bfBold12, bf12, 1, "#EEFF74", 0.5f, 1f);
+					insertCell(table, "Reverse Charge (Y/N): ", invoice.getInvoiceReverseCharge(), Element.ALIGN_LEFT,
+							2, bfBold12, bf12, 1, "#EEFF74", 0.5f, 1f);
 				} else {
 					insertCell(table, "Invoice Details", Element.ALIGN_CENTER, 2, bfBold12, 1, "#BFD6E9", 0.5f, 1f, 0f);
 					insertCell(table, "Name: ", invoiceAddressDetails.getInvoicePartyName(), Element.ALIGN_LEFT, 1,
@@ -315,10 +330,10 @@ public class InvoiceUtil {
 							"#FFFFFF", 0.5f, 1f);
 					insertCell(table, "GSTIN: ", invoiceAddressDetails.getInvoicePartyGst(), Element.ALIGN_LEFT, 1,
 							bfBold12, bf12, 1, "#FFFFFF", 1f, 0.5f);
-					insertCell(table, "Vehicle No: ", invoice.getInvoiceVehicleNumber(), Element.ALIGN_LEFT, 1, bfBold12,
-							bf12, 1, "#FFFFFF", 0.5f, 0.5f);
-					insertCell(table, "Reverse Charge (Y/N): ", invoice.getInvoiceReverseCharge(), Element.ALIGN_LEFT, 1,
-							bfBold12, bf12, 1, "#EEFF74", 0.5f, 1f);
+					insertCell(table, "Vehicle No: ", invoice.getInvoiceVehicleNumber(), Element.ALIGN_LEFT, 1,
+							bfBold12, bf12, 1, "#FFFFFF", 0.5f, 0.5f);
+					insertCell(table, "Reverse Charge (Y/N): ", invoice.getInvoiceReverseCharge(), Element.ALIGN_LEFT,
+							1, bfBold12, bf12, 1, "#EEFF74", 0.5f, 1f);
 					insertCell(table, "State: ", invoiceAddressDetails.getInvoicePartyState(), Element.ALIGN_LEFT, 1,
 							bfBold12, bf12, 1, "#FFFFFF", 1f, 0.5f);
 					insertCell(table, "Transport Mode: ", invoice.getInvoiceTransportMode(), Element.ALIGN_LEFT, 2,
@@ -479,9 +494,8 @@ public class InvoiceUtil {
 
 			insertCell(itemTable, "Bank A/c: ", invoice.getInvoiceBankDetails().getInvoiceBankAccount(),
 					Element.ALIGN_LEFT, 4, bfBold12, bf12, 1, "#FFFFFFF", 1f, 0.5f);
-			insertCell(itemTable,
-					"Ceritified that the particulars given above are true and correct \n\n\n\n For "
-							+ invoice.getInvoiceCompanyDetails().getCompanyName() + " \n\n\n\n Authorised Signatory",
+			insertCell(itemTable, "Ceritified that the particulars given above are true and correct \n\n\n\n For "
+					+ invoice.getInvoiceAssoCompanyDetails().getCompanyName() + " \n\n\n\n Authorised Signatory",
 					Element.ALIGN_CENTER, isIntraState ? 6 : 5, bf12, 6, "#FFFFFFF", 0.5f, 1f, 0f);
 
 			insertCell(itemTable, "Bank A/c: ", invoice.getInvoiceBankDetails().getInvoiceIfsCode(), Element.ALIGN_LEFT,
@@ -522,7 +536,9 @@ public class InvoiceUtil {
 	 */
 	private static void addHeader(InvoiceDetails invoice, Font bfBold12, PdfPTable tableHeader)
 			throws BadElementException, MalformedURLException, IOException {
-		Image img = Image.getInstance(invoice.getInvoiceCompanyDetails().getCompanyLogo());
+		InvoiceCompanyDetails company = invoice.getInvoiceAssoCompanyDetails();
+
+		Image img = Image.getInstance(company.getCompanyLogo());
 		img.scaleAbsolute(120f, 50f);
 
 		PdfPCell cell = new PdfPCell(img);
@@ -536,10 +552,8 @@ public class InvoiceUtil {
 		cell.setBackgroundColor(new BaseColor(Color.decode("#FFFFFF").getRGB()));
 		tableHeader.addCell(cell);
 
-		String companyColumn = invoice.getInvoiceCompanyDetails().getCompanyName() + "\n\n"
-				+ invoice.getInvoiceCompanyDetails().getCompanyAddress() + "\n\nTel: "
-				+ invoice.getInvoiceCompanyDetails().getCompanyTelephone() + "\nGSTIN: "
-				+ invoice.getInvoiceCompanyDetails().getCompanyGstin() + "\n";
+		String companyColumn = company.getCompanyName() + "\n\n" + company.getCompanyAddress() + "\n\nTel: "
+				+ company.getCompanyTelephone() + "\nGSTIN: " + company.getCompanyGstin() + "\n";
 
 		PdfPCell cell2 = new PdfPCell(
 				new Phrase(companyColumn.trim(), new Font(FontFamily.TIMES_ROMAN, 10, Font.BOLD)));

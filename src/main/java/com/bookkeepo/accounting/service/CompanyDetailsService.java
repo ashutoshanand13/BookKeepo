@@ -8,20 +8,19 @@ import com.bookkeepo.accounting.repository.CompanyDetailsRepository;
 
 @Service("companyDetailsService")
 public class CompanyDetailsService {
-	
+
 	private CompanyDetailsRepository companyDetailsRepository;
 
-	
 	@Autowired
-    public CompanyDetailsService(CompanyDetailsRepository companyDetailsRepository) {
-        this.companyDetailsRepository = companyDetailsRepository;
-    }
-	
+	public CompanyDetailsService(CompanyDetailsRepository companyDetailsRepository) {
+		this.companyDetailsRepository = companyDetailsRepository;
+	}
+
 	public Company findByUserName(String name) {
 		return companyDetailsRepository.findByUserName(name);
 	}
-	
-    public void save(Company company) {
-    	companyDetailsRepository.save(company);
-    }
+
+	public void save(Company company) {
+		companyDetailsRepository.save(company);
+	}
 }

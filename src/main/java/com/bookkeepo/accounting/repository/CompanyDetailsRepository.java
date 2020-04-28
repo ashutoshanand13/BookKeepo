@@ -13,6 +13,6 @@ import com.bookkeepo.accounting.entity.Company;
  *
  */
 @Repository("companyDetailsRepository")
-public interface CompanyDetailsRepository extends JpaRepository<Company, Long>{
+public interface CompanyDetailsRepository extends JpaRepository<Company, Long> {
 	Company findByUserName(String name);
 }
