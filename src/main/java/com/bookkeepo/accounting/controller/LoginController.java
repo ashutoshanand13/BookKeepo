@@ -156,7 +156,7 @@ public class LoginController {
 			modelAndView.addObject("user", new UserDetails());
 
 			if (Constants.FORGET_PASSWORD_IDENTIFIER.equals(user.getTrouble())) {
-				String newPassword = CommonUtils.getUniqueID();
+				String newPassword = CommonUtils.generateCommonTextPassword();
 				modelAndView.addObject("message", loginregistermessageproperties.getNewPasswordSentMessage());
 				userExists.setPassword(bCryptPasswordEncoder.encode(newPassword));
 				emailservice.forgetPassword(userExists, messageproperties.getEmailFrom(), messageproperties.getForgetPasswordSubject(), messageproperties.getForgetPasswordBody(), newPassword);
