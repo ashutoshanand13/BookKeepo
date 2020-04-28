@@ -18,7 +18,7 @@ import com.bookkeepo.accounting.service.UserService;
 
 @Configuration
 @Controller
-public class ChangePasswordController {
+public class UserProfileController {
 
 	@Autowired
 	private UserService userService;
