@@ -80,16 +80,4 @@ public class AjaxController {
 				request.getUserPrincipal().getName()));
 	}
 
-	@RequestMapping(value = "/home/paymentunique", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody String getPayment(@RequestParam String paymentNo, HttpServletRequest request) {
-		return gson.toJson(
-				paymentService.findByPaymentNumberAndPaymentOwner(paymentNo, request.getUserPrincipal().getName()));
-	}
-
-	@RequestMapping(value = "/home/receiptunique", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody String getReceipt(@RequestParam String receiptNo, HttpServletRequest request) {
-		return gson.toJson(
-				receiptService.findByReceiptNumberAndReceiptOwner(receiptNo, request.getUserPrincipal().getName()));
-	}
-
 }

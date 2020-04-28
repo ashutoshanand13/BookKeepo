@@ -20,6 +20,4 @@ import com.bookkeepo.accounting.entity.Receipts;
 public interface ReceiptRepository extends JpaRepository<Receipts, Long> {
 
 	List<Receipts> findByReceiptOwner(String owner);
-
-	Receipts findByReceiptNumberAndReceiptOwner(String receiptNo, String owner);
 }
