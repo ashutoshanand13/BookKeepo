@@ -18,7 +18,7 @@ import com.bookkeepo.accounting.service.UserService;
 
 @Configuration
 @Controller
-public class ChangePasswordController {
+public class UserProfileController {
 
 	@Autowired
 	private UserService userService;
@@ -54,8 +54,8 @@ public class ChangePasswordController {
 		} else {
 			modelAndView.addObject("message", "Password successfully changed");
 
-			userExists.setPassword(user.getNewPassword());
-			userService.saveUser(userExists);
+			userExists.setPassword(bCryptPasswordEncoder.encode(user.getNewPassword()));
+			userService.updateUser(userExists);
 
 		}
 

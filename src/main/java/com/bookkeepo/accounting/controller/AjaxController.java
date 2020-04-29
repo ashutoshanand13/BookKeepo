@@ -16,8 +16,6 @@ import com.bookkeepo.accounting.model.InvoiceType;
 import com.bookkeepo.accounting.service.AccountService;
 import com.bookkeepo.accounting.service.InvoiceService;
 import com.bookkeepo.accounting.service.ItemService;
-import com.bookkeepo.accounting.service.PaymentService;
-import com.bookkeepo.accounting.service.ReceiptService;
 import com.bookkeepo.accounting.util.CommonUtils;
 import com.google.gson.Gson;
 
@@ -37,12 +35,6 @@ public class AjaxController {
 
 	@Autowired
 	private ItemService itemService;
-
-	@Autowired
-	PaymentService paymentService;
-
-	@Autowired
-	ReceiptService receiptService;
 
 	@Autowired
 	Gson gson;
@@ -78,18 +70,6 @@ public class AjaxController {
 			HttpServletRequest request) {
 		return gson.toJson(invoiceService.findByInvoiceNumberAndInvoiceOwnerAndInvoiceType(invoiceNo, pageName,
 				request.getUserPrincipal().getName()));
-	}
-
-	@RequestMapping(value = "/home/paymentunique", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody String getPayment(@RequestParam String paymentNo, HttpServletRequest request) {
-		return gson.toJson(
-				paymentService.findByPaymentNumberAndPaymentOwner(paymentNo, request.getUserPrincipal().getName()));
-	}
-
-	@RequestMapping(value = "/home/receiptunique", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody String getReceipt(@RequestParam String receiptNo, HttpServletRequest request) {
-		return gson.toJson(
-				receiptService.findByReceiptNumberAndReceiptOwner(receiptNo, request.getUserPrincipal().getName()));
 	}
 
 }

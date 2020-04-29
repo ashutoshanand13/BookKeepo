@@ -29,9 +29,8 @@ public class Payment {
 	@Column(name = "payment_id")
 	private int id;
 
-	@Column(name = "payment_number")
-	@NotEmpty(message = "*Please provide the payment number")
-	private String paymentNumber;
+	@Column(name = "payment_number" , updatable = false)
+	private int paymentNumber;
 
 	@Column(name = "payment_reference")
 	@NotEmpty(message = "*Please provide the payment reference")
@@ -81,14 +80,14 @@ public class Payment {
 	/**
 	 * @return the paymentNumber
 	 */
-	public String getPaymentNumber() {
+	public int getPaymentNumber() {
 		return paymentNumber;
 	}
 
 	/**
 	 * @param paymentNumber the paymentNumber to set
 	 */
-	public void setPaymentNumber(String paymentNumber) {
+	public void setPaymentNumber(int paymentNumber) {
 		this.paymentNumber = paymentNumber;
 	}
 

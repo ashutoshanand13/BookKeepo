@@ -35,9 +35,5 @@ public class PaymentService {
 	public List<Payment> fetchAllPayment(String owner) {
 		return paymentRepository.findByPaymentOwner(owner);
 	}
-	
-	public Payment findByPaymentNumberAndPaymentOwner(String paymentNo, String owner) {
-		return paymentRepository.findByPaymentNumberAndPaymentOwner(paymentNo,owner);
-	}
 
 }
