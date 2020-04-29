@@ -20,7 +20,5 @@ import com.bookkeepo.accounting.entity.Payment;
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
 	List<Payment> findByPaymentOwner(String owner);
-	
-	Payment findByPaymentNumberAndPaymentOwner(String paymentNo, String owner);
 
 }

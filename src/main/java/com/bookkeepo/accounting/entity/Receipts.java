@@ -29,9 +29,8 @@ public class Receipts {
 	@Column(name = "receipt_id")
 	private int id;
 
-	@Column(name = "receipt_number")
-	@NotEmpty(message = "*Please provide the receipt number")
-	private String receiptNumber;
+	@Column(name = "receipt_number", updatable = false)
+	private int receiptNumber;
 
 	@Column(name = "receipt_reference")
 	@NotEmpty(message = "*Please provide the receipt reference")
@@ -81,14 +80,14 @@ public class Receipts {
 	/**
 	 * @return the receiptNumber
 	 */
-	public String getReceiptNumber() {
+	public int getReceiptNumber() {
 		return receiptNumber;
 	}
 
 	/**
 	 * @param receiptNumber the receiptNumber to set
 	 */
-	public void setReceiptNumber(String receiptNumber) {
+	public void setReceiptNumber(int receiptNumber) {
 		this.receiptNumber = receiptNumber;
 	}
 
