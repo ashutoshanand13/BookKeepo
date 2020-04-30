@@ -52,7 +52,7 @@ public class CreditNoteController {
 		} else if (ownerInvoices.size() == 1) {
 			modelAndView.setViewName("redirect:/home/salesinvoice/Please create tax invoice first!");
 		} else {
-			modelAndView.addObject("accountList", accountService.fetchAccountNameForInvoice(user));
+			modelAndView.addObject("accountList", accountService.fetchAccountName(user));
 			modelAndView.addObject("invoiceList", ownerInvoices);
 			modelAndView.addObject("company", company);
 			modelAndView.addObject("logoImage", CommonUtils.getImgfromByteArray(company.getCompanyLogo()));

@@ -43,7 +43,7 @@ public class SalesInvoiceController {
 		if (company == null) {
 			modelAndView.setViewName("redirect:/home/updatecompany/salesinvoice");
 		} else {
-			modelAndView.addObject("accountList", accountService.fetchAccountNameForInvoice(user));
+			modelAndView.addObject("accountList", accountService.fetchAccountName(user));
 			modelAndView.addObject("company", company);
 			modelAndView.addObject("logoImage", CommonUtils.getImgfromByteArray(company.getCompanyLogo()));
 			modelAndView.addObject("itemList", itemService.findByProductOwner(user));

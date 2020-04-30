@@ -442,16 +442,16 @@ function setDate(data) {
 	 $(data).focus();
 }
 
-$("[name=nameBill]").change(function() {
-	var accountName = $("[name=nameBill]").val();
+$("[name=accountNo]").change(function() {
+	var accountNo = $("[name=accountNo]").val();
 	
+	if(accountNo!=="0") {
 		$.ajax({
 			type : "GET",
 			contentType : "application/json",
-			url : "/home/getAccountData?accountName=" + accountName,
+			url : "/home/getAccountData?accountName=" + accountNo,
 			dataType : 'json',				
 			success : function(data) {
-				$("[name=nameBill]").val(data.accountName);
 				$("[name=nameShip]").val(data.accountName);
 				$("[name=addressBill]").val(data.accountAddress);
 				$("[name=addressShip]").val(data.accountAddress);
@@ -464,6 +464,19 @@ $("[name=nameBill]").change(function() {
 				$("[name=gstinShip]").blur();
 			}
 			});
+	} else {
+		$("[name=nameShip]").val("");
+		$("[name=addressBill]").val("");
+		$("[name=addressShip]").val("");
+		$("[name=gstinBill]").val("");
+		$("[name=gstinShip]").val("");
+		$("[name=stateBill]").val("");
+		$("[name=stateShip]").val("");
+		$("[name=gstinBill]").focus();
+		$("[name=gstinShip]").focus();
+		$("[name=gstinShip]").blur();
+	}
+
 });
 
 $("#againstInvoicedropdown").change(function() {

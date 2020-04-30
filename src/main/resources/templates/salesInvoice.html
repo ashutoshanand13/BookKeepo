@@ -109,20 +109,18 @@
 				</thead>
 				<tbody>
 					<tr>
-						<td class="pt-3-half">							
-							<input list="select" class="form-control"
-							name="nameBill" placeholder="Name" autocomplete="off"> <datalist
-								id="select">
-								<option th:each="account : ${accountList}" th:value="${account.id}"
+						<td class="pt-3-half"> 
+							<select name="accountNo">
+						<option th:each="account : ${accountList}" th:value="${account.id}"
 									th:text="${account.accountName}"></option>
-							</datalist>
+					</select>
 						</td>
 						<td class="pt-3-half"><input type="text" class="form-control"
-							name="nameShip" placeholder="Name" required="required"></td>
+							name="nameShip" placeholder="Name" required="required" readonly="readonly"></td>
 					</tr>
 					<tr>
 						<td class="pt-3-half"><input type="text" class="form-control"
-							name="addressBill" placeholder="Address" required="required"></td>
+							name="addressBill" placeholder="Address" required="required" readonly="readonly"></td>
 						<td class="pt-3-half"><input type="text" class="form-control"
 							name="addressShip" placeholder="Address" required="required"></td>
 					</tr>
@@ -130,17 +128,17 @@
 						<td class="pt-3-half"><input type="text" class="form-control"
 							name="gstinBill" placeholder="GSTIN" onblur="validateGST(this)"
 							pattern="^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$"
-							required="required"
+							required="required" readonly="readonly"
 							oninvalid="this.setCustomValidity('GST Identification Number is not valid. It should be in this 11AAAAA1111Z1A1 format')" oninput="setCustomValidity('')"></td>
 						<td class="pt-3-half"><input type="text" class="form-control"
 							name="gstinShip" placeholder="GSTIN"
 							pattern="^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$"
-							required="required"
+							required="required" readonly="readonly"
 							oninvalid="this.setCustomValidity('GST Identification Number is not valid. It should be in this 11AAAAA1111Z1A1 format')" oninput="setCustomValidity('')"></td>
 					</tr>
 					<tr>
 						<td class="pt-3-half"><input type="text" class="form-control"
-							name="stateBill" placeholder="State" required="required"></td>
+							name="stateBill" placeholder="State" required="required" readonly="readonly"></td>
 						<td class="pt-3-half"><input type="text" class="form-control"
 							name="stateShip" placeholder="State" required="required"></td>
 					</tr>
