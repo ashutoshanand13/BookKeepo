@@ -902,3 +902,7 @@ div.form-content label.field-description{
     font-size: 13px ;
     margin-bottom: 0px;
 }
+.mandatory.field-description:after{
+	content:"*";
+   	color:red;
+}

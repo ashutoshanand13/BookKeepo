@@ -40,7 +40,7 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-md-6 form-group"><label class="field-description text-uppercase">Bank Name(*)</label>
+				<div class="col-md-6 form-group"><label class="mandatory field-description text-uppercase">Bank Name</label>
 					<input type="text"
 						th:field="*{userbankName}" class="text-uppercase" required="required">
 					<label class="field-description">Bank Account</label>
@@ -53,7 +53,7 @@
 				<div class="col-md-6 form-group"><label class="field-description text-uppercase">Bank Branch</label>
 					<input type="text"
 						th:field="*{userbankBranch}" required="required">
-					<label class="field-description">Select A/C Type(*)</label>
+					<label class="mandatory field-description">Select A/C Type</label>
 					<select name="selectbasic" class="form-control" th:field="*{userbankActype}" required="required">
 							<option class="form-control" value="Savings">Cash</option>
 							<option class="form-control" value="Current">Bank</option>
