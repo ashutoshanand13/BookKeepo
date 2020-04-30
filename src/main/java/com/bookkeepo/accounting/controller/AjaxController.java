@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bookkeepo.accounting.model.InvoiceType;
 import com.bookkeepo.accounting.service.AccountService;
+import com.bookkeepo.accounting.service.BankService;
 import com.bookkeepo.accounting.service.InvoiceService;
 import com.bookkeepo.accounting.service.ItemService;
 import com.bookkeepo.accounting.util.CommonUtils;
@@ -35,6 +36,9 @@ public class AjaxController {
 
 	@Autowired
 	private ItemService itemService;
+	
+	@Autowired
+	private BankService bankService;
 
 	@Autowired
 	Gson gson;
@@ -63,6 +67,11 @@ public class AjaxController {
 	@RequestMapping(value = "/home/getItemData", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody String getItemDetails(@RequestParam int itemId, HttpServletRequest request) {
 		return gson.toJson(itemService.findById(itemId));
+	}
+	
+	@RequestMapping(value = "/home/getBankData", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody String getBankDetails(@RequestParam int bankId, HttpServletRequest request) {
+		return gson.toJson(bankService.findById(bankId));
 	}
 
 	@RequestMapping(value = "/home/invoiceunique", method = RequestMethod.GET, produces = "application/json")
