@@ -529,3 +529,29 @@ function checkInvoiceNo(value) {
 			});
 	}
 }
+
+
+function checkAccountName(value) {
+	var accountName = $(value).val().trim();
+	debugger;
+	if(accountName !== "" && $("[name=id").val() === "0") {
+		$.ajax({
+			type : "GET",
+			contentType : "application/json",
+			url : "/home/getAccountName?accountName=" + accountName,
+			dataType : 'json',				
+			success : function(data) {
+				if(data !== null) {
+					$('#name_alert').html(
+							'<div class="alert alert-info text-center table-width fade-in" role="alert">'
+							  +'Account with this Name already exists. You may want to change it to avoid confusion.'+
+							  '</div>')
+					$("#name_alert");
+				}
+				else {
+					$('#name_alert').remove()
+				}
+			}
+			});
+	}
+}

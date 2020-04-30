@@ -45,8 +45,9 @@
 					<div class="form-group">
 						<label>Account Information</label> <input type="text"
 							class="form-control" name="name" th:field="*{accountName}"
-							placeholder="Account Name" required> <select
-							name="selectbasic" class="form-control" th:field="*{accountType}"
+							placeholder="Account Name" required onblur="checkAccountName(this)"> 
+							<div id = "name_alert"></div>
+							<select name="selectbasic" class="form-control" th:field="*{accountType}"
 							required="required">
 							<option class="form-control" value="">Select Account
 								type</option>

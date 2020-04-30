@@ -68,4 +68,9 @@ public class AccountService {
 	public String getAccountName(int id) {
 		return accountRepository.findById(id).getAccountName();
 	}
+	
+	public List<Accounts> findByAccountOwnerAndAccountName(String accountOwner, String name) {
+		List<Accounts> accountList = accountRepository.findByAccountOwnerAndAccountName(accountOwner, name);
+		return accountList.size() == 0 ? null : accountList ;
+	}
 }

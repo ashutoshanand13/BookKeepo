@@ -71,5 +71,10 @@ public class AjaxController {
 		return gson.toJson(invoiceService.findByInvoiceNumberAndInvoiceOwnerAndInvoiceType(invoiceNo, pageName,
 				request.getUserPrincipal().getName()));
 	}
+	
+	@RequestMapping(value = "/home/getAccountName", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody String getAccountNameUnique(@RequestParam String accountName, HttpServletRequest request) {
+		return gson.toJson(accountService.findByAccountOwnerAndAccountName(request.getUserPrincipal().getName(), accountName));
+	}
 
 }
