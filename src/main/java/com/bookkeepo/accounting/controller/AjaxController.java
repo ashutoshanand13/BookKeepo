@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bookkeepo.accounting.model.InvoiceType;
 import com.bookkeepo.accounting.service.AccountService;
+import com.bookkeepo.accounting.service.BankService;
 import com.bookkeepo.accounting.service.InvoiceService;
 import com.bookkeepo.accounting.service.ItemService;
 import com.bookkeepo.accounting.util.CommonUtils;
@@ -35,6 +36,9 @@ public class AjaxController {
 
 	@Autowired
 	private ItemService itemService;
+	
+	@Autowired
+	private BankService bankService;
 
 	@Autowired
 	Gson gson;
@@ -64,12 +68,27 @@ public class AjaxController {
 	public @ResponseBody String getItemDetails(@RequestParam int itemId, HttpServletRequest request) {
 		return gson.toJson(itemService.findById(itemId));
 	}
+	
+	@RequestMapping(value = "/home/getBankData", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody String getBankDetails(@RequestParam int bankId, HttpServletRequest request) {
+		return gson.toJson(bankService.findById(bankId));
+	}
 
 	@RequestMapping(value = "/home/invoiceunique", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody String getInvoice(@RequestParam String invoiceNo, @RequestParam String pageName,
 			HttpServletRequest request) {
 		return gson.toJson(invoiceService.findByInvoiceNumberAndInvoiceOwnerAndInvoiceType(invoiceNo, pageName,
 				request.getUserPrincipal().getName()));
+	}
+	
+	@RequestMapping(value = "/home/getAccountName", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody String getAccountNameUnique(@RequestParam String accountName, HttpServletRequest request) {
+		return gson.toJson(accountService.findByAccountOwnerAndAccountName(request.getUserPrincipal().getName(), accountName));
+	}
+	
+	@RequestMapping(value = "/home/getaccountlist", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody String getAccountList(HttpServletRequest request) {
+		return gson.toJson(accountService.fetchAccountNameForInvoice(request.getUserPrincipal().getName()));
 	}
 
 }

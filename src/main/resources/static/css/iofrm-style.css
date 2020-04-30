@@ -216,10 +216,19 @@ html, body {
     height: 95%;
 }
 
+@media (max-width: 700px) {
+.form-holder-beforelogin {
+    width: 100%;
+    height: 100%;
+}
+}
+
+@media (min-width: 701px) {
 .form-holder-beforelogin {
     margin-left: 550px;
     width: 100%;
     height: 100%;
+}
 }
 
 .form-holder-reports {
@@ -390,7 +399,7 @@ html, body {
     background-color: #fff;
 }
 
-.form-content input, .form-content .dropdown-toggle.btn-default {
+.form-content input,select, .form-content .dropdown-toggle.btn-default {
     width: 100%;
     padding: 9px;
     text-align: left;
@@ -403,7 +412,7 @@ html, body {
     color: #8D8D8D;
     -webkit-transition: all 0.3s ease 0s;
     transition: all 0.3s ease 0s;
-    margin-bottom: 14px;
+    margin-bottom: 10px;
 }
 
 .form-content input:hover, .form-content input:focus, .form-content .dropdown-toggle.btn-default:hover, .form-content .dropdown-toggle.btn-default:focus {
@@ -892,4 +901,8 @@ div.form-content label.field-description{
 	font-weight: 350 ;
     font-size: 13px ;
     margin-bottom: 0px;
+}
+.mandatory.field-description:after{
+	content:"*";
+   	color:red;
 }
