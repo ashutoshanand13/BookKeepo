@@ -44,9 +44,9 @@ public class InvoicePageData {
 	@SerializedName("againstInvoiceDate")
 	@Expose
 	private String againstInvoiceDate;
-	@SerializedName("nameBill")
+	@SerializedName("accountNo")
 	@Expose
-	private String nameBill;
+	private int accountNo;
 	@SerializedName("nameShip")
 	@Expose
 	private String nameShip;
@@ -219,12 +219,12 @@ public class InvoicePageData {
 		this.reverseCharge = reverseCharge;
 	}
 
-	public String getNameBill() {
-		return nameBill;
+	public int getAccountNo() {
+		return accountNo;
 	}
 
-	public void setNameBill(String nameBill) {
-		this.nameBill = nameBill;
+	public void setAccountNo(int accountNo) {
+		this.accountNo = accountNo;
 	}
 
 	public String getNameShip() {
@@ -534,7 +534,7 @@ public class InvoicePageData {
 		return "Example [invoiceNo=" + invoiceNo + ", poNo=" + poNo + ", invoiceDate=" + invoiceDate + ", poDate="
 				+ poDate + ", dateOfSupply=" + dateOfSupply + ", transportMode=" + transportMode + ", placeOfSupply="
 				+ placeOfSupply + ", vehicleNo=" + vehicleNo + ", state=" + state + ", reverseCharge=" + reverseCharge
-				+ ", nameBill=" + nameBill + ", nameShip=" + nameShip + ", addressBill=" + addressBill
+				+ ", accountNo=" + accountNo + ", nameShip=" + nameShip + ", addressBill=" + addressBill
 				+ ", addressShip=" + addressShip + ", gstinBill=" + gstinBill + ", gstinShip=" + gstinShip
 				+ ", stateBill=" + stateBill + ", stateShip=" + stateShip + ", itemList=" + itemList + ", ttlQty="
 				+ ttlQty + ", ttlAmount=" + ttlAmount + ", ttlTaxableValue=" + ttlTaxableValue + ", ttlCgst=" + ttlCgst

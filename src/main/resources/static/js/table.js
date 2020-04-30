@@ -442,16 +442,16 @@ function setDate(data) {
 	 $(data).focus();
 }
 
-$("[name=nameBill]").change(function() {
-	var accountName = $("[name=nameBill]").val();
+$("[name=accountNo]").change(function() {
+	var accountNo = $("[name=accountNo]").val();
 	
+	if(accountNo !== "0" && accountNo !== "-1") {
 		$.ajax({
 			type : "GET",
 			contentType : "application/json",
-			url : "/home/getAccountData?accountName=" + accountName,
+			url : "/home/getAccountData?accountName=" + accountNo,
 			dataType : 'json',				
 			success : function(data) {
-				$("[name=nameBill]").val(data.accountName);
 				$("[name=nameShip]").val(data.accountName);
 				$("[name=addressBill]").val(data.accountAddress);
 				$("[name=addressShip]").val(data.accountAddress);
@@ -464,6 +464,24 @@ $("[name=nameBill]").change(function() {
 				$("[name=gstinShip]").blur();
 			}
 			});
+	} else {
+		$("[name=nameShip]").val("");
+		$("[name=addressBill]").val("");
+		$("[name=addressShip]").val("");
+		$("[name=gstinBill]").val("");
+		$("[name=gstinShip]").val("");
+		$("[name=stateBill]").val("");
+		$("[name=stateShip]").val("");
+		$("[name=gstinBill]").focus();
+		$("[name=gstinShip]").focus();
+		$("[name=gstinShip]").blur();
+		
+		if(accountNo === "-1"){
+			$("[name=accountNo]").val("0");
+			window.open('/home/addaccount','_blank');
+		}
+	}
+
 });
 
 $("#againstInvoicedropdown").change(function() {
@@ -515,4 +533,48 @@ function checkInvoiceNo(value) {
 			}
 			});
 	}
+}
+
+
+function checkAccountName(value) {
+	var accountName = $(value).val().trim();
+	if(accountName !== "" && $("[name=id").val() === "0") {
+		$.ajax({
+			type : "GET",
+			contentType : "application/json",
+			url : "/home/getAccountName?accountName=" + accountName,
+			dataType : 'json',				
+			success : function(data) {
+				if(data !== null) {
+					$('#name_alert').html(
+							'<div class="alert alert-info text-center table-width fade-in" role="alert">'
+							  +'Account with this Name already exists. You may want to change it to avoid confusion.'+
+							  '</div>')
+					$("#name_alert");
+				}
+				else {
+					$('#name_alert').remove()
+				}
+			}
+			});
+	}
+}
+
+function getAccountList() {
+	$("[name=accountNo]").empty();
+	$.ajax({
+		type : "GET",
+		contentType : "application/json",
+		url : "/home/getaccountlist",
+		dataType : 'json',			
+		async : false,
+		success : function(data) {			
+			$.each(data, function (i, item) {
+			    $('[name=accountNo]').append($('<option>', { 
+			        value: item.id,
+			        text : item.accountName 
+			    }));
+			});
+		}
+		});
 }

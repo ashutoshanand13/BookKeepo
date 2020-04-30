@@ -5,6 +5,7 @@ package com.bookkeepo.accounting.controller;
 
 import java.security.Principal;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +31,10 @@ public class AccountController {
 	private AccountService accountService;
 
 	@RequestMapping(value = { "/home/addaccount" }, method = RequestMethod.GET)
-	public ModelAndView getHomePage() {
+	public ModelAndView getHomePage(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
-		Accounts account = new Accounts();
-		modelAndView.addObject("account", account);
+		modelAndView.addObject("accountList", accountService.fetchAccountName(request.getUserPrincipal().getName()));
+		modelAndView.addObject("account", new Accounts());
 		modelAndView.setViewName("addaccount");
 		return modelAndView;
 	}
@@ -43,18 +44,20 @@ public class AccountController {
 		ModelAndView modelAndView = new ModelAndView();
 		Accounts accountWithGstInExists = accountService.findAccountByGstin(account.getGstin(),principal.getName());
 
-		if (accountWithGstInExists != null) {
-			bindingResult.rejectValue("gstin", "gstin", "This GST number is already registered.");
-		} else if (account.getGstin().trim().length() != 15) {
-			bindingResult.rejectValue("gstin", "gstin", "Please provide a valid GST number.");
-		}
-
-		Accounts accountWithPanExists = accountService.findAccountByPan(account.getAccountPan(), principal.getName());
-		if (accountWithPanExists != null) {
-			bindingResult.rejectValue("accountPan", "accountPan", "This PAN is already registered.");
-		} else if (account.getAccountPan().trim().length() != 10) {
-			bindingResult.rejectValue("accountPan", "accountPan", "Please provide a valid PAN.");
-
+		if(accountService.findById(account.getId()) == null) {
+			if (accountWithGstInExists != null) {
+				bindingResult.rejectValue("gstin", "gstin", "This GST number is already registered.");
+			} else if (account.getGstin().trim().length() != 15) {
+				bindingResult.rejectValue("gstin", "gstin", "Please provide a valid GST number.");
+			}
+	
+			Accounts accountWithPanExists = accountService.findAccountByPan(account.getAccountPan(), principal.getName());
+			if (accountWithPanExists != null) {
+				bindingResult.rejectValue("accountPan", "accountPan", "This PAN is already registered.");
+			} else if (account.getAccountPan().trim().length() != 10) {
+				bindingResult.rejectValue("accountPan", "accountPan", "Please provide a valid PAN.");
+	
+			}
 		}
 		
 		if (bindingResult.hasErrors()) {
@@ -63,7 +66,8 @@ public class AccountController {
 		} else {
 			account.setAccountOwner(principal.getName());
 			accountService.saveAccount(account);
-			modelAndView.addObject("message", "New Account Details Successfully Added");
+			modelAndView.addObject("message", "Account Updated Successfully");
+			modelAndView.addObject("accountList", accountService.fetchAccountName(principal.getName()));
 			modelAndView.addObject("account", new Accounts());
 			modelAndView.setViewName("addaccount");
 		}
