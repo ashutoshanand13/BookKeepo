@@ -108,10 +108,7 @@
 				<tbody>
 					<tr>
 						<td class="pt-3-half"> 
-							<select name="accountNo">
-						<option th:each="account : ${accountList}" th:value="${account.id}"
-									th:text="${account.accountName}"></option>
-					</select>
+							<select name="accountNo" onfocus="getAccountList()"></select>
 						</td>
 						<td class="pt-3-half"><input type="text" class="form-control"
 							name="nameShip" placeholder="Name" required="required" readonly="readonly"></td>

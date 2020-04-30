@@ -15,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.model.InvoiceType;
-import com.bookkeepo.accounting.service.AccountService;
 import com.bookkeepo.accounting.service.CompanyDetailsService;
 import com.bookkeepo.accounting.service.InvoiceService;
 import com.bookkeepo.accounting.service.ItemService;
@@ -35,9 +34,6 @@ public class DebitNoteController {
 	private InvoiceService invoiceService;
 
 	@Autowired
-	private AccountService accountService;
-
-	@Autowired
 	private ItemService itemService;
 
 	@RequestMapping(value = "/home/debitnote", method = RequestMethod.GET)
@@ -52,7 +48,6 @@ public class DebitNoteController {
 		} else if (ownerInvoices.size() == 1) {
 			modelAndView.setViewName("redirect:/home/salesinvoice/Please create tax invoice first!");
 		} else {
-			modelAndView.addObject("accountList", accountService.fetchAccountName(user));
 			modelAndView.addObject("invoiceList", ownerInvoices);
 			modelAndView.addObject("company", company);
 			modelAndView.addObject("logoImage", CommonUtils.getImgfromByteArray(company.getCompanyLogo()));

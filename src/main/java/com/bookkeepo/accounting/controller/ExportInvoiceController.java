@@ -13,7 +13,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.model.InvoiceType;
-import com.bookkeepo.accounting.service.AccountService;
 import com.bookkeepo.accounting.service.CompanyDetailsService;
 import com.bookkeepo.accounting.service.ItemService;
 import com.bookkeepo.accounting.util.CommonUtils;
@@ -29,9 +28,6 @@ public class ExportInvoiceController {
 	private CompanyDetailsService companyDetailsService;
 
 	@Autowired
-	private AccountService accountService;
-
-	@Autowired
 	private ItemService itemService;
 
 	@RequestMapping(value = "/home/exportinvoice", method = RequestMethod.GET)
@@ -42,7 +38,6 @@ public class ExportInvoiceController {
 		if (company == null) {
 			modelAndView.setViewName("redirect:/home/updatecompany/exportinvoice");
 		} else {
-			modelAndView.addObject("accountList", accountService.fetchAccountName(user));
 			modelAndView.addObject("company", company);
 			modelAndView.addObject("logoImage", CommonUtils.getImgfromByteArray(company.getCompanyLogo()));
 			modelAndView.addObject("itemList", itemService.findByProductOwner(user));

@@ -445,7 +445,7 @@ function setDate(data) {
 $("[name=accountNo]").change(function() {
 	var accountNo = $("[name=accountNo]").val();
 	
-	if(accountNo!=="0") {
+	if(accountNo !== "0" && accountNo !== "-1") {
 		$.ajax({
 			type : "GET",
 			contentType : "application/json",
@@ -475,6 +475,11 @@ $("[name=accountNo]").change(function() {
 		$("[name=gstinBill]").focus();
 		$("[name=gstinShip]").focus();
 		$("[name=gstinShip]").blur();
+		
+		if(accountNo === "-1"){
+			$("[name=accountNo]").val("0");
+			window.open('/home/addaccount','_blank');
+		}
 	}
 
 });
@@ -533,7 +538,6 @@ function checkInvoiceNo(value) {
 
 function checkAccountName(value) {
 	var accountName = $(value).val().trim();
-	debugger;
 	if(accountName !== "" && $("[name=id").val() === "0") {
 		$.ajax({
 			type : "GET",
@@ -554,4 +558,23 @@ function checkAccountName(value) {
 			}
 			});
 	}
+}
+
+function getAccountList() {
+	$("[name=accountNo]").empty();
+	$.ajax({
+		type : "GET",
+		contentType : "application/json",
+		url : "/home/getaccountlist",
+		dataType : 'json',			
+		async : false,
+		success : function(data) {			
+			$.each(data, function (i, item) {
+			    $('[name=accountNo]').append($('<option>', { 
+			        value: item.id,
+			        text : item.accountName 
+			    }));
+			});
+		}
+		});
 }

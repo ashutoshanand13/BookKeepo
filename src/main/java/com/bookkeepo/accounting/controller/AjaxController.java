@@ -76,5 +76,10 @@ public class AjaxController {
 	public @ResponseBody String getAccountNameUnique(@RequestParam String accountName, HttpServletRequest request) {
 		return gson.toJson(accountService.findByAccountOwnerAndAccountName(request.getUserPrincipal().getName(), accountName));
 	}
+	
+	@RequestMapping(value = "/home/getaccountlist", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody String getAccountList(HttpServletRequest request) {
+		return gson.toJson(accountService.fetchAccountNameForInvoice(request.getUserPrincipal().getName()));
+	}
 
 }
