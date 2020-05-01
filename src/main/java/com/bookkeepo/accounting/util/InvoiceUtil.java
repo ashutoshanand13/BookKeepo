@@ -12,9 +12,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.bookkeepo.accounting.entity.Company;
@@ -28,7 +25,6 @@ import com.bookkeepo.accounting.model.InvoiceSubType;
 import com.bookkeepo.accounting.model.InvoiceType;
 import com.bookkeepo.accounting.model.json.InvoicePageData;
 import com.bookkeepo.accounting.model.json.ItemList;
-import com.bookkeepo.accounting.service.AccountService;
 import com.itextpdf.io.source.ByteArrayOutputStream;
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.BaseColor;
@@ -54,16 +50,6 @@ import com.itextpdf.text.pdf.PdfWriter;
 public class InvoiceUtil {
 
 	private static float[] columnItemTableWidths = null;
-	
-	private static AccountService accountServiceNew;
-
-	  @Autowired
-	  private AccountService accountService;
-
-	  @PostConstruct     
-	  private void initStaticDao () {
-		  accountServiceNew = this.accountService;
-	  }
 
 	public static void updateInvoice(InvoiceDetails invoice, InvoicePageData salesInvoiceData, Company companyDetails) {
 
@@ -150,7 +136,8 @@ public class InvoiceUtil {
 			invoiceAddressDetails.setInvoicePartyGst(salesInvoiceData.getGstinBill());
 
 		} else {
-			invoiceAddressDetails.setInvoiceBillerName(accountServiceNew.getAccountName(salesInvoiceData.getAccountNo()));
+
+			invoiceAddressDetails.setInvoiceBillerName(invoice.getInvoiceAccountDetails().getAccountName());
 			invoiceAddressDetails.setInvoiceBillerAddressName(salesInvoiceData.getAddressBill());
 			invoiceAddressDetails.setInvoiceBillerGst(salesInvoiceData.getGstinBill());
 			invoiceAddressDetails.setInvoiceBillerState(salesInvoiceData.getStateBill());

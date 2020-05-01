@@ -30,9 +30,9 @@ public class BankService {
 		List<BankDetails> itemList = new ArrayList<>();
 		BankDetails InvoiceProductDetails = new BankDetails();
 		InvoiceProductDetails.setId(0);
-		InvoiceProductDetails.setUserbankName("");
+		InvoiceProductDetails.setUserBankName("");
 
-		List<BankDetails> dbItemList = bankRepository.findByuserbankCreator(owner);
+		List<BankDetails> dbItemList = bankRepository.findByUserBankCreator(owner);
 		if (!dbItemList.isEmpty()) {
 			itemList.addAll(dbItemList);
 		}
@@ -40,17 +40,17 @@ public class BankService {
 	}
 
 	public List<BankDetails> fetchAllItems(String owner) {
-		return bankRepository.findByuserbankCreator(owner);
+		return bankRepository.findByUserBankCreator(owner);
 	}
 
 	public List<BankDetails> fetchCreatedBanks(String owner) {
 		List<BankDetails> createdbankslist = new ArrayList<BankDetails>();
 		BankDetails bankdetails = new BankDetails();
 		bankdetails.setId(0);
-		bankdetails.setUserbankName("Add New Bank");
+		bankdetails.setUserBankName("Add New Bank");
 		createdbankslist.add(bankdetails);
 
-		List<BankDetails> dbItemList = bankRepository.findByuserbankCreator(owner);
+		List<BankDetails> dbItemList = bankRepository.findByUserBankCreator(owner);
 		if (!dbItemList.isEmpty()) {
 			createdbankslist.addAll(dbItemList);
 		}
