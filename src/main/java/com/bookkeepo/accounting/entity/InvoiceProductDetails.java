@@ -21,51 +21,51 @@ import lombok.Data;
 @Entity
 @Table(name = "invoice_product_details")
 public class InvoiceProductDetails {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "invoice_product_id")
 	private int id;
-	
+
 	@Column(name = "product_desc")
 	private String productDescription;
-	
+
 	@Column(name = "product_hnscode")
 	private String productHnscode;
-	
+
 	@Column(name = "product_uom")
 	private String productUom;
-	
+
 	@Column(name = "product_quantity")
 	private String productQuantity;
-	
+
 	@Column(name = "product_rate")
 	private String productRate;
-	
+
 	@Column(name = "product_amount")
 	private String productAmount;
-	
+
 	@Column(name = "product_discount")
 	private String productDiscount;
-	
+
 	@Column(name = "product_gst_rate")
 	private String productGstRate;
-	
+
 	@Column(name = "product_tax_value")
 	private String productTaxValue;
-	
+
 	@Column(name = "product_cgst")
 	private String productCgst;
-	
+
 	@Column(name = "product_sgst")
 	private String productSgst;
-	
+
 	@Column(name = "product_igst")
 	private String productIgst;
-	
+
 	@Column(name = "product_total_amount")
 	private String productTotalAmount;
-	
+
 	@Column(name = "product_owner")
 	private String productOwner;
 

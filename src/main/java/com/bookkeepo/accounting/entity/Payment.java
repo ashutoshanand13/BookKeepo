@@ -29,7 +29,7 @@ public class Payment {
 	@Column(name = "payment_id")
 	private int id;
 
-	@Column(name = "payment_number" , updatable = false)
+	@Column(name = "payment_number", updatable = false)
 	private int paymentNumber;
 
 	@Column(name = "payment_reference")

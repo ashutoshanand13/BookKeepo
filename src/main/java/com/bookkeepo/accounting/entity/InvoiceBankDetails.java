@@ -21,22 +21,21 @@ import lombok.Data;
 @Entity
 @Table(name = "invoice_bank_details")
 public class InvoiceBankDetails {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "invoice_bank_id")
 	private int id;
-	
+
 	@Column(name = "invoice_bank_account")
 	private String invoiceBankAccount;
-	
+
 	@Column(name = "invoice_ifsc_account")
 	private String invoiceIfsCode;
-	
 
 	@Column(name = "invoice_bank_info")
 	private String invoiceBankInfo;
-	
+
 	@Column(name = "invoice_bank_conditions")
 	private String invoiceBankCondition;
 
@@ -109,6 +108,5 @@ public class InvoiceBankDetails {
 	public void setInvoiceBankCondition(String invoiceBankCondition) {
 		this.invoiceBankCondition = invoiceBankCondition;
 	}
-	
-	
+
 }
