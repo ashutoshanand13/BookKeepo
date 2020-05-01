@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bookkeepo.accounting.entity.InvoiceDetails;
+import com.bookkeepo.accounting.model.InvoiceData;
 import com.bookkeepo.accounting.repository.InvoiceRepository;
 
 /**
@@ -40,16 +41,26 @@ public class InvoiceService {
 		return invoiceRepository.findByInvoiceOwner(name);
 	}
 
-	public InvoiceDetails findById(String key) {
+	public InvoiceDetails findByInvoiceUniqueKey(String key) {
 		return invoiceRepository.findByInvoiceUniqueKey(key);
 	}
+	
+	public InvoiceDetails findById(int id) {
+		return invoiceRepository.findById(id);
+	}
 
-	public List<String> findByInvoiceOwnerAndInvoiceType(String name, String type) {
-		List<String> invoiceList = new ArrayList<String>();
-		invoiceList.add("Select Against Invoice");
+	public List<InvoiceData> findByInvoiceOwnerAndInvoiceType(String name, String type) {
+		List<InvoiceData> invoiceList = new ArrayList<InvoiceData>();
+		InvoiceData invoiceData = new InvoiceData();
+		invoiceData.setId(0);
+		invoiceData.setInvoiceNumber("Select Against Invoice");
+		invoiceList.add(invoiceData);
 		List<InvoiceDetails> allInvoice = invoiceRepository.findByInvoiceOwnerAndInvoiceType(name, type);
 		for (InvoiceDetails invoice : allInvoice) {
-			invoiceList.add(invoice.getInvoiceNumber());
+			InvoiceData dbinvoice = new InvoiceData();
+			dbinvoice.setId(invoice.getId());
+			dbinvoice.setInvoiceNumber(invoice.getInvoiceNumber());
+			invoiceList.add(dbinvoice);
 		}
 		return invoiceList;
 	}
