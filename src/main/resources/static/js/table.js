@@ -347,14 +347,17 @@ function checkValueNaN(value) {
 var _URL = window.URL || window.webkitURL;
 
 $("#companylogo").change(function(e) {
+	//debugger;
     var file, img;
     if ((file = this.files[0])) {
         img = new Image();
         img.onload = function() {
         	if(this.width>400 || this.height>400){
-        		alert("Image resolution should be within 400x400");
-        		document.getElementById("companylogo").value='';
+        		alert("Image resolution should be within 400px x 400px");
+        		if(!document.getElementById("companylogo").value){
         		document.getElementById('companylogopreview').src = "/images/image-400x400.jpg";
+        		}
+        		document.getElementById("companylogo").value='';
         	}else{
         		var input = $("#companylogo")[0];
         		readURL(input);
