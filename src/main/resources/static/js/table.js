@@ -347,7 +347,6 @@ function checkValueNaN(value) {
 var _URL = window.URL || window.webkitURL;
 
 $("#companylogo").change(function(e) {
-	//debugger;
     var file, img;
     if ((file = this.files[0])) {
         img = new Image();
