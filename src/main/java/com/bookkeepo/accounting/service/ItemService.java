@@ -45,10 +45,10 @@ public class ItemService {
 
 	public List<InvoiceProductDetails> fetchAllItemsForItem(String owner) {
 		List<InvoiceProductDetails> itemList = new ArrayList<InvoiceProductDetails>();
-		InvoiceProductDetails InvoiceProductDetails = new InvoiceProductDetails();
-		InvoiceProductDetails.setId(0);
-		InvoiceProductDetails.setProductDescription("Add New Item");
-		itemList.add(InvoiceProductDetails);
+		InvoiceProductDetails addNewItem = new InvoiceProductDetails();
+		addNewItem.setId(0);
+		addNewItem.setProductDescription("Add New Item");
+		itemList.add(addNewItem);
 
 		List<InvoiceProductDetails> dbItemList = itemRepository.findByProductOwner(owner);
 		if (!dbItemList.isEmpty()) {

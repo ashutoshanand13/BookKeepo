@@ -47,10 +47,10 @@ public class InvoiceService {
 
 	public List<InvoiceData> findByInvoiceOwnerAndInvoiceType(String name, String type) {
 		List<InvoiceData> invoiceList = new ArrayList<InvoiceData>();
-		InvoiceData invoiceData = new InvoiceData();
-		invoiceData.setId(0);
-		invoiceData.setInvoiceNumber("Select Against Invoice");
-		invoiceList.add(invoiceData);
+		InvoiceData selectInvoice = new InvoiceData();
+		selectInvoice.setId(0);
+		selectInvoice.setInvoiceNumber("Select Against Invoice");
+		invoiceList.add(selectInvoice);
 		List<InvoiceDetails> allInvoice = invoiceRepository.findByInvoiceOwnerAndInvoiceType(name, type);
 		for (InvoiceDetails invoice : allInvoice) {
 			InvoiceData dbinvoice = new InvoiceData();

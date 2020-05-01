@@ -28,10 +28,10 @@ public class BankService {
 
 	public List<BankDetails> fetchCreatedBanks(String owner) {
 		List<BankDetails> createdbankslist = new ArrayList<BankDetails>();
-		BankDetails bankdetails = new BankDetails();
-		bankdetails.setId(0);
-		bankdetails.setUserBankName("Add New Bank");
-		createdbankslist.add(bankdetails);
+		BankDetails newBankDetails = new BankDetails();
+		newBankDetails.setId(0);
+		newBankDetails.setUserBankName("Add New Bank");
+		createdbankslist.add(newBankDetails);
 
 		List<BankDetails> dbItemList = bankRepository.findByUserBankCreator(owner);
 		if (!dbItemList.isEmpty()) {
