@@ -33,10 +33,6 @@ public class InvoiceService {
 		invoiceRepository.save(invoice);
 	}
 
-	public List<InvoiceDetails> fetchAllInvoice() {
-		return invoiceRepository.findAll();
-	}
-
 	public List<InvoiceDetails> findByInvoiceOwner(String name) {
 		return invoiceRepository.findByInvoiceOwner(name);
 	}
@@ -44,7 +40,7 @@ public class InvoiceService {
 	public InvoiceDetails findByInvoiceUniqueKey(String key) {
 		return invoiceRepository.findByInvoiceUniqueKey(key);
 	}
-	
+
 	public InvoiceDetails findById(int id) {
 		return invoiceRepository.findById(id);
 	}
