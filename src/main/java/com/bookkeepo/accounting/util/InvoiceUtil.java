@@ -189,10 +189,13 @@ public class InvoiceUtil {
 	}
 
 	private static InvoiceOtherDetails getOtherDetails(InvoicePageData salesInvoiceData) {
-		InvoiceOtherDetails invoiceOtherDetails = new InvoiceOtherDetails();
-		invoiceOtherDetails.setLinkedInvoice(salesInvoiceData.getAgainstInvoice());
-		invoiceOtherDetails.setLinkedInvoiceDate(reverseDate(salesInvoiceData.getAgainstInvoiceDate()));
-		return invoiceOtherDetails.getLinkedInvoice() == null ? null : invoiceOtherDetails;
+		InvoiceOtherDetails invoiceOtherDetails = null;
+		if (CommonUtils.isPopulated(salesInvoiceData.getAgainstInvoice())) {
+			invoiceOtherDetails = new InvoiceOtherDetails();
+			invoiceOtherDetails.setLinkedInvoice(salesInvoiceData.getLinkedInvoiceNo());
+			invoiceOtherDetails.setLinkedInvoiceDate(reverseDate(salesInvoiceData.getAgainstInvoiceDate()));
+		}
+		return invoiceOtherDetails;
 	}
 
 	public static ByteArrayOutputStream createPDF(InvoiceDetails invoice) {

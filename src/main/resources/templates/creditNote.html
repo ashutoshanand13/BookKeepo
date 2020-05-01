@@ -59,9 +59,14 @@
 						id="againstInvoicedropdown" name="againstInvoice" style="font-size: 10px;">
 						<option th:each="invoice : ${invoiceList}" th:value="${invoice.id}"
 							th:text="${invoice.invoiceNumber}"></option>
+							
 					</select></td>
 					</tr>
 					<tr>
+					
+					<input type="hidden" class="form-control"
+							name="linkedInvoiceNo">
+							
 						<td class="pt-3-half"><input type="text" class="form-control"
 							name="invoiceDate" onfocus="(this.type='date')"
 							onblur="if(!this.value)this.type='text'" placeholder="Issue Date"
