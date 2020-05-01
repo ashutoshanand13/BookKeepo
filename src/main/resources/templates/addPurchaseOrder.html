@@ -27,7 +27,7 @@
 				<tbody>
 					<tr style="border: 0px;">
 						<td rowspan="1" style="vertical-align : middle;"><img id="logo" height="100px" width="200px"
-							th:src="|data:image/png;base64,${logoImage}"></td>
+							th:src="|data:image/png;base64,${logoImage}" onerror='this.style.display = "none"'></td>
 						<td align="left">
 							<p class="companydetails" th:text="${company.companyName}"></p>
 							<p class="companydetails" th:text="${company.companyTelephone}"></p>
