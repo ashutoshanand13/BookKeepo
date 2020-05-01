@@ -190,7 +190,7 @@ public class InvoiceUtil {
 
 	private static InvoiceOtherDetails getOtherDetails(InvoicePageData salesInvoiceData) {
 		InvoiceOtherDetails invoiceOtherDetails = null;
-		if (CommonUtils.isPopulated(salesInvoiceData.getAgainstInvoice())) {
+		if (CommonUtils.isPopulated(salesInvoiceData.getLinkedInvoiceNo())) {
 			invoiceOtherDetails = new InvoiceOtherDetails();
 			invoiceOtherDetails.setLinkedInvoice(salesInvoiceData.getLinkedInvoiceNo());
 			invoiceOtherDetails.setLinkedInvoiceDate(reverseDate(salesInvoiceData.getAgainstInvoiceDate()));
