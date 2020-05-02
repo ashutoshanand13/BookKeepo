@@ -26,7 +26,15 @@ public class CompanyDetailsService {
 		companyDetailsRepository.save(company);
 	}
 	
+	public void saveAll(List<Company> companyList) {
+		companyDetailsRepository.saveAll(companyList);
+	}
+	
 	public Company findByCompanyUniqueKey(String key) {
 		return companyDetailsRepository.findByCompanyUniqueKey(key);
+	}
+	
+	public List<Company> fetchAllCompanies(){
+		return companyDetailsRepository.findByCompanyDeleted(0);
 	}
 }
