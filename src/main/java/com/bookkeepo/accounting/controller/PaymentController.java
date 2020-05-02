@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.bookkeepo.accounting.entity.Accounts;
 import com.bookkeepo.accounting.entity.Payment;
 import com.bookkeepo.accounting.service.AccountService;
+import com.bookkeepo.accounting.service.CompanyDetailsService;
 import com.bookkeepo.accounting.service.PaymentService;
 
 /**
@@ -36,6 +37,9 @@ public class PaymentController {
 	@Autowired
 	private PaymentService paymentService;
 
+	@Autowired
+	CompanyDetailsService companyDetailsService;
+
 	@RequestMapping(value = { "/home/addpayment" }, method = RequestMethod.GET)
 	public ModelAndView getPaymentScreen(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
@@ -49,6 +53,8 @@ public class PaymentController {
 		ModelAndView modelAndView = new ModelAndView();
 		payment.setPaymentOwner(principal.getName());
 		payment.setAccountRefNo(accountService.findById(payment.getAccountRefNo().getId()));
+		payment.setPaymentCompanyDetails(
+				payment.getId() == 0 ? companyDetailsService.findByUserName(principal.getName()) : null);
 		paymentService.saveAccount(payment);
 		List<Accounts> accountList = accountService.fetchAccountName(principal.getName());
 		modelAndView.addObject("payment", new Payment());

@@ -5,11 +5,14 @@ package com.bookkeepo.accounting.entity;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -49,7 +52,7 @@ public class BankDetails {
 	@Column(name = "user_bank_actype")
 	private String userBankActype;
 
-	@Column(name = "user_bank_creator")
+	@Column(name = "user_bank_creator", nullable = false, updatable = false)
 	private String userBankCreator;
 
 	@CreationTimestamp
@@ -61,6 +64,10 @@ public class BankDetails {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "user_bank_last_modified", nullable = false)
 	private Date userBankLastModified;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "bank_company_reference_no", updatable = false)
+	private Company bankCompanyDetails;
 
 	/**
 	 * @return the id
@@ -187,4 +194,19 @@ public class BankDetails {
 	public void setUserBankLastModified(Date userBankLastModified) {
 		this.userBankLastModified = userBankLastModified;
 	}
+
+	/**
+	 * @return the bankCompanyDetails
+	 */
+	public Company getBankCompanyDetails() {
+		return bankCompanyDetails;
+	}
+
+	/**
+	 * @param bankCompanyDetails the bankCompanyDetails to set
+	 */
+	public void setBankCompanyDetails(Company bankCompanyDetails) {
+		this.bankCompanyDetails = bankCompanyDetails;
+	}
+
 }

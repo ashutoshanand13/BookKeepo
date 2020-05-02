@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.bookkeepo.accounting.entity.Accounts;
 import com.bookkeepo.accounting.entity.Receipts;
 import com.bookkeepo.accounting.service.AccountService;
+import com.bookkeepo.accounting.service.CompanyDetailsService;
 import com.bookkeepo.accounting.service.ReceiptService;
 
 /**
@@ -35,6 +36,9 @@ public class ReceiptController {
 
 	@Autowired
 	private ReceiptService receiptService;
+
+	@Autowired
+	private CompanyDetailsService companyDetailsService;
 
 	@RequestMapping(value = { "/home/addreceipt" }, method = RequestMethod.GET)
 	public ModelAndView getAddReceipt(HttpServletRequest request) {
@@ -56,6 +60,8 @@ public class ReceiptController {
 
 		receipt.setReceiptOwner(principal.getName());
 		receipt.setAccountRefNo(accountService.findById(receipt.getAccountRefNo().getId()));
+		receipt.setReceiptCompanyDetails(
+				receipt.getId() == 0 ? companyDetailsService.findByUserName(principal.getName()) : null);
 		receiptService.saveAccount(receipt);
 		List<Accounts> accountList = accountService.fetchAccountName(principal.getName());
 		modelAndView.addObject("receipts", new Receipts());

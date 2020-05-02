@@ -51,7 +51,7 @@ public class Receipts {
 	@Column(name = "receipt_description")
 	private String receiptDescription;
 
-	@Column(name = "receipt_owner")
+	@Column(name = "receipt_owner", nullable = false, updatable = false)
 	private String receiptOwner;
 
 	@CreationTimestamp
@@ -62,6 +62,10 @@ public class Receipts {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "receipt_account_reference_no")
 	private Accounts accountRefNo;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "receipt_company_reference_no", updatable = false)
+	private Company receiptCompanyDetails;
 
 	/**
 	 * @return the id
@@ -201,6 +205,20 @@ public class Receipts {
 	 */
 	public void setAccountRefNo(Accounts accountRefNo) {
 		this.accountRefNo = accountRefNo;
+	}
+
+	/**
+	 * @return the receiptCompanyDetails
+	 */
+	public Company getReceiptCompanyDetails() {
+		return receiptCompanyDetails;
+	}
+
+	/**
+	 * @param receiptCompanyDetails the receiptCompanyDetails to set
+	 */
+	public void setReceiptCompanyDetails(Company receiptCompanyDetails) {
+		this.receiptCompanyDetails = receiptCompanyDetails;
 	}
 
 }
