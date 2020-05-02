@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bookkeepo.accounting.entity.Accounts;
 import com.bookkeepo.accounting.service.AccountService;
+import com.bookkeepo.accounting.service.CompanyDetailsService;
 
 /**
  * @author sachingoyal
@@ -29,6 +30,9 @@ public class AccountController {
 
 	@Autowired
 	private AccountService accountService;
+
+	@Autowired
+	CompanyDetailsService companyDetailsService;
 
 	@RequestMapping(value = { "/home/addaccount" }, method = RequestMethod.GET)
 	public ModelAndView getHomePage(HttpServletRequest request) {
@@ -69,6 +73,8 @@ public class AccountController {
 			modelAndView.setViewName("addaccount");
 		} else {
 			account.setAccountOwner(principal.getName());
+			account.setAccountCompanyDetails(
+					account.getId() == 0 ? companyDetailsService.findByUserName(principal.getName()) : null);
 			accountService.saveAccount(account);
 			modelAndView.addObject("message", "Account Updated Successfully");
 			modelAndView.addObject("accountList", accountService.fetchAccountName(principal.getName()));
