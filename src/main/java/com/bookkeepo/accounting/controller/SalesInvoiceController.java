@@ -35,7 +35,8 @@ public class SalesInvoiceController {
 	public ModelAndView setupSales(HttpServletRequest request) {
 		String user = request.getUserPrincipal().getName();
 		ModelAndView modelAndView = new ModelAndView();
-		Company company = companyDetailsService.findByUserName(user);
+		Company company = companyDetailsService.findByUserName(user).stream().filter(c -> c.getCompanyActive() == 1)
+				.findFirst().get();
 		if (company == null) {
 			modelAndView.setViewName("redirect:/home/updatecompany/salesinvoice");
 		} else {
@@ -54,7 +55,8 @@ public class SalesInvoiceController {
 		String user = request.getUserPrincipal().getName();
 		ModelAndView modelAndView = new ModelAndView("salesInvoice");
 		modelAndView.addObject("message", message);
-		Company company = companyDetailsService.findByUserName(user);
+		Company company = companyDetailsService.findByUserName(user).stream().filter(c -> c.getCompanyActive() == 1)
+				.findFirst().get();
 		modelAndView.addObject("company", company);
 		modelAndView.addObject("logoImage", CommonUtils.getImgfromByteArray(company.getCompanyLogo()));
 		modelAndView.addObject("itemList", itemService.findByProductOwner(user));

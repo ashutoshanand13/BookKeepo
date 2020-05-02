@@ -61,7 +61,10 @@ public class ReceiptController {
 		receipt.setReceiptOwner(principal.getName());
 		receipt.setAccountRefNo(accountService.findById(receipt.getAccountRefNo().getId()));
 		receipt.setReceiptCompanyDetails(
-				receipt.getId() == 0 ? companyDetailsService.findByUserName(principal.getName()) : null);
+				receipt.getId() == 0
+						? companyDetailsService.findByUserName(principal.getName()).stream()
+								.filter(c -> c.getCompanyActive() == 1).findFirst().get()
+						: null);
 		receiptService.saveAccount(receipt);
 		List<Accounts> accountList = accountService.fetchAccountName(principal.getName());
 		modelAndView.addObject("receipts", new Receipts());

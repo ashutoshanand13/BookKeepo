@@ -41,7 +41,8 @@ public class CreditNoteController {
 	public ModelAndView setupSales(HttpServletRequest request) {
 		String user = request.getUserPrincipal().getName();
 		ModelAndView modelAndView = new ModelAndView();
-		Company company = companyDetailsService.findByUserName(user);
+		Company company = companyDetailsService.findByUserName(user).stream().filter(c -> c.getCompanyActive() == 1)
+				.findFirst().get();
 		List<InvoiceData> ownerInvoices = invoiceService.findByInvoiceOwnerAndInvoiceType(user,
 				InvoiceType.Tax_Invoice.getType());
 		if (company == null) {

@@ -1,5 +1,7 @@
 package com.bookkeepo.accounting.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +18,15 @@ public class CompanyDetailsService {
 		this.companyDetailsRepository = companyDetailsRepository;
 	}
 
-	public Company findByUserName(String name) {
+	public List<Company> findByUserName(String name) {
 		return companyDetailsRepository.findByUserName(name);
 	}
 
 	public void save(Company company) {
 		companyDetailsRepository.save(company);
+	}
+	
+	public Company findByCompanyUniqueKey(String key) {
+		return companyDetailsRepository.findByCompanyUniqueKey(key);
 	}
 }

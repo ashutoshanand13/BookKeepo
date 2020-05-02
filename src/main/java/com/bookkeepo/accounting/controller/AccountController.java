@@ -73,7 +73,9 @@ public class AccountController {
 		} else {
 			account.setAccountOwner(principal.getName());
 			account.setAccountCompanyDetails(
-					account.getId() == 0 ? companyDetailsService.findByUserName(principal.getName()) : null);
+					account.getId() == 0
+							? companyDetailsService.findByUserName(principal.getName()).stream()
+									.filter(c -> c.getCompanyActive() == 1).findFirst().get() : null);
 			accountService.saveAccount(account);
 			modelAndView.addObject("message", "Account Updated Successfully");
 			modelAndView.addObject("accountList", accountService.fetchAccountName(principal.getName()));
