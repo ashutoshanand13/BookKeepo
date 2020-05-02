@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.bookkeepo.accounting.entity.Accounts;
+import com.bookkeepo.accounting.entity.Company;
 
 /**
  * @author sachingoyal
@@ -18,18 +19,16 @@ import com.bookkeepo.accounting.entity.Accounts;
 @Repository("accountRepository")
 public interface AccountRepository extends JpaRepository<Accounts, Long> {
 
-	List<Accounts> findByAccountOwner(String owner);
-
-	Accounts findByAccountName(String accountName);
-
-	Accounts findByGstinAndAccountOwner(String gstin, String user);
+	List<Accounts> findByAccountOwnerAndAccountCompanyDetails(String owner, Company company);
 
 	Accounts findById(int id);
 
-	Accounts findByAccountOwnerAndAccountPan(String accountOwner, String accountPan);
+	Accounts findByAccountOwnerAndAccountPanAndAccountCompanyDetails(String accountOwner, String accountPan,
+			Company company);
 
-	Accounts findByAccountOwnerAndGstin(String accountOwner, String gstin);
-	
-	List<Accounts> findByAccountOwnerAndAccountName(String accountOwner, String name);
+	Accounts findByAccountOwnerAndGstinAndAccountCompanyDetails(String accountOwner, String gstin, Company company);
+
+	List<Accounts> findByAccountOwnerAndAccountNameAndAccountCompanyDetails(String accountOwner, String name,
+			Company company);
 
 }
