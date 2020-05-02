@@ -123,6 +123,10 @@ public class InvoiceDetails {
 	private InvoiceCompanyDetails invoiceAssoCompanyDetails;
 
 	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "invoice_account_reference_no")
+	private Accounts invoiceAccountDetails;
+
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "invoice_other_details_reference_no")
 	private InvoiceOtherDetails invoiceOtherDetails;
 
@@ -475,6 +479,20 @@ public class InvoiceDetails {
 	 */
 	public void setInvoiceSubType(String invoiceSubType) {
 		this.invoiceSubType = invoiceSubType;
+	}
+
+	/**
+	 * @return the invoiceAccountDetails
+	 */
+	public Accounts getInvoiceAccountDetails() {
+		return invoiceAccountDetails;
+	}
+
+	/**
+	 * @param invoiceAccountDetails the invoiceAccountDetails to set
+	 */
+	public void setInvoiceAccountDetails(Accounts invoiceAccountDetails) {
+		this.invoiceAccountDetails = invoiceAccountDetails;
 	}
 
 	/**

@@ -26,31 +26,14 @@ public class BankService {
 		this.bankRepository = bankRepository;
 	}
 
-	public List<BankDetails> findByProductOwner(String owner) {
-		List<BankDetails> itemList = new ArrayList<>();
-		BankDetails InvoiceProductDetails = new BankDetails();
-		InvoiceProductDetails.setId(0);
-		InvoiceProductDetails.setUserbankName("");
-
-		List<BankDetails> dbItemList = bankRepository.findByuserbankCreator(owner);
-		if (!dbItemList.isEmpty()) {
-			itemList.addAll(dbItemList);
-		}
-		return itemList;
-	}
-
-	public List<BankDetails> fetchAllItems(String owner) {
-		return bankRepository.findByuserbankCreator(owner);
-	}
-
 	public List<BankDetails> fetchCreatedBanks(String owner) {
 		List<BankDetails> createdbankslist = new ArrayList<BankDetails>();
-		BankDetails bankdetails = new BankDetails();
-		bankdetails.setId(0);
-		bankdetails.setUserbankName("Add New Bank");
-		createdbankslist.add(bankdetails);
+		BankDetails newBankDetails = new BankDetails();
+		newBankDetails.setId(0);
+		newBankDetails.setUserBankName("Add New Bank");
+		createdbankslist.add(newBankDetails);
 
-		List<BankDetails> dbItemList = bankRepository.findByuserbankCreator(owner);
+		List<BankDetails> dbItemList = bankRepository.findByUserBankCreator(owner);
 		if (!dbItemList.isEmpty()) {
 			createdbankslist.addAll(dbItemList);
 		}

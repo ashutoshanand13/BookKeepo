@@ -80,9 +80,11 @@
 				<div class="col-md-6 form-group">
 					<label>Company Logo</label> <input type="file" name="companylogo"
 						id="companylogo" th:field="*{companyLogo}"
-						accept="image/x-png,image/jpeg" > <img
+						accept="image/x-png,image/jpeg" > 
+						<img
 						id="companylogopreview" class="img-border"
 						th:src="|data:image/png;base64,${logoImage}"
+						onerror='this.style.display = "none"'
 						alt="BookKeepo Company Logo" />
 				</div>
 				<div class="col-md-6 form-group">

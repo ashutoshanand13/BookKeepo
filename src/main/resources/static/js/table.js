@@ -352,9 +352,11 @@ $("#companylogo").change(function(e) {
         img = new Image();
         img.onload = function() {
         	if(this.width>400 || this.height>400){
-        		alert("Image resolution should be within 400x400");
-        		document.getElementById("companylogo").value='';
+        		alert("Image resolution should be within 400px x 400px");
+        		if(!document.getElementById("companylogo").value){
         		document.getElementById('companylogopreview').src = "/images/image-400x400.jpg";
+        		}
+        		document.getElementById("companylogo").value='';
         	}else{
         		var input = $("#companylogo")[0];
         		readURL(input);
@@ -487,7 +489,7 @@ $("[name=accountNo]").change(function() {
 $("#againstInvoicedropdown").change(function() {
 	var invoiceNumber = $("#againstInvoicedropdown").val();
 	
-	if(invoiceNumber !== "Against Invoice") {
+	if(invoiceNumber !== "0") {
 		$.ajax({
 			type : "GET",
 			contentType : "application/json",
@@ -497,6 +499,7 @@ $("#againstInvoicedropdown").change(function() {
 				$("[name=againstInvoiceDate]").val(data.invoiceDate);
 				$("[name=state]").val(data.invoiceState);
 				$("[name=reverseCharge]").val(data.invoiceReverseCharge);
+				$("[name=linkedInvoiceNo]").val(data.invoiceNumber);
 				$("[name=againstInvoiceDate]").blur();
 			}
 			});
@@ -506,6 +509,7 @@ $("#againstInvoicedropdown").change(function() {
 		$("[name=againstInvoiceDate]").val("");
 		$("[name=state]").val("");
 		$("[name=reverseCharge]").val("");
+		$("[name=linkedInvoiceNo]").val("");
 		$("[name=againstInvoiceDate]").blur();
 	}
 });

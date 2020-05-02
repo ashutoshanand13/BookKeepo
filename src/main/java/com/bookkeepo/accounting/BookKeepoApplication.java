@@ -6,15 +6,15 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 @SpringBootApplication
-public class WinWithWebConfigToolApplication extends SpringBootServletInitializer {
+public class BookKeepoApplication extends SpringBootServletInitializer {
 
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		return application.sources(WinWithWebConfigToolApplication.class);
+		return application.sources(BookKeepoApplication.class);
 	}
 
 	public static void main(String[] args) {
-		SpringApplication.run(WinWithWebConfigToolApplication.class, args);
+		SpringApplication.run(BookKeepoApplication.class, args);
 	}
 
 }

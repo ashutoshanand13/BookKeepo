@@ -46,7 +46,7 @@ public class BankController {
 			Principal principal) {
 		ModelAndView modelAndView = new ModelAndView("addBank");
 		String user = principal.getName();
-		bank.setUserbankCreator(principal.getName());
+		bank.setUserBankCreator(principal.getName());
 		bankService.saveItem(bank);
 		modelAndView.addObject("message", "Bank details added Successfully.");
 		modelAndView.addObject("bank", new BankDetails());

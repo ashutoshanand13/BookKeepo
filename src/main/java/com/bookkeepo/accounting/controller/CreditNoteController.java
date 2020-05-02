@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bookkeepo.accounting.entity.Company;
+import com.bookkeepo.accounting.model.InvoiceData;
 import com.bookkeepo.accounting.model.InvoiceType;
 import com.bookkeepo.accounting.service.CompanyDetailsService;
 import com.bookkeepo.accounting.service.InvoiceService;
@@ -41,7 +42,7 @@ public class CreditNoteController {
 		String user = request.getUserPrincipal().getName();
 		ModelAndView modelAndView = new ModelAndView();
 		Company company = companyDetailsService.findByUserName(user);
-		List<String> ownerInvoices = invoiceService.findByInvoiceOwnerAndInvoiceType(user,
+		List<InvoiceData> ownerInvoices = invoiceService.findByInvoiceOwnerAndInvoiceType(user,
 				InvoiceType.Tax_Invoice.getType());
 		if (company == null) {
 			modelAndView.setViewName("redirect:/home/updatecompany/creditnote");
