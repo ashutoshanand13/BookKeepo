@@ -1,4 +1,6 @@
  const $tableID = $('#table');
+ const $tableBOSID = $('#tableBOS');
+ 
  const $BTN = $('#export-btn');
  const $EXPORT = $('#export');
  var $tblrows = $("#itemTable tbody tr");
@@ -14,12 +16,14 @@
  var shippingType ='';
  var isInvoiceNumberUnique = false;
  
- var controllerMap = { salesInvoice: "/home/submitInvoice", exportInvoice: "/home/submitInvoice", debitNote:"/home/submitInvoice", creditNote:"/home/submitInvoice" , purchaseOrder:"/home/submitInvoice"  , purchaseInvoice:"/home/submitInvoice"};
- var fileMap = { salesInvoice: "Tax_Invoice", exportInvoice: "Export_Invoice", debitNote:"Debit_Note", creditNote:"Credit_Note", purchaseOrder:"Purchase_Order", purchaseInvoice:"Purchase_Invoice" };
+ var controllerMap = { salesInvoice: "/home/submitInvoice", exportInvoice: "/home/submitInvoice", debitNote:"/home/submitInvoice", creditNote:"/home/submitInvoice" , purchaseOrder:"/home/submitInvoice"  , purchaseInvoice:"/home/submitInvoice", billOfSupply:"/home/submitInvoice"};
+ var fileMap = { salesInvoice: "Tax_Invoice", exportInvoice: "Export_Invoice", debitNote:"Debit_Note", creditNote:"Credit_Note", purchaseOrder:"Purchase_Order", purchaseInvoice:"Purchase_Invoice", billOfSupply:"Bill_Of_Supply" };
  
  var gstRegex = /^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$/;
  
  const newTr = '<tr>            <td class="pt-3-half"><input type="text" id="srNo" name="excluded:skip" placeholder="Sr No" readonly="readonly"></td>            <td class="pt-3-half"><input list="data" id="productDesc" class="form-control" placeholder="Product Description" required="required" autocomplete="off"></td>            <td class="pt-3-half"><input type="text" id="hsnCode" name="excluded:skip" placeholder="HSN Code"></td>            <td class="pt-3-half"><input type="text" id="uom" name="excluded:skip" placeholder="UOM"></td>            <td class="pt-3-half"><input type="text" onfocus="(this.type="number")" onblur="(this.type="text")" min="0" id="qty" name="excluded:skip" placeholder="QTY" required="required"></td>            <td class="pt-3-half"><input type="text" onfocus="(this.type="number")" onblur="(this.type="text")" min="0" id="rate" name="excluded:skip" placeholder="Rate" required="required"></td>            <td class="pt-3-half"><input type="text" id="amount" name="excluded:skip" placeholder="Amount" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" onfocus="(this.type="number")" onblur="(this.type="text")" min="0" id="discount" name="excluded:skip" placeholder="Discount" required="required"></td>            <td class="pt-3-half"><input type="text" onfocus="(this.type="number")" onblur="(this.type="text")" min="0" id="gstRate" name="excluded:skip" placeholder="GST Rate" required="required"></td>            <td class="pt-3-half"><input type="text" id="taxableValue" name="excluded:skip" placeholder="Taxable Value" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="cgst" name="excluded:skip" placeholder="CGST" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="sgst" name="excluded:skip" placeholder="SGST" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="igst" name="excluded:skip" placeholder="IGST" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="totalAmount" name="excluded:skip" placeholder="Total Amount" readonly="readonly"></td>			<td>			<figure style="display:flex;">              <span class="table-add"><img class="autoResizeImage" style="margin-right: 2px;" src="/images/add.png" alt=""></span>              <span class="table-remove"><img class="autoResizeImage" style="margin-left: 2px;" src="/images/remove.png" alt=""></span>              </figure>            </td>          </tr>';
+ 
+ const newBOSTr = '<tr>            <td class="pt-3-half"><input type="text" id="srNo" name="excluded:skip" placeholder="Sr No" readonly="readonly"></td>            <td class="pt-3-half"><input list="data" id="productDesc" class="form-control" placeholder="Product Description" required="required" autocomplete="off"></td>            <td class="pt-3-half"><input type="text" id="hsnCode" name="excluded:skip" placeholder="HSN Code"></td>            <td class="pt-3-half"><input type="text" id="uom" name="excluded:skip" placeholder="UOM"></td>            <td class="pt-3-half"><input type="text" onfocus="(this.type="number")" onblur="(this.type="text")" min="0" id="qty" name="excluded:skip" placeholder="QTY" required="required"></td>            <td class="pt-3-half"><input type="text" onfocus="(this.type="number")" onblur="(this.type="text")" min="0" id="rate" name="excluded:skip" placeholder="Rate" required="required"></td>            <td class="pt-3-half"><input type="text" id="amount" name="excluded:skip" placeholder="Amount" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" onfocus="(this.type="number")" onblur="(this.type="text")" min="0" id="discount" name="excluded:skip" placeholder="Discount" required="required"></td>            <td class="pt-3-half"><input type="text" id="totalAmount" name="excluded:skip" placeholder="Total Amount" readonly="readonly"></td>			<td>			<figure style="display:flex;">              <span class="table-add"><img class="autoResizeImage" style="margin-right: 2px;" src="/images/add.png" alt=""></span>              <span class="table-remove"><img class="autoResizeImage" style="margin-left: 2px;" src="/images/remove.png" alt=""></span>              </figure>            </td>          </tr>';
 
  $tableID.on('click', '.table-remove', function () {
 if ($tableID.find('tbody tr').length !== 1) {
@@ -39,6 +43,27 @@ else
 	   resetValues();
 	   setValues();
 	   updateTableColumn(false);
+	  });
+	  
+
+ $tableBOSID.on('click', '.table-add', function () {
+	 $(this).closest('tr').after(newBOSTr);
+	   resetBOSValues();
+	   setBOSValues();
+	  });
+ 
+ 
+ $tableBOSID.on('click', '.table-remove', function () {
+	 if ($tableID.find('tbody tr').length !== 1) {
+	    $(this).parents('tr').detach();
+	       
+	    setBOSValues();
+	    resetBOSValues();
+	 }
+	 else
+	 	{
+	 	alert("Cannot Remove Last Row");
+	 	}
 	  });
 
 function validateGST(val){
@@ -138,7 +163,6 @@ function submitHandler(e){
    fileName = fileName+"_"+$("[name=invoiceNo]").val()+".pdf";
 
    var f = $("#form")[0];
-   
    if(isGstValid && f.reportValidity() && isInvoiceNumberUnique) {
 		$('#tableJson table').map(function(i, table){
 			   var $rows = $("#" +table.id).find('tr:not(:hidden)');
@@ -150,7 +174,7 @@ function submitHandler(e){
 			    	   if(this.id!=="")
 			         obj[this.id] = this.value;
 			       });
-			       if(Object.keys(obj).length!==0 && Object.keys(obj).length===14)
+			       if(Object.keys(obj).length!==0)
 			       newFormData.push(obj);
 			     });
 			   $('#itemList').val(JSON.stringify(newFormData));
@@ -181,10 +205,14 @@ function submitHandler(e){
 								f.reset();
 								$('input').focus();
 								$('input').blur();
-								window.scrollTo(0, 0);
-								setValues();
 								isGstValid=false;
 								isInvoiceNumberUnique=false;
+								if(name==="billOfSupply") {
+									setBOSValues();
+								} else {
+									setValues();
+								}
+								window.scrollTo(0, 0);
 							}
 						});
 						$('#overlay').delay(500).fadeOut();
@@ -289,7 +317,9 @@ function setValues() {
 function getSum(arr) {
 	var total = 0;
 	for (var i = 0; i < arr.length; i++) {
-	    total += arr[i];
+		if(arr[i] !== undefined){
+	    	total += arr[i];
+	}
 	}
 	return total;
 }
@@ -566,6 +596,16 @@ function checkAccountName(value) {
 
 function getAccountList() {
 	$("[name=accountNo]").empty();
+	$("[name=nameShip]").val("");
+	$("[name=addressBill]").val("");
+	$("[name=addressShip]").val("");
+	$("[name=gstinBill]").val("");
+	$("[name=gstinShip]").val("");
+	$("[name=stateBill]").val("");
+	$("[name=stateShip]").val("");
+	$("[name=gstinBill]").focus();
+	$("[name=gstinShip]").focus();
+	$("[name=gstinShip]").blur();
 	$.ajax({
 		type : "GET",
 		contentType : "application/json",
@@ -581,4 +621,91 @@ function getAccountList() {
 			});
 		}
 		});
+}
+
+
+function setBOSValues() {
+
+	isGstValid=true;
+    $tableBOSID.find('tbody tr').each(function (index) {
+    	
+        var $tblrow = $(this);
+        $tblrow.find("#srNo").val(index+1);
+        $tblrow.on('change', function () {
+        	var product = $tblrow.find("#productDesc").val();
+        	
+        	if(product !== "0") {
+				$.ajax({
+					type : "GET",
+					contentType : "application/json",
+					url : "/home/getItemData?itemId=" +product,
+					dataType : 'json',
+					async : false,
+					success : function(data) {
+						$tblrow.find("[id=hsnCode]").val(data.productHnscode);
+						$tblrow.find("[id=uom]").val(data.productUom);
+						$tblrow.find("[id=discount]").val(parseFloat(data.productDiscount).toFixed(2));
+						$tblrow.find("[id=rate]").val(parseFloat(data.productRate).toFixed(2));
+						$tblrow.find("[id=qty]").val(parseFloat(data.productQuantity).toFixed(2));
+						$tblrow.find("[id=productDesc]").val(data.productDescription);
+					}
+					});
+        	}
+        	
+            var qty = $tblrow.find("[id=qty]").val();
+            if(!isNaN(qty)){
+            	ttlQty[$tblrow.find("#srNo").val()-1]=parseFloat(qty);
+            	$("[name=ttlQty]").val(checkValueNaN(getSum(ttlQty).toFixed(2)));
+            }
+            var rate = $tblrow.find("[id=rate]").val();
+            var amount = parseFloat(qty) * parseFloat(rate);
+            if (!isNaN(amount)) {
+            	ttlAmount[$tblrow.find("#srNo").val()-1]=amount;
+                $tblrow.find("#amount").val(amount.toFixed(2));
+
+                $("[name=ttlAmount]").val(getSum(ttlAmount).toFixed(2));
+                
+            }
+            
+            var discount = $tblrow.find("[id=discount]").val();
+            
+            var totalAmount = amount - discount;
+            if(!isNaN(totalAmount)) {
+            	$tblrow.find('#totalAmount').val(totalAmount.toFixed(2));
+            	ttlTotalAmount[$tblrow.find("#srNo").val()-1]=totalAmount;
+            	$("[name=ttlTotalAmount]").val(getSum(ttlTotalAmount).toFixed(2));
+            }
+            
+    	    $("[name=totalAmountAfterTax]").val(getSum(ttlTotalAmount).toFixed(2));
+    	    if(parseInt($("[name=ttlTotalAmount]").val(),10)!==0 && $("[name=ttlTotalAmount]").val()!=="") {
+    		    getAmountInWords();
+    		    }
+        }); 
+    });    
+
+}
+
+function resetBOSValues() {
+
+	isGstValid =true;
+	 ttlAmount = [];
+	 ttlQty = [];
+	 ttlTotalAmount = [];
+	 $tableBOSID.find('tbody tr').each(function (index) {
+	        var $tblrow = $(this);
+	        $tblrow.find("#srNo").val(index+1);
+	        ttlQty[index]=checkValueNaN(parseFloat($tblrow.find("#qty").val()));
+	        ttlAmount[index]=checkValueNaN(parseFloat($tblrow.find("#amount").val()));
+	        ttlTotalAmount[index]=checkValueNaN(parseFloat($tblrow.find("#totalAmount").val()));
+	    });
+	    
+	    $("[name=ttlQty]").val(getSum(ttlQty).toFixed(2));
+	    $("[name=ttlAmount]").val(getSum(ttlAmount).toFixed(2));
+	    $("[name=ttlTotalAmount]").val(getSum(ttlTotalAmount).toFixed(2));
+	    
+	    $("[name=totalAmountAfterTax]").val(getSum(ttlTotalAmount).toFixed(2));
+	    
+	    if(parseInt($("[name=ttlTotalAmount]").val(),10)!==0) {
+	    getAmountInWords();
+	    }
 }
