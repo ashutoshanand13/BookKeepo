@@ -31,7 +31,7 @@ public class CommonUtils {
 	private static String[] tens = { " Twenty", " Thirty", " Forty", " Fifty", " Sixty", " Seventy", " Eighty",
 			" Ninety" };
 	private static String[] maxs = { "", "", " Hundred", " Thousand", " Lakh", " Crore" };
-	
+
 	/*
 	 * Use this method to get the image from the resource
 	 */
@@ -55,10 +55,12 @@ public class CommonUtils {
 	 */
 	public static String getImgfromByteArray(byte[] imgdata) {
 		String base64Encoded = null;
-		byte[] encodeBase64 = Base64.getEncoder().encode(imgdata);
-		try {
-			base64Encoded = new String(encodeBase64);
-		} catch (Exception e) {
+		if (imgdata != null) {
+			byte[] encodeBase64 = Base64.getEncoder().encode(imgdata);
+			try {
+				base64Encoded = new String(encodeBase64);
+			} catch (Exception e) {
+			}
 		}
 		return base64Encoded;
 	}
