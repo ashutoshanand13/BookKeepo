@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -23,7 +22,7 @@ import com.bookkeepo.accounting.util.CommonUtils;
  *
  */
 @Controller
-public class SalesInvoiceController {
+public class BillOfSupplyController {
 
 	@Autowired
 	private CompanyDetailsService companyDetailsService;
@@ -31,38 +30,21 @@ public class SalesInvoiceController {
 	@Autowired
 	private ItemService itemService;
 
-	@RequestMapping(value = "/home/salesinvoice", method = RequestMethod.GET)
+	@RequestMapping(value = "/home/billofsupply", method = RequestMethod.GET)
 	public ModelAndView setupSales(HttpServletRequest request) {
 		String user = request.getUserPrincipal().getName();
 		ModelAndView modelAndView = new ModelAndView();
 		Company company = companyDetailsService.findByUserName(user).stream().filter(c -> c.getCompanyActive() == 1)
 				.findFirst().get();
 		if (company == null) {
-			modelAndView.setViewName("redirect:/home/updatecompany/salesinvoice");
+			modelAndView.setViewName("redirect:/home/updatecompany/billofsupply");
 		} else {
 			modelAndView.addObject("company", company);
 			modelAndView.addObject("logoImage", CommonUtils.getImgfromByteArray(company.getCompanyLogo()));
 			modelAndView.addObject("itemList", itemService.findByProductOwner(user));
-			modelAndView.addObject("pageName", InvoiceType.Tax_Invoice.getType());
-			modelAndView.setViewName("salesInvoice");
+			modelAndView.addObject("pageName", InvoiceType.Bill_Supply.getType());
+			modelAndView.setViewName("billOfSupply");
 		}
 		return modelAndView;
 	}
-
-	@RequestMapping(value = "/home/salesinvoice/{message}", method = RequestMethod.GET)
-	public ModelAndView generateTaxInvoiceBeforeNote(@PathVariable("message") String message,
-			HttpServletRequest request) {
-		String user = request.getUserPrincipal().getName();
-		ModelAndView modelAndView = new ModelAndView("salesInvoice");
-		modelAndView.addObject("message", message);
-		Company company = companyDetailsService.findByUserName(user).stream().filter(c -> c.getCompanyActive() == 1)
-				.findFirst().get();
-		modelAndView.addObject("company", company);
-		modelAndView.addObject("logoImage", CommonUtils.getImgfromByteArray(company.getCompanyLogo()));
-		modelAndView.addObject("itemList", itemService.findByProductOwner(user));
-		modelAndView.addObject("pageName", InvoiceType.Tax_Invoice.getType());
-		modelAndView.setViewName("salesInvoice");
-		return modelAndView;
-	}
-
 }

@@ -65,7 +65,8 @@ public class InvoiceController {
 		invoice.setInvoiceType(salesInvoiceData.getPageName());
 		invoice.setInvoiceOwner(principal.getName());
 
-		Company companyDetails = companyDetailsService.findByUserName(principal.getName());
+		Company companyDetails = companyDetailsService.findByUserName(principal.getName()).stream()
+				.filter(c -> c.getCompanyActive() == 1).findFirst().get();
 
 		if (salesInvoiceData.getAccountNo() != 0) {
 			Accounts account = accountService.findById(salesInvoiceData.getAccountNo());
