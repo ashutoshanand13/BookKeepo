@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.bookkeepo.accounting.entity.InvoiceProductDetails;
+import com.bookkeepo.accounting.entity.ProductDetails;
+import com.bookkeepo.accounting.service.CompanyDetailsService;
 import com.bookkeepo.accounting.service.ItemService;
 
 /**
@@ -31,26 +32,34 @@ public class ItemController {
 	@Autowired
 	private ItemService itemService;
 
+	@Autowired
+	CompanyDetailsService companyDetailsService;
+
 	@RequestMapping(value = { "/home/additem" }, method = RequestMethod.GET)
 	public ModelAndView getItemPage(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView("addItem");
 		String user = request.getUserPrincipal().getName();
-		List<InvoiceProductDetails> itemList = itemService.fetchAllItemsForItem(user);
+		List<ProductDetails> itemList = itemService.fetchAllItemsForItems(user);
 		modelAndView.addObject("itemList", itemList);
-		modelAndView.addObject("item", new InvoiceProductDetails());
+		modelAndView.addObject("item", new ProductDetails());
 		return modelAndView;
 	}
 
 	@RequestMapping(value = "/home/additem", method = RequestMethod.POST)
-	public ModelAndView addItem(@Valid @ModelAttribute("item") InvoiceProductDetails item, BindingResult bindingResult,
+	public ModelAndView addItem(@Valid @ModelAttribute("item") ProductDetails item, BindingResult bindingResult,
 			Principal principal) {
 		ModelAndView modelAndView = new ModelAndView("addItem");
 		String user = principal.getName();
 		item.setProductOwner(principal.getName());
-		itemService.saveItem(item);
+		item.setProductCompanyDetails(
+				item.getId() == 0
+						? companyDetailsService.findByUserName(principal.getName()).stream()
+								.filter(c -> c.getCompanyActive() == 1).findFirst().get()
+						: null);
+		itemService.saveProductItem(item);
 		modelAndView.addObject("message", "Item Updated Successfully");
-		modelAndView.addObject("item", new InvoiceProductDetails());
-		modelAndView.addObject("itemList", itemService.fetchAllItemsForItem(user));
+		modelAndView.addObject("item", new ProductDetails());
+		modelAndView.addObject("itemList", itemService.fetchAllItemsForItems(user));
 		return modelAndView;
 	}
 

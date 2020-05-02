@@ -1,6 +1,5 @@
 package com.bookkeepo.accounting.controller;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.security.Principal;
 

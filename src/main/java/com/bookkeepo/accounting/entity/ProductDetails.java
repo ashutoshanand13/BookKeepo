@@ -3,12 +3,22 @@
  */
 package com.bookkeepo.accounting.entity;
 
+import java.util.Date;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.Data;
 
@@ -19,12 +29,12 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "invoice_product_details")
-public class InvoiceProductDetails {
+@Table(name = "product_details")
+public class ProductDetails {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "invoice_product_id")
+	@Column(name = "product_id")
 	private int id;
 
 	@Column(name = "product_desc")
@@ -42,29 +52,28 @@ public class InvoiceProductDetails {
 	@Column(name = "product_rate")
 	private String productRate;
 
-	@Column(name = "product_amount")
-	private String productAmount;
-
 	@Column(name = "product_discount")
 	private String productDiscount;
 
 	@Column(name = "product_gst_rate")
 	private String productGstRate;
 
-	@Column(name = "product_tax_value")
-	private String productTaxValue;
+	@Column(name = "product_owner", nullable = false, updatable = false)
+	private String productOwner;
 
-	@Column(name = "product_cgst")
-	private String productCgst;
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "product_creation_date", nullable = false, updatable = false)
+	private Date productCreationDate;
 
-	@Column(name = "product_sgst")
-	private String productSgst;
+	@UpdateTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "product_last_modified", nullable = false)
+	private Date productLastModified;
 
-	@Column(name = "product_igst")
-	private String productIgst;
-
-	@Column(name = "product_total_amount")
-	private String productTotalAmount;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "product_company_reference_no", updatable = false)
+	private Company productCompanyDetails;
 
 	/**
 	 * @return the id
@@ -151,20 +160,6 @@ public class InvoiceProductDetails {
 	}
 
 	/**
-	 * @return the productAmount
-	 */
-	public String getProductAmount() {
-		return productAmount;
-	}
-
-	/**
-	 * @param productAmount the productAmount to set
-	 */
-	public void setProductAmount(String productAmount) {
-		this.productAmount = productAmount;
-	}
-
-	/**
 	 * @return the productDiscount
 	 */
 	public String getProductDiscount() {
@@ -193,73 +188,59 @@ public class InvoiceProductDetails {
 	}
 
 	/**
-	 * @return the productTaxValue
+	 * @return the productOwner
 	 */
-	public String getProductTaxValue() {
-		return productTaxValue;
+	public String getProductOwner() {
+		return productOwner;
 	}
 
 	/**
-	 * @param productTaxValue the productTaxValue to set
+	 * @param productOwner the productOwner to set
 	 */
-	public void setProductTaxValue(String productTaxValue) {
-		this.productTaxValue = productTaxValue;
+	public void setProductOwner(String productOwner) {
+		this.productOwner = productOwner;
 	}
 
 	/**
-	 * @return the productCgst
+	 * @return the productCreationDate
 	 */
-	public String getProductCgst() {
-		return productCgst;
+	public Date getProductCreationDate() {
+		return productCreationDate;
 	}
 
 	/**
-	 * @param productCgst the productCgst to set
+	 * @param productCreationDate the productCreationDate to set
 	 */
-	public void setProductCgst(String productCgst) {
-		this.productCgst = productCgst;
+	public void setProductCreationDate(Date productCreationDate) {
+		this.productCreationDate = productCreationDate;
 	}
 
 	/**
-	 * @return the productSgst
+	 * @return the productLastModified
 	 */
-	public String getProductSgst() {
-		return productSgst;
+	public Date getProductLastModified() {
+		return productLastModified;
 	}
 
 	/**
-	 * @param productSgst the productSgst to set
+	 * @param productLastModified the productLastModified to set
 	 */
-	public void setProductSgst(String productSgst) {
-		this.productSgst = productSgst;
+	public void setProductLastModified(Date productLastModified) {
+		this.productLastModified = productLastModified;
 	}
 
 	/**
-	 * @return the productIgst
+	 * @return the productCompanyDetails
 	 */
-	public String getProductIgst() {
-		return productIgst;
+	public Company getProductCompanyDetails() {
+		return productCompanyDetails;
 	}
 
 	/**
-	 * @param productIgst the productIgst to set
+	 * @param productCompanyDetails the productCompanyDetails to set
 	 */
-	public void setProductIgst(String productIgst) {
-		this.productIgst = productIgst;
-	}
-
-	/**
-	 * @return the productTotalAmount
-	 */
-	public String getProductTotalAmount() {
-		return productTotalAmount;
-	}
-
-	/**
-	 * @param productTotalAmount the productTotalAmount to set
-	 */
-	public void setProductTotalAmount(String productTotalAmount) {
-		this.productTotalAmount = productTotalAmount;
+	public void setProductCompanyDetails(Company productCompanyDetails) {
+		this.productCompanyDetails = productCompanyDetails;
 	}
 
 }
