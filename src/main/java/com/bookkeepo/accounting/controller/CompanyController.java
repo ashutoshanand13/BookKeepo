@@ -65,7 +65,8 @@ public class CompanyController {
 				company.setCompanyLogo(companyLogo.getBytes());
 				company.setCompanyStringLogo(CommonUtils.getImgfromByteArray(company.getCompanyLogo()));
 			} else {
-				if(company.getCompanyStringLogo().equals(CommonUtils.getImgfromResource("/static/images/image-400x400.jpg")))
+				if (company.getCompanyStringLogo()
+						.equals(CommonUtils.getImgfromResource("/static/images/image-400x400.jpg")))
 					company.setCompanyLogo(null);
 				else
 					company.setCompanyLogo(CommonUtils.getByteArrayfromImage(company.getCompanyStringLogo()));
@@ -73,6 +74,8 @@ public class CompanyController {
 		} catch (IOException e) {
 		}
 
+		company.setCompanyUniqueKey(CommonUtils.getUniqueID());
+		company.setCompanyActive(1);
 		companyDetailsService.save(company);
 
 		if (!CommonUtils.isPopulated(company.getPageName())) {

@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.entity.User;
 import com.bookkeepo.accounting.model.UserDetails;
+import com.bookkeepo.accounting.service.CompanyDetailsService;
 import com.bookkeepo.accounting.service.UserService;
 
 @Configuration
@@ -25,6 +27,9 @@ public class UserProfileController {
 
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+	@Autowired
+	CompanyDetailsService companyDetailsService;
 
 	@RequestMapping(value = { "/home/changePassword" }, method = RequestMethod.GET)
 	public ModelAndView getChangePasswordPage(HttpServletRequest request) {
@@ -59,6 +64,15 @@ public class UserProfileController {
 
 		}
 
+		return modelAndView;
+	}
+
+	@RequestMapping(value = { "/home/showProfile" }, method = RequestMethod.GET)
+	public ModelAndView getAddAccount(HttpServletRequest request) {
+		ModelAndView modelAndView = new ModelAndView();
+		Company company = companyDetailsService.findByUserName(request.getUserPrincipal().getName());
+		modelAndView.addObject("companyList", company);
+		modelAndView.setViewName("showProfile");
 		return modelAndView;
 	}
 

@@ -51,7 +51,7 @@ public class Payment {
 	@Column(name = "payment_description")
 	private String paymentDescription;
 
-	@Column(name = "payment_owner")
+	@Column(name = "payment_owner", nullable = false, updatable = false)
 	private String paymentOwner;
 
 	@CreationTimestamp
@@ -62,6 +62,10 @@ public class Payment {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "payment_account_reference_no")
 	private Accounts accountRefNo;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "payment_company_reference_no" , updatable = false)
+	private Company paymentCompanyDetails;
 
 	/**
 	 * @return the id
@@ -202,5 +206,21 @@ public class Payment {
 	public void setAccountRefNo(Accounts accountRefNo) {
 		this.accountRefNo = accountRefNo;
 	}
+
+	/**
+	 * @return the paymentCompanyDetails
+	 */
+	public Company getPaymentCompanyDetails() {
+		return paymentCompanyDetails;
+	}
+
+	/**
+	 * @param paymentCompanyDetails the paymentCompanyDetails to set
+	 */
+	public void setPaymentCompanyDetails(Company paymentCompanyDetails) {
+		this.paymentCompanyDetails = paymentCompanyDetails;
+	}
+	
+	
 
 }

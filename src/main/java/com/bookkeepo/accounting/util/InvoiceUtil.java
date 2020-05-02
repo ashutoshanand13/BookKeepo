@@ -80,6 +80,7 @@ public class InvoiceUtil {
 		invoice.setInvoiceUniqueKey(CommonUtils.getUniqueID());
 		invoice.setInvoiceReverseCharge(salesInvoiceData.getReverseCharge());
 		invoice.setInvoiceSubType(getInvoiceSubType(salesInvoiceData, companyDetails));
+		invoice.setInvoiceCompanyDetails(companyDetails);
 		invoice.setInvoiceAssoCompanyDetails(getComanyDetails(companyDetails));
 		invoice.setInvoiceAddressDetails(getInvoiceAddress(invoice, salesInvoiceData));
 		invoice.setInvoiceBankDetails(getBankDetails(salesInvoiceData));
