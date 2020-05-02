@@ -2,11 +2,14 @@ package com.bookkeepo.accounting.entity;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -14,6 +17,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.Data;
 
@@ -31,7 +35,7 @@ public class Accounts {
 	@NotEmpty(message = "*Please provide the account name")
 	private String accountName;
 
-	@Column(name = "account_owner")
+	@Column(name = "account_owner", nullable = false, updatable = false)
 	private String accountOwner;
 
 	@Column(name = "account_type")
@@ -61,9 +65,18 @@ public class Accounts {
 	@Column(name = "account_creation_date", nullable = false, updatable = false)
 	private Date accountCreationDate;
 
+	@UpdateTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "account_last_modified", nullable = false)
+	private Date accountLastModified;
+
 	@Column(name = "account_email")
 	@Email(message = "*Please provide a valid Email")
 	private String accountEmail;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "account_company_reference_no", updatable = false)
+	private Company accountCompanyDetails;
 
 	/**
 	 * @return the id
@@ -231,6 +244,34 @@ public class Accounts {
 	 */
 	public void setAccountCreationDate(Date accountCreationDate) {
 		this.accountCreationDate = accountCreationDate;
+	}
+
+	/**
+	 * @return the accountLastModified
+	 */
+	public Date getAccountLastModified() {
+		return accountLastModified;
+	}
+
+	/**
+	 * @param accountLastModified the accountLastModified to set
+	 */
+	public void setAccountLastModified(Date accountLastModified) {
+		this.accountLastModified = accountLastModified;
+	}
+
+	/**
+	 * @return the accountCompanyDetails
+	 */
+	public Company getAccountCompanyDetails() {
+		return accountCompanyDetails;
+	}
+
+	/**
+	 * @param accountCompanyDetails the accountCompanyDetails to set
+	 */
+	public void setAccountCompanyDetails(Company accountCompanyDetails) {
+		this.accountCompanyDetails = accountCompanyDetails;
 	}
 
 }

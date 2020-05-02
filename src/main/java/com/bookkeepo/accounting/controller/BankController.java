@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bookkeepo.accounting.entity.BankDetails;
 import com.bookkeepo.accounting.service.BankService;
+import com.bookkeepo.accounting.service.CompanyDetailsService;
 
 /**
  * @author Ashutosh Anand
@@ -30,6 +31,9 @@ public class BankController {
 
 	@Autowired
 	private BankService bankService;
+
+	@Autowired
+	CompanyDetailsService companyDetailsService;
 
 	@RequestMapping(value = { "/home/addbank" }, method = RequestMethod.GET)
 	public ModelAndView getBankPage(HttpServletRequest request) {
@@ -47,6 +51,8 @@ public class BankController {
 		ModelAndView modelAndView = new ModelAndView("addBank");
 		String user = principal.getName();
 		bank.setUserBankCreator(principal.getName());
+		bank.setBankCompanyDetails(
+				bank.getId() == 0 ? companyDetailsService.findByUserName(principal.getName()) : null);
 		bankService.saveItem(bank);
 		modelAndView.addObject("message", "Bank details added Successfully.");
 		modelAndView.addObject("bank", new BankDetails());
