@@ -39,27 +39,21 @@ public class Accounts {
 	private String accountType;
 
 	@Column(name = "account_gstin")
-	@NotEmpty(message = "*Please provide the account GST")
 	private String gstin;
 
 	@Column(name = "account_pan")
-	@NotEmpty(message = "*Please provide the account PAN")
 	private String accountPan;
 
 	@Column(name = "account_contact")
-	@NotEmpty(message = "*Please provide the account contact")
 	private String accountContact;
 
 	@Column(name = "account_address")
-	@NotEmpty(message = "*Please provide the account address")
 	private String accountAddress;
 
 	@Column(name = "account_state")
-	@NotEmpty(message = "*Please provide the account state")
 	private String accountState;
 
 	@Column(name = "account_pincode")
-	@NotEmpty(message = "*Please provide the account pincode")
 	private String accountPincode;
 
 	@CreationTimestamp
@@ -69,7 +63,6 @@ public class Accounts {
 
 	@Column(name = "account_email")
 	@Email(message = "*Please provide a valid Email")
-	@NotEmpty(message = "*Please provide an email")
 	private String accountEmail;
 
 	/**

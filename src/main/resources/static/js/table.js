@@ -552,12 +552,12 @@ function checkAccountName(value) {
 				if(data !== null) {
 					$('#name_alert').html(
 							'<div class="alert alert-info text-center table-width fade-in" role="alert">'
-							  +'Account with this Name already exists. You may want to change it to avoid confusion.'+
+							  +'An account already exists with this name, do you still wish to continue with this name. It is suggested to choose a different name to avoid confusion.'+
 							  '</div>')
 					$("#name_alert");
 				}
 				else {
-					$('#name_alert').remove()
+					$('#name_alert').remove();
 				}
 			}
 			});
