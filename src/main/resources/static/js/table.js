@@ -709,3 +709,25 @@ function resetBOSValues() {
 	    getAmountInWords();
 	    }
 }
+
+function updateCompany(active) {
+	if(active === "1"){
+		if(confirm("Do you want to update company?")) {
+			window.location ='/home/addcompany';
+		}
+	} else {
+		alert("You can update only active company");
+	}
+}
+
+function deleteCompany(key) {
+	if(confirm("Are you sure you want to delete this Company. Please Note that by deleting a company you lose all data related to it.")) {
+		window.location ='/home/deletecompany/'+key;
+	}
+}
+
+function activateCompany(key) {
+	if(confirm("Are you sure you want to activate this Company.")) {
+		window.location ='/home/activatecompany/'+key;
+	}
+}

@@ -40,6 +40,9 @@ public class Company {
 	@Column(name = "company_active", nullable = false)
 	private int companyActive;
 
+	@Column(name = "company_Deleted", nullable = false)
+	private int companyDeleted;
+
 	@Column(name = "company_gstin")
 	private String companyGstin;
 
@@ -149,6 +152,20 @@ public class Company {
 	 */
 	public void setCompanyActive(int companyActive) {
 		this.companyActive = companyActive;
+	}
+
+	/**
+	 * @return the companyDeleted
+	 */
+	public int getCompanyDeleted() {
+		return companyDeleted;
+	}
+
+	/**
+	 * @param companyDeleted the companyDeleted to set
+	 */
+	public void setCompanyDeleted(int companyDeleted) {
+		this.companyDeleted = companyDeleted;
 	}
 
 	/**
