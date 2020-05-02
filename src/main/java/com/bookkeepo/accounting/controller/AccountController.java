@@ -40,26 +40,30 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "/home/addaccount", method = RequestMethod.POST)
-	public ModelAndView addNewAccount(@Valid @ModelAttribute("account") Accounts account, BindingResult bindingResult, Principal principal) {
+	public ModelAndView addNewAccount(@Valid @ModelAttribute("account") Accounts account, BindingResult bindingResult,
+			Principal principal) {
 		ModelAndView modelAndView = new ModelAndView();
-		Accounts accountWithGstInExists = accountService.findAccountByGstin(account.getGstin(),principal.getName());
 
-		if(accountService.findById(account.getId()) == null) {
+		if (account.getId() == 0) {
+			Accounts accountWithGstInExists = accountService.findAccountByGstin(account.getGstin(),
+					principal.getName());
+
 			if (accountWithGstInExists != null) {
 				bindingResult.rejectValue("gstin", "gstin", "This GST number is already registered.");
 			} else if (account.getGstin().trim().length() != 15) {
 				bindingResult.rejectValue("gstin", "gstin", "Please provide a valid GST number.");
 			}
-	
-			Accounts accountWithPanExists = accountService.findAccountByPan(account.getAccountPan(), principal.getName());
+
+			Accounts accountWithPanExists = accountService.findAccountByPan(account.getAccountPan(),
+					principal.getName());
 			if (accountWithPanExists != null) {
 				bindingResult.rejectValue("accountPan", "accountPan", "This PAN is already registered.");
 			} else if (account.getAccountPan().trim().length() != 10) {
 				bindingResult.rejectValue("accountPan", "accountPan", "Please provide a valid PAN.");
-	
+
 			}
 		}
-		
+
 		if (bindingResult.hasErrors()) {
 			modelAndView.addObject("account", account);
 			modelAndView.setViewName("addaccount");

@@ -33,7 +33,7 @@
 						<label>Bank List</label> <select
 							class="form-control text-uppercase" id="selectbasic" name="selectbasic">
 							<option th:each="bankValue : ${bankList}" th:value="${bankValue.id}"
-								th:text="${bankValue.userbankName}"></option>
+								th:text="${bankValue.userBankName}"></option>
 						</select>
 
 					</div>
@@ -42,19 +42,19 @@
 			<div class="row">
 				<div class="col-md-6 form-group"><label class="mandatory field-description text-uppercase">Bank Name</label>
 					<input type="text"
-						th:field="*{userbankName}" class="text-uppercase" required="required">
+						th:field="*{userBankName}" class="text-uppercase" required="required">
 					<label class="field-description">Bank Account</label>
 					<input type="text" class="form-control" name="bankAC"
 						th:field="*{userBankAccount}">
 					<label class="field-description">Bank Nick Name</label>
 					<input type="text" class="form-control"
-						th:field="*{userbankNickname}">
+						th:field="*{userBankNickname}">
 				</div>
 				<div class="col-md-6 form-group"><label class="field-description text-uppercase">Bank Branch</label>
 					<input type="text"
-						th:field="*{userbankBranch}" required="required">
+						th:field="*{userBankBranch}" required="required">
 					<label class="mandatory field-description">Select A/C Type</label>
-					<select name="selectbasic" class="form-control" th:field="*{userbankActype}" required="required">
+					<select name="selectbasic" class="form-control" th:field="*{userBankActype}" required="required">
 							<option class="form-control" value="Savings">Cash</option>
 							<option class="form-control" value="Current">Bank</option>
 							<option class="form-control" value="OD-CC">OD/CC</option>
@@ -87,20 +87,20 @@
 				url : "getBankData?bankId=" + bankId,
 				dataType : 'json',				
 				success : function(data) {
-					$("[name=userbankName").val(data.userbankName);
+					$("[name=userBankName").val(data.userBankName);
 					$("[name=userBankAccount").val(data.userBankAccount);
-					$("[name=userbankNickname").val(data.userbankNickname);
-					$("[name=userbankBranch").val(data.userbankBranch);
-					$("[name=userbankActype").val(data.userbankActype);
+					$("[name=userBankNickname").val(data.userBankNickname);
+					$("[name=userBankBranch").val(data.userBankBranch);
+					$("[name=userBankActype").val(data.userBankActype);
 					$("[name=id").val(data.id);
 				}
 				});
 		} else {
-			$("[name=userbankName").val("");
+			$("[name=userBankName").val("");
 			$("[name=userBankAccount").val("");
-			$("[name=userbankNickname").val("");
-			$("[name=userbankBranch").val("");
-			$("[name=userbankActype").val("");
+			$("[name=userBankNickname").val("");
+			$("[name=userBankBranch").val("");
+			$("[name=userBankActype").val("");
 			$("[name=id").val(0);
 		}
 	};

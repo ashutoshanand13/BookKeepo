@@ -57,11 +57,16 @@
 							name="invoiceNo" placeholder="Document No." required="required" onblur="checkInvoiceNo(this)"></td>
 						<td class="pt-3-half"><select class="form-control" 
 						id="againstInvoicedropdown" name="againstInvoice" style="font-size: 10px;">
-						<option th:each="invoice : ${invoiceList}" th:value="${invoice}"
-							th:text="${invoice}"></option>
+						<option th:each="invoice : ${invoiceList}" th:value="${invoice.id}"
+							th:text="${invoice.invoiceNumber}"></option>
+							
 					</select></td>
 					</tr>
 					<tr>
+					
+					<input type="hidden" class="form-control"
+							name="linkedInvoiceNo">
+							
 						<td class="pt-3-half"><input type="text" class="form-control"
 							name="invoiceDate" onfocus="(this.type='date')"
 							onblur="if(!this.value)this.type='text'" placeholder="Issue Date"
@@ -94,7 +99,7 @@
 				<tbody>
 					<tr>
 						<td class="pt-3-half"> 
-							<select name="accountNo" onfocus="getAccountList()"></select>
+							<select class="form-control" name="accountNo" onfocus="getAccountList()" style="font-size: 10px;"></select>
 						</td>
 						<td class="pt-3-half"><input type="text" class="form-control"
 							name="nameShip" placeholder="Name" required="required" readonly="readonly"></td>

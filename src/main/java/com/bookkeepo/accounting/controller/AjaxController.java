@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.bookkeepo.accounting.model.InvoiceType;
 import com.bookkeepo.accounting.service.AccountService;
 import com.bookkeepo.accounting.service.BankService;
 import com.bookkeepo.accounting.service.InvoiceService;
@@ -59,9 +58,8 @@ public class AjaxController {
 	}
 
 	@RequestMapping(value = "/home/invoicedetails", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody String getInvoiceDetails(@RequestParam String invoiceNo, HttpServletRequest request) {
-		return gson.toJson(invoiceService.findByInvoiceNumberAndInvoiceOwnerAndInvoiceType(invoiceNo,
-				InvoiceType.Tax_Invoice.getType(), request.getUserPrincipal().getName()));
+	public @ResponseBody String getInvoiceDetails(@RequestParam int	 invoiceNo, HttpServletRequest request) {
+		return gson.toJson(invoiceService.findById(invoiceNo));
 	}
 
 	@RequestMapping(value = "/home/getItemData", method = RequestMethod.GET, produces = "application/json")

@@ -58,15 +58,15 @@ public class AccountService {
 
 	public List<Accounts> fetchAccountNameForInvoice(String user) {
 		List<Accounts> accountList = new ArrayList<Accounts>();
-		Accounts accounts = new Accounts();
-		accounts.setId(0);
-		accounts.setAccountName("Select Account");
-		accountList.add(accounts);
+		Accounts selectAccount = new Accounts();
+		selectAccount.setId(0);
+		selectAccount.setAccountName("Select Account");
+		accountList.add(selectAccount);
 		
-		Accounts accounts1 = new Accounts();
-		accounts1.setId(-1);
-		accounts1.setAccountName("Add New Account");
-		accountList.add(accounts1);
+		Accounts newAccount = new Accounts();
+		newAccount.setId(-1);
+		newAccount.setAccountName("Add New Account");
+		accountList.add(newAccount);
 
 		List<Accounts> dbAccountList = accountRepository.findByAccountOwner(user);
 

@@ -489,7 +489,7 @@ $("[name=accountNo]").change(function() {
 $("#againstInvoicedropdown").change(function() {
 	var invoiceNumber = $("#againstInvoicedropdown").val();
 	
-	if(invoiceNumber !== "Against Invoice") {
+	if(invoiceNumber !== "0") {
 		$.ajax({
 			type : "GET",
 			contentType : "application/json",
@@ -499,6 +499,7 @@ $("#againstInvoicedropdown").change(function() {
 				$("[name=againstInvoiceDate]").val(data.invoiceDate);
 				$("[name=state]").val(data.invoiceState);
 				$("[name=reverseCharge]").val(data.invoiceReverseCharge);
+				$("[name=linkedInvoiceNo]").val(data.invoiceNumber);
 				$("[name=againstInvoiceDate]").blur();
 			}
 			});
@@ -508,6 +509,7 @@ $("#againstInvoicedropdown").change(function() {
 		$("[name=againstInvoiceDate]").val("");
 		$("[name=state]").val("");
 		$("[name=reverseCharge]").val("");
+		$("[name=linkedInvoiceNo]").val("");
 		$("[name=againstInvoiceDate]").blur();
 	}
 });

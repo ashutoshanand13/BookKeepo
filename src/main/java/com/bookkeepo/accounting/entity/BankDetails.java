@@ -3,12 +3,19 @@
  */
 package com.bookkeepo.accounting.entity;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.Data;
 
@@ -21,29 +28,39 @@ import lombok.Data;
 @Entity
 @Table(name = "user_bank_details")
 public class BankDetails {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "user_bank_id")
 	private int id;
-	
+
 	@Column(name = "user_bank_account")
 	private String userBankAccount;
-	
+
 	@Column(name = "user_bank_name")
-	private String userbankName;
-	
+	private String userBankName;
+
 	@Column(name = "user_bank_nickname")
-	private String userbankNickname;
-	
+	private String userBankNickname;
+
 	@Column(name = "user_bank_branch")
-	private String userbankBranch;
-	
+	private String userBankBranch;
+
 	@Column(name = "user_bank_actype")
-	private String userbankActype;
-	
+	private String userBankActype;
+
 	@Column(name = "user_bank_creator")
-	private String userbankCreator;
+	private String userBankCreator;
+
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "user_bank_creation_date", nullable = false, updatable = false)
+	private Date userBankCreationDate;
+
+	@UpdateTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "user_bank_last_modified", nullable = false)
+	private Date userBankLastModified;
 
 	/**
 	 * @return the id
@@ -74,77 +91,100 @@ public class BankDetails {
 	}
 
 	/**
-	 * @return the userbankName
+	 * @return the userBankName
 	 */
-	public String getUserbankName() {
-		return userbankName;
+	public String getUserBankName() {
+		return userBankName;
 	}
 
 	/**
-	 * @param userbankName the userbankName to set
+	 * @param userBankName the userBankName to set
 	 */
-	public void setUserbankName(String userbankName) {
-		this.userbankName = userbankName;
+	public void setUserBankName(String userBankName) {
+		this.userBankName = userBankName;
 	}
 
 	/**
-	 * @return the userbankNickname
+	 * @return the userBankNickname
 	 */
-	public String getUserbankNickname() {
-		return userbankNickname;
+	public String getUserBankNickname() {
+		return userBankNickname;
 	}
 
 	/**
-	 * @param userbankNickname the userbankNickname to set
+	 * @param userBankNickname the userBankNickname to set
 	 */
-	public void setUserbankNickname(String userbankNickname) {
-		this.userbankNickname = userbankNickname;
+	public void setUserBankNickname(String userBankNickname) {
+		this.userBankNickname = userBankNickname;
 	}
 
 	/**
-	 * @return the userbankBranch
+	 * @return the userBankBranch
 	 */
-	public String getUserbankBranch() {
-		return userbankBranch;
+	public String getUserBankBranch() {
+		return userBankBranch;
 	}
 
 	/**
-	 * @param userbankBranch the userbankBranch to set
+	 * @param userBankBranch the userBankBranch to set
 	 */
-	public void setUserbankBranch(String userbankBranch) {
-		this.userbankBranch = userbankBranch;
+	public void setUserBankBranch(String userBankBranch) {
+		this.userBankBranch = userBankBranch;
 	}
 
 	/**
-	 * @return the userbankActype
+	 * @return the userBankActype
 	 */
-	public String getUserbankActype() {
-		return userbankActype;
+	public String getUserBankActype() {
+		return userBankActype;
 	}
 
 	/**
-	 * @param userbankActype the userbankActype to set
+	 * @param userBankActype the userBankActype to set
 	 */
-	public void setUserbankActype(String userbankActype) {
-		this.userbankActype = userbankActype;
+	public void setUserBankActype(String userBankActype) {
+		this.userBankActype = userBankActype;
 	}
 
 	/**
-	 * @return the userbankCreator
+	 * @return the userBankCreator
 	 */
-	public String getUserbankCreator() {
-		return userbankCreator;
+	public String getUserBankCreator() {
+		return userBankCreator;
 	}
 
 	/**
-	 * @param userbankCreator the userbankCreator to set
+	 * @param userBankCreator the userBankCreator to set
 	 */
-	public void setUserbankCreator(String userbankCreator) {
-		this.userbankCreator = userbankCreator;
+	public void setUserBankCreator(String userBankCreator) {
+		this.userBankCreator = userBankCreator;
 	}
-	
-	
 
-	
-	
+	/**
+	 * @return the userBankCreationDate
+	 */
+	public Date getUserBankCreationDate() {
+		return userBankCreationDate;
+	}
+
+	/**
+	 * @param userBankCreationDate the userBankCreationDate to set
+	 */
+	public void setUserBankCreationDate(Date userBankCreationDate) {
+		this.userBankCreationDate = userBankCreationDate;
+	}
+
+	/**
+	 * @return the userBankLastModified
+	 */
+	public Date getUserBankLastModified() {
+		return userBankLastModified;
+	}
+
+	/**
+	 * @param userBankLastModified the userBankLastModified to set
+	 */
+	public void setUserBankLastModified(Date userBankLastModified) {
+		this.userBankLastModified = userBankLastModified;
+	}
 }

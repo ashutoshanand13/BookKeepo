@@ -17,7 +17,7 @@ import com.bookkeepo.accounting.entity.BankDetails;
 @Repository("bankRepository")
 public interface BankRepository extends JpaRepository<BankDetails, Long>{
 	
-	List<BankDetails> findByuserbankCreator(String owner);
+	List<BankDetails> findByUserBankCreator(String owner);
 	
 	BankDetails findById(int id);
 	
