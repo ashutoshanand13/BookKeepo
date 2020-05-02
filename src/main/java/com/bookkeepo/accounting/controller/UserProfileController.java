@@ -1,6 +1,7 @@
 package com.bookkeepo.accounting.controller;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,6 +25,7 @@ import com.bookkeepo.accounting.entity.User;
 import com.bookkeepo.accounting.model.UserDetails;
 import com.bookkeepo.accounting.service.CompanyDetailsService;
 import com.bookkeepo.accounting.service.UserService;
+import com.bookkeepo.accounting.util.CommonUtils;
 
 @Configuration
 @Controller
@@ -79,6 +82,7 @@ public class UserProfileController {
 		List<Company> companyList = companyDetailsService.findByUserName(request.getUserPrincipal().getName());
 		modelAndView.addObject("companyList",
 				companyList.stream().filter(c -> c.getCompanyDeleted() == 0).collect(Collectors.toList()));
+		modelAndView.addObject("company", new Company());
 		modelAndView.setViewName("showProfile");
 		return modelAndView;
 	}
@@ -104,6 +108,22 @@ public class UserProfileController {
 		companyDetailsService.save(company);
 		modelAndView.setViewName("redirect:/home/showProfile");
 
+		return modelAndView;
+	}
+	
+	@RequestMapping(value = { "/home/addnewcompany" }, method = RequestMethod.POST)
+	public ModelAndView addNewCompany(@Valid @ModelAttribute("company") Company company, BindingResult bindingResult,
+			Principal principal) throws IOException {
+		ModelAndView modelAndView = new ModelAndView();
+		company.setCompanyActive(1);
+		List<Company> companyRecord = companyDetailsService.findByUserName(principal.getName());
+		if(companyRecord!=null && companyRecord.size()>0) {
+			company.setCompanyActive(0);
+		}
+		company.setCompanyUniqueKey(CommonUtils.getUniqueID());
+		company.setUserName(principal.getName());
+		companyDetailsService.save(company);
+		modelAndView.setViewName("redirect:/home/showProfile");
 		return modelAndView;
 	}
 
