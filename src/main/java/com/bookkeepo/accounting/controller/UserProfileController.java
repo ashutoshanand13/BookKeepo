@@ -79,7 +79,7 @@ public class UserProfileController {
 	@RequestMapping(value = { "/home/showProfile" }, method = RequestMethod.GET)
 	public ModelAndView getAddAccount(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
-		List<Company> companyList = companyDetailsService.findByUserName(request.getUserPrincipal().getName());
+		List<Company> companyList = companyDetailsService.fetchAllCompanies(request.getUserPrincipal().getName());
 		modelAndView.addObject("companyList",
 				companyList.stream().filter(c -> c.getCompanyDeleted() == 0).collect(Collectors.toList()));
 		modelAndView.addObject("company", new Company());
@@ -101,9 +101,10 @@ public class UserProfileController {
 
 	@RequestMapping(value = { "/home/activatecompany/{uniqueKey}" })
 	public ModelAndView activateCompany(@PathVariable("uniqueKey") String uniqueKey, HttpServletRequest request,
-			HttpServletResponse response) throws IOException {
+			HttpServletResponse response, Principal principal) throws IOException {
 		ModelAndView modelAndView = new ModelAndView();
-		List<Company> companyList = companyDetailsService.fetchAllCompanies();
+
+		List<Company> companyList = companyDetailsService.fetchAllCompanies(principal.getName());
 		for (Company com : companyList) {
 			if (uniqueKey.equals(com.getCompanyUniqueKey())) {
 				com.setCompanyActive(1);
@@ -123,7 +124,7 @@ public class UserProfileController {
 	public ModelAndView addNewCompany(@Valid @ModelAttribute("company") Company company, BindingResult bindingResult,
 			Principal principal) throws IOException {
 		ModelAndView modelAndView = new ModelAndView();
-		List<Company> companyRecord = companyDetailsService.findByUserName(principal.getName());
+		List<Company> companyRecord = companyDetailsService.fetchAllCompanies(principal.getName());
 		if (companyRecord == null || companyRecord.size() == 0) {
 			company.setCompanyActive(1);
 		}

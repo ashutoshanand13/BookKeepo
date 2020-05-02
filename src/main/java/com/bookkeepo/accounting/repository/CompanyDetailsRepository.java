@@ -16,9 +16,10 @@ import com.bookkeepo.accounting.entity.Company;
  */
 @Repository("companyDetailsRepository")
 public interface CompanyDetailsRepository extends JpaRepository<Company, Long> {
-	List<Company> findByUserName(String name);
-	
+
+	Company findByUserNameAndCompanyActive(String name, int active);
+
 	Company findByCompanyUniqueKey(String key);
-	
-	List<Company> findByCompanyDeleted(int companyDeleted);
+
+	List<Company> findByCompanyDeletedAndUserName(int companyDeleted, String userName);
 }

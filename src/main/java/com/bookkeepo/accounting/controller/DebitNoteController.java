@@ -41,8 +41,7 @@ public class DebitNoteController {
 	public ModelAndView setupSales(HttpServletRequest request) {
 		String user = request.getUserPrincipal().getName();
 		ModelAndView modelAndView = new ModelAndView();
-		Company company = companyDetailsService.findByUserName(user).stream().filter(c -> c.getCompanyActive() == 1)
-				.findFirst().get();
+		Company company = companyDetailsService.findByUserName(user);
 		List<InvoiceData> ownerInvoices = invoiceService.findByInvoiceOwnerAndInvoiceType(user,
 				InvoiceType.Tax_Invoice.getType());
 		if (company == null) {
