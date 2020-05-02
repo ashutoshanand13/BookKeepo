@@ -78,7 +78,7 @@
 							<a th:href="'javascript:updateCompany(\'' + ${company.companyActive} +'\');'">Update</a>
 						</td>
 						<td>
-							<a th:href="'javascript:deleteCompany(\'' + ${company.companyUniqueKey} +'\');'">Delete</a>
+							<a th:href="'javascript:deleteCompany(\'' + ${company.companyActive} +'\',\'' + ${company.companyUniqueKey} +'\');'">Delete</a>
 						</td>
 
 					</tr>
