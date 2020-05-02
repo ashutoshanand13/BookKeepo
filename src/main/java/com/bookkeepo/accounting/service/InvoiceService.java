@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bookkeepo.accounting.entity.InvoiceDetails;
+import com.bookkeepo.accounting.model.InvoiceData;
 import com.bookkeepo.accounting.repository.InvoiceRepository;
 
 /**
@@ -32,24 +33,30 @@ public class InvoiceService {
 		invoiceRepository.save(invoice);
 	}
 
-	public List<InvoiceDetails> fetchAllInvoice() {
-		return invoiceRepository.findAll();
-	}
-
 	public List<InvoiceDetails> findByInvoiceOwner(String name) {
 		return invoiceRepository.findByInvoiceOwner(name);
 	}
 
-	public InvoiceDetails findById(String key) {
+	public InvoiceDetails findByInvoiceUniqueKey(String key) {
 		return invoiceRepository.findByInvoiceUniqueKey(key);
 	}
 
-	public List<String> findByInvoiceOwnerAndInvoiceType(String name, String type) {
-		List<String> invoiceList = new ArrayList<String>();
-		invoiceList.add("Select Against Invoice");
+	public InvoiceDetails findById(int id) {
+		return invoiceRepository.findById(id);
+	}
+
+	public List<InvoiceData> findByInvoiceOwnerAndInvoiceType(String name, String type) {
+		List<InvoiceData> invoiceList = new ArrayList<InvoiceData>();
+		InvoiceData selectInvoice = new InvoiceData();
+		selectInvoice.setId(0);
+		selectInvoice.setInvoiceNumber("Select Against Invoice");
+		invoiceList.add(selectInvoice);
 		List<InvoiceDetails> allInvoice = invoiceRepository.findByInvoiceOwnerAndInvoiceType(name, type);
 		for (InvoiceDetails invoice : allInvoice) {
-			invoiceList.add(invoice.getInvoiceNumber());
+			InvoiceData dbinvoice = new InvoiceData();
+			dbinvoice.setId(invoice.getId());
+			dbinvoice.setInvoiceNumber(invoice.getInvoiceNumber());
+			invoiceList.add(dbinvoice);
 		}
 		return invoiceList;
 	}

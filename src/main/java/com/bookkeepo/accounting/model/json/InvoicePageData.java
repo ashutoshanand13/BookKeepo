@@ -134,10 +134,14 @@ public class InvoicePageData {
 	@SerializedName("partyState")
 	@Expose
 	private String partyState;
-	
+
 	@SerializedName("pageName")
 	@Expose
 	private String pageName;
+
+	@SerializedName("linkedInvoiceNo")
+	@Expose
+	private String linkedInvoiceNo;
 
 	public String getInvoiceNo() {
 		return invoiceNo;
@@ -441,7 +445,6 @@ public class InvoicePageData {
 		this.againstInvoice = againstInvoice;
 	}
 
-
 	/**
 	 * @return the issueDate
 	 */
@@ -498,7 +501,6 @@ public class InvoicePageData {
 		this.partyDate = partyDate;
 	}
 
-
 	/**
 	 * @return the partyState
 	 */
@@ -512,8 +514,6 @@ public class InvoicePageData {
 	public void setPartyState(String partyState) {
 		this.partyState = partyState;
 	}
-	
-	
 
 	/**
 	 * @return the pageName
@@ -527,6 +527,20 @@ public class InvoicePageData {
 	 */
 	public void setPageName(String pageName) {
 		this.pageName = pageName;
+	}
+
+	/**
+	 * @return the linkedInvoiceNo
+	 */
+	public String getLinkedInvoiceNo() {
+		return linkedInvoiceNo;
+	}
+
+	/**
+	 * @param linkedInvoiceNo the linkedInvoiceNo to set
+	 */
+	public void setLinkedInvoiceNo(String linkedInvoiceNo) {
+		this.linkedInvoiceNo = linkedInvoiceNo;
 	}
 
 	@Override
