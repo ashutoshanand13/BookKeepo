@@ -381,8 +381,8 @@ $("#companylogo").change(function(e) {
     if ((file = this.files[0])) {
         img = new Image();
         img.onload = function() {
-        	if(this.width>400 || this.height>400){
-        		alert("Image resolution should be within 400px x 400px");
+        	if(this.width>2000 || this.height>2000){
+        		alert("Image resolution should be within 2000px x 2000px");
         		if(!document.getElementById("companylogo").value){
         		document.getElementById('companylogopreview').src = "/images/image-400x400.jpg";
         		}
