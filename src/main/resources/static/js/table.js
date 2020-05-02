@@ -720,9 +720,14 @@ function updateCompany(active) {
 	}
 }
 
-function deleteCompany(key) {
-	if(confirm("Are you sure you want to delete this Company. Please Note that by deleting a company you lose all data related to it.")) {
-		window.location ='/home/deletecompany/'+key;
+function deleteCompany(active, key) {
+	debugger;
+	if(active == "1") {
+		alert('Active Company cannot be deleted');
+	} else {
+		if(confirm("Are you sure you want to delete this Company. Please Note that by deleting a company you lose all data related to it.")) {
+			window.location ='/home/deletecompany/'+key;
+		}
 	}
 }
 
