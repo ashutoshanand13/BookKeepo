@@ -18,15 +18,27 @@ public class CompanyDetailsService {
 		this.companyDetailsRepository = companyDetailsRepository;
 	}
 
-	public List<Company> findByUserName(String name) {
-		return companyDetailsRepository.findByUserName(name);
+	public Company findByUserName(String name) {
+		return companyDetailsRepository.findByUserNameAndCompanyActive(name, 1);
 	}
 
 	public void save(Company company) {
 		companyDetailsRepository.save(company);
 	}
-	
+
+	public void saveAll(List<Company> companyList) {
+		companyDetailsRepository.saveAll(companyList);
+	}
+
 	public Company findByCompanyUniqueKey(String key) {
 		return companyDetailsRepository.findByCompanyUniqueKey(key);
+	}
+
+	public List<Company> fetchAllCompanies(String userName) {
+		return companyDetailsRepository.findByCompanyDeletedAndUserName(0, userName);
+	}
+
+	public int getActivateCompanyId(String name) {
+		return companyDetailsRepository.findByUserNameAndCompanyActive(name, 1).getId();
 	}
 }

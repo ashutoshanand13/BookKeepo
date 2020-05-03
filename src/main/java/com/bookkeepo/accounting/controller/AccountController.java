@@ -49,21 +49,21 @@ public class AccountController {
 		ModelAndView modelAndView = new ModelAndView();
 
 		if (account.getId() == 0) {
-			if(!account.getGstin().isEmpty()) {
-			Accounts accountWithGstInExists = accountService.findAccountByGstin(account.getGstin(),
-					principal.getName());
+			if (!account.getGstin().isEmpty()) {
+				Accounts accountWithGstInExists = accountService.findAccountByGstin(account.getGstin(),
+						principal.getName());
 
-			if (accountWithGstInExists != null) {
-				bindingResult.rejectValue("gstin", "gstin", "This GST number is already registered.");
-			}
+				if (accountWithGstInExists != null) {
+					bindingResult.rejectValue("gstin", "gstin", "This GST number is already registered.");
+				}
 			}
 
-			if(!account.getAccountPan().isEmpty()) {
-			Accounts accountWithPanExists = accountService.findAccountByPan(account.getAccountPan(),
-					principal.getName());
-			if (accountWithPanExists != null) {
-				bindingResult.rejectValue("accountPan", "accountPan", "This PAN is already registered.");
-			} 
+			if (!account.getAccountPan().isEmpty()) {
+				Accounts accountWithPanExists = accountService.findAccountByPan(account.getAccountPan(),
+						principal.getName());
+				if (accountWithPanExists != null) {
+					bindingResult.rejectValue("accountPan", "accountPan", "This PAN is already registered.");
+				}
 			}
 		}
 
@@ -73,9 +73,7 @@ public class AccountController {
 		} else {
 			account.setAccountOwner(principal.getName());
 			account.setAccountCompanyDetails(
-					account.getId() == 0
-							? companyDetailsService.findByUserName(principal.getName()).stream()
-									.filter(c -> c.getCompanyActive() == 1).findFirst().get() : null);
+					account.getId() == 0 ? companyDetailsService.findByUserName(principal.getName()) : null);
 			accountService.saveAccount(account);
 			modelAndView.addObject("message", "Account Updated Successfully");
 			modelAndView.addObject("accountList", accountService.fetchAccountName(principal.getName()));

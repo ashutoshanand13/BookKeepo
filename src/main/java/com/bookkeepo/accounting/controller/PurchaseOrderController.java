@@ -32,8 +32,7 @@ public class PurchaseOrderController {
 	public ModelAndView getPurchaseOrderPage(HttpServletRequest request) {
 		String user = request.getUserPrincipal().getName();
 		ModelAndView modelAndView = new ModelAndView();
-		Company company = companyDetailsService.findByUserName(user).stream().filter(c -> c.getCompanyActive() == 1)
-				.findFirst().get();
+		Company company = companyDetailsService.findByUserName(user);
 		if (company == null) {
 			modelAndView.setViewName("redirect:/home/updatecompany/addpurchaseorder");
 		} else {

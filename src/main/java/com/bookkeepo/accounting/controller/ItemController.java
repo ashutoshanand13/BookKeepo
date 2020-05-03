@@ -52,10 +52,7 @@ public class ItemController {
 		String user = principal.getName();
 		item.setProductOwner(principal.getName());
 		item.setProductCompanyDetails(
-				item.getId() == 0
-						? companyDetailsService.findByUserName(principal.getName()).stream()
-								.filter(c -> c.getCompanyActive() == 1).findFirst().get()
-						: null);
+				item.getId() == 0 ? companyDetailsService.findByUserName(principal.getName()) : null);
 		itemService.saveProductItem(item);
 		modelAndView.addObject("message", "Item Updated Successfully");
 		modelAndView.addObject("item", new ProductDetails());
