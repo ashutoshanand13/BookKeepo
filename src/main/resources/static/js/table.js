@@ -740,9 +740,13 @@ function deleteCompany(active, key) {
 }
 
 function activateCompany(key) {
-	if(confirm("Are you sure you want to activate this Company.")) {
-		window.location ='/home/activatecompany/'+key;
-	}
+	createYesCancelMessageModal("Are you sure you want to activate this Company.");
+	$('#buttondata').click(function() { 
+	       text = $(this).attr('value');
+	       if(text) {
+	    	   window.location ='/home/activatecompany/'+key;
+	       }
+	        });
 }
 
 function createConfirmationMessageModal(message) {
