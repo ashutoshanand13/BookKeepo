@@ -637,6 +637,11 @@ html, body {
     margin-bottom: 25px;
 }
 
+.form-content .form-modal-button {
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+}
+
 .form-content .form-button .ibtn {
     border-radius: 6px;
     border: 0;
@@ -686,6 +691,10 @@ html, body {
 
 .form-content form {
     margin-bottom: 58px;
+}
+
+.form-content .modal-body form {
+    margin-bottom: 0px;
 }
 
 .form-content .other-links span {
@@ -905,4 +914,12 @@ div.form-content label.field-description{
 .mandatory.field-description:after{
 	content:"*";
    	color:red;
+}
+.bigbuttonwithoutmargins{
+	margin: 0px !important;
+}
+.modal-content  {
+    -webkit-border-radius: 0px !important;
+    -moz-border-radius: 0px !important;
+    border-radius: 0px !important; 
 }
