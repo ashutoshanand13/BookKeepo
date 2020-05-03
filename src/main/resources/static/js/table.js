@@ -721,13 +721,15 @@ function updateCompany(active) {
 }
 
 function deleteCompany(active, key) {
-	debugger;
 	if(active == "1") {
-		alert('Active Company cannot be deleted');
+		createConfirmationMessageModal('Active Company cannot be deleted');
 	} else {
-		if(confirm("Are you sure you want to delete this Company. Please Note that by deleting a company you lose all data related to it.")) {
+		var data=createYesCancelMessageModal("Are you sure you want to delete this Company. Please Note that by deleting a company you lose all data related to it.");
+		alert(data);
+		/*if(createYesCancelMessageModal("Are you sure you want to delete this Company. Please Note that by deleting a company you lose all data related to it.")) {
+			alert('hi1');
 			window.location ='/home/deletecompany/'+key;
-		}
+		}*/
 	}
 }
 
@@ -736,3 +738,40 @@ function activateCompany(key) {
 		window.location ='/home/activatecompany/'+key;
 	}
 }
+
+function createConfirmationMessageModal(message) {
+	$('#alert_placeholder').html(
+			'<div class="modal fade" id="ConfirmationModal"><div class="modal-dialog modal-sm">  <div class="modal-content"><!-- Modal body --><div class="modal-body"><span style="font-size: 15px" class="glyphicon glyphicon-cog"></span>'+message+'</div><div class="modal-footer"><button type="button" class="btn btn-success btn-block bigbuttonwithoutmargins modalbuttoncolor" data-dismiss="modal" value="true">OK</button></div>');
+	$('#ConfirmationModal').modal('show');
+}
+
+function createYesCancelMessageModal(message) {
+	var text = false;
+	//alert('Hi1'+text);
+	$('#alert_placeholder').html(
+			'<div class="modal fade" id="YesCancelModal"><div class="modal-dialog modal-sm">  <div class="modal-content"><!-- Modal body --><div class="modal-body"><span style="font-size: 15px" class="glyphicon glyphicon-cog"></span>'+message+'</div><div class="modal-footer"><button type="button" class="btn btn-success btn-block bigbuttonwithoutmargins modalbuttoncolor" data-dismiss="modal" id="buttondata" value="true">Yes</button><br/><button type="button" class="btn btn-danger btn-block bigbuttonwithoutmargins" data-dismiss="modal" id="buttondata" value="false">Cancel</button></div>');
+	$('#YesCancelModal').modal('show');
+	$('#buttondata').click(function() { 
+       text = $(this).attr('value');
+       //alert('Hi1');
+        });
+	return text;
+}
+
+$(function () {
+    $("#companyaddress").on('keyup change', function (e) {
+        $(this).val($(this).val().toUpperCase());
+    });
+});
+
+$(function () {
+    $("#companyname").on('keyup change', function (e) {
+        $(this).val($(this).val().toUpperCase());
+    });
+});
+
+$(function () {
+    $("#companygstin").on('keyup change', function (e) {
+        $(this).val($(this).val().toUpperCase());
+    });
+});
