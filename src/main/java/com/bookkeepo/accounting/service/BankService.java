@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.bookkeepo.accounting.entity.BankDetails;
 import com.bookkeepo.accounting.repository.BankRepository;
+import com.bookkeepo.accounting.repository.CompanyDetailsRepository;
 
 /**
  * @author Ashutosh Anand
@@ -20,10 +21,13 @@ import com.bookkeepo.accounting.repository.BankRepository;
 public class BankService {
 
 	private BankRepository bankRepository;
+	private CompanyDetailsRepository companyDetailsRepository;
 
 	@Autowired
-	public BankService(BankRepository bankRepository) {
+	public BankService(BankRepository bankRepository, CompanyDetailsRepository companyDetailsRepository) {
 		this.bankRepository = bankRepository;
+		this.companyDetailsRepository = companyDetailsRepository;
+
 	}
 
 	public List<BankDetails> fetchCreatedBanks(String owner) {
@@ -33,7 +37,8 @@ public class BankService {
 		newBankDetails.setUserBankName("Add New Bank");
 		createdbankslist.add(newBankDetails);
 
-		List<BankDetails> dbItemList = bankRepository.findByUserBankCreator(owner);
+		List<BankDetails> dbItemList = bankRepository.findByUserBankCreatorAndBankCompanyDetails(owner,
+				companyDetailsRepository.findByUserNameAndCompanyActive(owner, 1));
 		if (!dbItemList.isEmpty()) {
 			createdbankslist.addAll(dbItemList);
 		}
@@ -41,7 +46,7 @@ public class BankService {
 		return createdbankslist;
 	}
 
-	public void saveItem(BankDetails item) {
+	public void saveBank(BankDetails item) {
 		bankRepository.save(item);
 	}
 

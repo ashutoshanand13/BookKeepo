@@ -53,7 +53,7 @@ public class BankController {
 		bank.setUserBankCreator(principal.getName());
 		bank.setBankCompanyDetails(
 				bank.getId() == 0 ? companyDetailsService.findByUserName(principal.getName()) : null);
-		bankService.saveItem(bank);
+		bankService.saveBank(bank);
 		modelAndView.addObject("message", "Bank details added Successfully.");
 		modelAndView.addObject("bank", new BankDetails());
 		modelAndView.addObject("bankList", bankService.fetchCreatedBanks(user));
