@@ -918,3 +918,8 @@ div.form-content label.field-description{
 .bigbuttonwithoutmargins{
 	margin: 0px !important;
 }
+.modal-content  {
+    -webkit-border-radius: 0px !important;
+    -moz-border-radius: 0px !important;
+    border-radius: 0px !important; 
+}
