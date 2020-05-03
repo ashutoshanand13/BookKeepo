@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bookkeepo.accounting.entity.BankDetails;
+import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.service.BankService;
 import com.bookkeepo.accounting.service.CompanyDetailsService;
 
@@ -39,9 +40,14 @@ public class BankController {
 	public ModelAndView getBankPage(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView("addBank");
 		String user = request.getUserPrincipal().getName();
-		List<BankDetails> bankList = bankService.fetchCreatedBanks(user);
-		modelAndView.addObject("bankList", bankList);
-		modelAndView.addObject("bank", new BankDetails());
+		Company company = companyDetailsService.findByUserName(user);
+		if (company == null) {
+			modelAndView.setViewName("redirect:/home/showProfile");
+		} else {
+			List<BankDetails> bankList = bankService.fetchCreatedBanks(user);
+			modelAndView.addObject("bankList", bankList);
+			modelAndView.addObject("bank", new BankDetails());
+		}
 		return modelAndView;
 	}
 

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.entity.ProductDetails;
 import com.bookkeepo.accounting.service.CompanyDetailsService;
 import com.bookkeepo.accounting.service.ItemService;
@@ -39,9 +40,15 @@ public class ItemController {
 	public ModelAndView getItemPage(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView("addItem");
 		String user = request.getUserPrincipal().getName();
-		List<ProductDetails> itemList = itemService.fetchAllItemsForItems(user);
-		modelAndView.addObject("itemList", itemList);
-		modelAndView.addObject("item", new ProductDetails());
+		Company company = companyDetailsService.findByUserName(user);
+		if (company == null) {
+			modelAndView.setViewName("redirect:/home/showProfile");
+		} else {
+			List<ProductDetails> itemList = itemService.fetchAllItemsForItems(user);
+			modelAndView.addObject("itemList", itemList);
+			modelAndView.addObject("item", new ProductDetails());
+		}
+
 		return modelAndView;
 	}
 
