@@ -44,7 +44,7 @@ public class BankController {
 		if (company == null) {
 			modelAndView.setViewName("redirect:/home/showProfile");
 		} else {
-			List<BankDetails> bankList = bankService.fetchCreatedBanks(user);
+			List<BankDetails> bankList = bankService.fetchCreatedBanks(user, company);
 			modelAndView.addObject("bankList", bankList);
 			modelAndView.addObject("bank", new BankDetails());
 		}
@@ -56,13 +56,13 @@ public class BankController {
 			Principal principal) {
 		ModelAndView modelAndView = new ModelAndView("addBank");
 		String user = principal.getName();
+		Company company = companyDetailsService.findByUserName(principal.getName());
 		bank.setUserBankCreator(principal.getName());
-		bank.setBankCompanyDetails(
-				bank.getId() == 0 ? companyDetailsService.findByUserName(principal.getName()) : null);
+		bank.setBankCompanyDetails(company);
 		bankService.saveBank(bank);
 		modelAndView.addObject("message", "Bank details added Successfully.");
 		modelAndView.addObject("bank", new BankDetails());
-		modelAndView.addObject("bankList", bankService.fetchCreatedBanks(user));
+		modelAndView.addObject("bankList", bankService.fetchCreatedBanks(user, company));
 		return modelAndView;
 	}
 

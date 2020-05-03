@@ -49,7 +49,7 @@ public class ReceiptController {
 		if (company == null) {
 			modelAndView.setViewName("redirect:/home/showProfile");
 		} else {
-			List<Accounts> accountList = accountService.fetchAccountName(user);
+			List<Accounts> accountList = accountService.fetchAccountName(user, company);
 
 			Receipts receipt = new Receipts();
 			modelAndView.addObject("receipts", receipt);
@@ -64,13 +64,12 @@ public class ReceiptController {
 	public ModelAndView addNewReceipt(@Valid @ModelAttribute("receipts") Receipts receipt, BindingResult bindingResult,
 			Principal principal) {
 		ModelAndView modelAndView = new ModelAndView();
-
+		Company company = companyDetailsService.findByUserName(principal.getName());
 		receipt.setReceiptOwner(principal.getName());
 		receipt.setAccountRefNo(accountService.findById(receipt.getAccountRefNo().getId()));
-		receipt.setReceiptCompanyDetails(
-				receipt.getId() == 0 ? companyDetailsService.findByUserName(principal.getName()) : null);
+		receipt.setReceiptCompanyDetails(company);
 		receiptService.saveAccount(receipt);
-		List<Accounts> accountList = accountService.fetchAccountName(principal.getName());
+		List<Accounts> accountList = accountService.fetchAccountName(principal.getName(), company);
 		modelAndView.addObject("receipts", new Receipts());
 		modelAndView.addObject("message", "Receipt Details Successfully Added");
 		modelAndView.setViewName("addReceipt");
