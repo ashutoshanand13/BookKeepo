@@ -54,10 +54,7 @@ public class PaymentController {
 		payment.setPaymentOwner(principal.getName());
 		payment.setAccountRefNo(accountService.findById(payment.getAccountRefNo().getId()));
 		payment.setPaymentCompanyDetails(
-				payment.getId() == 0
-						? companyDetailsService.findByUserName(principal.getName()).stream()
-								.filter(c -> c.getCompanyActive() == 1).findFirst().get()
-						: null);
+				payment.getId() == 0 ? companyDetailsService.findByUserName(principal.getName()) : null);
 		paymentService.saveAccount(payment);
 		List<Accounts> accountList = accountService.fetchAccountName(principal.getName());
 		modelAndView.addObject("payment", new Payment());

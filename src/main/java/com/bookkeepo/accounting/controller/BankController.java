@@ -52,10 +52,7 @@ public class BankController {
 		String user = principal.getName();
 		bank.setUserBankCreator(principal.getName());
 		bank.setBankCompanyDetails(
-				bank.getId() == 0
-						? companyDetailsService.findByUserName(principal.getName()).stream()
-								.filter(c -> c.getCompanyActive() == 1).findFirst().get()
-						: null);
+				bank.getId() == 0 ? companyDetailsService.findByUserName(principal.getName()) : null);
 		bankService.saveItem(bank);
 		modelAndView.addObject("message", "Bank details added Successfully.");
 		modelAndView.addObject("bank", new BankDetails());

@@ -32,8 +32,7 @@ public class CompanyController {
 	public ModelAndView getAddCompanyPage(HttpServletRequest request) {
 		String user = request.getUserPrincipal().getName();
 		ModelAndView modelAndView = new ModelAndView("addCompany");
-		Company company = companyDetailsService.findByUserName(user).stream().filter(c -> c.getCompanyActive() == 1)
-				.findFirst().get();
+		Company company = companyDetailsService.findByUserName(user);
 		if (company == null) {
 			company = new Company(user, CommonUtils.getImgfromResource("/static/images/image-400x400.jpg"));
 		} else {
