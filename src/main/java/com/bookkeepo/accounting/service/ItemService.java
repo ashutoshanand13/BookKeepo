@@ -9,8 +9,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bookkeepo.accounting.entity.InvoiceProductDetails;
-import com.bookkeepo.accounting.repository.ItemRepository;
+import com.bookkeepo.accounting.entity.ProductDetails;
+import com.bookkeepo.accounting.repository.ProductRepository;
 
 /**
  * @author Yash Singh
@@ -19,38 +19,38 @@ import com.bookkeepo.accounting.repository.ItemRepository;
 @Service("itemService")
 public class ItemService {
 
-	private ItemRepository itemRepository;
+	private ProductRepository productRepository;
 
 	@Autowired
-	public ItemService(ItemRepository itemRepository) {
-		this.itemRepository = itemRepository;
+	public ItemService(ProductRepository productRepository) {
+		this.productRepository = productRepository;
 	}
 
-	public List<InvoiceProductDetails> findByProductOwner(String owner) {
-		List<InvoiceProductDetails> itemList = new ArrayList<>();
-		InvoiceProductDetails InvoiceProductDetails = new InvoiceProductDetails();
+	public List<ProductDetails> findByProductOwner(String owner) {
+		List<ProductDetails> itemList = new ArrayList<>();
+		ProductDetails InvoiceProductDetails = new ProductDetails();
 		InvoiceProductDetails.setId(0);
 		InvoiceProductDetails.setProductDescription("");
 
-		List<InvoiceProductDetails> dbItemList = itemRepository.findByProductOwner(owner);
+		List<ProductDetails> dbItemList = productRepository.findByProductOwner(owner);
 		if (!dbItemList.isEmpty()) {
 			itemList.addAll(dbItemList);
 		}
 		return itemList;
 	}
 
-	public List<InvoiceProductDetails> fetchAllItems(String owner) {
-		return itemRepository.findByProductOwner(owner);
+	public List<ProductDetails> fetchAllItems(String owner) {
+		return productRepository.findByProductOwner(owner);
 	}
 
-	public List<InvoiceProductDetails> fetchAllItemsForItem(String owner) {
-		List<InvoiceProductDetails> itemList = new ArrayList<InvoiceProductDetails>();
-		InvoiceProductDetails addNewItem = new InvoiceProductDetails();
+	public List<ProductDetails> fetchAllItemsForItems(String owner) {
+		List<ProductDetails> itemList = new ArrayList<ProductDetails>();
+		ProductDetails addNewItem = new ProductDetails();
 		addNewItem.setId(0);
 		addNewItem.setProductDescription("Add New Item");
 		itemList.add(addNewItem);
 
-		List<InvoiceProductDetails> dbItemList = itemRepository.findByProductOwner(owner);
+		List<ProductDetails> dbItemList = productRepository.findByProductOwner(owner);
 		if (!dbItemList.isEmpty()) {
 			itemList.addAll(dbItemList);
 		}
@@ -58,11 +58,11 @@ public class ItemService {
 		return itemList;
 	}
 
-	public void saveItem(InvoiceProductDetails item) {
-		itemRepository.save(item);
+	public void saveProductItem(ProductDetails item) {
+		productRepository.save(item);
 	}
 
-	public InvoiceProductDetails findById(int id) {
-		return itemRepository.findById(id);
+	public ProductDetails findById(int id) {
+		return productRepository.findById(id);
 	}
 }
