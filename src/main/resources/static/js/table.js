@@ -724,8 +724,14 @@ function deleteCompany(active, key) {
 	if(active == "1") {
 		createConfirmationMessageModal('Active Company cannot be deleted');
 	} else {
-		var data=createYesCancelMessageModal("Are you sure you want to delete this Company. Please Note that by deleting a company you lose all data related to it.");
-		alert(data);
+		var text;
+		createYesCancelMessageModal("Are you sure you want to delete this Company. Please Note that by deleting a company you lose all data related to it.");
+		$('#buttondata').click(function() { 
+		       text = $(this).attr('value');
+		       if(text) {
+		    	   window.location ='/home/deletecompany/'+key;
+		       }
+		        });
 		/*if(createYesCancelMessageModal("Are you sure you want to delete this Company. Please Note that by deleting a company you lose all data related to it.")) {
 			alert('hi1');
 			window.location ='/home/deletecompany/'+key;
@@ -751,11 +757,8 @@ function createYesCancelMessageModal(message) {
 	$('#alert_placeholder').html(
 			'<div class="modal fade" id="YesCancelModal"><div class="modal-dialog modal-sm">  <div class="modal-content"><!-- Modal body --><div class="modal-body"><span style="font-size: 15px" class="glyphicon glyphicon-cog"></span>'+message+'</div><div class="modal-footer"><button type="button" class="btn btn-success btn-block bigbuttonwithoutmargins modalbuttoncolor" data-dismiss="modal" id="buttondata" value="true">Yes</button><br/><button type="button" class="btn btn-danger btn-block bigbuttonwithoutmargins" data-dismiss="modal" id="buttondata" value="false">Cancel</button></div>');
 	$('#YesCancelModal').modal('show');
-	$('#buttondata').click(function() { 
-       text = $(this).attr('value');
-       //alert('Hi1');
-        });
-	return text;
+	
+//	return text;
 }
 
 $(function () {
