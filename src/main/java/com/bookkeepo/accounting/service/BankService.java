@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bookkeepo.accounting.entity.BankDetails;
+import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.repository.BankRepository;
-import com.bookkeepo.accounting.repository.CompanyDetailsRepository;
 
 /**
  * @author Ashutosh Anand
@@ -21,24 +21,21 @@ import com.bookkeepo.accounting.repository.CompanyDetailsRepository;
 public class BankService {
 
 	private BankRepository bankRepository;
-	private CompanyDetailsRepository companyDetailsRepository;
 
 	@Autowired
-	public BankService(BankRepository bankRepository, CompanyDetailsRepository companyDetailsRepository) {
+	public BankService(BankRepository bankRepository) {
 		this.bankRepository = bankRepository;
-		this.companyDetailsRepository = companyDetailsRepository;
 
 	}
 
-	public List<BankDetails> fetchCreatedBanks(String owner) {
+	public List<BankDetails> fetchCreatedBanks(String owner, Company company) {
 		List<BankDetails> createdbankslist = new ArrayList<BankDetails>();
 		BankDetails newBankDetails = new BankDetails();
 		newBankDetails.setId(0);
 		newBankDetails.setUserBankName("Add New Bank");
 		createdbankslist.add(newBankDetails);
 
-		List<BankDetails> dbItemList = bankRepository.findByUserBankCreatorAndBankCompanyDetails(owner,
-				companyDetailsRepository.findByUserNameAndCompanyActive(owner, 1));
+		List<BankDetails> dbItemList = bankRepository.findByUserBankCreatorAndBankCompanyDetails(owner, company);
 		if (!dbItemList.isEmpty()) {
 			createdbankslist.addAll(dbItemList);
 		}
