@@ -44,7 +44,7 @@ public class AccountController {
 			modelAndView.setViewName("redirect:/home/showProfile");
 		} else {
 			modelAndView.addObject("accountList",
-					accountService.fetchAccountName(request.getUserPrincipal().getName()));
+					accountService.fetchAccountName(request.getUserPrincipal().getName(),company));
 			modelAndView.addObject("account", new Accounts());
 			modelAndView.setViewName("addaccount");
 		}
@@ -81,11 +81,12 @@ public class AccountController {
 			modelAndView.setViewName("addaccount");
 		} else {
 			account.setAccountOwner(principal.getName());
-			account.setAccountCompanyDetails(
-					account.getId() == 0 ? companyDetailsService.findByUserName(principal.getName()) : null);
+			Company company = companyDetailsService.findByUserName(principal.getName());
+
+			account.setAccountCompanyDetails(company);
 			accountService.saveAccount(account);
 			modelAndView.addObject("message", "Account Updated Successfully");
-			modelAndView.addObject("accountList", accountService.fetchAccountName(principal.getName()));
+			modelAndView.addObject("accountList", accountService.fetchAccountName(principal.getName(),company));
 			modelAndView.addObject("account", new Accounts());
 			modelAndView.setViewName("addaccount");
 		}

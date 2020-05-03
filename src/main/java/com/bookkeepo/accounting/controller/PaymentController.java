@@ -49,7 +49,7 @@ public class PaymentController {
 		if (company == null) {
 			modelAndView.setViewName("redirect:/home/showProfile");
 		} else {
-			makePageReadyforLoad(request, modelAndView);
+			makePageReadyforLoad(request, modelAndView, company);
 		}
 		return modelAndView;
 	}
@@ -58,12 +58,12 @@ public class PaymentController {
 	public ModelAndView addNewReceipt(@Valid @ModelAttribute("payment") Payment payment, BindingResult bindingResult,
 			Principal principal) {
 		ModelAndView modelAndView = new ModelAndView();
+		Company company = companyDetailsService.findByUserName(principal.getName());
 		payment.setPaymentOwner(principal.getName());
 		payment.setAccountRefNo(accountService.findById(payment.getAccountRefNo().getId()));
-		payment.setPaymentCompanyDetails(
-				payment.getId() == 0 ? companyDetailsService.findByUserName(principal.getName()) : null);
+		payment.setPaymentCompanyDetails(company);
 		paymentService.saveAccount(payment);
-		List<Accounts> accountList = accountService.fetchAccountName(principal.getName());
+		List<Accounts> accountList = accountService.fetchAccountName(principal.getName(), company);
 		modelAndView.addObject("payment", new Payment());
 		modelAndView.addObject("message", "Payment Details Successfully Added");
 		modelAndView.setViewName("addPayment");
@@ -75,9 +75,9 @@ public class PaymentController {
 	 * @param request
 	 * @param modelAndView
 	 */
-	protected void makePageReadyforLoad(HttpServletRequest request, ModelAndView modelAndView) {
+	protected void makePageReadyforLoad(HttpServletRequest request, ModelAndView modelAndView, Company company) {
 		String user = request.getUserPrincipal().getName();
-		List<Accounts> accountList = accountService.fetchAccountName(user);
+		List<Accounts> accountList = accountService.fetchAccountName(user, company);
 		Payment payment = new Payment();
 		modelAndView.addObject("payment", payment);
 		modelAndView.setViewName("addPayment");

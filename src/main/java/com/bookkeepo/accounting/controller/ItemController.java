@@ -44,7 +44,7 @@ public class ItemController {
 		if (company == null) {
 			modelAndView.setViewName("redirect:/home/showProfile");
 		} else {
-			List<ProductDetails> itemList = itemService.fetchAllItemsForItems(user);
+			List<ProductDetails> itemList = itemService.fetchAllItemsForItems(user,company);
 			modelAndView.addObject("itemList", itemList);
 			modelAndView.addObject("item", new ProductDetails());
 		}
@@ -57,13 +57,13 @@ public class ItemController {
 			Principal principal) {
 		ModelAndView modelAndView = new ModelAndView("addItem");
 		String user = principal.getName();
+		Company company = companyDetailsService.findByUserName(user);
 		item.setProductOwner(principal.getName());
-		item.setProductCompanyDetails(
-				item.getId() == 0 ? companyDetailsService.findByUserName(principal.getName()) : null);
+		item.setProductCompanyDetails(company);
 		itemService.saveProductItem(item);
 		modelAndView.addObject("message", "Item Updated Successfully");
 		modelAndView.addObject("item", new ProductDetails());
-		modelAndView.addObject("itemList", itemService.fetchAllItemsForItems(user));
+		modelAndView.addObject("itemList", itemService.fetchAllItemsForItems(user,company));
 		return modelAndView;
 	}
 
