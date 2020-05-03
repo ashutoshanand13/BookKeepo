@@ -43,7 +43,7 @@
 	<hr size=4>
 	<div id="alert" th:if="${message}" th:text="${message} "
 			class="alert alert-info fade-in"></div>
-
+	<div id = "alert_placeholder"></div>
 		<!-- The PopUp for Add New Company -->
 		<div class="modal fade rounded-0" id="addCompany">
 			<div class="modal-dialog">
@@ -61,7 +61,7 @@
 							<div class="row modal-display">
 								<div class="col-md-12 form-group">
 									<label class="mandatory field-description text-uppercase">Company
-										Name</label> <input type="text" th:field="*{companyName}"
+										Name</label> <input type="text" th:field="*{companyName}" id="companyname"
 										class="text-uppercase" required="required">
 								</div>
 								<div class="col-md-12 form-group">
