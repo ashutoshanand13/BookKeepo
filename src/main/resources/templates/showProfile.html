@@ -35,24 +35,52 @@
 	
 	<div class="form-items showinvoices">
 			<h3 class="form-title doubleunderlinetext" align="center">Company List</h3>
-			<form autocomplete="off" th:action="@{/home/addnewcompany}"
-			th:object="${company}" method="post" class="form-horizontal" role="form">
-			<div class="row">
-			<div class="col-md-6 form-group"><label class="mandatory field-description text-uppercase">Company Name</label>
-					<input type="text"
-						th:field="*{companyName}" class="text-uppercase" required="required">
-			</div>
-			<div class="col-md-6 form-group"><label class="field-description">Company Description</label>
-					<input type="text" class="form-control" name="bankAC"
-						th:field="*{companyDesc}"></div>
-						</div>
-			<div class="form-button text-right">
-				<button type="reset" class="btn btn-light">Reset</button>
-				<button id="submit" type="submit" class="ibtn">Add New Company</button>
-			</div>
+			<div class="form-button">
+			<button type="button" class="ibtn bigbuttonwithoutmargins" data-toggle="modal" data-target="#addCompany">
+    			Add New Company
+  			</button>
+	</div>
+	<hr size=4>
+	<div id="alert" th:if="${message}" th:text="${message} "
+			class="alert alert-info fade-in"></div>
 
-		</form>
-			<div id="alert_showinvoice"></div>
+		<!-- The PopUp for Add New Company -->
+		<div class="modal fade rounded-0" id="addCompany">
+			<div class="modal-dialog">
+				<div class="modal-content">
+
+					<div class="modal-header">
+						<h3 class="modal-title" align="center">Add New Company</h3>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+
+					<div class="modal-body">
+						<form autocomplete="off" th:action="@{/home/addnewcompany}"
+							th:object="${company}" method="post" class="form-horizontal"
+							role="form">
+							<div class="row modal-display">
+								<div class="col-md-12 form-group">
+									<label class="mandatory field-description text-uppercase">Company
+										Name</label> <input type="text" th:field="*{companyName}"
+										class="text-uppercase" required="required">
+								</div>
+								<div class="col-md-12 form-group">
+									<label class="field-description">Company Description</label> <input
+										type="text" class="form-control" name="bankAC"
+										th:field="*{companyDesc}">
+								</div>
+							</div>
+							<div class="form-button form-modal-button text-center">
+								<button id="submit" type="submit" class="ibtn bigbuttonwithoutmargins">  Save   </button>
+							</div>
+						</form>
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+		<div id="alert_showinvoice"></div>
 			<table id="example" class="display" style="width: 100%">
 				<thead>
 					<tr>

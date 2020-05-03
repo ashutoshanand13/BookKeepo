@@ -131,6 +131,7 @@ public class UserProfileController {
 		company.setCompanyUniqueKey(CommonUtils.getUniqueID());
 		company.setUserName(principal.getName());
 		companyDetailsService.save(company);
+		modelAndView.addObject("message", "New Company Added Successfully. ");
 		modelAndView.setViewName("redirect:/home/showProfile");
 		return modelAndView;
 	}
