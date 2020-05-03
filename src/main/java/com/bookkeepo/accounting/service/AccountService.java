@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.bookkeepo.accounting.entity.Accounts;
 import com.bookkeepo.accounting.repository.AccountRepository;
+import com.bookkeepo.accounting.repository.CompanyDetailsRepository;
 
 /**
  * @author sachingoyal
@@ -22,9 +23,12 @@ public class AccountService {
 
 	private AccountRepository accountRepository;
 
+	private CompanyDetailsRepository companyDetailsRepository;
+
 	@Autowired
-	public AccountService(AccountRepository accountRepository) {
+	public AccountService(AccountRepository accountRepository, CompanyDetailsRepository companyDetailsRepository) {
 		this.accountRepository = accountRepository;
+		this.companyDetailsRepository = companyDetailsRepository;
 
 	}
 
@@ -33,11 +37,13 @@ public class AccountService {
 	}
 
 	public Accounts findAccountByGstin(String gst, String owner) {
-		return accountRepository.findByAccountOwnerAndGstin(owner, gst);
+		return accountRepository.findByAccountOwnerAndGstinAndAccountCompanyDetails(owner, gst,
+				companyDetailsRepository.findByUserNameAndCompanyActive(owner, 1));
 	}
 
 	public Accounts findAccountByPan(String pan, String owner) {
-		return accountRepository.findByAccountOwnerAndAccountPan(owner, pan);
+		return accountRepository.findByAccountOwnerAndAccountPanAndAccountCompanyDetails(owner, pan,
+				companyDetailsRepository.findByUserNameAndCompanyActive(owner, 1));
 	}
 
 	public List<Accounts> fetchAccountName(String user) {
@@ -47,7 +53,8 @@ public class AccountService {
 		accounts.setAccountName("Select Account");
 		accountList.add(accounts);
 
-		List<Accounts> dbAccountList = accountRepository.findByAccountOwner(user);
+		List<Accounts> dbAccountList = accountRepository.findByAccountOwnerAndAccountCompanyDetails(user,
+				companyDetailsRepository.findByUserNameAndCompanyActive(user, 1));
 
 		if (!dbAccountList.isEmpty()) {
 			accountList.addAll(dbAccountList);
@@ -62,13 +69,14 @@ public class AccountService {
 		selectAccount.setId(0);
 		selectAccount.setAccountName("Select Account");
 		accountList.add(selectAccount);
-		
+
 		Accounts newAccount = new Accounts();
 		newAccount.setId(-1);
 		newAccount.setAccountName("Add New Account");
 		accountList.add(newAccount);
 
-		List<Accounts> dbAccountList = accountRepository.findByAccountOwner(user);
+		List<Accounts> dbAccountList = accountRepository.findByAccountOwnerAndAccountCompanyDetails(user,
+				companyDetailsRepository.findByUserNameAndCompanyActive(user, 1));
 
 		if (!dbAccountList.isEmpty()) {
 			accountList.addAll(dbAccountList);
@@ -80,13 +88,10 @@ public class AccountService {
 	public Accounts findById(int id) {
 		return accountRepository.findById(id);
 	}
-	
-	public String getAccountName(int id) {
-		return accountRepository.findById(id).getAccountName();
-	}
-	
+
 	public List<Accounts> findByAccountOwnerAndAccountName(String accountOwner, String name) {
-		List<Accounts> accountList = accountRepository.findByAccountOwnerAndAccountName(accountOwner, name);
-		return accountList.size() == 0 ? null : accountList ;
+		List<Accounts> accountList = accountRepository.findByAccountOwnerAndAccountNameAndAccountCompanyDetails(
+				accountOwner, name, companyDetailsRepository.findByUserNameAndCompanyActive(accountOwner, 1));
+		return accountList.size() == 0 ? null : accountList;
 	}
 }
