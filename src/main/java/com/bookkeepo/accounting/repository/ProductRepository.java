@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.entity.ProductDetails;
 
 /**
@@ -17,7 +18,7 @@ import com.bookkeepo.accounting.entity.ProductDetails;
 @Repository("productRepository")
 public interface ProductRepository extends JpaRepository<ProductDetails, Long> {
 
-	List<ProductDetails> findByProductOwner(String owner);
+	List<ProductDetails> findByProductOwnerAndProductCompanyDetails(String owner,Company company);
 
 	ProductDetails findById(int id);
 

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bookkeepo.accounting.entity.Accounts;
+import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.entity.Payment;
 import com.bookkeepo.accounting.service.AccountService;
 import com.bookkeepo.accounting.service.CompanyDetailsService;
@@ -43,7 +44,13 @@ public class PaymentController {
 	@RequestMapping(value = { "/home/addpayment" }, method = RequestMethod.GET)
 	public ModelAndView getPaymentScreen(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
-		makePageReadyforLoad(request, modelAndView);
+		String user = request.getUserPrincipal().getName();
+		Company company = companyDetailsService.findByUserName(user);
+		if (company == null) {
+			modelAndView.setViewName("redirect:/home/showProfile");
+		} else {
+			makePageReadyforLoad(request, modelAndView);
+		}
 		return modelAndView;
 	}
 

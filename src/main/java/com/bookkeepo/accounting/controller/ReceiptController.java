@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bookkeepo.accounting.entity.Accounts;
+import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.entity.Receipts;
 import com.bookkeepo.accounting.service.AccountService;
 import com.bookkeepo.accounting.service.CompanyDetailsService;
@@ -44,12 +45,18 @@ public class ReceiptController {
 	public ModelAndView getAddReceipt(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
 		String user = request.getUserPrincipal().getName();
-		List<Accounts> accountList = accountService.fetchAccountName(user);
+		Company company = companyDetailsService.findByUserName(user);
+		if (company == null) {
+			modelAndView.setViewName("redirect:/home/showProfile");
+		} else {
+			List<Accounts> accountList = accountService.fetchAccountName(user);
 
-		Receipts receipt = new Receipts();
-		modelAndView.addObject("receipts", receipt);
-		modelAndView.setViewName("addReceipt");
-		modelAndView.addObject("accountList", accountList);
+			Receipts receipt = new Receipts();
+			modelAndView.addObject("receipts", receipt);
+			modelAndView.setViewName("addReceipt");
+			modelAndView.addObject("accountList", accountList);
+		}
+
 		return modelAndView;
 	}
 
