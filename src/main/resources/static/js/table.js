@@ -34,7 +34,7 @@ if ($tableID.find('tbody tr').length !== 1) {
 }
 else
 	{
-	alert("Cannot Remove Last Row");
+	createConfirmationMessageModal("Cannot Remove Last Row");
 	}
  });
  
@@ -62,7 +62,7 @@ else
 	 }
 	 else
 	 	{
-	 	alert("Cannot Remove Last Row");
+		 createConfirmationMessageModal("Cannot Remove Last Row");
 	 	}
 	  });
 
@@ -382,7 +382,7 @@ $("#companylogo").change(function(e) {
         img = new Image();
         img.onload = function() {
         	if(this.width>2000 || this.height>2000){
-        		alert("Image resolution should be within 2000px x 2000px");
+        		createConfirmationMessageModal("Image resolution should be within 2000px x 2000px");
         		if(!document.getElementById("companylogo").value){
         		document.getElementById('companylogopreview').src = "/images/image-400x400.jpg";
         		}
@@ -393,7 +393,7 @@ $("#companylogo").change(function(e) {
         	}
         };
         img.onerror = function() {
-            alert( "Please upload valid image " + file.type);
+        	createConfirmationMessageModal( "Please upload valid image " + file.type);
             document.getElementById("companylogo").value='';
         };
         img.src = _URL.createObjectURL(file);
@@ -712,11 +712,16 @@ function resetBOSValues() {
 
 function updateCompany(active) {
 	if(active === "1"){
-		if(confirm("Do you want to update company?")) {
-			window.location ='/home/addcompany';
-		}
+		createYesCancelMessageModal("Do you want to update company?");
+		$('#buttondata').click(function() { 
+			var text = $(this).attr('value');
+		       if(text) {
+		    	   window.location ='/home/addcompany';
+		       }
+		        });
+			
 	} else {
-		alert("You can update only active company");
+		createConfirmationMessageModal("You can update only active company");
 	}
 }
 
@@ -732,10 +737,6 @@ function deleteCompany(active, key) {
 		    	   window.location ='/home/deletecompany/'+key;
 		       }
 		        });
-		/*if(createYesCancelMessageModal("Are you sure you want to delete this Company. Please Note that by deleting a company you lose all data related to it.")) {
-			alert('hi1');
-			window.location ='/home/deletecompany/'+key;
-		}*/
 	}
 }
 
@@ -757,12 +758,9 @@ function createConfirmationMessageModal(message) {
 
 function createYesCancelMessageModal(message) {
 	var text = false;
-	//alert('Hi1'+text);
 	$('#alert_placeholder').html(
 			'<div class="modal fade" id="YesCancelModal"><div class="modal-dialog modal-sm">  <div class="modal-content"><!-- Modal body --><div class="modal-body"><span style="font-size: 15px" class="glyphicon glyphicon-cog"></span>'+message+'</div><div class="modal-footer"><button type="button" class="btn btn-success btn-block bigbuttonwithoutmargins modalbuttoncolor" data-dismiss="modal" id="buttondata" value="true">Yes</button><br/><button type="button" class="btn btn-danger btn-block bigbuttonwithoutmargins" data-dismiss="modal" id="buttondata" value="false">Cancel</button></div>');
 	$('#YesCancelModal').modal('show');
-	
-//	return text;
 }
 
 $(function () {
