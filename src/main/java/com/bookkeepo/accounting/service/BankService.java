@@ -42,6 +42,16 @@ public class BankService {
 
 		return createdbankslist;
 	}
+	
+	public List<BankDetails> fetchBankList(String owner, Company company) {
+
+		List<BankDetails> dbItemList = bankRepository.findByUserBankCreatorAndBankCompanyDetails(owner, company);
+		if (!dbItemList.isEmpty()) {
+			return dbItemList;
+		}
+
+		return null;
+	}
 
 	public void saveBank(BankDetails item) {
 		bankRepository.save(item);

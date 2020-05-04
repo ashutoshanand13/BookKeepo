@@ -219,7 +219,7 @@ function submitHandler(e){
 						$('#custom_alert').html(
 								'<div class="alert alert-info text-center table-width fade-in" role="alert">'
 								  +'Invoice successfully saved. View all invoices <a href="/home/showInvoice" class="alert-link">here</a>.'+
-								  '</div>')
+								  '</div>');
 						$("#custom_alert").fadeTo(5000, 500).slideUp(500);
    }
  });
@@ -780,3 +780,42 @@ $(function () {
         $(this).val($(this).val().toUpperCase());
     });
 });
+
+function getBankData(data) {
+	var payment = $(data).val();
+	if(payment === "Bank"){
+		$('#bankDropdown').html('<select class="form-control" name="bankId" onfocus="getBankList()" required="required"></select>');
+		getBankList();
+	} else {
+		$('#bankDropdown').remove();
+		$('#bankAlert').remove();
+	}
+}
+
+function getBankList(){
+	$("[name=bankId]").empty();
+	
+	$.ajax({
+		type : "GET",
+		contentType : "application/json",
+		url : "/home/getbanklist",
+		dataType : 'json',			
+		async : false,
+		success : function(data) {	
+			if(data !== null) {
+				$.each(data, function (i, item) {
+				    $('[name=bankId]').append($('<option>', { 
+				        value: item.id,
+				        text : item.userBankName 
+				    }));
+				});
+			$('#bankAlert').remove();
+			} else {
+				$('#bankAlert').html(
+						'<div class="alert alert-info text-center" role="alert">'
+						  +'You have no bank account added. Please add one <a href="/home/addbank" class="alert-link">here</a>.'+
+						  '</div>');
+		}
+		}
+	});
+}
