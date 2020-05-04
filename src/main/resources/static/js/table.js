@@ -382,7 +382,7 @@ $("#companylogo").change(function(e) {
         img = new Image();
         img.onload = function() {
         	if(this.width>2000 || this.height>2000){
-        		createConfirmationMessageModal("Image resolution should be within 2000px x 2000px");
+        		alert("Image resolution should be within 2000px x 2000px");
         		if(!document.getElementById("companylogo").value){
         		document.getElementById('companylogopreview').src = "/images/image-400x400.jpg";
         		}
