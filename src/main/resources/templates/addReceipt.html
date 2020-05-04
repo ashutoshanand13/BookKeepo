@@ -58,6 +58,9 @@
 							<option class="form-control" value="Cash">Cash</option>
 							<option class="form-control" value="Bank">Bank</option>
 						</select>
+						
+						<div id=bankDropdown></div>
+						<div id=bankAlert></div>
 				</div>
 				<div class="col-md-6 form-group">
 					<label>Receipt Information</label>
@@ -80,6 +83,10 @@
 $(document).ready(function() {
 	$("#selectbasic").change(function() {
 		getAccountData();
+	});
+	
+	$("#receiptMode").change(function() {
+		getBankData($("#receiptMode"));
 	});
 });
 
