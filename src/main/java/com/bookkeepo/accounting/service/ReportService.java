@@ -15,6 +15,7 @@ import com.bookkeepo.accounting.model.InvoiceSubType;
 import com.bookkeepo.accounting.model.InvoiceType;
 import com.bookkeepo.accounting.model.Reports;
 import com.bookkeepo.accounting.model.ReportsData;
+import com.bookkeepo.accounting.repository.CompanyDetailsRepository;
 import com.bookkeepo.accounting.repository.InvoiceRepository;
 import com.bookkeepo.accounting.util.CommonUtils;
 import com.bookkeepo.accounting.util.InvoiceUtil;
@@ -28,10 +29,12 @@ import com.bookkeepo.accounting.util.InvoiceUtil;
 public class ReportService {
 
 	private InvoiceRepository invoiceRepository;
+	private CompanyDetailsRepository companyDetailsRepository;
 
 	@Autowired
-	public ReportService(InvoiceRepository invoiceRepository) {
+	public ReportService(InvoiceRepository invoiceRepository, CompanyDetailsRepository companyDetailsRepository) {
 		this.invoiceRepository = invoiceRepository;
+		this.companyDetailsRepository = companyDetailsRepository;
 
 	}
 
@@ -95,9 +98,12 @@ public class ReportService {
 
 	private List<InvoiceDetails> getInvoiceList(String name, Reports reports) {
 		return InvoiceSubType.BOTH.equals(reports.getInvoiceSubType())
-				? invoiceRepository.findByInvoiceOwnerAndInvoiceType(name, reports.getInvoiceType().getType())
-				: invoiceRepository.findByInvoiceOwnerAndInvoiceTypeAndInvoiceSubType(name,
-						reports.getInvoiceType().getType(), reports.getInvoiceSubType().getInvoiceSubType());
+				? invoiceRepository.findByInvoiceOwnerAndInvoiceTypeAndInvoiceCompanyDetails(name,
+						reports.getInvoiceType().getType(),
+						companyDetailsRepository.findByUserNameAndCompanyActive(name, 1))
+				: invoiceRepository.findByInvoiceOwnerAndInvoiceTypeAndInvoiceSubTypeAndInvoiceCompanyDetails(name,
+						reports.getInvoiceType().getType(), reports.getInvoiceSubType().getInvoiceSubType(),
+						companyDetailsRepository.findByUserNameAndCompanyActive(name, 1));
 
 	}
 

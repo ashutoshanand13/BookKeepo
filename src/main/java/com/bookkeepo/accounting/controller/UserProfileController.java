@@ -3,7 +3,6 @@ package com.bookkeepo.accounting.controller;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -80,8 +79,7 @@ public class UserProfileController {
 	public ModelAndView getAddAccount(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
 		List<Company> companyList = companyDetailsService.fetchAllCompanies(request.getUserPrincipal().getName());
-		modelAndView.addObject("companyList",
-				companyList.stream().filter(c -> c.getCompanyDeleted() == 0).collect(Collectors.toList()));
+		modelAndView.addObject("companyList", companyList);
 		modelAndView.addObject("company", new Company());
 		modelAndView.setViewName("showProfile");
 		return modelAndView;

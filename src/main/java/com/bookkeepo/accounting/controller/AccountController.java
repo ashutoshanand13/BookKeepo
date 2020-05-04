@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bookkeepo.accounting.entity.Accounts;
+import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.service.AccountService;
 import com.bookkeepo.accounting.service.CompanyDetailsService;
 
@@ -32,14 +33,22 @@ public class AccountController {
 	private AccountService accountService;
 
 	@Autowired
-	CompanyDetailsService companyDetailsService;
+	private CompanyDetailsService companyDetailsService;
 
 	@RequestMapping(value = { "/home/addaccount" }, method = RequestMethod.GET)
 	public ModelAndView getHomePage(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("accountList", accountService.fetchAccountName(request.getUserPrincipal().getName()));
-		modelAndView.addObject("account", new Accounts());
-		modelAndView.setViewName("addaccount");
+		String user = request.getUserPrincipal().getName();
+		Company company = companyDetailsService.findByUserName(user);
+		if (company == null) {
+			modelAndView.setViewName("redirect:/home/showProfile");
+		} else {
+			modelAndView.addObject("accountList",
+					accountService.fetchAccountName(request.getUserPrincipal().getName(),company));
+			modelAndView.addObject("account", new Accounts());
+			modelAndView.setViewName("addaccount");
+		}
+
 		return modelAndView;
 	}
 
@@ -72,11 +81,12 @@ public class AccountController {
 			modelAndView.setViewName("addaccount");
 		} else {
 			account.setAccountOwner(principal.getName());
-			account.setAccountCompanyDetails(
-					account.getId() == 0 ? companyDetailsService.findByUserName(principal.getName()) : null);
+			Company company = companyDetailsService.findByUserName(principal.getName());
+
+			account.setAccountCompanyDetails(company);
 			accountService.saveAccount(account);
 			modelAndView.addObject("message", "Account Updated Successfully");
-			modelAndView.addObject("accountList", accountService.fetchAccountName(principal.getName()));
+			modelAndView.addObject("accountList", accountService.fetchAccountName(principal.getName(),company));
 			modelAndView.addObject("account", new Accounts());
 			modelAndView.setViewName("addaccount");
 		}
