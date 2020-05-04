@@ -587,7 +587,7 @@ function checkAccountName(value) {
 					$("#name_alert");
 				}
 				else {
-					$('#name_alert').remove();
+					$('#name_alert').empty();
 				}
 			}
 			});
@@ -782,13 +782,14 @@ $(function () {
 });
 
 function getBankData(data) {
+	debugger;
 	var payment = $(data).val();
 	if(payment === "Bank"){
 		$('#bankDropdown').html('<select class="form-control" name="bankId" onfocus="getBankList()" required="required"></select>');
 		getBankList();
 	} else {
-		$('#bankDropdown').remove();
-		$('#bankAlert').remove();
+		$('#bankDropdown').empty();
+		$('#bankAlert').empty();
 	}
 }
 
@@ -809,7 +810,7 @@ function getBankList(){
 				        text : item.userBankName 
 				    }));
 				});
-			$('#bankAlert').remove();
+			$('#bankAlert').empty();
 			} else {
 				$('#bankAlert').html(
 						'<div class="alert alert-info text-center" role="alert">'
