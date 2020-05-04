@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.entity.Payment;
 
 /**
@@ -19,6 +20,6 @@ import com.bookkeepo.accounting.entity.Payment;
 @Repository("paymentRepository")
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
-	List<Payment> findByPaymentOwner(String owner);
+	List<Payment> findByPaymentOwnerAndPaymentCompanyDetails(String owner, Company company);
 
 }

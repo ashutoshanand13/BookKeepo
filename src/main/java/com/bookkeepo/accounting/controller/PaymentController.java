@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bookkeepo.accounting.entity.Accounts;
+import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.entity.Payment;
 import com.bookkeepo.accounting.service.AccountService;
 import com.bookkeepo.accounting.service.CompanyDetailsService;
@@ -43,7 +44,13 @@ public class PaymentController {
 	@RequestMapping(value = { "/home/addpayment" }, method = RequestMethod.GET)
 	public ModelAndView getPaymentScreen(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
-		makePageReadyforLoad(request, modelAndView);
+		String user = request.getUserPrincipal().getName();
+		Company company = companyDetailsService.findByUserName(user);
+		if (company == null) {
+			modelAndView.setViewName("redirect:/home/showProfile");
+		} else {
+			makePageReadyforLoad(request, modelAndView, company);
+		}
 		return modelAndView;
 	}
 
@@ -51,12 +58,12 @@ public class PaymentController {
 	public ModelAndView addNewReceipt(@Valid @ModelAttribute("payment") Payment payment, BindingResult bindingResult,
 			Principal principal) {
 		ModelAndView modelAndView = new ModelAndView();
+		Company company = companyDetailsService.findByUserName(principal.getName());
 		payment.setPaymentOwner(principal.getName());
 		payment.setAccountRefNo(accountService.findById(payment.getAccountRefNo().getId()));
-		payment.setPaymentCompanyDetails(
-				payment.getId() == 0 ? companyDetailsService.findByUserName(principal.getName()) : null);
+		payment.setPaymentCompanyDetails(company);
 		paymentService.saveAccount(payment);
-		List<Accounts> accountList = accountService.fetchAccountName(principal.getName());
+		List<Accounts> accountList = accountService.fetchAccountName(principal.getName(), company);
 		modelAndView.addObject("payment", new Payment());
 		modelAndView.addObject("message", "Payment Details Successfully Added");
 		modelAndView.setViewName("addPayment");
@@ -68,9 +75,9 @@ public class PaymentController {
 	 * @param request
 	 * @param modelAndView
 	 */
-	protected void makePageReadyforLoad(HttpServletRequest request, ModelAndView modelAndView) {
+	protected void makePageReadyforLoad(HttpServletRequest request, ModelAndView modelAndView, Company company) {
 		String user = request.getUserPrincipal().getName();
-		List<Accounts> accountList = accountService.fetchAccountName(user);
+		List<Accounts> accountList = accountService.fetchAccountName(user, company);
 		Payment payment = new Payment();
 		modelAndView.addObject("payment", payment);
 		modelAndView.setViewName("addPayment");

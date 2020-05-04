@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bookkeepo.accounting.entity.Accounts;
+import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.repository.AccountRepository;
 import com.bookkeepo.accounting.repository.CompanyDetailsRepository;
 
@@ -46,15 +47,14 @@ public class AccountService {
 				companyDetailsRepository.findByUserNameAndCompanyActive(owner, 1));
 	}
 
-	public List<Accounts> fetchAccountName(String user) {
+	public List<Accounts> fetchAccountName(String user, Company company) {
 		List<Accounts> accountList = new ArrayList<Accounts>();
 		Accounts accounts = new Accounts();
 		accounts.setId(0);
 		accounts.setAccountName("Select Account");
 		accountList.add(accounts);
 
-		List<Accounts> dbAccountList = accountRepository.findByAccountOwnerAndAccountCompanyDetails(user,
-				companyDetailsRepository.findByUserNameAndCompanyActive(user, 1));
+		List<Accounts> dbAccountList = accountRepository.findByAccountOwnerAndAccountCompanyDetails(user, company);
 
 		if (!dbAccountList.isEmpty()) {
 			accountList.addAll(dbAccountList);
