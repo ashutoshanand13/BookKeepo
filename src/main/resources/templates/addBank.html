@@ -52,11 +52,11 @@
 				</div>
 				<div class="col-md-6 form-group"><label class="field-description text-uppercase">Bank Branch</label>
 					<input type="text"
-						th:field="*{userBankBranch}" required="required">
+						th:field="*{userBankBranch}" >
 					<label class="mandatory field-description">Select A/C Type</label>
 					<select name="selectbasic" class="form-control" th:field="*{userBankActype}" required="required">
-							<option class="form-control" value="Savings">Cash</option>
-							<option class="form-control" value="Current">Bank</option>
+							<option class="form-control" value="Savings">Savings</option>
+							<option class="form-control" value="Current">Current</option>
 							<option class="form-control" value="OD-CC">OD/CC</option>
 						</select>
 				</div>
