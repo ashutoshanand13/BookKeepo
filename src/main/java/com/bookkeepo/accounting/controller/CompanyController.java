@@ -57,7 +57,6 @@ public class CompanyController {
 		try {
 			if (companyLogo != null && CommonUtils.isPopulated(companyLogo.getOriginalFilename())) {
 				if (ImageUtils.validateFile(companyLogo)) {
-					// company.setCompanyLogo(companyLogo.getBytes());
 					company.setCompanyLogo(addresizedlogo(company, companyLogo));
 					company.setCompanyStringLogo(CommonUtils.getImgfromByteArray(company.getCompanyLogo()));
 				} else {

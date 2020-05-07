@@ -64,7 +64,57 @@
 										Name</label> <input type="text" th:field="*{companyName}" id="companyname"
 										class="text-uppercase" required="required">
 								</div>
-								<div class="col-md-12 form-group">
+								<div class="col-md-6 form-group">
+								<label class="field-description">Company GSTIN</label>
+									<input type="text"
+									class="form-control text-uppercase" th:field="*{companyGstin}" id="companygstin"
+									placeholder="GST Number"
+									pattern="^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$"
+									oninvalid="this.setCustomValidity('GST Identification Number is not valid. It should be in this 11AAAAA1111Z1A1 format')" oninput="setCustomValidity('')">
+									<label th:if="${#fields.hasErrors('companyGstin')}"
+									th:errors="*{companyGstin}" class="validation-message"></label>
+								</div>
+								<div class="col-md-6 form-group">
+									<label class="field-description">Contact Details</label>
+									<div class="form-row">
+										<div class="col">
+											<input type="email" class="form-control" name="email"
+												th:field="*{companyEmail}" placeholder="E-mail Address">
+											<label th:if="${#fields.hasErrors('companyEmail')}"
+												th:errors="*{companyEmail}" class="validation-message"></label>
+											<input type="text" class="form-control"
+												th:field="*{companyState}" placeholder="State">
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6 form-group">
+									<label class="field-description">Bank Details</label> <input type="text"
+										class="form-control" name="bankAC" th:field="*{companyBankAC}"
+										placeholder="Bank A/C"> <input type="text"
+										class="form-control" th:field="*{companyBankIFSC}"
+										pattern="^[A-Za-z]{4}[a-zA-Z0-9]{7}$"
+										oninvalid="this.setCustomValidity('IFSC code should of format AAAA1111111')"
+										oninput="setCustomValidity('')"
+										placeholder="Bank IFSC Details">
+								</div>
+								<div class="col-md-6 form-group">
+									<label class="field-description">Company Logo</label> <input type="file"
+										name="companylogo" id="companylogo" th:field="*{companyLogo}"
+										accept="image/x-png,image/jpeg"> <img id="companylogopreview"
+										class="img-border"
+										th:src="|data:image/png;base64,${logoImage}"
+										onerror='this.style.display = "none"'
+										alt="BookKeepo Company Logo" />
+								</div>
+								<div class="col-md-6 form-group">
+									<div class="form-group">
+										<label class="field-description">Address</label>
+										<textarea class="form-control text-uppercase"
+											id="companyaddress" th:field="*{companyAddress}"></textarea>
+									</div>
+								</div>
+								
+								<div class="col-md-6 form-group">
 									<label class="field-description">Company Description</label> <input
 										type="text" class="form-control" name="bankAC"
 										th:field="*{companyDesc}">
