@@ -15,12 +15,15 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bookkeepo.accounting.entity.Accounts;
+import com.bookkeepo.accounting.entity.BankDetails;
 import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.entity.Receipts;
 import com.bookkeepo.accounting.service.AccountService;
+import com.bookkeepo.accounting.service.BankService;
 import com.bookkeepo.accounting.service.CompanyDetailsService;
 import com.bookkeepo.accounting.service.ReceiptService;
 
@@ -40,6 +43,9 @@ public class ReceiptController {
 
 	@Autowired
 	private CompanyDetailsService companyDetailsService;
+	
+	@Autowired
+	private BankService bankService;
 
 	@RequestMapping(value = { "/home/addreceipt" }, method = RequestMethod.GET)
 	public ModelAndView getAddReceipt(HttpServletRequest request) {
@@ -61,12 +67,16 @@ public class ReceiptController {
 	}
 
 	@RequestMapping(value = "/home/addreceipt", method = RequestMethod.POST)
-	public ModelAndView addNewReceipt(@Valid @ModelAttribute("receipts") Receipts receipt, BindingResult bindingResult,
+	public ModelAndView addNewReceipt(@Valid @ModelAttribute("receipts") Receipts receipt, @RequestParam(required = false) String bankId, BindingResult bindingResult,
 			Principal principal) {
 		ModelAndView modelAndView = new ModelAndView();
 		Company company = companyDetailsService.findByUserName(principal.getName());
 		receipt.setReceiptOwner(principal.getName());
 		receipt.setAccountRefNo(accountService.findById(receipt.getAccountRefNo().getId()));
+		if(bankId != null) {
+			BankDetails bankDetails = bankService.findById(Integer.valueOf(bankId));
+			receipt.setBankDetails(bankDetails);
+		}
 		receipt.setReceiptCompanyDetails(company);
 		receiptService.saveAccount(receipt);
 		List<Accounts> accountList = accountService.fetchAccountName(principal.getName(), company);

@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.service.AccountService;
 import com.bookkeepo.accounting.service.BankService;
+import com.bookkeepo.accounting.service.CompanyDetailsService;
 import com.bookkeepo.accounting.service.InvoiceService;
 import com.bookkeepo.accounting.service.ItemService;
 import com.bookkeepo.accounting.util.CommonUtils;
@@ -38,6 +40,9 @@ public class AjaxController {
 	
 	@Autowired
 	private BankService bankService;
+	
+	@Autowired
+	private CompanyDetailsService companyDetailsService;
 
 	@Autowired
 	Gson gson;
@@ -87,6 +92,12 @@ public class AjaxController {
 	@RequestMapping(value = "/home/getaccountlist", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody String getAccountList(HttpServletRequest request) {
 		return gson.toJson(accountService.fetchAccountNameForInvoice(request.getUserPrincipal().getName()));
+	}
+	
+	@RequestMapping(value = "/home/getbanklist", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody String getBankList(HttpServletRequest request) {
+		Company company = companyDetailsService.findByUserName(request.getUserPrincipal().getName());
+		return gson.toJson(bankService.fetchBankList(request.getUserPrincipal().getName(), company));
 	}
 
 }

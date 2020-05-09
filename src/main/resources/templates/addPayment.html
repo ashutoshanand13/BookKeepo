@@ -30,7 +30,7 @@
 				<div class="col-md-6 form-group">
 				<div class="form-group">
 					<label>Account Name</label> <select th:field="*{accountRefNo.id}" class="form-control"
-						id="selectbasic" name="selectbasic">
+						id="selectbasic">
 						<option th:each="account : ${accountList}" th:value="${account.id}"
 									th:text="${account.accountName}"></option>
 					</select>
@@ -52,11 +52,14 @@
 						<input type="date"
 						class="form-control" name="paymentDate" th:field="*{paymentDate}"
 						placeholder="Receipt Date" required>
-						<select name="selectbasic" class="form-control" th:field="*{paymentMode}" required="required">
+						<select class="form-control" th:field="*{paymentMode}" required="required">
 							<option class="form-control" value="">Select Payment Mode</option>
 							<option class="form-control" value="Cash">Cash</option>
 							<option class="form-control" value="Bank">Bank</option>
 						</select>
+						
+						<div id=bankDropdown></div>
+						<div id=bankAlert></div>
 				</div>
 				<div class="col-md-6 form-group">
 				<div class="form-group">
@@ -88,6 +91,10 @@ $(document).ready(function() {
 	$("#selectbasic").change(function() {
 		getAccountData();
 	});
+	
+	$("#paymentMode").change(function() {
+		getBankData($("#paymentMode"));
+	});
 });
 
 function getAccountData() {
@@ -109,6 +116,5 @@ function getAccountData() {
 		document.getElementById('accountAddress').value = "";
 	}
 };
-
 </script>
 </th:block>

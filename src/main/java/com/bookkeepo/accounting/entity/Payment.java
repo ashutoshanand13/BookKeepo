@@ -66,6 +66,10 @@ public class Payment {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "payment_company_reference_no" , updatable = false)
 	private Company paymentCompanyDetails;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "payment_bank_reference_no" , updatable = false)
+	private BankDetails bankDetails;
 
 	/**
 	 * @return the id
@@ -219,6 +223,20 @@ public class Payment {
 	 */
 	public void setPaymentCompanyDetails(Company paymentCompanyDetails) {
 		this.paymentCompanyDetails = paymentCompanyDetails;
+	}
+
+	/**
+	 * @return the bankDetails
+	 */
+	public BankDetails getBankDetails() {
+		return bankDetails;
+	}
+
+	/**
+	 * @param bankDetails the bankDetails to set
+	 */
+	public void setBankDetails(BankDetails bankDetails) {
+		this.bankDetails = bankDetails;
 	}
 	
 	

@@ -219,7 +219,7 @@ function submitHandler(e){
 						$('#custom_alert').html(
 								'<div class="alert alert-info text-center table-width fade-in" role="alert">'
 								  +'Invoice successfully saved. View all invoices <a href="/home/showInvoice" class="alert-link">here</a>.'+
-								  '</div>')
+								  '</div>');
 						$("#custom_alert").fadeTo(5000, 500).slideUp(500);
    }
  });
@@ -382,7 +382,7 @@ $("#companylogo").change(function(e) {
         img = new Image();
         img.onload = function() {
         	if(this.width>2000 || this.height>2000){
-        		createConfirmationMessageModal("Image resolution should be within 2000px x 2000px");
+        		alert("Image resolution should be within 2000px x 2000px");
         		if(!document.getElementById("companylogo").value){
         		document.getElementById('companylogopreview').src = "/images/image-400x400.jpg";
         		}
@@ -587,7 +587,7 @@ function checkAccountName(value) {
 					$("#name_alert");
 				}
 				else {
-					$('#name_alert').remove();
+					$('#name_alert').empty();
 				}
 			}
 			});
@@ -780,3 +780,43 @@ $(function () {
         $(this).val($(this).val().toUpperCase());
     });
 });
+
+function getBankData(data) {
+	debugger;
+	var payment = $(data).val();
+	if(payment === "Bank"){
+		$('#bankDropdown').html('<select class="form-control" name="bankId" onfocus="getBankList()" required="required"></select>');
+		getBankList();
+	} else {
+		$('#bankDropdown').empty();
+		$('#bankAlert').empty();
+	}
+}
+
+function getBankList(){
+	$("[name=bankId]").empty();
+	
+	$.ajax({
+		type : "GET",
+		contentType : "application/json",
+		url : "/home/getbanklist",
+		dataType : 'json',			
+		async : false,
+		success : function(data) {	
+			if(data !== null) {
+				$.each(data, function (i, item) {
+				    $('[name=bankId]').append($('<option>', { 
+				        value: item.id,
+				        text : item.userBankName 
+				    }));
+				});
+			$('#bankAlert').empty();
+			} else {
+				$('#bankAlert').html(
+						'<div class="alert alert-info text-center" role="alert">'
+						  +'You have no bank account added. Please add one <a href="/home/addbank" class="alert-link">here</a>.'+
+						  '</div>');
+		}
+		}
+	});
+}
