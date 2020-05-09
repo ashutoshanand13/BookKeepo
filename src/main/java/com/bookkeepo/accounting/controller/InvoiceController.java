@@ -20,9 +20,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.bookkeepo.accounting.entity.Accounts;
 import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.entity.InvoiceDetails;
 import com.bookkeepo.accounting.model.json.InvoicePageData;
+import com.bookkeepo.accounting.service.AccountService;
 import com.bookkeepo.accounting.service.CompanyDetailsService;
 import com.bookkeepo.accounting.service.InvoiceService;
 import com.bookkeepo.accounting.util.InvoiceUtil;
@@ -40,6 +42,9 @@ public class InvoiceController {
 
 	@Autowired
 	CompanyDetailsService companyDetailsService;
+
+	@Autowired
+	AccountService accountService;
 
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 
@@ -61,6 +66,11 @@ public class InvoiceController {
 		invoice.setInvoiceOwner(principal.getName());
 
 		Company companyDetails = companyDetailsService.findByUserName(principal.getName());
+
+		if (salesInvoiceData.getAccountNo() != 0) {
+			Accounts account = accountService.findById(salesInvoiceData.getAccountNo());
+			invoice.setInvoiceAccountDetails(account);
+		}
 
 		InvoiceUtil.updateInvoice(invoice, salesInvoiceData, companyDetails);
 		invoiceService.saveInvoice(invoice);

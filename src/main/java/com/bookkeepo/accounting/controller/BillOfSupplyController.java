@@ -3,8 +3,6 @@
  */
 package com.bookkeepo.accounting.controller;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bookkeepo.accounting.entity.Company;
-import com.bookkeepo.accounting.model.InvoiceData;
 import com.bookkeepo.accounting.model.InvoiceType;
 import com.bookkeepo.accounting.service.CompanyDetailsService;
-import com.bookkeepo.accounting.service.InvoiceService;
 import com.bookkeepo.accounting.service.ItemService;
 import com.bookkeepo.accounting.util.CommonUtils;
 
@@ -26,35 +22,27 @@ import com.bookkeepo.accounting.util.CommonUtils;
  *
  */
 @Controller
-public class CreditNoteController {
+public class BillOfSupplyController {
 
 	@Autowired
 	private CompanyDetailsService companyDetailsService;
 
 	@Autowired
-	private InvoiceService invoiceService;
-
-	@Autowired
 	private ItemService itemService;
 
-	@RequestMapping(value = "/home/creditnote", method = RequestMethod.GET)
+	@RequestMapping(value = "/home/billofsupply", method = RequestMethod.GET)
 	public ModelAndView setupSales(HttpServletRequest request) {
 		String user = request.getUserPrincipal().getName();
 		ModelAndView modelAndView = new ModelAndView();
 		Company company = companyDetailsService.findByUserName(user);
-		List<InvoiceData> ownerInvoices = invoiceService.findByInvoiceOwnerAndInvoiceType(user,
-				InvoiceType.Tax_Invoice.getType());
 		if (company == null) {
 			modelAndView.setViewName("redirect:/home/showProfile");
-		} else if (ownerInvoices.size() == 1) {
-			modelAndView.setViewName("redirect:/home/salesinvoice/Please create tax invoice first!");
 		} else {
-			modelAndView.addObject("invoiceList", ownerInvoices);
 			modelAndView.addObject("company", company);
 			modelAndView.addObject("logoImage", CommonUtils.getImgfromByteArray(company.getCompanyLogo()));
 			modelAndView.addObject("itemList", itemService.findByProductOwner(user));
-			modelAndView.addObject("pageName", InvoiceType.Credit_Note.getType());
-			modelAndView.setViewName("creditNote");
+			modelAndView.addObject("pageName", InvoiceType.Bill_Supply.getType());
+			modelAndView.setViewName("billOfSupply");
 		}
 		return modelAndView;
 	}

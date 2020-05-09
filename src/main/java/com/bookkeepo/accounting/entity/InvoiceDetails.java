@@ -119,6 +119,14 @@ public class InvoiceDetails {
 	private Company invoiceCompanyDetails;
 
 	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "invoice_company_details_reference_no")
+	private InvoiceCompanyDetails invoiceAssoCompanyDetails;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "invoice_account_reference_no")
+	private Accounts invoiceAccountDetails;
+
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "invoice_other_details_reference_no")
 	private InvoiceOtherDetails invoiceOtherDetails;
 
@@ -446,6 +454,20 @@ public class InvoiceDetails {
 	}
 
 	/**
+	 * @return the invoiceAssoCompanyDetails
+	 */
+	public InvoiceCompanyDetails getInvoiceAssoCompanyDetails() {
+		return invoiceAssoCompanyDetails;
+	}
+
+	/**
+	 * @param invoiceAssoCompanyDetails the invoiceAssoCompanyDetails to set
+	 */
+	public void setInvoiceAssoCompanyDetails(InvoiceCompanyDetails invoiceAssoCompanyDetails) {
+		this.invoiceAssoCompanyDetails = invoiceAssoCompanyDetails;
+	}
+
+	/**
 	 * @return the invoiceSubType
 	 */
 	public String getInvoiceSubType() {
@@ -457,6 +479,20 @@ public class InvoiceDetails {
 	 */
 	public void setInvoiceSubType(String invoiceSubType) {
 		this.invoiceSubType = invoiceSubType;
+	}
+
+	/**
+	 * @return the invoiceAccountDetails
+	 */
+	public Accounts getInvoiceAccountDetails() {
+		return invoiceAccountDetails;
+	}
+
+	/**
+	 * @param invoiceAccountDetails the invoiceAccountDetails to set
+	 */
+	public void setInvoiceAccountDetails(Accounts invoiceAccountDetails) {
+		this.invoiceAccountDetails = invoiceAccountDetails;
 	}
 
 	/**

@@ -34,6 +34,15 @@ public class Company {
 	@Column(name = "company_name")
 	private String companyName;
 
+	@Column(name = "company_description")
+	private String companyDesc;
+
+	@Column(name = "company_active", nullable = false)
+	private int companyActive;
+
+	@Column(name = "company_Deleted", nullable = false)
+	private int companyDeleted;
+
 	@Column(name = "company_gstin")
 	private String companyGstin;
 
@@ -57,6 +66,9 @@ public class Company {
 
 	@Column(name = "company_bank_tnc")
 	private String companyBankTNC;
+
+	@Column(name = "company_key", nullable = false)
+	private String companyUniqueKey;
 
 	@Lob
 	@Column(name = "company_logo", length = 2097152)
@@ -112,6 +124,48 @@ public class Company {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	/**
+	 * @return the companyDesc
+	 */
+	public String getCompanyDesc() {
+		return companyDesc;
+	}
+
+	/**
+	 * @param companyDesc the companyDesc to set
+	 */
+	public void setCompanyDesc(String companyDesc) {
+		this.companyDesc = companyDesc;
+	}
+
+	/**
+	 * @return the companyActive
+	 */
+	public int getCompanyActive() {
+		return companyActive;
+	}
+
+	/**
+	 * @param companyActive the companyActive to set
+	 */
+	public void setCompanyActive(int companyActive) {
+		this.companyActive = companyActive;
+	}
+
+	/**
+	 * @return the companyDeleted
+	 */
+	public int getCompanyDeleted() {
+		return companyDeleted;
+	}
+
+	/**
+	 * @param companyDeleted the companyDeleted to set
+	 */
+	public void setCompanyDeleted(int companyDeleted) {
+		this.companyDeleted = companyDeleted;
 	}
 
 	/**
@@ -308,6 +362,20 @@ public class Company {
 	 */
 	public void setCompanyLastModified(Date companyLastModified) {
 		this.companyLastModified = companyLastModified;
+	}
+
+	/**
+	 * @return the companyUniqueKey
+	 */
+	public String getCompanyUniqueKey() {
+		return companyUniqueKey;
+	}
+
+	/**
+	 * @param companyUniqueKey the companyUniqueKey to set
+	 */
+	public void setCompanyUniqueKey(String companyUniqueKey) {
+		this.companyUniqueKey = companyUniqueKey;
 	}
 
 }

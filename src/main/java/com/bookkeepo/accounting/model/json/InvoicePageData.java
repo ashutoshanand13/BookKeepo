@@ -44,9 +44,9 @@ public class InvoicePageData {
 	@SerializedName("againstInvoiceDate")
 	@Expose
 	private String againstInvoiceDate;
-	@SerializedName("nameBill")
+	@SerializedName("accountNo")
 	@Expose
-	private String nameBill;
+	private int accountNo;
 	@SerializedName("nameShip")
 	@Expose
 	private String nameShip;
@@ -134,10 +134,14 @@ public class InvoicePageData {
 	@SerializedName("partyState")
 	@Expose
 	private String partyState;
-	
+
 	@SerializedName("pageName")
 	@Expose
 	private String pageName;
+
+	@SerializedName("linkedInvoiceNo")
+	@Expose
+	private String linkedInvoiceNo;
 
 	public String getInvoiceNo() {
 		return invoiceNo;
@@ -219,12 +223,12 @@ public class InvoicePageData {
 		this.reverseCharge = reverseCharge;
 	}
 
-	public String getNameBill() {
-		return nameBill;
+	public int getAccountNo() {
+		return accountNo;
 	}
 
-	public void setNameBill(String nameBill) {
-		this.nameBill = nameBill;
+	public void setAccountNo(int accountNo) {
+		this.accountNo = accountNo;
 	}
 
 	public String getNameShip() {
@@ -441,7 +445,6 @@ public class InvoicePageData {
 		this.againstInvoice = againstInvoice;
 	}
 
-
 	/**
 	 * @return the issueDate
 	 */
@@ -498,7 +501,6 @@ public class InvoicePageData {
 		this.partyDate = partyDate;
 	}
 
-
 	/**
 	 * @return the partyState
 	 */
@@ -512,8 +514,6 @@ public class InvoicePageData {
 	public void setPartyState(String partyState) {
 		this.partyState = partyState;
 	}
-	
-	
 
 	/**
 	 * @return the pageName
@@ -529,12 +529,26 @@ public class InvoicePageData {
 		this.pageName = pageName;
 	}
 
+	/**
+	 * @return the linkedInvoiceNo
+	 */
+	public String getLinkedInvoiceNo() {
+		return linkedInvoiceNo;
+	}
+
+	/**
+	 * @param linkedInvoiceNo the linkedInvoiceNo to set
+	 */
+	public void setLinkedInvoiceNo(String linkedInvoiceNo) {
+		this.linkedInvoiceNo = linkedInvoiceNo;
+	}
+
 	@Override
 	public String toString() {
 		return "Example [invoiceNo=" + invoiceNo + ", poNo=" + poNo + ", invoiceDate=" + invoiceDate + ", poDate="
 				+ poDate + ", dateOfSupply=" + dateOfSupply + ", transportMode=" + transportMode + ", placeOfSupply="
 				+ placeOfSupply + ", vehicleNo=" + vehicleNo + ", state=" + state + ", reverseCharge=" + reverseCharge
-				+ ", nameBill=" + nameBill + ", nameShip=" + nameShip + ", addressBill=" + addressBill
+				+ ", accountNo=" + accountNo + ", nameShip=" + nameShip + ", addressBill=" + addressBill
 				+ ", addressShip=" + addressShip + ", gstinBill=" + gstinBill + ", gstinShip=" + gstinShip
 				+ ", stateBill=" + stateBill + ", stateShip=" + stateShip + ", itemList=" + itemList + ", ttlQty="
 				+ ttlQty + ", ttlAmount=" + ttlAmount + ", ttlTaxableValue=" + ttlTaxableValue + ", ttlCgst=" + ttlCgst

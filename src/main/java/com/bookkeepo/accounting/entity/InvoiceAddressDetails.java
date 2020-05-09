@@ -21,35 +21,33 @@ import lombok.Data;
 @Entity
 @Table(name = "invoice_address_details")
 public class InvoiceAddressDetails {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "invoice_address_id")
 	private int id;
-	
+
 	@Column(name = "invoice_biller_name")
 	private String invoiceBillerName;
-	
+
 	@Column(name = "invoice_biller_address_name")
 	private String invoiceBillerAddressName;
-	
+
 	@Column(name = "invoice_biller_gstin")
 	private String invoiceBillerGst;
-	
+
 	@Column(name = "invoice_biller_state")
 	private String invoiceBillerState;
-	
-	
+
 	@Column(name = "invoice_party_name")
 	private String invoicePartyName;
-	
+
 	@Column(name = "invoice_party_address_name")
 	private String invoicePartyAddressName;
-	
-	
+
 	@Column(name = "invoice_party_gstin")
 	private String invoicePartyGst;
-	
+
 	@Column(name = "invoice_party_state")
 	private String invoicePartyState;
 
@@ -178,5 +176,5 @@ public class InvoiceAddressDetails {
 	public void setInvoicePartyState(String invoicePartyState) {
 		this.invoicePartyState = invoicePartyState;
 	}
-	
+
 }

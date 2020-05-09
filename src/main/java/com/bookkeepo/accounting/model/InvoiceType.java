@@ -16,7 +16,8 @@ public enum InvoiceType {
 	Credit_Note("Credit Note", Constants.CREDIT_DEBIT_NOTE_COLUMNS),
 	Debit_Note("Debit Note", Constants.CREDIT_DEBIT_NOTE_COLUMNS),
 	Purchase_Invoice("Purchase Invoice", Constants.SUPPLY_INWARDS_REPORTS),
-	Purchase_Order("Purchase Order", Constants.SUPPLY_INWARDS_REPORTS);
+	Purchase_Order("Purchase Order", Constants.SUPPLY_INWARDS_REPORTS),
+	Bill_Supply("Bill of Supply", Constants.BILL_OF_SUPPLY);
 
 	private final String type;
 

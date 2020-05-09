@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bookkeepo.accounting.entity.Receipts;
+import com.bookkeepo.accounting.repository.CompanyDetailsRepository;
 import com.bookkeepo.accounting.repository.ReceiptRepository;
 
 /**
@@ -20,10 +21,12 @@ import com.bookkeepo.accounting.repository.ReceiptRepository;
 public class ReceiptService {
 
 	private ReceiptRepository receiptRepository;
+	private CompanyDetailsRepository companyDetailsRepository;
 
 	@Autowired
-	public ReceiptService(ReceiptRepository receiptRepository) {
+	public ReceiptService(ReceiptRepository receiptRepository, CompanyDetailsRepository companyDetailsRepository) {
 		this.receiptRepository = receiptRepository;
+		this.companyDetailsRepository = companyDetailsRepository;
 
 	}
 
@@ -32,11 +35,8 @@ public class ReceiptService {
 	}
 
 	public List<Receipts> fetchAllReceipt(String owner) {
-		return receiptRepository.findByReceiptOwner(owner);
-	}
-	
-	public Receipts findByReceiptNumberAndReceiptOwner(String receiptNo, String owner) {
-		return receiptRepository.findByReceiptNumberAndReceiptOwner(receiptNo, owner);
+		return receiptRepository.findByReceiptOwnerAndReceiptCompanyDetails(owner,
+				companyDetailsRepository.findByUserNameAndCompanyActive(owner, 1));
 	}
 
 }

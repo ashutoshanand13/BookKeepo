@@ -24,34 +24,33 @@
 			class="form-horizontal" role="form">
 			<div class="row">
 				<div class="col-md-6 form-group">
-					<div class="form-group">
-						<label>Receipt Information</label> <input type="text"
-						class="form-control" name="name" th:field="*{receiptNumber}"
-						placeholder="Receipt Number" onblur="checkReceiptNo(this)" required>
+						<label>Account Name</label>
 						<select th:field="*{accountRefNo.id}" class="form-control"
 						id="selectbasic" name="selectbasic">
 							<option th:each="account : ${accountList}" th:value="${account.id}"
 									th:text="${account.accountName}"></option>
 						</select> 
-						<textarea class="form-control"
-						readonly="readonly" id="accountAddress" placeholder="Address" required></textarea>
 						<input type="text" id="gstin" class="form-control"
 								 placeholder="GST Number" readonly="readonly"
 								required>
-						<select
+				</div>
+				<div class="col-md-6 form-group">
+					<div class="form-group">
+						<label>Address</label>
+						<textarea class="form-control"
+						readonly="readonly" id="accountAddress" placeholder="Address" required></textarea>
+					</div>
+				</div>
+				<div class="col-md-6 form-group">
+					<label>Receipt Details</label>
+					<select
 							name="selectbasic" class="form-control" th:field="*{receiptReference}" required="required">
 							<option class="form-control" value="">Select Receipt Reference</option>
 							<option class="form-control" value="On Account">On Account</option>
 							<option class="form-control" value="Invoice Ref">Invoice Ref</option>
 							<option class="form-control" value="Advance">Advance</option>
 						</select>
-						
-					</div>
-				</div>
-				<div class="col-md-6 form-group">
-					<div class="form-group">
-						<label>Receipt Details</label>
-						<input type="date"
+					<input type="date"
 						class="form-control" name="receiptDate" th:field="*{receiptDate}"
 						placeholder="Receipt Date" required>
 						<select name="selectbasic" class="form-control" th:field="*{receiptMode}" required="required">
@@ -59,12 +58,17 @@
 							<option class="form-control" value="Cash">Cash</option>
 							<option class="form-control" value="Bank">Bank</option>
 						</select>
-						<input type="text" onfocus="(this.type='number')" onblur="(this.type='text')" min="0"
+						
+						<div id=bankDropdown></div>
+						<div id=bankAlert></div>
+				</div>
+				<div class="col-md-6 form-group">
+					<label>Receipt Information</label>
+					<input type="text" onfocus="(this.type='number')" onblur="(this.type='text')" min="0"
 						class="form-control" name="receiptAmount" th:field="*{receiptAmount}"
 						placeholder="Receipt Amount" required>
 						<textarea class="form-control" name="receiptDescription" th:field="*{receiptDescription}" placeholder="Receipt Description"
 							></textarea>
-					</div>
 				</div>
 			</div>
 			<div class="form-button text-right">
@@ -79,6 +83,10 @@
 $(document).ready(function() {
 	$("#selectbasic").change(function() {
 		getAccountData();
+	});
+	
+	$("#receiptMode").change(function() {
+		getBankData($("#receiptMode"));
 	});
 });
 

@@ -34,7 +34,7 @@ public class PurchaseOrderController {
 		ModelAndView modelAndView = new ModelAndView();
 		Company company = companyDetailsService.findByUserName(user);
 		if (company == null) {
-			modelAndView.setViewName("redirect:/home/updatecompany/addpurchaseorder");
+			modelAndView.setViewName("redirect:/home/showProfile");
 		} else {
 			modelAndView.addObject("company", company);
 			modelAndView.addObject("logoImage", CommonUtils.getImgfromByteArray(company.getCompanyLogo()));

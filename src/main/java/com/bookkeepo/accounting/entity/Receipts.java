@@ -29,9 +29,8 @@ public class Receipts {
 	@Column(name = "receipt_id")
 	private int id;
 
-	@Column(name = "receipt_number")
-	@NotEmpty(message = "*Please provide the receipt number")
-	private String receiptNumber;
+	@Column(name = "receipt_number", updatable = false)
+	private int receiptNumber;
 
 	@Column(name = "receipt_reference")
 	@NotEmpty(message = "*Please provide the receipt reference")
@@ -52,7 +51,7 @@ public class Receipts {
 	@Column(name = "receipt_description")
 	private String receiptDescription;
 
-	@Column(name = "receipt_owner")
+	@Column(name = "receipt_owner", nullable = false, updatable = false)
 	private String receiptOwner;
 
 	@CreationTimestamp
@@ -63,6 +62,14 @@ public class Receipts {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "receipt_account_reference_no")
 	private Accounts accountRefNo;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "receipt_company_reference_no", updatable = false)
+	private Company receiptCompanyDetails;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "payment_bank_reference_no" , updatable = false)
+	private BankDetails bankDetails;
 
 	/**
 	 * @return the id
@@ -81,14 +88,14 @@ public class Receipts {
 	/**
 	 * @return the receiptNumber
 	 */
-	public String getReceiptNumber() {
+	public int getReceiptNumber() {
 		return receiptNumber;
 	}
 
 	/**
 	 * @param receiptNumber the receiptNumber to set
 	 */
-	public void setReceiptNumber(String receiptNumber) {
+	public void setReceiptNumber(int receiptNumber) {
 		this.receiptNumber = receiptNumber;
 	}
 
@@ -202,6 +209,34 @@ public class Receipts {
 	 */
 	public void setAccountRefNo(Accounts accountRefNo) {
 		this.accountRefNo = accountRefNo;
+	}
+
+	/**
+	 * @return the receiptCompanyDetails
+	 */
+	public Company getReceiptCompanyDetails() {
+		return receiptCompanyDetails;
+	}
+
+	/**
+	 * @param receiptCompanyDetails the receiptCompanyDetails to set
+	 */
+	public void setReceiptCompanyDetails(Company receiptCompanyDetails) {
+		this.receiptCompanyDetails = receiptCompanyDetails;
+	}
+
+	/**
+	 * @return the bankDetails
+	 */
+	public BankDetails getBankDetails() {
+		return bankDetails;
+	}
+
+	/**
+	 * @param bankDetails the bankDetails to set
+	 */
+	public void setBankDetails(BankDetails bankDetails) {
+		this.bankDetails = bankDetails;
 	}
 
 }

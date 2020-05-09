@@ -1,4 +1,6 @@
  const $tableID = $('#table');
+ const $tableBOSID = $('#tableBOS');
+ 
  const $BTN = $('#export-btn');
  const $EXPORT = $('#export');
  var $tblrows = $("#itemTable tbody tr");
@@ -14,12 +16,14 @@
  var shippingType ='';
  var isInvoiceNumberUnique = false;
  
- var controllerMap = { salesInvoice: "/home/submitInvoice", exportInvoice: "/home/submitInvoice", debitNote:"/home/submitInvoice", creditNote:"/home/submitInvoice" , purchaseOrder:"/home/submitInvoice"  , purchaseInvoice:"/home/submitInvoice"};
- var fileMap = { salesInvoice: "Tax_Invoice", exportInvoice: "Export_Invoice", debitNote:"Debit_Note", creditNote:"Credit_Note", purchaseOrder:"Purchase_Order", purchaseInvoice:"Purchase_Invoice" };
+ var controllerMap = { salesInvoice: "/home/submitInvoice", exportInvoice: "/home/submitInvoice", debitNote:"/home/submitInvoice", creditNote:"/home/submitInvoice" , purchaseOrder:"/home/submitInvoice"  , purchaseInvoice:"/home/submitInvoice", billOfSupply:"/home/submitInvoice"};
+ var fileMap = { salesInvoice: "Tax_Invoice", exportInvoice: "Export_Invoice", debitNote:"Debit_Note", creditNote:"Credit_Note", purchaseOrder:"Purchase_Order", purchaseInvoice:"Purchase_Invoice", billOfSupply:"Bill_Of_Supply" };
  
  var gstRegex = /^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$/;
  
  const newTr = '<tr>            <td class="pt-3-half"><input type="text" id="srNo" name="excluded:skip" placeholder="Sr No" readonly="readonly"></td>            <td class="pt-3-half"><input list="data" id="productDesc" class="form-control" placeholder="Product Description" required="required" autocomplete="off"></td>            <td class="pt-3-half"><input type="text" id="hsnCode" name="excluded:skip" placeholder="HSN Code"></td>            <td class="pt-3-half"><input type="text" id="uom" name="excluded:skip" placeholder="UOM"></td>            <td class="pt-3-half"><input type="text" onfocus="(this.type="number")" onblur="(this.type="text")" min="0" id="qty" name="excluded:skip" placeholder="QTY" required="required"></td>            <td class="pt-3-half"><input type="text" onfocus="(this.type="number")" onblur="(this.type="text")" min="0" id="rate" name="excluded:skip" placeholder="Rate" required="required"></td>            <td class="pt-3-half"><input type="text" id="amount" name="excluded:skip" placeholder="Amount" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" onfocus="(this.type="number")" onblur="(this.type="text")" min="0" id="discount" name="excluded:skip" placeholder="Discount" required="required"></td>            <td class="pt-3-half"><input type="text" onfocus="(this.type="number")" onblur="(this.type="text")" min="0" id="gstRate" name="excluded:skip" placeholder="GST Rate" required="required"></td>            <td class="pt-3-half"><input type="text" id="taxableValue" name="excluded:skip" placeholder="Taxable Value" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="cgst" name="excluded:skip" placeholder="CGST" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="sgst" name="excluded:skip" placeholder="SGST" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="igst" name="excluded:skip" placeholder="IGST" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="totalAmount" name="excluded:skip" placeholder="Total Amount" readonly="readonly"></td>			<td>			<figure style="display:flex;">              <span class="table-add"><img class="autoResizeImage" style="margin-right: 2px;" src="/images/add.png" alt=""></span>              <span class="table-remove"><img class="autoResizeImage" style="margin-left: 2px;" src="/images/remove.png" alt=""></span>              </figure>            </td>          </tr>';
+ 
+ const newBOSTr = '<tr>            <td class="pt-3-half"><input type="text" id="srNo" name="excluded:skip" placeholder="Sr No" readonly="readonly"></td>            <td class="pt-3-half"><input list="data" id="productDesc" class="form-control" placeholder="Product Description" required="required" autocomplete="off"></td>            <td class="pt-3-half"><input type="text" id="hsnCode" name="excluded:skip" placeholder="HSN Code"></td>            <td class="pt-3-half"><input type="text" id="uom" name="excluded:skip" placeholder="UOM"></td>            <td class="pt-3-half"><input type="text" onfocus="(this.type="number")" onblur="(this.type="text")" min="0" id="qty" name="excluded:skip" placeholder="QTY" required="required"></td>            <td class="pt-3-half"><input type="text" onfocus="(this.type="number")" onblur="(this.type="text")" min="0" id="rate" name="excluded:skip" placeholder="Rate" required="required"></td>            <td class="pt-3-half"><input type="text" id="amount" name="excluded:skip" placeholder="Amount" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" onfocus="(this.type="number")" onblur="(this.type="text")" min="0" id="discount" name="excluded:skip" placeholder="Discount" required="required"></td>            <td class="pt-3-half"><input type="text" id="totalAmount" name="excluded:skip" placeholder="Total Amount" readonly="readonly"></td>			<td>			<figure style="display:flex;">              <span class="table-add"><img class="autoResizeImage" style="margin-right: 2px;" src="/images/add.png" alt=""></span>              <span class="table-remove"><img class="autoResizeImage" style="margin-left: 2px;" src="/images/remove.png" alt=""></span>              </figure>            </td>          </tr>';
 
  $tableID.on('click', '.table-remove', function () {
 if ($tableID.find('tbody tr').length !== 1) {
@@ -30,7 +34,7 @@ if ($tableID.find('tbody tr').length !== 1) {
 }
 else
 	{
-	alert("Cannot Remove Last Row");
+	createConfirmationMessageModal("Cannot Remove Last Row");
 	}
  });
  
@@ -39,6 +43,27 @@ else
 	   resetValues();
 	   setValues();
 	   updateTableColumn(false);
+	  });
+	  
+
+ $tableBOSID.on('click', '.table-add', function () {
+	 $(this).closest('tr').after(newBOSTr);
+	   resetBOSValues();
+	   setBOSValues();
+	  });
+ 
+ 
+ $tableBOSID.on('click', '.table-remove', function () {
+	 if ($tableID.find('tbody tr').length !== 1) {
+	    $(this).parents('tr').detach();
+	       
+	    setBOSValues();
+	    resetBOSValues();
+	 }
+	 else
+	 	{
+		 createConfirmationMessageModal("Cannot Remove Last Row");
+	 	}
 	  });
 
 function validateGST(val){
@@ -138,7 +163,6 @@ function submitHandler(e){
    fileName = fileName+"_"+$("[name=invoiceNo]").val()+".pdf";
 
    var f = $("#form")[0];
-   
    if(isGstValid && f.reportValidity() && isInvoiceNumberUnique) {
 		$('#tableJson table').map(function(i, table){
 			   var $rows = $("#" +table.id).find('tr:not(:hidden)');
@@ -150,7 +174,7 @@ function submitHandler(e){
 			    	   if(this.id!=="")
 			         obj[this.id] = this.value;
 			       });
-			       if(Object.keys(obj).length!==0 && Object.keys(obj).length===14)
+			       if(Object.keys(obj).length!==0)
 			       newFormData.push(obj);
 			     });
 			   $('#itemList').val(JSON.stringify(newFormData));
@@ -181,17 +205,21 @@ function submitHandler(e){
 								f.reset();
 								$('input').focus();
 								$('input').blur();
-								window.scrollTo(0, 0);
-								setValues();
 								isGstValid=false;
 								isInvoiceNumberUnique=false;
+								if(name==="billOfSupply") {
+									setBOSValues();
+								} else {
+									setValues();
+								}
+								window.scrollTo(0, 0);
 							}
 						});
 						$('#overlay').delay(500).fadeOut();
 						$('#custom_alert').html(
 								'<div class="alert alert-info text-center table-width fade-in" role="alert">'
 								  +'Invoice successfully saved. View all invoices <a href="/home/showInvoice" class="alert-link">here</a>.'+
-								  '</div>')
+								  '</div>');
 						$("#custom_alert").fadeTo(5000, 500).slideUp(500);
    }
  });
@@ -289,7 +317,9 @@ function setValues() {
 function getSum(arr) {
 	var total = 0;
 	for (var i = 0; i < arr.length; i++) {
-	    total += arr[i];
+		if(arr[i] !== undefined){
+	    	total += arr[i];
+	}
 	}
 	return total;
 }
@@ -351,17 +381,19 @@ $("#companylogo").change(function(e) {
     if ((file = this.files[0])) {
         img = new Image();
         img.onload = function() {
-        	if(this.width>400 || this.height>400){
-        		alert("Image resolution should be within 400x400");
-        		document.getElementById("companylogo").value='';
+        	if(this.width>2000 || this.height>2000){
+        		alert("Image resolution should be within 2000px x 2000px");
+        		if(!document.getElementById("companylogo").value){
         		document.getElementById('companylogopreview').src = "/images/image-400x400.jpg";
+        		}
+        		document.getElementById("companylogo").value='';
         	}else{
         		var input = $("#companylogo")[0];
         		readURL(input);
         	}
         };
         img.onerror = function() {
-            alert( "Please upload valid image " + file.type);
+        	createConfirmationMessageModal( "Please upload valid image " + file.type);
             document.getElementById("companylogo").value='';
         };
         img.src = _URL.createObjectURL(file);
@@ -442,16 +474,16 @@ function setDate(data) {
 	 $(data).focus();
 }
 
-$("[name=nameBill]").change(function() {
-	var accountName = $("[name=nameBill]").val();
+$("[name=accountNo]").change(function() {
+	var accountNo = $("[name=accountNo]").val();
 	
+	if(accountNo !== "0" && accountNo !== "-1") {
 		$.ajax({
 			type : "GET",
 			contentType : "application/json",
-			url : "/home/getAccountData?accountName=" + accountName,
+			url : "/home/getAccountData?accountName=" + accountNo,
 			dataType : 'json',				
 			success : function(data) {
-				$("[name=nameBill]").val(data.accountName);
 				$("[name=nameShip]").val(data.accountName);
 				$("[name=addressBill]").val(data.accountAddress);
 				$("[name=addressShip]").val(data.accountAddress);
@@ -464,12 +496,30 @@ $("[name=nameBill]").change(function() {
 				$("[name=gstinShip]").blur();
 			}
 			});
+	} else {
+		$("[name=nameShip]").val("");
+		$("[name=addressBill]").val("");
+		$("[name=addressShip]").val("");
+		$("[name=gstinBill]").val("");
+		$("[name=gstinShip]").val("");
+		$("[name=stateBill]").val("");
+		$("[name=stateShip]").val("");
+		$("[name=gstinBill]").focus();
+		$("[name=gstinShip]").focus();
+		$("[name=gstinShip]").blur();
+		
+		if(accountNo === "-1"){
+			$("[name=accountNo]").val("0");
+			window.open('/home/addaccount','_blank');
+		}
+	}
+
 });
 
 $("#againstInvoicedropdown").change(function() {
 	var invoiceNumber = $("#againstInvoicedropdown").val();
 	
-	if(invoiceNumber !== "Against Invoice") {
+	if(invoiceNumber !== "0") {
 		$.ajax({
 			type : "GET",
 			contentType : "application/json",
@@ -479,6 +529,7 @@ $("#againstInvoicedropdown").change(function() {
 				$("[name=againstInvoiceDate]").val(data.invoiceDate);
 				$("[name=state]").val(data.invoiceState);
 				$("[name=reverseCharge]").val(data.invoiceReverseCharge);
+				$("[name=linkedInvoiceNo]").val(data.invoiceNumber);
 				$("[name=againstInvoiceDate]").blur();
 			}
 			});
@@ -488,6 +539,7 @@ $("#againstInvoicedropdown").change(function() {
 		$("[name=againstInvoiceDate]").val("");
 		$("[name=state]").val("");
 		$("[name=reverseCharge]").val("");
+		$("[name=linkedInvoiceNo]").val("");
 		$("[name=againstInvoiceDate]").blur();
 	}
 });
@@ -518,43 +570,253 @@ function checkInvoiceNo(value) {
 }
 
 
-function checkPaymentNo(value) {
-	var paymentNo = $(value).val();
-
-	if(paymentNo !== "") {
+function checkAccountName(value) {
+	var accountName = $(value).val().trim();
+	if(accountName !== "" && $("[name=id").val() === "0") {
 		$.ajax({
 			type : "GET",
 			contentType : "application/json",
-			url : "paymentunique?paymentNo=" + paymentNo,
+			url : "/home/getAccountName?accountName=" + accountName,
 			dataType : 'json',				
 			success : function(data) {
-				if(data !== null){
-					alert("Payment Number already exists");
-					$(value).val("");
-					$(value).focus();
+				if(data !== null) {
+					$('#name_alert').html(
+							'<div class="alert alert-info text-center table-width fade-in" role="alert">'
+							  +'An account already exists with this name, do you still wish to continue with this name. It is suggested to choose a different name to avoid confusion.'+
+							  '</div>')
+					$("#name_alert");
+				}
+				else {
+					$('#name_alert').empty();
 				}
 			}
 			});
 	}
 }
 
-
-function checkReceiptNo(value) {
-	var receiptNo = $(value).val();
-
-	if(receiptNo !== "") {
-		$.ajax({
-			type : "GET",
-			contentType : "application/json",
-			url : "receiptunique?receiptNo=" + receiptNo,
-			dataType : 'json',				
-			success : function(data) {
-				if(data !== null){
-					alert("Receipt Number already exists");
-					$(value).val("");
-					$(value).focus();
-				}
-			}
+function getAccountList() {
+	$("[name=accountNo]").empty();
+	$("[name=nameShip]").val("");
+	$("[name=addressBill]").val("");
+	$("[name=addressShip]").val("");
+	$("[name=gstinBill]").val("");
+	$("[name=gstinShip]").val("");
+	$("[name=stateBill]").val("");
+	$("[name=stateShip]").val("");
+	$("[name=gstinBill]").focus();
+	$("[name=gstinShip]").focus();
+	$("[name=gstinShip]").blur();
+	$.ajax({
+		type : "GET",
+		contentType : "application/json",
+		url : "/home/getaccountlist",
+		dataType : 'json',			
+		async : false,
+		success : function(data) {			
+			$.each(data, function (i, item) {
+			    $('[name=accountNo]').append($('<option>', { 
+			        value: item.id,
+			        text : item.accountName 
+			    }));
 			});
+		}
+		});
+}
+
+
+function setBOSValues() {
+
+	isGstValid=true;
+    $tableBOSID.find('tbody tr').each(function (index) {
+    	
+        var $tblrow = $(this);
+        $tblrow.find("#srNo").val(index+1);
+        $tblrow.on('change', function () {
+        	var product = $tblrow.find("#productDesc").val();
+        	
+        	if(product !== "0") {
+				$.ajax({
+					type : "GET",
+					contentType : "application/json",
+					url : "/home/getItemData?itemId=" +product,
+					dataType : 'json',
+					async : false,
+					success : function(data) {
+						$tblrow.find("[id=hsnCode]").val(data.productHnscode);
+						$tblrow.find("[id=uom]").val(data.productUom);
+						$tblrow.find("[id=discount]").val(parseFloat(data.productDiscount).toFixed(2));
+						$tblrow.find("[id=rate]").val(parseFloat(data.productRate).toFixed(2));
+						$tblrow.find("[id=qty]").val(parseFloat(data.productQuantity).toFixed(2));
+						$tblrow.find("[id=productDesc]").val(data.productDescription);
+					}
+					});
+        	}
+        	
+            var qty = $tblrow.find("[id=qty]").val();
+            if(!isNaN(qty)){
+            	ttlQty[$tblrow.find("#srNo").val()-1]=parseFloat(qty);
+            	$("[name=ttlQty]").val(checkValueNaN(getSum(ttlQty).toFixed(2)));
+            }
+            var rate = $tblrow.find("[id=rate]").val();
+            var amount = parseFloat(qty) * parseFloat(rate);
+            if (!isNaN(amount)) {
+            	ttlAmount[$tblrow.find("#srNo").val()-1]=amount;
+                $tblrow.find("#amount").val(amount.toFixed(2));
+
+                $("[name=ttlAmount]").val(getSum(ttlAmount).toFixed(2));
+                
+            }
+            
+            var discount = $tblrow.find("[id=discount]").val();
+            
+            var totalAmount = amount - discount;
+            if(!isNaN(totalAmount)) {
+            	$tblrow.find('#totalAmount').val(totalAmount.toFixed(2));
+            	ttlTotalAmount[$tblrow.find("#srNo").val()-1]=totalAmount;
+            	$("[name=ttlTotalAmount]").val(getSum(ttlTotalAmount).toFixed(2));
+            }
+            
+    	    $("[name=totalAmountAfterTax]").val(getSum(ttlTotalAmount).toFixed(2));
+    	    if(parseInt($("[name=ttlTotalAmount]").val(),10)!==0 && $("[name=ttlTotalAmount]").val()!=="") {
+    		    getAmountInWords();
+    		    }
+        }); 
+    });    
+
+}
+
+function resetBOSValues() {
+
+	isGstValid =true;
+	 ttlAmount = [];
+	 ttlQty = [];
+	 ttlTotalAmount = [];
+	 $tableBOSID.find('tbody tr').each(function (index) {
+	        var $tblrow = $(this);
+	        $tblrow.find("#srNo").val(index+1);
+	        ttlQty[index]=checkValueNaN(parseFloat($tblrow.find("#qty").val()));
+	        ttlAmount[index]=checkValueNaN(parseFloat($tblrow.find("#amount").val()));
+	        ttlTotalAmount[index]=checkValueNaN(parseFloat($tblrow.find("#totalAmount").val()));
+	    });
+	    
+	    $("[name=ttlQty]").val(getSum(ttlQty).toFixed(2));
+	    $("[name=ttlAmount]").val(getSum(ttlAmount).toFixed(2));
+	    $("[name=ttlTotalAmount]").val(getSum(ttlTotalAmount).toFixed(2));
+	    
+	    $("[name=totalAmountAfterTax]").val(getSum(ttlTotalAmount).toFixed(2));
+	    
+	    if(parseInt($("[name=ttlTotalAmount]").val(),10)!==0) {
+	    getAmountInWords();
+	    }
+}
+
+function updateCompany(active) {
+	if(active === "1"){
+		createYesCancelMessageModal("Do you want to update company?");
+		$('#buttondata').click(function() { 
+			var text = $(this).attr('value');
+		       if(text) {
+		    	   window.location ='/home/addcompany';
+		       }
+		        });
+			
+	} else {
+		createConfirmationMessageModal("You can update only active company");
 	}
+}
+
+function deleteCompany(active, key) {
+	if(active == "1") {
+		createConfirmationMessageModal('Active Company cannot be deleted');
+	} else {
+		var text;
+		createYesCancelMessageModal("Are you sure you want to delete this Company. Please Note that by deleting a company you lose all data related to it.");
+		$('#buttondata').click(function() { 
+		       text = $(this).attr('value');
+		       if(text) {
+		    	   window.location ='/home/deletecompany/'+key;
+		       }
+		        });
+	}
+}
+
+function activateCompany(key) {
+	createYesCancelMessageModal("Are you sure you want to activate this Company.");
+	$('#buttondata').click(function() { 
+	       text = $(this).attr('value');
+	       if(text) {
+	    	   window.location ='/home/activatecompany/'+key;
+	       }
+	        });
+}
+
+function createConfirmationMessageModal(message) {
+	$('#alert_placeholder').html(
+			'<div class="modal fade" id="ConfirmationModal"><div class="modal-dialog modal-sm">  <div class="modal-content"><!-- Modal body --><div class="modal-body"><span style="font-size: 15px" class="glyphicon glyphicon-cog"></span>'+message+'</div><div class="modal-footer"><button type="button" class="btn btn-success btn-block bigbuttonwithoutmargins modalbuttoncolor" data-dismiss="modal" value="true">OK</button></div>');
+	$('#ConfirmationModal').modal('show');
+}
+
+function createYesCancelMessageModal(message) {
+	var text = false;
+	$('#alert_placeholder').html(
+			'<div class="modal fade" id="YesCancelModal"><div class="modal-dialog modal-sm">  <div class="modal-content"><!-- Modal body --><div class="modal-body"><span style="font-size: 15px" class="glyphicon glyphicon-cog"></span>'+message+'</div><div class="modal-footer"><button type="button" class="btn btn-success btn-block bigbuttonwithoutmargins modalbuttoncolor" data-dismiss="modal" id="buttondata" value="true">Yes</button><br/><button type="button" class="btn btn-danger btn-block bigbuttonwithoutmargins" data-dismiss="modal" id="buttondata" value="false">Cancel</button></div>');
+	$('#YesCancelModal').modal('show');
+}
+
+$(function () {
+    $("#companyaddress").on('keyup change', function (e) {
+        $(this).val($(this).val().toUpperCase());
+    });
+});
+
+$(function () {
+    $("#companyname").on('keyup change', function (e) {
+        $(this).val($(this).val().toUpperCase());
+    });
+});
+
+$(function () {
+    $("#companygstin").on('keyup change', function (e) {
+        $(this).val($(this).val().toUpperCase());
+    });
+});
+
+function getBankData(data) {
+	debugger;
+	var payment = $(data).val();
+	if(payment === "Bank"){
+		$('#bankDropdown').html('<select class="form-control" name="bankId" onfocus="getBankList()" required="required"></select>');
+		getBankList();
+	} else {
+		$('#bankDropdown').empty();
+		$('#bankAlert').empty();
+	}
+}
+
+function getBankList(){
+	$("[name=bankId]").empty();
+	
+	$.ajax({
+		type : "GET",
+		contentType : "application/json",
+		url : "/home/getbanklist",
+		dataType : 'json',			
+		async : false,
+		success : function(data) {	
+			if(data !== null) {
+				$.each(data, function (i, item) {
+				    $('[name=bankId]').append($('<option>', { 
+				        value: item.id,
+				        text : item.userBankName 
+				    }));
+				});
+			$('#bankAlert').empty();
+			} else {
+				$('#bankAlert').html(
+						'<div class="alert alert-info text-center" role="alert">'
+						  +'You have no bank account added. Please add one <a href="/home/addbank" class="alert-link">here</a>.'+
+						  '</div>');
+		}
+		}
+	});
 }

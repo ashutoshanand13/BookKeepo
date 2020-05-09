@@ -29,9 +29,8 @@ public class Payment {
 	@Column(name = "payment_id")
 	private int id;
 
-	@Column(name = "payment_number")
-	@NotEmpty(message = "*Please provide the payment number")
-	private String paymentNumber;
+	@Column(name = "payment_number", updatable = false)
+	private int paymentNumber;
 
 	@Column(name = "payment_reference")
 	@NotEmpty(message = "*Please provide the payment reference")
@@ -52,7 +51,7 @@ public class Payment {
 	@Column(name = "payment_description")
 	private String paymentDescription;
 
-	@Column(name = "payment_owner")
+	@Column(name = "payment_owner", nullable = false, updatable = false)
 	private String paymentOwner;
 
 	@CreationTimestamp
@@ -63,6 +62,14 @@ public class Payment {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "payment_account_reference_no")
 	private Accounts accountRefNo;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "payment_company_reference_no" , updatable = false)
+	private Company paymentCompanyDetails;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "payment_bank_reference_no" , updatable = false)
+	private BankDetails bankDetails;
 
 	/**
 	 * @return the id
@@ -81,14 +88,14 @@ public class Payment {
 	/**
 	 * @return the paymentNumber
 	 */
-	public String getPaymentNumber() {
+	public int getPaymentNumber() {
 		return paymentNumber;
 	}
 
 	/**
 	 * @param paymentNumber the paymentNumber to set
 	 */
-	public void setPaymentNumber(String paymentNumber) {
+	public void setPaymentNumber(int paymentNumber) {
 		this.paymentNumber = paymentNumber;
 	}
 
@@ -203,5 +210,35 @@ public class Payment {
 	public void setAccountRefNo(Accounts accountRefNo) {
 		this.accountRefNo = accountRefNo;
 	}
+
+	/**
+	 * @return the paymentCompanyDetails
+	 */
+	public Company getPaymentCompanyDetails() {
+		return paymentCompanyDetails;
+	}
+
+	/**
+	 * @param paymentCompanyDetails the paymentCompanyDetails to set
+	 */
+	public void setPaymentCompanyDetails(Company paymentCompanyDetails) {
+		this.paymentCompanyDetails = paymentCompanyDetails;
+	}
+
+	/**
+	 * @return the bankDetails
+	 */
+	public BankDetails getBankDetails() {
+		return bankDetails;
+	}
+
+	/**
+	 * @param bankDetails the bankDetails to set
+	 */
+	public void setBankDetails(BankDetails bankDetails) {
+		this.bankDetails = bankDetails;
+	}
+	
+	
 
 }

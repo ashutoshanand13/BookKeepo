@@ -90,7 +90,7 @@ public class ReportController {
 	public void view(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
 
-		InvoiceDetails invoice = invoiceService.findById(id);
+		InvoiceDetails invoice = invoiceService.findByInvoiceUniqueKey(id);
 
 		ByteArrayOutputStream invoiceData = InvoiceUtil.createPDF(invoice);
 

@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bookkeepo.accounting.entity.Company;
+import com.bookkeepo.accounting.model.InvoiceData;
 import com.bookkeepo.accounting.model.InvoiceType;
-import com.bookkeepo.accounting.service.AccountService;
 import com.bookkeepo.accounting.service.CompanyDetailsService;
 import com.bookkeepo.accounting.service.InvoiceService;
 import com.bookkeepo.accounting.service.ItemService;
@@ -35,9 +35,6 @@ public class DebitNoteController {
 	private InvoiceService invoiceService;
 
 	@Autowired
-	private AccountService accountService;
-
-	@Autowired
 	private ItemService itemService;
 
 	@RequestMapping(value = "/home/debitnote", method = RequestMethod.GET)
@@ -45,14 +42,13 @@ public class DebitNoteController {
 		String user = request.getUserPrincipal().getName();
 		ModelAndView modelAndView = new ModelAndView();
 		Company company = companyDetailsService.findByUserName(user);
-		List<String> ownerInvoices = invoiceService.findByInvoiceOwnerAndInvoiceType(user,
+		List<InvoiceData> ownerInvoices = invoiceService.findByInvoiceOwnerAndInvoiceType(user,
 				InvoiceType.Tax_Invoice.getType());
 		if (company == null) {
-			modelAndView.setViewName("redirect:/home/updatecompany/debitnote");
+			modelAndView.setViewName("redirect:/home/showProfile");
 		} else if (ownerInvoices.size() == 1) {
 			modelAndView.setViewName("redirect:/home/salesinvoice/Please create tax invoice first!");
 		} else {
-			modelAndView.addObject("accountList", accountService.fetchAccountNameForInvoice(user));
 			modelAndView.addObject("invoiceList", ownerInvoices);
 			modelAndView.addObject("company", company);
 			modelAndView.addObject("logoImage", CommonUtils.getImgfromByteArray(company.getCompanyLogo()));

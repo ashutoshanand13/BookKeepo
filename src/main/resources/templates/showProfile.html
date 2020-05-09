@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{postLoginCommonPage}">
+
+	<head>
+		<title>User Profile</title>
+		
+		<script type="text/javascript" th:src="@{/js/jquery-3.3.1.js}"></script>
+
+		<script type="text/javascript">
+			$(document).ready(function() {
+			$('#example').DataTable();
+			} );
+
+		</script>
+		
+	</head>
+	<div class="img-holder" layout:fragment="screen_description">
+		<div class="bg"></div>
+		<h3>Get more things done with BookKeepo platform.</h3>
+		<p>
+			Access to the most powerful tool in the entire design and web
+			industry.
+			<br>
+				<br> Nam
+					libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit
+					quo minus id quod maxime
+					placeat facere possimus, omnis voluptas assumenda est, omnis dolor
+					repellendus.
+		</p>
+	</div>
+	<div layout:fragment="form_content" id="form_content">
+	
+	<div class="form-items showinvoices">
+			<h3 class="form-title doubleunderlinetext" align="center">Company List</h3>
+			<div class="form-button">
+			<button type="button" class="ibtn bigbuttonwithoutmargins" data-toggle="modal" data-target="#addCompany">
+    			Add New Company
+  			</button>
+	</div>
+	<hr size=4>
+	<div id="alert" th:if="${message}" th:text="${message} "
+			class="alert alert-info fade-in"></div>
+	<div id = "alert_placeholder"></div>
+		<!-- The PopUp for Add New Company -->
+		<div class="modal fade rounded-0" id="addCompany">
+			<div class="modal-dialog">
+				<div class="modal-content">
+
+					<div class="modal-header">
+						<h3 class="modal-title" align="center">Add New Company</h3>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+
+					<div class="modal-body">
+						<form autocomplete="off" th:action="@{/home/addnewcompany}"
+							th:object="${company}" method="post" class="form-horizontal"
+							role="form">
+							<div class="row modal-display">
+								<div class="col-md-12 form-group">
+									<label class="mandatory field-description text-uppercase">Company
+										Name</label> <input type="text" th:field="*{companyName}" id="companyname"
+										class="text-uppercase" required="required">
+								</div>
+								<div class="col-md-6 form-group">
+								<label class="field-description">Company GSTIN</label>
+									<input type="text"
+									class="form-control text-uppercase" th:field="*{companyGstin}" id="companygstin"
+									placeholder="GST Number"
+									pattern="^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$"
+									oninvalid="this.setCustomValidity('GST Identification Number is not valid. It should be in this 11AAAAA1111Z1A1 format')" oninput="setCustomValidity('')">
+									<label th:if="${#fields.hasErrors('companyGstin')}"
+									th:errors="*{companyGstin}" class="validation-message"></label>
+								</div>
+								<div class="col-md-6 form-group">
+									<label class="field-description">Contact Details</label>
+									<div class="form-row">
+										<div class="col">
+											<input type="email" class="form-control" name="email"
+												th:field="*{companyEmail}" placeholder="E-mail Address">
+											<label th:if="${#fields.hasErrors('companyEmail')}"
+												th:errors="*{companyEmail}" class="validation-message"></label>
+											<input type="text" class="form-control"
+												th:field="*{companyState}" placeholder="State">
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6 form-group">
+									<label class="field-description">Bank Details</label> <input type="text"
+										class="form-control" name="bankAC" th:field="*{companyBankAC}"
+										placeholder="Bank A/C"> <input type="text"
+										class="form-control" th:field="*{companyBankIFSC}"
+										pattern="^[A-Za-z]{4}[a-zA-Z0-9]{7}$"
+										oninvalid="this.setCustomValidity('IFSC code should of format AAAA1111111')"
+										oninput="setCustomValidity('')"
+										placeholder="Bank IFSC Details">
+								</div>
+								<div class="col-md-6 form-group">
+									<label class="field-description">Company Logo</label> <input type="file"
+										name="companylogo" id="companylogo" th:field="*{companyLogo}"
+										accept="image/x-png,image/jpeg"> <img id="companylogopreview"
+										class="img-border"
+										th:src="|data:image/png;base64,${logoImage}"
+										onerror='this.style.display = "none"'
+										alt="BookKeepo Company Logo" />
+								</div>
+								<div class="col-md-6 form-group">
+									<div class="form-group">
+										<label class="field-description">Address</label>
+										<textarea class="form-control text-uppercase"
+											id="companyaddress" th:field="*{companyAddress}"></textarea>
+									</div>
+								</div>
+								
+								<div class="col-md-6 form-group">
+									<label class="field-description">Company Description</label> <input
+										type="text" class="form-control" name="bankAC"
+										th:field="*{companyDesc}">
+								</div>
+							</div>
+							<div class="form-button form-modal-button text-center">
+								<button id="submit" type="submit" class="ibtn bigbuttonwithoutmargins">  Save   </button>
+							</div>
+						</form>
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+		<div id="alert_showinvoice"></div>
+			<table id="example" class="display" style="width: 100%">
+				<thead>
+					<tr>
+						<th>Company Name</th>
+						<th>Company Description</th>
+						<th>Activated</th>
+						<th>#</th>
+						<th>#</th>
+						<th>#</th>
+
+					</tr>
+				</thead>
+				<tbody>
+					<tr data-th-each="company : ${companyList}">
+						<td data-th-text="${company.companyName}">aaa</td>
+						<td data-th-text="${company.companyDesc}"></td>
+						<td th:if="${company.companyActive == 1}" data-th-text="Yes"></td>
+						<td th:if="${company.companyActive == 0}" data-th-text="No"></td>
+						<td>
+							<a th:href="'javascript:activateCompany(\'' + ${company.companyUniqueKey} +'\');'">Activate</a>
+						</td>
+						<td>
+							<a th:href="'javascript:updateCompany(\'' + ${company.companyActive} +'\');'">Update</a>
+						</td>
+						<td>
+							<a th:href="'javascript:deleteCompany(\'' + ${company.companyActive} +'\',\'' + ${company.companyUniqueKey} +'\');'">Delete</a>
+						</td>
+
+					</tr>
+				</tbody>
+			</table>
+
+		</div>
+
+	</div>

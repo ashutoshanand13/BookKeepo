@@ -5,6 +5,7 @@ package com.bookkeepo.accounting.controller;
 
 import java.security.Principal;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bookkeepo.accounting.entity.Accounts;
+import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.service.AccountService;
+import com.bookkeepo.accounting.service.CompanyDetailsService;
 
 /**
  * @author sachingoyal
@@ -29,41 +32,61 @@ public class AccountController {
 	@Autowired
 	private AccountService accountService;
 
+	@Autowired
+	private CompanyDetailsService companyDetailsService;
+
 	@RequestMapping(value = { "/home/addaccount" }, method = RequestMethod.GET)
-	public ModelAndView getHomePage() {
+	public ModelAndView getHomePage(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
-		Accounts account = new Accounts();
-		modelAndView.addObject("account", account);
-		modelAndView.setViewName("addaccount");
+		String user = request.getUserPrincipal().getName();
+		Company company = companyDetailsService.findByUserName(user);
+		if (company == null) {
+			modelAndView.setViewName("redirect:/home/showProfile");
+		} else {
+			modelAndView.addObject("accountList",
+					accountService.fetchAccountName(request.getUserPrincipal().getName(),company));
+			modelAndView.addObject("account", new Accounts());
+			modelAndView.setViewName("addaccount");
+		}
+
 		return modelAndView;
 	}
 
 	@RequestMapping(value = "/home/addaccount", method = RequestMethod.POST)
-	public ModelAndView addNewAccount(@Valid @ModelAttribute("account") Accounts account, BindingResult bindingResult, Principal principal) {
+	public ModelAndView addNewAccount(@Valid @ModelAttribute("account") Accounts account, BindingResult bindingResult,
+			Principal principal) {
 		ModelAndView modelAndView = new ModelAndView();
-		Accounts accountWithGstInExists = accountService.findAccountByGstin(account.getGstin(),principal.getName());
 
-		if (accountWithGstInExists != null) {
-			bindingResult.rejectValue("gstin", "gstin", "This GST number is already registered.");
-		} else if (account.getGstin().trim().length() != 15) {
-			bindingResult.rejectValue("gstin", "gstin", "Please provide a valid GST number.");
+		if (account.getId() == 0) {
+			if (!account.getGstin().isEmpty()) {
+				Accounts accountWithGstInExists = accountService.findAccountByGstin(account.getGstin(),
+						principal.getName());
+
+				if (accountWithGstInExists != null) {
+					bindingResult.rejectValue("gstin", "gstin", "This GST number is already registered.");
+				}
+			}
+
+			if (!account.getAccountPan().isEmpty()) {
+				Accounts accountWithPanExists = accountService.findAccountByPan(account.getAccountPan(),
+						principal.getName());
+				if (accountWithPanExists != null) {
+					bindingResult.rejectValue("accountPan", "accountPan", "This PAN is already registered.");
+				}
+			}
 		}
 
-		Accounts accountWithPanExists = accountService.findAccountByPan(account.getAccountPan(), principal.getName());
-		if (accountWithPanExists != null) {
-			bindingResult.rejectValue("accountPan", "accountPan", "This PAN is already registered.");
-		} else if (account.getAccountPan().trim().length() != 10) {
-			bindingResult.rejectValue("accountPan", "accountPan", "Please provide a valid PAN.");
-
-		}
-		
 		if (bindingResult.hasErrors()) {
 			modelAndView.addObject("account", account);
 			modelAndView.setViewName("addaccount");
 		} else {
 			account.setAccountOwner(principal.getName());
+			Company company = companyDetailsService.findByUserName(principal.getName());
+
+			account.setAccountCompanyDetails(company);
 			accountService.saveAccount(account);
-			modelAndView.addObject("message", "New Account Details Successfully Added");
+			modelAndView.addObject("message", "Account Updated Successfully");
+			modelAndView.addObject("accountList", accountService.fetchAccountName(principal.getName(),company));
 			modelAndView.addObject("account", new Accounts());
 			modelAndView.setViewName("addaccount");
 		}

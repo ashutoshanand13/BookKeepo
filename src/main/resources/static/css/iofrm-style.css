@@ -399,7 +399,7 @@ html, body {
     background-color: #fff;
 }
 
-.form-content input, .form-content .dropdown-toggle.btn-default {
+.form-content input,select, .form-content .dropdown-toggle.btn-default {
     width: 100%;
     padding: 9px;
     text-align: left;
@@ -412,7 +412,7 @@ html, body {
     color: #8D8D8D;
     -webkit-transition: all 0.3s ease 0s;
     transition: all 0.3s ease 0s;
-    margin-bottom: 14px;
+    margin-bottom: 10px;
 }
 
 .form-content input:hover, .form-content input:focus, .form-content .dropdown-toggle.btn-default:hover, .form-content .dropdown-toggle.btn-default:focus {
@@ -637,6 +637,11 @@ html, body {
     margin-bottom: 25px;
 }
 
+.form-content .form-modal-button {
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+}
+
 .form-content .form-button .ibtn {
     border-radius: 6px;
     border: 0;
@@ -686,6 +691,10 @@ html, body {
 
 .form-content form {
     margin-bottom: 58px;
+}
+
+.form-content .modal-body form {
+    margin-bottom: 0px;
 }
 
 .form-content .other-links span {
@@ -901,4 +910,19 @@ div.form-content label.field-description{
 	font-weight: 350 ;
     font-size: 13px ;
     margin-bottom: 0px;
+}
+.mandatory.field-description:after{
+	content:"*";
+   	color:red;
+}
+.bigbuttonwithoutmargins{
+	margin: 0px !important;
+}
+.modal-content  {
+    -webkit-border-radius: 0px !important;
+    -moz-border-radius: 0px !important;
+    border-radius: 0px !important; 
+}
+.modalbuttoncolor{
+	background-color: #27c8a9;
 }

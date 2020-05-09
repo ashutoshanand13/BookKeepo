@@ -14,7 +14,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.model.InvoiceType;
-import com.bookkeepo.accounting.service.AccountService;
 import com.bookkeepo.accounting.service.CompanyDetailsService;
 import com.bookkeepo.accounting.service.ItemService;
 import com.bookkeepo.accounting.util.CommonUtils;
@@ -30,9 +29,6 @@ public class SalesInvoiceController {
 	private CompanyDetailsService companyDetailsService;
 
 	@Autowired
-	private AccountService accountService;
-
-	@Autowired
 	private ItemService itemService;
 
 	@RequestMapping(value = "/home/salesinvoice", method = RequestMethod.GET)
@@ -41,9 +37,8 @@ public class SalesInvoiceController {
 		ModelAndView modelAndView = new ModelAndView();
 		Company company = companyDetailsService.findByUserName(user);
 		if (company == null) {
-			modelAndView.setViewName("redirect:/home/updatecompany/salesinvoice");
+			modelAndView.setViewName("redirect:/home/showProfile");
 		} else {
-			modelAndView.addObject("accountList", accountService.fetchAccountNameForInvoice(user));
 			modelAndView.addObject("company", company);
 			modelAndView.addObject("logoImage", CommonUtils.getImgfromByteArray(company.getCompanyLogo()));
 			modelAndView.addObject("itemList", itemService.findByProductOwner(user));
@@ -60,7 +55,6 @@ public class SalesInvoiceController {
 		ModelAndView modelAndView = new ModelAndView("salesInvoice");
 		modelAndView.addObject("message", message);
 		Company company = companyDetailsService.findByUserName(user);
-		modelAndView.addObject("accountList", accountService.fetchAccountNameForInvoice(user));
 		modelAndView.addObject("company", company);
 		modelAndView.addObject("logoImage", CommonUtils.getImgfromByteArray(company.getCompanyLogo()));
 		modelAndView.addObject("itemList", itemService.findByProductOwner(user));

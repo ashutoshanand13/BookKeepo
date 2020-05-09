@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{postLoginCommonPage}">
+
+<head>
+<title>Add Bank Details</title>
+</head>
+<div class="img-holder fluid-height"
+	layout:fragment="screen_description">
+	<div class="bg"></div>
+	<h3>Get more things done with BookKeepo platform.</h3>
+	<p>
+		Access to the most powerful tool in the entire design and web
+		industry.<br> <br> Nam libero tempore, cum soluta nobis est
+		eligendi optio cumque nihil impedit quo minus id quod maxime placeat
+		facere possimus, omnis voluptas assumenda est, omnis dolor
+		repellendus.
+	</p>
+</div>
+<div layout:fragment="form_content" id="form_content">
+	<div class="form-items">
+		<h3 class="form-title doubleunderlinetext">Add Bank</h3>
+		<div id="alert" th:if="${message}" th:text="${message} "
+			class="alert alert-info fade-in"></div>
+		<form autocomplete="off" th:action="@{/home/addbank}"
+			th:object="${bank}" method="post" class="form-horizontal" role="form"
+			enctype="multipart/form-data">
+			<div class="row">
+				<div class="col-md-6 form-group">
+					<div class="form-group">
+						<label>Bank List</label> <select
+							class="form-control text-uppercase" id="selectbasic" name="selectbasic">
+							<option th:each="bankValue : ${bankList}" th:value="${bankValue.id}"
+								th:text="${bankValue.userBankName}"></option>
+						</select>
+
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6 form-group"><label class="mandatory field-description text-uppercase">Bank Name</label>
+					<input type="text"
+						th:field="*{userBankName}" class="text-uppercase" required="required">
+					<label class="field-description">Bank Account</label>
+					<input type="text" class="form-control" name="bankAC"
+						th:field="*{userBankAccount}">
+					<label class="field-description">Bank Nick Name</label>
+					<input type="text" class="form-control"
+						th:field="*{userBankNickname}">
+				</div>
+				<div class="col-md-6 form-group"><label class="field-description text-uppercase">Bank Branch</label>
+					<input type="text"
+						th:field="*{userBankBranch}" >
+					<label class="mandatory field-description">Select A/C Type</label>
+					<select name="selectbasic" class="form-control" th:field="*{userBankActype}" required="required">
+							<option class="form-control" value="Savings">Savings</option>
+							<option class="form-control" value="Current">Current</option>
+							<option class="form-control" value="OD-CC">OD/CC</option>
+						</select>
+				</div>
+										<input type="hidden" th:field="*{id}">
+			</div>
+			<div class="form-button text-right">
+				<button type="reset" class="btn btn-light">Reset</button>
+				<button id="submit" type="submit" class="ibtn">Save</button>
+			</div>
+
+		</form>
+	</div>
+</div>
+<th:block layout:fragment="scripts">
+	<script type="text/javascript">
+	$(document).ready(function() {
+		$("#selectbasic").change(function() {
+			getItem();
+		});
+	}); 
+	
+	function getItem() {
+		var bankId = $("#selectbasic").val();
+		if(bankId !== '0'){
+			$.ajax({
+				type : "GET",
+				contentType : "application/json",
+				url : "getBankData?bankId=" + bankId,
+				dataType : 'json',				
+				success : function(data) {
+					$("[name=userBankName").val(data.userBankName);
+					$("[name=userBankAccount").val(data.userBankAccount);
+					$("[name=userBankNickname").val(data.userBankNickname);
+					$("[name=userBankBranch").val(data.userBankBranch);
+					$("[name=userBankActype").val(data.userBankActype);
+					$("[name=id").val(data.id);
+				}
+				});
+		} else {
+			$("[name=userBankName").val("");
+			$("[name=userBankAccount").val("");
+			$("[name=userBankNickname").val("");
+			$("[name=userBankBranch").val("");
+			$("[name=userBankActype").val("");
+			$("[name=id").val(0);
+		}
+	};
+	</script>
+</th:block>
