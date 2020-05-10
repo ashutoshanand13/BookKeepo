@@ -64,11 +64,11 @@ public class Payment {
 	private Accounts accountRefNo;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "payment_company_reference_no" , updatable = false)
+	@JoinColumn(name = "payment_company_reference_no", updatable = false)
 	private Company paymentCompanyDetails;
-	
+
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "payment_bank_reference_no" , updatable = false)
+	@JoinColumn(name = "payment_bank_reference_no", updatable = false)
 	private BankDetails bankDetails;
 
 	/**
@@ -238,7 +238,5 @@ public class Payment {
 	public void setBankDetails(BankDetails bankDetails) {
 		this.bankDetails = bankDetails;
 	}
-	
-	
 
 }
