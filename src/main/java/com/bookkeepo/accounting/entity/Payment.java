@@ -1,6 +1,7 @@
 package com.bookkeepo.accounting.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -9,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -70,6 +72,10 @@ public class Payment {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "payment_bank_reference_no", updatable = false)
 	private BankDetails bankDetails;
+
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "payment_invoice_reference_no")
+	private List<PaymentInvoices> paymentInvoiceDetails;
 
 	/**
 	 * @return the id
@@ -237,6 +243,20 @@ public class Payment {
 	 */
 	public void setBankDetails(BankDetails bankDetails) {
 		this.bankDetails = bankDetails;
+	}
+
+	/**
+	 * @return the paymentInvoiceDetails
+	 */
+	public List<PaymentInvoices> getPaymentInvoiceDetails() {
+		return paymentInvoiceDetails;
+	}
+
+	/**
+	 * @param paymentInvoiceDetails the paymentInvoiceDetails to set
+	 */
+	public void setPaymentInvoiceDetails(List<PaymentInvoices> paymentInvoiceDetails) {
+		this.paymentInvoiceDetails = paymentInvoiceDetails;
 	}
 
 }
