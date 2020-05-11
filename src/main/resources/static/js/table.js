@@ -12,7 +12,7 @@
  var ttlSgst = [];
  var ttlTotalAmount = [];
  var discount = [];
- var isGstValid = false;
+ var isGstValid = true;
  var shippingType ='';
  var isInvoiceNumberUnique = false;
  
@@ -70,11 +70,11 @@ function validateGST(val){
 	removeTableColumnClass();
 	 var value = $(val).val();
 	 if(!gstRegex.test(value) || value === "") {
-			isGstValid=false;
+			isGstValid=true;
 		 } else {
 		 isGstValid=true;
-		 updateTableColumn(true);
 	 }
+	 updateTableColumn(true);
  }
 
 function removeTableColumnClass() {
@@ -91,7 +91,16 @@ function updateTableColumn(showAlert) {
 	var gstHeader = $('#headerGstin').text();
 	var gstValue = $("[name=gstinBill]").val();
 	
-	disableColumns(gstHeader, gstValue);
+	if(gstValue !== "") {
+		if (gstHeader.substring(0, 2) !== gstValue.substring(0, 2)) {
+			disableColumns("Inter");
+		} else {
+			disableColumns("Intra");
+		}
+	} else {
+		disableColumns("Intra");
+	}
+	
 
 	if (showAlert) {
 		if (gstHeader.substring(0, 2) === gstValue.substring(0, 2)) {
@@ -102,9 +111,8 @@ function updateTableColumn(showAlert) {
 	}
 }
 
-function disableColumns(ship, bill) {
-	if (isGstValid) {
-		if (ship.substring(0, 2) === bill.substring(0, 2)) {
+function disableColumns(subType) {
+		if (subType === "Intra") {
 			var container = document.querySelector("#itemTable");
 			var cells = container.querySelectorAll('td:nth-child(13)');
 
@@ -139,7 +147,6 @@ function disableColumns(ship, bill) {
 				cells1[i].classList.add('hide');
 			}
 		}
-	}
 }
 
 function setAlert(message) {
@@ -226,6 +233,7 @@ function submitHandler(e){
 
 function setValues() {
 
+	updateTableColumn(false);
 	    $tableID.find('tbody tr').each(function (index) {
 	    	
 	        var $tblrow = $(this);
@@ -782,7 +790,6 @@ $(function () {
 });
 
 function getBankData(data) {
-	debugger;
 	var payment = $(data).val();
 	if(payment === "Bank"){
 		$('#bankDropdown').html('<select class="form-control" name="bankId" onfocus="getBankList()" required="required"></select>');
