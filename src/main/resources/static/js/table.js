@@ -1,5 +1,6 @@
  const $tableID = $('#table');
  const $tableBOSID = $('#tableBOS');
+ const $invoiceTable = $('#invoiceTable');
  
  const $BTN = $('#export-btn');
  const $EXPORT = $('#export');
@@ -15,6 +16,8 @@
  var isGstValid = true;
  var shippingType ='';
  var isInvoiceNumberUnique = false;
+ var tableIndex = 0;
+
  
  var controllerMap = { salesInvoice: "/home/submitInvoice", exportInvoice: "/home/submitInvoice", debitNote:"/home/submitInvoice", creditNote:"/home/submitInvoice" , purchaseOrder:"/home/submitInvoice"  , purchaseInvoice:"/home/submitInvoice", billOfSupply:"/home/submitInvoice"};
  var fileMap = { salesInvoice: "Tax_Invoice", exportInvoice: "Export_Invoice", debitNote:"Debit_Note", creditNote:"Credit_Note", purchaseOrder:"Purchase_Order", purchaseInvoice:"Purchase_Invoice", billOfSupply:"Bill_Of_Supply" };
@@ -24,7 +27,7 @@
  const newTr = '<tr>            <td class="pt-3-half"><input type="text" id="srNo" name="excluded:skip" placeholder="Sr No" readonly="readonly"></td>            <td class="pt-3-half"><input list="data" id="productDesc" class="form-control" placeholder="Product Description" required="required" autocomplete="off"></td>            <td class="pt-3-half"><input type="text" id="hsnCode" name="excluded:skip" placeholder="HSN Code"></td>            <td class="pt-3-half"><input type="text" id="uom" name="excluded:skip" placeholder="UOM"></td>            <td class="pt-3-half"><input type="text" onfocus="(this.type="number")" onblur="(this.type="text")" min="0" id="qty" name="excluded:skip" placeholder="QTY" required="required"></td>            <td class="pt-3-half"><input type="text" onfocus="(this.type="number")" onblur="(this.type="text")" min="0" id="rate" name="excluded:skip" placeholder="Rate" required="required"></td>            <td class="pt-3-half"><input type="text" id="amount" name="excluded:skip" placeholder="Amount" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" onfocus="(this.type="number")" onblur="(this.type="text")" min="0" id="discount" name="excluded:skip" placeholder="Discount" required="required"></td>            <td class="pt-3-half"><input type="text" onfocus="(this.type="number")" onblur="(this.type="text")" min="0" id="gstRate" name="excluded:skip" placeholder="GST Rate" required="required"></td>            <td class="pt-3-half"><input type="text" id="taxableValue" name="excluded:skip" placeholder="Taxable Value" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="cgst" name="excluded:skip" placeholder="CGST" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="sgst" name="excluded:skip" placeholder="SGST" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="igst" name="excluded:skip" placeholder="IGST" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="totalAmount" name="excluded:skip" placeholder="Total Amount" readonly="readonly"></td>			<td>			<figure style="display:flex;">              <span class="table-add"><img class="autoResizeImage" style="margin-right: 2px;" src="/images/add.png" alt=""></span>              <span class="table-remove"><img class="autoResizeImage" style="margin-left: 2px;" src="/images/remove.png" alt=""></span>              </figure>            </td>          </tr>';
  
  const newBOSTr = '<tr>            <td class="pt-3-half"><input type="text" id="srNo" name="excluded:skip" placeholder="Sr No" readonly="readonly"></td>            <td class="pt-3-half"><input list="data" id="productDesc" class="form-control" placeholder="Product Description" required="required" autocomplete="off"></td>            <td class="pt-3-half"><input type="text" id="hsnCode" name="excluded:skip" placeholder="HSN Code"></td>            <td class="pt-3-half"><input type="text" id="uom" name="excluded:skip" placeholder="UOM"></td>            <td class="pt-3-half"><input type="text" onfocus="(this.type="number")" onblur="(this.type="text")" min="0" id="qty" name="excluded:skip" placeholder="QTY" required="required"></td>            <td class="pt-3-half"><input type="text" onfocus="(this.type="number")" onblur="(this.type="text")" min="0" id="rate" name="excluded:skip" placeholder="Rate" required="required"></td>            <td class="pt-3-half"><input type="text" id="amount" name="excluded:skip" placeholder="Amount" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" onfocus="(this.type="number")" onblur="(this.type="text")" min="0" id="discount" name="excluded:skip" placeholder="Discount" required="required"></td>            <td class="pt-3-half"><input type="text" id="totalAmount" name="excluded:skip" placeholder="Total Amount" readonly="readonly"></td>			<td>			<figure style="display:flex;">              <span class="table-add"><img class="autoResizeImage" style="margin-right: 2px;" src="/images/add.png" alt=""></span>              <span class="table-remove"><img class="autoResizeImage" style="margin-left: 2px;" src="/images/remove.png" alt=""></span>              </figure>            </td>          </tr>';
-
+ 
  $tableID.on('click', '.table-remove', function () {
 if ($tableID.find('tbody tr').length !== 1) {
    $(this).parents('tr').detach();
@@ -54,7 +57,7 @@ else
  
  
  $tableBOSID.on('click', '.table-remove', function () {
-	 if ($tableID.find('tbody tr').length !== 1) {
+	 if ($tableBOSID.find('tbody tr').length !== 1) {
 	    $(this).parents('tr').detach();
 	       
 	    setBOSValues();
@@ -826,4 +829,86 @@ function getBankList(){
 		}
 		}
 	});
+}
+
+
+function getInvoiceData(data) {
+	var value = $(data).val();
+	var account = $("#selectbasic").val();
+	if(value === "Invoice Ref"){
+		if(account !== "0") {
+			$("#invoicePayment").show();
+			$invoiceTable.find('tbody tr').each(function (index) {
+			var $tblrow = $(this);
+			getInvoiceList(account, $tblrow);
+				
+	        $tblrow.on('change', function () {
+	        	
+		        	if($tblrow.find("#remainingAmount").val() === "") {
+		        	var invoiceKey = $tblrow.find("#invoiceDropdown").val();
+		        	if(invoiceKey !== "0") {
+		        		$.ajax({
+		        			type : "GET",
+		        			contentType : "application/json",
+		        			url : "/home/getinvoice?key="+invoiceKey,
+		        			dataType : 'json',			
+		        			async : true,
+		        			success : function(data) {
+		        				$tblrow.find("#invoiceAmount").val(data.invoiceTotalAmountAfterTax);
+		        				var remaining = parseFloat(data.invoiceTotalAmountAfterTax) - parseFloat(data.invoicePaidAmt);
+		        				$tblrow.find("#remainingAmount").val(remaining)
+		        			}
+		        		});
+		        	} else {
+		        		$tblrow.find("#invoiceAmount").val("");
+		        		$tblrow.find("#remainingAmount").val("");
+		        		$tblrow.find("#paymentAmount").val("");
+		        		$tblrow.find("#dueAmount").val("");
+		        	}
+		        	}
+		        	
+		        	var payment = parseFloat($tblrow.find("#paymentAmount").val());
+		        	var dueAmount = parseFloat($tblrow.find("#remainingAmount").val()) - payment;
+		        	if(!isNaN(dueAmount)) {
+		        		$tblrow.find("#dueAmount").val(dueAmount.toFixed(2));
+		        	}
+				});
+	        });
+		} else {
+			createConfirmationMessageModal("Please select an account");
+		}
+	} else {
+		$("#invoicePayment").hide();
+		emptyTable();
+		$('#paymentRef').empty();
+	}
+}
+
+function getInvoiceList(account, row) {
+	$(row).find("#invoiceDropdown").empty();
+	$(row).find('input').val("");
+	$.ajax({
+		type : "GET",
+		contentType : "application/json",
+		url : "/home/getinvoicelist?accountName="+account,
+		dataType : 'json',			
+		async : false,
+		success : function(data) {	
+			if(data !== null) {
+				$.each(data, function (i, item) {
+					$(row).find("#invoiceDropdown").append($('<option>', { 
+				        value: item.invoiceUniqueKey,
+				        text : item.invoiceNumber 
+				    }));
+				});
+			} 
+		}
+	});
+}
+
+function emptyTable() {
+	$invoiceTable.find('tbody tr').each(function (index) {
+		var $tblrow = $(this);
+		$tblrow.find('input').val("");
+        });
 }
