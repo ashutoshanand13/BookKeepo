@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bookkeepo.accounting.entity.Accounts;
 import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.service.AccountService;
 import com.bookkeepo.accounting.service.BankService;
@@ -99,5 +100,16 @@ public class AjaxController {
 		Company company = companyDetailsService.findByUserName(request.getUserPrincipal().getName());
 		return gson.toJson(bankService.fetchBankList(request.getUserPrincipal().getName(), company));
 	}
+	
+	
+	@RequestMapping(value = "/home/getinvoicelist", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody String getInvoiceList(@RequestParam String accountName, HttpServletRequest request) {
+		Accounts account = accountService.findById(Integer.valueOf(accountName));
+		return gson.toJson(invoiceService.findByInvoiceAccountDetailsAndInvoiceOwner(account, request.getUserPrincipal().getName()));
+	}
 
+	@RequestMapping(value = "/home/getinvoice", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody String getInvoice(@RequestParam String key, HttpServletRequest request) {
+		return gson.toJson(invoiceService.findByInvoiceUniqueKey(key));
+	}
 }
