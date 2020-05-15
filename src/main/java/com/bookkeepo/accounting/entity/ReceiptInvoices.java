@@ -27,6 +27,9 @@ public class ReceiptInvoices {
 	@Column(name = "receipt_invoice_id")
 	private int id;
 
+	@Column(name = "receipt_invoice_key")
+	private String receiptInvoiceId;
+
 	@Column(name = "receipt_invoice_number")
 	private String receiptInvoiceNumber;
 
@@ -54,6 +57,20 @@ public class ReceiptInvoices {
 	 */
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	/**
+	 * @return the receiptInvoiceId
+	 */
+	public String getReceiptInvoiceId() {
+		return receiptInvoiceId;
+	}
+
+	/**
+	 * @param receiptInvoiceId the receiptInvoiceId to set
+	 */
+	public void setReceiptInvoiceId(String receiptInvoiceId) {
+		this.receiptInvoiceId = receiptInvoiceId;
 	}
 
 	/**

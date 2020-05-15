@@ -27,6 +27,9 @@ public class PaymentInvoices {
 	@Column(name = "payment_invoice_id")
 	private int id;
 
+	@Column(name = "payment_invoice_key")
+	private String paymentInvoiceId;
+
 	@Column(name = "payment_invoice_number")
 	private String paymentInvoiceNumber;
 
@@ -54,6 +57,20 @@ public class PaymentInvoices {
 	 */
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	/**
+	 * @return the paymentInvoiceId
+	 */
+	public String getPaymentInvoiceId() {
+		return paymentInvoiceId;
+	}
+
+	/**
+	 * @param paymentInvoiceId the paymentInvoiceId to set
+	 */
+	public void setPaymentInvoiceId(String paymentInvoiceId) {
+		this.paymentInvoiceId = paymentInvoiceId;
 	}
 
 	/**
