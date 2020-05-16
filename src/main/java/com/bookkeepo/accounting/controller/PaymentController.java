@@ -82,7 +82,9 @@ public class PaymentController {
 		checkPaymentInvoiceDetails(payment);
 		paymentService.saveAccount(payment);
 		List<Accounts> accountList = accountService.fetchAccountName(principal.getName(), company);
-		modelAndView.addObject("payment", new Payment());
+		Payment newPayment = new Payment();
+		addPaymentInvoices(newPayment);
+		modelAndView.addObject("payment", newPayment);
 		modelAndView.addObject("message", "Payment Details Successfully Added");
 		modelAndView.setViewName("addPayment");
 		modelAndView.addObject("accountList", accountList);

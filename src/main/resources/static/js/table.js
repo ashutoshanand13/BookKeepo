@@ -855,7 +855,12 @@ function getInvoiceData(data) {
 		        	ttlPayment[index] = checkValueNaN(payment);
 		        	var dueAmount = parseFloat($tblrow.find("#remainingAmount").val()) - payment;
 		        	if(!isNaN(dueAmount)) {
-		        		$tblrow.find("#dueAmount").val(dueAmount.toFixed(2));
+		        		if(dueAmount < 0) {
+		        			$tblrow.find("#paymentAmount").val("");
+		        			createConfirmationMessageModal("Payment cannot be greater than remaining amount");
+		        		} else {
+		        			$tblrow.find("#dueAmount").val(dueAmount.toFixed(2));
+		        		}
 		        	}
 				});
 	        });
@@ -919,7 +924,7 @@ function setInvoice(data) {
     				$(data).parent().parent().find("#invoiceId").val(val.id);
     				$(data).parent().parent().find("#invoiceAmount").val(val.invoiceTotalAmountAfterTax);
     				var remaining = parseFloat(val.invoiceTotalAmountAfterTax) - parseFloat(val.invoicePaidAmt);
-    				$(data).parent().parent().find("#remainingAmount").val(remaining)
+    				$(data).parent().parent().find("#remainingAmount").val(parseFloat(remaining).toFixed(2))
     			}
     		});
 		} else {
