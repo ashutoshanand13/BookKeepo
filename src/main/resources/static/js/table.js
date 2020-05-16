@@ -861,6 +861,7 @@ function getInvoiceData(data) {
 	        });
 		} else {
 			createConfirmationMessageModal("Please select an account");
+			$('#paymentReference option:first').prop('selected', true);
 		}
 	} else {
 		$("#invoicePayment").hide();
