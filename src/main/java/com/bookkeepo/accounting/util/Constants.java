@@ -24,4 +24,6 @@ public class Constants {
 			"Date of supply", "Place of Supply", "Name of party", "Total invoice amount" };
 
 	public static String FORGET_PASSWORD_IDENTIFIER = "0";
+	
+	public static int INVOICE_REF_COUNT = 5;
 }

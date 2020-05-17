@@ -19,6 +19,7 @@
  // For payment and receipt only
  var ttlPayment = [];
  var invoiceList = [];
+ var dropdown = []
  
  
  var isGstValid = true;
@@ -876,30 +877,42 @@ function getInvoiceData(data) {
 }
 
 function getInvoiceList(account, row) {
+
 	$(row).find("#invoiceDropdown").empty();
 	$(row).find('input').val("");
-	$.ajax({
-		type : "GET",
-		contentType : "application/json",
-		url : "/home/getinvoicelist?accountName="+account,
-		dataType : 'json',			
-		async : false,
-		success : function(data) {	
-			if(data !== null) {
-				$.each(data, function (i, item) {
-					$(row).find("#invoiceDropdown").append($('<option>', { 
-				        value: item.invoiceUniqueKey,
-				        text : item.invoiceNumber 
-				    }));
-				});
-			} 
-		}
-	});
+	if(dropdown.length === 0) {
+		$.ajax({
+			type : "GET",
+			contentType : "application/json",
+			url : "/home/getinvoicelist?accountName="+account,
+			dataType : 'json',			
+			async : false,
+			success : function(data) {	
+				if(data !== null) {
+					dropdown = data;
+					$.each(data, function (i, item) {
+						$(row).find("#invoiceDropdown").append($('<option>', { 
+					        value: item.invoiceUniqueKey,
+					        text : item.invoiceNumber 
+					    }));
+					});
+				} 
+			}
+		});
+	} else {
+		$.each(dropdown, function (i, item) {
+			$(row).find("#invoiceDropdown").append($('<option>', { 
+		        value: item.invoiceUniqueKey,
+		        text : item.invoiceNumber 
+		    }));
+		});
+	}
 }
 
 function emptyTable() {
 	ttlPayment = [];
 	invoiceList = [];
+	dropdown = [];
 	$invoiceTable.find('tbody tr').each(function (index) {
 		var $tblrow = $(this);
 		$tblrow.find('input').val("");

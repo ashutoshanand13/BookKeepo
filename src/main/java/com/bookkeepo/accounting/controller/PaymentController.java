@@ -30,6 +30,7 @@ import com.bookkeepo.accounting.service.BankService;
 import com.bookkeepo.accounting.service.CompanyDetailsService;
 import com.bookkeepo.accounting.service.InvoiceService;
 import com.bookkeepo.accounting.service.PaymentService;
+import com.bookkeepo.accounting.util.Constants;
 
 /**
  * @author sachingoyal
@@ -125,7 +126,7 @@ public class PaymentController {
 
 	private void addPaymentInvoices(Payment payment) {
 		List<PaymentInvoices> invoiceList = new ArrayList<PaymentInvoices>();
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < Constants.INVOICE_REF_COUNT; i++) {
 			invoiceList.add(new PaymentInvoices());
 		}
 		payment.setPaymentInvoiceDetails(invoiceList);
