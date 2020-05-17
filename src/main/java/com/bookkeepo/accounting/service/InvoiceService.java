@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bookkeepo.accounting.entity.Accounts;
 import com.bookkeepo.accounting.entity.InvoiceDetails;
 import com.bookkeepo.accounting.model.InvoiceData;
 import com.bookkeepo.accounting.repository.CompanyDetailsRepository;
@@ -71,5 +72,19 @@ public class InvoiceService {
 			String owner) {
 		return invoiceRepository.findByInvoiceNumberAndInvoiceOwnerAndInvoiceTypeAndInvoiceCompanyDetails(invoiceNo,
 				owner, type, companyDetailsRepository.findByUserNameAndCompanyActive(owner, 1));
+	}
+	
+	public List<InvoiceDetails> findByInvoiceAccountDetailsAndInvoiceOwner(Accounts account, String owner) {
+		List<InvoiceDetails> invoiceList = invoiceRepository.findByInvoiceAccountDetailsAndInvoiceOwner(account, owner);
+		
+		if(!invoiceList.isEmpty()) {
+			InvoiceDetails temp = new InvoiceDetails();
+			temp.setInvoiceUniqueKey("0");
+			temp.setInvoiceNumber("Select");
+			invoiceList.add(0, temp);
+			return invoiceList;
+		}
+		
+		return null;
 	}
 }
