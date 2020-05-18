@@ -132,22 +132,11 @@ public class UserProfileController {
 		
 		try {
 			if (companyLogo != null && CommonUtils.isPopulated(companyLogo.getOriginalFilename())) {
-				if (ImageUtils.validateFile(companyLogo)) {
 					company.setCompanyLogo(addresizedlogo(company, companyLogo));
 					company.setCompanyStringLogo(CommonUtils.getImgfromByteArray(company.getCompanyLogo()));
-				} else {
-					modelAndView.addObject("logoImage", company.getCompanyStringLogo());
-					modelAndView.addObject("message", "Please upload a valid png/jpg image");
-					modelAndView.addObject("company", company);
-				}
-			} else {
-				if (company.getCompanyStringLogo()
-						.equals(CommonUtils.getImgfromResource("/static/images/image-400x400.jpg")))
-					company.setCompanyLogo(null);
-				else
-					company.setCompanyLogo(CommonUtils.getByteArrayfromImage(company.getCompanyStringLogo()));
 			}
 		} catch (IOException e) {
+			company.setCompanyLogo(null);
 		}
 		
 		company.setCompanyUniqueKey(CommonUtils.getUniqueID());
