@@ -12,109 +12,183 @@
 		<div class="bg"></div>
 		<h3>Get more things done with BookKeepo platform.</h3>
 		<p>
-			Access to the most powerful tool in the entire design and web industry.<br> <br> Nam
-			libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime
-			placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.
+			Access to the most powerful tool in the entire design and web
+			industry.<br> <br> Nam libero tempore, cum soluta nobis est
+			eligendi optio cumque nihil impedit quo minus id quod maxime placeat
+			facere possimus, omnis voluptas assumenda est, omnis dolor
+			repellendus.
 		</p>
 	</div>
 </div>
 <div layout:fragment="form_content" id="form_content">
-		<div class="form-items">
-			<h3 class="form-title doubleunderlinetext">Add A Payment</h3>
-			<div id="alert" th:if="${message}" th:text="${message}" class="alert alert-info fade-in"></div>
-			<form autocomplete="off" th:action="@{/home/addpayment}" th:object="${payment}"
-				method="post" class="form-horizontal" role="form">
+	<div class="form-items">
+		<h3 class="form-title doubleunderlinetext">Add A Payment</h3>
+		<div id="alert" th:if="${message}" th:text="${message}"
+			class="alert alert-info fade-in"></div>
+		<div id="alert_placeholder"></div>
+		<form autocomplete="off" th:action="@{/home/addpayment}"
+			th:object="${payment}" method="post" class="form-horizontal"
+			role="form" onsubmit="return checkPaymentValue()">
 
-				
-				<div class="row">
+
+			<div class="row">
 				<div class="col-md-6 form-group">
-				<div class="form-group">
-					<label>Account Name</label> <select th:field="*{accountRefNo.id}" class="form-control"
-						id="selectbasic">
-						<option th:each="account : ${accountList}" th:value="${account.id}"
-									th:text="${account.accountName}"></option>
-					</select>
+					<div class="form-group">
+						<label>Account Name</label> <select th:field="*{accountRefNo.id}"
+							class="form-control" id="selectbasic">
+							<option th:each="account : ${accountList}"
+								th:value="${account.id}" th:text="${account.accountName}"></option>
+						</select>
 					</div>
 					<div class="form-group">
-							<input type="text" id="gstin" class="form-control"
-								 placeholder="GST Number" readonly="readonly"
-								required> 
-								
+						<input type="text" id="gstin" class="form-control"
+							placeholder="GST Number" readonly="readonly" required>
+
 					</div>
-					<label>Receipt Details</label>
-						<select
-							name="selectbasic" class="form-control" th:field="*{paymentReference}" required="required">
-							<option class="form-control" value="">Select Payment Reference</option>
-							<option class="form-control" value="On Account">On Account</option>
-							<option class="form-control" value="Invoice Ref">Invoice Ref</option>
-							<option class="form-control" value="Advance">Advance</option>
-						</select>
-						<input type="date"
-						class="form-control" name="paymentDate" th:field="*{paymentDate}"
-						placeholder="Receipt Date" required>
-						<select class="form-control" th:field="*{paymentMode}" required="required">
-							<option class="form-control" value="">Select Payment Mode</option>
-							<option class="form-control" value="Cash">Cash</option>
-							<option class="form-control" value="Bank">Bank</option>
-						</select>
-						
-						<div id=bankDropdown></div>
-						<div id=bankAlert></div>
+					<label>Receipt Details</label> <select name="selectbasic"
+						class="form-control" th:field="*{paymentReference}"
+						required="required">
+						<option class="form-control" value="">Select Payment
+							Reference</option>
+						<option class="form-control" value="On Account">On
+							Account</option>
+						<option class="form-control" value="Invoice Ref">Invoice
+							Ref</option>
+						<option class="form-control" value="Advance">Advance</option>
+					</select>
+					<div id=paymentRef></div>
+					<input type="date" class="form-control" name="paymentDate"
+						th:field="*{paymentDate}" placeholder="Receipt Date" required>
+					<select class="form-control" th:field="*{paymentMode}"
+						required="required">
+						<option class="form-control" value="">Select Payment Mode</option>
+						<option class="form-control" value="Cash">Cash</option>
+						<option class="form-control" value="Bank">Bank</option>
+					</select>
+
+					<div id=bankDropdown></div>
+					<div id=bankAlert></div>
 				</div>
 				<div class="col-md-6 form-group">
-				<div class="form-group">
-						
+					<div class="form-group">
+
 						<label>Address</label>
-					<textarea class="form-control" id="accountAddress"
-						readonly="readonly" required></textarea>
+						<textarea class="form-control" id="accountAddress"
+							readonly="readonly" required></textarea>
 						<div class="empty-space"></div>
-					<label>Payment Information</label>
-						<input type="text" onfocus="(this.type='number')" onblur="(this.type='text')" min="0"
-						class="form-control" name="paymentAmount" th:field="*{paymentAmount}"
-						placeholder="Payment Amount" required>
-						<textarea class="form-control" name="paymentDescription" th:field="*{paymentDescription}" placeholder="Payment Description"
-							></textarea>
+						<label>Payment Information</label> <input type="text"
+							onfocus="(this.type='number')" onblur="(this.type='text')"
+							min="0" class="form-control" name="paymentAmount"
+							th:field="*{paymentAmount}" placeholder="Payment Amount" required>
+						<textarea class="form-control" name="paymentDescription"
+							th:field="*{paymentDescription}"
+							placeholder="Payment Description"></textarea>
 					</div>
 				</div>
+				<div id="invoicePayment" class="col-md-12 form-group">
+					<table id="invoiceTable" border="1"
+						class="table table-responsive-md text-center">
+						<colgroup>
+							<col width="15%">
+							<col width="20%">
+							<col width="20%">
+							<col width="20%">
+							<col width="25%">
+						</colgroup>
+						<thead>
+							<tr bgcolor="#BFD6E9">
+								<th class="text-center">Invoice No.</th>
+								<th class="text-center">Invoice Amount</th>
+								<th class="text-center">Remaining Amount</th>
+								<th class="text-center">Payment Amount</th>
+								<th class="text-center">Payment Due Amount</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr
+								th:each="paymentInvoiceDetail, itemStat : *{paymentInvoiceDetails}">
+								<td><select class="form-control" id="invoiceDropdown" onchange="setInvoice(this)"
+									th:field="*{paymentInvoiceDetails[__${itemStat.index}__].paymentInvoiceNumber}">
+								</select></td>
+								<td><input id="invoiceAmount"
+									th:field="*{paymentInvoiceDetails[__${itemStat.index}__].paymentInvoiceTotalAmount}"
+									readonly="readonly" /> 
+									<input type="hidden" id="invoiceId"
+									th:field="*{paymentInvoiceDetails[__${itemStat.index}__].paymentInvoiceId}" /></td>
+								<td><input id="remainingAmount"
+									th:field="*{paymentInvoiceDetails[__${itemStat.index}__].paymentInvoiceRemainingAmount}"
+									readonly="readonly" /></td>
+								<td><input type="text" onfocus="(this.type='number')"
+									onblur="(this.type='text')" id="paymentAmount"
+									th:field="*{paymentInvoiceDetails[__${itemStat.index}__].paymentInvoiceAmount}" /></td>
+								<td><input id="dueAmount"
+									th:field="*{paymentInvoiceDetails[__${itemStat.index}__].paymentInvoiceDueAmount}"
+									readonly="readonly" /></td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
-				<div class="form-button text-right">
-					<button type="reset" class="btn btn-light">Reset</button>
-					<button id="submit" type="submit" class="ibtn">Save</button>
+			</div>
+			<div class="form-button text-right">
+				<button type="reset" class="btn btn-light">Reset</button>
+				<button id="submit" type="submit" class="ibtn">Save</button>
 
-				</div>
-			</form>
-		</div>
+			</div>
+		</form>
+	</div>
 </div>
 <th:block layout:fragment="scripts">
 	<script type="text/javascript">
-$(document).ready(function() {
-	$("#selectbasic").change(function() {
-		getAccountData();
-	});
-	
-	$("#paymentMode").change(function() {
-		getBankData($("#paymentMode"));
-	});
-});
+		$(document).ready(function() {
 
-function getAccountData() {
-	var accountName = $("#selectbasic").val();
-	
-	if(accountName !== "0"){
-	$.ajax({
-		type : "GET",
-		contentType : "application/json",
-		url : "getAccountData?accountName=" + accountName,
-		dataType : 'json',				
-		success : function(data) {
-			document.getElementById('gstin').value = data.gstin;
-			document.getElementById('accountAddress').value = data.accountAddress;
-		}
+			$("#invoicePayment").hide();
+
+			$("#selectbasic").change(function() {
+				$('#paymentReference option:first').prop('selected', true);
+				$("#invoicePayment").hide();
+				$('#paymentRef').empty();
+				emptyTable();
+				getAccountData();
+			});
+
+			$("#paymentMode").change(function() {
+				getBankData($("#paymentMode"));
+			});
+			$("#paymentReference").change(function() {
+				getInvoiceData($("#paymentReference"));
+			});
 		});
-	} else {
-		document.getElementById('gstin').value = "";
-		document.getElementById('accountAddress').value = "";
+
+		function getAccountData() {
+			var accountName = $("#selectbasic").val();
+
+			if (accountName !== "0") {
+				$
+						.ajax({
+							type : "GET",
+							contentType : "application/json",
+							url : "getAccountData?accountName=" + accountName,
+							dataType : 'json',
+							success : function(data) {
+								document.getElementById('gstin').value = data.gstin;
+								document.getElementById('accountAddress').value = data.accountAddress;
+							}
+						});
+			} else {
+				document.getElementById('gstin').value = "";
+				document.getElementById('accountAddress').value = "";
+			}
+		};
+		
+function checkPaymentValue() {
+	var paymentVal = parseFloat($("#paymentAmount").val());
+	var totalPayment = checkValueNaN(getSum(ttlPayment));
+	
+	if(paymentVal !== totalPayment && $('#paymentReference').val() === "Invoice Ref") {
+		createConfirmationMessageModal("Total Payment Amount in Invoice Ref table should be equal to Payment Amount");
+		return false;
 	}
-};
-</script>
+	return true;
+}
+	</script>
 </th:block>

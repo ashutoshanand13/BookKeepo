@@ -102,6 +102,12 @@ public class InvoiceDetails {
 	@Column(name = "invoice_key")
 	private String invoiceUniqueKey;
 
+	@Column(name = "invoice_paid_amount", nullable = false, columnDefinition="Decimal(10,2) default '0.00'")
+	private String invoicePaidAmt;
+
+	@Column(name = "invoice_paid", nullable = false)
+	private int invoicePaid;
+
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "invoice_products_referece_no")
 	private List<InvoiceProductDetails> invoiceProductDetails;
