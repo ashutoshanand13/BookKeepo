@@ -87,6 +87,9 @@ public class InvoiceUtil {
 		invoice.setInvoiceProductDetails(getProductList(salesInvoiceData));
 
 		invoice.setInvoiceOtherDetails(getOtherDetails(salesInvoiceData));
+		
+		invoice.setInvoicePaidAmt("0.00");
+		invoice.setInvoicePaid(0);
 	}
 
 	public static InvoiceCompanyDetails getComanyDetails(Company companyDetails) {

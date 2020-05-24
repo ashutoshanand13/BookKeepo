@@ -102,7 +102,7 @@ public class InvoiceDetails {
 	@Column(name = "invoice_key")
 	private String invoiceUniqueKey;
 
-	@Column(name = "invoice_paid_amount", nullable = false, columnDefinition="Decimal(10,2) default '0.00'")
+	@Column(name = "invoice_paid_amount", columnDefinition="Decimal(10,2) default '0.00'")
 	private String invoicePaidAmt;
 
 	@Column(name = "invoice_paid", nullable = false)
@@ -516,6 +516,34 @@ public class InvoiceDetails {
 	 */
 	public void setInvoiceOtherDetails(InvoiceOtherDetails invoiceOtherDetails) {
 		this.invoiceOtherDetails = invoiceOtherDetails;
+	}
+
+	/**
+	 * @return the invoicePaidAmt
+	 */
+	public String getInvoicePaidAmt() {
+		return invoicePaidAmt;
+	}
+
+	/**
+	 * @param invoicePaidAmt the invoicePaidAmt to set
+	 */
+	public void setInvoicePaidAmt(String invoicePaidAmt) {
+		this.invoicePaidAmt = invoicePaidAmt;
+	}
+
+	/**
+	 * @return the invoicePaid
+	 */
+	public int getInvoicePaid() {
+		return invoicePaid;
+	}
+
+	/**
+	 * @param invoicePaid the invoicePaid to set
+	 */
+	public void setInvoicePaid(int invoicePaid) {
+		this.invoicePaid = invoicePaid;
 	}
 
 }

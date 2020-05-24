@@ -847,6 +847,7 @@ function getInvoiceData(data) {
 	if(value === "Invoice Ref"){
 		if(account !== "0") {
 			$("#invoicePayment").show();
+			$("#invoiceReceipt").show();
 			$invoiceTable.find('tbody tr').each(function (index) {
 			var $tblrow = $(this);
 			getInvoiceList(account, $tblrow);
@@ -868,9 +869,11 @@ function getInvoiceData(data) {
 		} else {
 			createConfirmationMessageModal("Please select an account");
 			$('#paymentReference option:first').prop('selected', true);
+			$('#receiptReference option:first').prop('selected', true);
 		}
 	} else {
 		$("#invoicePayment").hide();
+		$("#invoiceReceipt").hide();
 		emptyTable();
 		$('#paymentRef').empty();
 	}

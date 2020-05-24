@@ -20,6 +20,7 @@
 	<div class="form-items">
 		<h3 class="form-title doubleunderlinetext">Add Receipt</h3>
 		<div id="alert" th:if="${message}" th:text="${message}" class="alert alert-info fade-in"></div>
+		<div id="alert_placeholder"></div>
 		<form autocomplete="off" th:action="@{/home/addreceipt}" th:object="${receipts}" method="post"
 			class="form-horizontal" role="form">
 			<div class="row">
@@ -44,12 +45,13 @@
 				<div class="col-md-6 form-group">
 					<label>Receipt Details</label>
 					<select
-							name="selectbasic" class="form-control" th:field="*{receiptReference}" required="required">
+							class="form-control" th:field="*{receiptReference}" required="required">
 							<option class="form-control" value="">Select Receipt Reference</option>
 							<option class="form-control" value="On Account">On Account</option>
 							<option class="form-control" value="Invoice Ref">Invoice Ref</option>
 							<option class="form-control" value="Advance">Advance</option>
-						</select>
+					</select>
+					<div id=receiptRef></div>
 					<input type="date"
 						class="form-control" name="receiptDate" th:field="*{receiptDate}"
 						placeholder="Receipt Date" required>
@@ -70,6 +72,49 @@
 						<textarea class="form-control" name="receiptDescription" th:field="*{receiptDescription}" placeholder="Receipt Description"
 							></textarea>
 				</div>
+				<div id="invoiceReceipt" class="col-md-12 form-group">
+					<table id="invoiceTable" border="1"
+						class="table table-responsive-md text-center">
+						<colgroup>
+							<col width="15%">
+							<col width="20%">
+							<col width="20%">
+							<col width="20%">
+							<col width="25%">
+						</colgroup>
+						<thead>
+							<tr bgcolor="#BFD6E9">
+								<th class="text-center">Invoice No.</th>
+								<th class="text-center">Invoice Amount</th>
+								<th class="text-center">Remaining Amount</th>
+								<th class="text-center">Payment Amount</th>
+								<th class="text-center">Payment Due Amount</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr
+								th:each="receiptInvoiceDetail, itemStat : *{receiptInvoiceDetails}">
+								<td><select class="form-control" id="invoiceDropdown" onchange="setInvoice(this)"
+									th:field="*{receiptInvoiceDetails[__${itemStat.index}__].receiptInvoiceNumber}">
+								</select></td>
+								<td><input id="invoiceAmount"
+									th:field="*{receiptInvoiceDetails[__${itemStat.index}__].receiptInvoiceTotalAmount}"
+									readonly="readonly" /> 
+									<input type="hidden" id="invoiceId"
+									th:field="*{receiptInvoiceDetails[__${itemStat.index}__].receiptInvoiceId}" /></td>
+								<td><input id="remainingAmount"
+									th:field="*{receiptInvoiceDetails[__${itemStat.index}__].receiptInvoiceRemainingAmount}"
+									readonly="readonly" /></td>
+								<td><input type="text" onfocus="(this.type='number')"
+									onblur="(this.type='text')" id="receiptAmount"
+									th:field="*{receiptInvoiceDetails[__${itemStat.index}__].receiptInvoiceAmount}" /></td>
+								<td><input id="dueAmount"
+									th:field="*{receiptInvoiceDetails[__${itemStat.index}__].receiptInvoiceDueAmount}"
+									readonly="readonly" /></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 			<div class="form-button text-right">
 				<button type="reset" class="btn btn-light">Reset</button>
@@ -81,12 +126,23 @@
 <th:block layout:fragment="scripts">
 	<script type="text/javascript">
 $(document).ready(function() {
+	
+	$("#invoiceReceipt").hide();
+
 	$("#selectbasic").change(function() {
+		$('#receiptReference option:first').prop('selected', true);
+		$("#invoiceReceipt").hide();
+		$('#receiptRef').empty();
+		emptyTable();
 		getAccountData();
 	});
 	
 	$("#receiptMode").change(function() {
 		getBankData($("#receiptMode"));
+	});
+	
+	$("#receiptReference").change(function() {
+		getInvoiceData($("#receiptReference"));
 	});
 });
 

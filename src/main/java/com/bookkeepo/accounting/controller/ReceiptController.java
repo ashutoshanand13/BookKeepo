@@ -4,7 +4,9 @@
 package com.bookkeepo.accounting.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -21,11 +23,16 @@ import org.springframework.web.servlet.ModelAndView;
 import com.bookkeepo.accounting.entity.Accounts;
 import com.bookkeepo.accounting.entity.BankDetails;
 import com.bookkeepo.accounting.entity.Company;
+import com.bookkeepo.accounting.entity.Payment;
+import com.bookkeepo.accounting.entity.PaymentInvoices;
+import com.bookkeepo.accounting.entity.ReceiptInvoices;
 import com.bookkeepo.accounting.entity.Receipts;
 import com.bookkeepo.accounting.service.AccountService;
 import com.bookkeepo.accounting.service.BankService;
 import com.bookkeepo.accounting.service.CompanyDetailsService;
+import com.bookkeepo.accounting.service.InvoiceService;
 import com.bookkeepo.accounting.service.ReceiptService;
+import com.bookkeepo.accounting.util.Constants;
 
 /**
  * @author sachingoyal
@@ -46,6 +53,9 @@ public class ReceiptController {
 	
 	@Autowired
 	private BankService bankService;
+	
+	@Autowired
+	InvoiceService invoiceService;
 
 	@RequestMapping(value = { "/home/addreceipt" }, method = RequestMethod.GET)
 	public ModelAndView getAddReceipt(HttpServletRequest request) {
@@ -55,12 +65,7 @@ public class ReceiptController {
 		if (company == null) {
 			modelAndView.setViewName("redirect:/home/showProfile");
 		} else {
-			List<Accounts> accountList = accountService.fetchAccountName(user, company);
-
-			Receipts receipt = new Receipts();
-			modelAndView.addObject("receipts", receipt);
-			modelAndView.setViewName("addReceipt");
-			modelAndView.addObject("accountList", accountList);
+			makePageReadyforLoad(request, modelAndView, company);
 		}
 
 		return modelAndView;
@@ -78,6 +83,7 @@ public class ReceiptController {
 			receipt.setBankDetails(bankDetails);
 		}
 		receipt.setReceiptCompanyDetails(company);
+		checkReceiptInvoiceDetails(receipt);
 		receiptService.saveAccount(receipt);
 		List<Accounts> accountList = accountService.fetchAccountName(principal.getName(), company);
 		modelAndView.addObject("receipts", new Receipts());
@@ -85,6 +91,43 @@ public class ReceiptController {
 		modelAndView.setViewName("addReceipt");
 		modelAndView.addObject("accountList", accountList);
 		return modelAndView;
+	}
+	
+	private void checkReceiptInvoiceDetails(@Valid Receipts receipt) {
+		if (!receipt.getReceiptReference().equals("Invoice Ref")) {
+			receipt.setReceiptInvoiceDetails(null);
+		} else {
+			List<ReceiptInvoices> temp = receipt.getReceiptInvoiceDetails();
+			List<ReceiptInvoices> validPayment = temp.stream()
+					.filter(e -> !e.getReceiptInvoiceAmount().equals("") && !e.getReceiptInvoiceDueAmount().equals(""))
+					.collect(Collectors.toList());
+			validPayment.stream()
+					.peek(f -> f.setReceiptInvoiceNumber(
+							invoiceService.findByInvoiceUniqueKey(f.getReceiptInvoiceNumber()).getInvoiceNumber()))
+					.collect(Collectors.toList());
+
+			receipt.setReceiptInvoiceDetails(validPayment);
+		}
+
+	}
+	
+	protected void makePageReadyforLoad(HttpServletRequest request, ModelAndView modelAndView, Company company) {
+		String user = request.getUserPrincipal().getName();
+		List<Accounts> accountList = accountService.fetchAccountName(user, company);
+		Receipts receipt = new Receipts();
+		addReceiptInvoices(receipt);
+		modelAndView.addObject("receipts", receipt);
+		modelAndView.setViewName("addReceipt");
+		modelAndView.addObject("accountList", accountList);
+	}
+
+	private void addReceiptInvoices(Receipts receipt) {
+		List<ReceiptInvoices> invoiceList = new ArrayList<ReceiptInvoices>();
+		for (int i = 0; i < Constants.INVOICE_REF_COUNT; i++) {
+			invoiceList.add(new ReceiptInvoices());
+		}
+		receipt.setReceiptInvoiceDetails(invoiceList);
+
 	}
 
 	@RequestMapping(value = { "/home/showreceipt" }, method = RequestMethod.GET)
