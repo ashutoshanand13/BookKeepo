@@ -28,8 +28,8 @@
  var tableIndex = 0;
 
  
- var controllerMap = { salesInvoice: "/home/submitInvoice", exportInvoice: "/home/submitInvoice", debitNote:"/home/submitInvoice", creditNote:"/home/submitInvoice" , purchaseOrder:"/home/submitInvoice"  , purchaseInvoice:"/home/submitInvoice", billOfSupply:"/home/submitInvoice"};
- var fileMap = { salesInvoice: "Tax_Invoice", exportInvoice: "Export_Invoice", debitNote:"Debit_Note", creditNote:"Credit_Note", purchaseOrder:"Purchase_Order", purchaseInvoice:"Purchase_Invoice", billOfSupply:"Bill_Of_Supply" };
+ var controllerMap = { salesInvoice: "/home/submitInvoice", exportInvoice: "/home/submitInvoice", debitNote:"/home/submitInvoice", creditNote:"/home/submitInvoice" , purchaseOrder:"/home/submitInvoice"  , purchaseInvoice:"/home/submitInvoice", billOfSupply:"/home/submitInvoice", retailInvoice:"/home/submitInvoice"};
+ var fileMap = { salesInvoice: "Tax_Invoice", exportInvoice: "Export_Invoice", debitNote:"Debit_Note", creditNote:"Credit_Note", purchaseOrder:"Purchase_Order", purchaseInvoice:"Purchase_Invoice", billOfSupply:"Bill_Of_Supply", retailInvoice:"Retail_Invoice" };
  
  var gstRegex = /^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$/;
  
@@ -866,6 +866,14 @@ function getInvoiceData(data) {
 		        	}
 				});
 	        });
+			if(dropdown.length === 0) {
+				createConfirmationMessageModal("No Invoice(s) were found for this account");
+				$('#paymentReference option:first').prop('selected', true);
+				$('#receiptReference option:first').prop('selected', true);
+				$("#invoicePayment").hide();
+				$("#invoiceReceipt").hide();
+				emptyTable();
+			}
 		} else {
 			createConfirmationMessageModal("Please select an account");
 			$('#paymentReference option:first').prop('selected', true);
@@ -875,7 +883,6 @@ function getInvoiceData(data) {
 		$("#invoicePayment").hide();
 		$("#invoiceReceipt").hide();
 		emptyTable();
-		$('#paymentRef').empty();
 	}
 }
 

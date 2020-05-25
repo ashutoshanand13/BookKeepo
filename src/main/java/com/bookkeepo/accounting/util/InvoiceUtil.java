@@ -361,7 +361,8 @@ public class InvoiceUtil {
 					insertCell(table, "Transport Mode: ", getValue(invoice.getInvoiceTransportMode()), Element.ALIGN_LEFT, 2,
 							bfBold12, bf12, 1, "#FFFFFF", 0.5f, 1f);
 				}
-			} else if (invoice.getInvoiceType().equals(InvoiceType.Bill_Supply.getType())) {
+			} else if (invoice.getInvoiceType().equals(InvoiceType.Bill_Supply.getType())
+					|| invoice.getInvoiceType().equals(InvoiceType.Retail_Invoice.getType())) {
 				insertCell(table, "Invoice No: ", getValue(invoice.getInvoiceNumber()), Element.ALIGN_LEFT, 2, bfBold12, bf12, 1,
 						"#FFFFFF", 1f, 0.5f);
 				insertCell(table, "PO No: ", getValue(invoice.getInvoicePoNumber()), Element.ALIGN_LEFT, 2, bfBold12, bf12, 1,
@@ -387,7 +388,8 @@ public class InvoiceUtil {
 
 			if (!(invoice.getInvoiceType().equals(InvoiceType.Purchase_Invoice.getType())
 					|| invoice.getInvoiceType().equals(InvoiceType.Purchase_Order.getType())
-					|| invoice.getInvoiceType().equals(InvoiceType.Bill_Supply.getType()))) {
+					|| invoice.getInvoiceType().equals(InvoiceType.Bill_Supply.getType())
+					|| invoice.getInvoiceType().equals(InvoiceType.Retail_Invoice.getType()))) {
 				insertCell(table, "Bill to Party", Element.ALIGN_CENTER, 2, bfBold12, 1, "#BFD6E9", 1f, 0.5f, 0f);
 				insertCell(table, "Ship to Party", Element.ALIGN_CENTER, 2, bfBold12, 1, "#BFD6E9", 0.5f, 1f, 0f);
 
@@ -408,7 +410,8 @@ public class InvoiceUtil {
 				insertCell(table, "State: ", getValue(invoice.getInvoiceAddressDetails().getInvoicePartyState()),
 						Element.ALIGN_LEFT, 2, bfBold12, bf12, 1, "#FFFFFF", 0.5f, 1f);
 				insertCell(table, "", Element.ALIGN_LEFT, 4, bfBold12, 1, "#FFFFFF", 1f, 1f, 0f);
-			} else if(invoice.getInvoiceType().equals(InvoiceType.Bill_Supply.getType())){
+			} else if (invoice.getInvoiceType().equals(InvoiceType.Bill_Supply.getType())
+					|| invoice.getInvoiceType().equals(InvoiceType.Retail_Invoice.getType())) {
 				insertCell(table, "Bill to Party", Element.ALIGN_CENTER, 2, bfBold12, 1, "#BFD6E9", 1f, 0.5f, 0f);
 				insertCell(table, "Ship to Party", Element.ALIGN_CENTER, 2, bfBold12, 1, "#BFD6E9", 0.5f, 1f, 0f);
 
@@ -423,7 +426,8 @@ public class InvoiceUtil {
 				insertCell(table, "", Element.ALIGN_LEFT, 4, bfBold12, 1, "#FFFFFF", 1f, 1f, 0f);
 			}
 
-			if(!invoice.getInvoiceType().equals(InvoiceType.Bill_Supply.getType())) {
+			if (!(invoice.getInvoiceType().equals(InvoiceType.Bill_Supply.getType())
+					|| invoice.getInvoiceType().equals(InvoiceType.Retail_Invoice.getType()))) {
 				
 				insertCell(itemTable, "Sr. No.", Element.ALIGN_CENTER, 1, bfBold12, 1, "#BFD6E9", 1f, 0.5f, 30f);
 				insertCell(itemTable, "Product Description", Element.ALIGN_CENTER, 1, bfBold12, 1, "#BFD6E9", 0.5f, 0.5f,
@@ -686,7 +690,7 @@ public class InvoiceUtil {
 		tableHeader.addCell(cell);
 
 		String companyColumn = company.getCompanyName() + "\n\n" + company.getCompanyAddress() + "\n\nTel: "
-				+ company.getCompanyTelephone() + "\nGSTIN: " + company.getCompanyGstin() + "\n";
+				+ getValue(company.getCompanyTelephone()) + "\nGSTIN: " + getValue(company.getCompanyGstin()) + "\n";
 
 		PdfPCell cell2 = new PdfPCell(
 				new Phrase(companyColumn.trim(), new Font(FontFamily.TIMES_ROMAN, 10, Font.BOLD)));

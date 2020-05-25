@@ -56,7 +56,6 @@
 							Ref</option>
 						<option class="form-control" value="Advance">Advance</option>
 					</select>
-					<div id=paymentRef></div>
 					<input type="date" class="form-control" name="paymentDate"
 						th:field="*{paymentDate}" placeholder="Receipt Date" required>
 					<select class="form-control" th:field="*{paymentMode}"
@@ -146,7 +145,6 @@
 			$("#selectbasic").change(function() {
 				$('#paymentReference option:first').prop('selected', true);
 				$("#invoicePayment").hide();
-				$('#paymentRef').empty();
 				emptyTable();
 				getAccountData();
 			});
