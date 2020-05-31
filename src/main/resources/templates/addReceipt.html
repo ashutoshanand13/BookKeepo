@@ -51,7 +51,6 @@
 							<option class="form-control" value="Invoice Ref">Invoice Ref</option>
 							<option class="form-control" value="Advance">Advance</option>
 					</select>
-					<div id=receiptRef></div>
 					<input type="date"
 						class="form-control" name="receiptDate" th:field="*{receiptDate}"
 						placeholder="Receipt Date" required>
@@ -132,7 +131,6 @@ $(document).ready(function() {
 	$("#selectbasic").change(function() {
 		$('#receiptReference option:first').prop('selected', true);
 		$("#invoiceReceipt").hide();
-		$('#receiptRef').empty();
 		emptyTable();
 		getAccountData();
 	});
