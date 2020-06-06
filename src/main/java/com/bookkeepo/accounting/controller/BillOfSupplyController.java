@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.model.InvoiceType;
 import com.bookkeepo.accounting.service.CompanyDetailsService;
+import com.bookkeepo.accounting.service.InvoiceService;
 import com.bookkeepo.accounting.service.ItemService;
 import com.bookkeepo.accounting.util.CommonUtils;
 
@@ -30,6 +31,9 @@ public class BillOfSupplyController {
 	@Autowired
 	private ItemService itemService;
 
+	@Autowired
+	private InvoiceService invoiceService;
+
 	@RequestMapping(value = "/home/billofsupply", method = RequestMethod.GET)
 	public ModelAndView setupSales(HttpServletRequest request) {
 		String user = request.getUserPrincipal().getName();
@@ -42,6 +46,8 @@ public class BillOfSupplyController {
 			modelAndView.addObject("logoImage", CommonUtils.getImgfromByteArray(company.getCompanyLogo()));
 			modelAndView.addObject("itemList", itemService.findByProductOwner(user));
 			modelAndView.addObject("pageName", InvoiceType.Bill_Supply.getType());
+			modelAndView.addObject("InvoiceNbr",
+					invoiceService.getInvoiceNumber(user, InvoiceType.Bill_Supply.getType()));
 			modelAndView.setViewName("billOfSupply");
 		}
 		return modelAndView;

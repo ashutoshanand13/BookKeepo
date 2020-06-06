@@ -54,6 +54,8 @@ public class CreditNoteController {
 			modelAndView.addObject("logoImage", CommonUtils.getImgfromByteArray(company.getCompanyLogo()));
 			modelAndView.addObject("itemList", itemService.findByProductOwner(user));
 			modelAndView.addObject("pageName", InvoiceType.Credit_Note.getType());
+			modelAndView.addObject("InvoiceNbr",
+					invoiceService.getInvoiceNumber(user, InvoiceType.Credit_Note.getType()));
 			modelAndView.setViewName("creditNote");
 		}
 		return modelAndView;
