@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.service.CompanyDetailsService;
 import com.bookkeepo.accounting.util.CommonUtils;
+import com.bookkeepo.accounting.util.Constants;
 import com.bookkeepo.accounting.util.ImageUtils;
 
 @Controller
@@ -55,35 +56,21 @@ public class CompanyController {
 		ModelAndView modelAndView = new ModelAndView(
 				CommonUtils.isPopulated(company.getPageName()) ? "redirect:" + company.getPageName() : "addCompany");
 		try {
-			if (companyLogo != null && CommonUtils.isPopulated(companyLogo.getOriginalFilename())) {
-				if (ImageUtils.validateFile(companyLogo)) {
-					company.setCompanyLogo(addresizedlogo(company, companyLogo));
-					company.setCompanyStringLogo(CommonUtils.getImgfromByteArray(company.getCompanyLogo()));
-				} else {
-					modelAndView.addObject("logoImage", company.getCompanyStringLogo());
-					modelAndView.addObject("message", "Please upload a valid png/jpg image");
-					modelAndView.addObject("company", company);
-				}
-			} else {
-				if (company.getCompanyStringLogo()
-						.equals(CommonUtils.getImgfromResource("/static/images/image-400x400.jpg")))
-					company.setCompanyLogo(null);
-				else
-					company.setCompanyLogo(CommonUtils.getByteArrayfromImage(company.getCompanyStringLogo()));
+			if(companyLogo!=null && !companyLogo.getOriginalFilename().isEmpty()) {
+			company.setCompanyLogo(addresizedlogo(company, companyLogo));
+			company.setCompanyStringLogo(CommonUtils.getImgfromByteArray(company.getCompanyLogo()));
 			}
 		} catch (IOException e) {
+			company.setCompanyLogo(null);
 		}
-
 		company.setCompanyUniqueKey(CommonUtils.getUniqueID());
 		company.setCompanyActive(1);
 		companyDetailsService.save(company);
-
 		if (!CommonUtils.isPopulated(company.getPageName())) {
 			modelAndView.addObject("logoImage", company.getCompanyStringLogo());
 			modelAndView.addObject("message", "Company details updated successfully!");
 			modelAndView.addObject("company", company);
 		}
-
 		return modelAndView;
 	}
 
@@ -93,6 +80,7 @@ public class CompanyController {
 	 * @throws IOException
 	 */
 	private byte[] addresizedlogo(Company company, MultipartFile companyLogo) throws IOException {
+
 		return ImageUtils.convertToArray(ImageUtils.convertToImage(companyLogo), companyLogo.getContentType());
 	}
 

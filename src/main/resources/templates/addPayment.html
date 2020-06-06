@@ -28,7 +28,7 @@
 		<div id="alert_placeholder"></div>
 		<form autocomplete="off" th:action="@{/home/addpayment}"
 			th:object="${payment}" method="post" class="form-horizontal"
-			role="form">
+			role="form" onsubmit="return checkPaymentValue()">
 
 
 			<div class="row">
@@ -107,12 +107,14 @@
 						<tbody>
 							<tr
 								th:each="paymentInvoiceDetail, itemStat : *{paymentInvoiceDetails}">
-								<td><select class="form-control" id="invoiceDropdown"
+								<td><select class="form-control" id="invoiceDropdown" onchange="setInvoice(this)"
 									th:field="*{paymentInvoiceDetails[__${itemStat.index}__].paymentInvoiceNumber}">
 								</select></td>
 								<td><input id="invoiceAmount"
 									th:field="*{paymentInvoiceDetails[__${itemStat.index}__].paymentInvoiceTotalAmount}"
-									readonly="readonly" /></td>
+									readonly="readonly" /> 
+									<input type="hidden" id="invoiceId"
+									th:field="*{paymentInvoiceDetails[__${itemStat.index}__].paymentInvoiceId}" /></td>
 								<td><input id="remainingAmount"
 									th:field="*{paymentInvoiceDetails[__${itemStat.index}__].paymentInvoiceRemainingAmount}"
 									readonly="readonly" /></td>
@@ -177,5 +179,16 @@
 				document.getElementById('accountAddress').value = "";
 			}
 		};
+		
+function checkPaymentValue() {
+	var paymentVal = parseFloat($("#paymentAmount").val());
+	var totalPayment = checkValueNaN(getSum(ttlPayment));
+	
+	if(paymentVal !== totalPayment && $('#paymentReference').val() === "Invoice Ref") {
+		createConfirmationMessageModal("Total Payment Amount in Invoice Ref table should be equal to Payment Amount");
+		return false;
+	}
+	return true;
+}
 	</script>
 </th:block>

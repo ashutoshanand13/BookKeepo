@@ -5,6 +5,8 @@
  const $BTN = $('#export-btn');
  const $EXPORT = $('#export');
  var $tblrows = $("#itemTable tbody tr");
+ 
+ //For Invoice pages only
  var ttlAmount = [];
  var ttlQty = [];
  var ttlTaxableValue = [];
@@ -13,6 +15,13 @@
  var ttlSgst = [];
  var ttlTotalAmount = [];
  var discount = [];
+ 
+ // For payment and receipt only
+ var ttlPayment = [];
+ var invoiceList = [];
+ var dropdown = []
+ 
+ 
  var isGstValid = true;
  var shippingType ='';
  var isInvoiceNumberUnique = false;
@@ -843,39 +852,22 @@ function getInvoiceData(data) {
 			getInvoiceList(account, $tblrow);
 				
 	        $tblrow.on('change', function () {
-	        	
-		        	if($tblrow.find("#remainingAmount").val() === "") {
-		        	var invoiceKey = $tblrow.find("#invoiceDropdown").val();
-		        	if(invoiceKey !== "0") {
-		        		$.ajax({
-		        			type : "GET",
-		        			contentType : "application/json",
-		        			url : "/home/getinvoice?key="+invoiceKey,
-		        			dataType : 'json',			
-		        			async : true,
-		        			success : function(data) {
-		        				$tblrow.find("#invoiceAmount").val(data.invoiceTotalAmountAfterTax);
-		        				var remaining = parseFloat(data.invoiceTotalAmountAfterTax) - parseFloat(data.invoicePaidAmt);
-		        				$tblrow.find("#remainingAmount").val(remaining)
-		        			}
-		        		});
-		        	} else {
-		        		$tblrow.find("#invoiceAmount").val("");
-		        		$tblrow.find("#remainingAmount").val("");
-		        		$tblrow.find("#paymentAmount").val("");
-		        		$tblrow.find("#dueAmount").val("");
-		        	}
-		        	}
-		        	
 		        	var payment = parseFloat($tblrow.find("#paymentAmount").val());
+		        	ttlPayment[index] = checkValueNaN(payment);
 		        	var dueAmount = parseFloat($tblrow.find("#remainingAmount").val()) - payment;
 		        	if(!isNaN(dueAmount)) {
-		        		$tblrow.find("#dueAmount").val(dueAmount.toFixed(2));
+		        		if(dueAmount < 0) {
+		        			$tblrow.find("#paymentAmount").val("");
+		        			createConfirmationMessageModal("Payment cannot be greater than remaining amount");
+		        		} else {
+		        			$tblrow.find("#dueAmount").val(dueAmount.toFixed(2));
+		        		}
 		        	}
 				});
 	        });
 		} else {
 			createConfirmationMessageModal("Please select an account");
+			$('#paymentReference option:first').prop('selected', true);
 		}
 	} else {
 		$("#invoicePayment").hide();
@@ -885,30 +877,80 @@ function getInvoiceData(data) {
 }
 
 function getInvoiceList(account, row) {
+
 	$(row).find("#invoiceDropdown").empty();
 	$(row).find('input').val("");
-	$.ajax({
-		type : "GET",
-		contentType : "application/json",
-		url : "/home/getinvoicelist?accountName="+account,
-		dataType : 'json',			
-		async : false,
-		success : function(data) {	
-			if(data !== null) {
-				$.each(data, function (i, item) {
-					$(row).find("#invoiceDropdown").append($('<option>', { 
-				        value: item.invoiceUniqueKey,
-				        text : item.invoiceNumber 
-				    }));
-				});
-			} 
-		}
-	});
+	if(dropdown.length === 0) {
+		$.ajax({
+			type : "GET",
+			contentType : "application/json",
+			url : "/home/getinvoicelist?accountName="+account,
+			dataType : 'json',			
+			async : false,
+			success : function(data) {	
+				if(data !== null) {
+					dropdown = data;
+					$.each(data, function (i, item) {
+						$(row).find("#invoiceDropdown").append($('<option>', { 
+					        value: item.invoiceUniqueKey,
+					        text : item.invoiceNumber 
+					    }));
+					});
+				} 
+			}
+		});
+	} else {
+		$.each(dropdown, function (i, item) {
+			$(row).find("#invoiceDropdown").append($('<option>', { 
+		        value: item.invoiceUniqueKey,
+		        text : item.invoiceNumber 
+		    }));
+		});
+	}
 }
 
 function emptyTable() {
+	ttlPayment = [];
+	invoiceList = [];
+	dropdown = [];
 	$invoiceTable.find('tbody tr').each(function (index) {
 		var $tblrow = $(this);
 		$tblrow.find('input').val("");
         });
+}
+
+function setInvoice(data) {
+	
+	var invoiceKey = $(data).val();
+	var index = $(data).parent().parent().index();
+
+	if(invoiceKey !== "0") {
+		if(!invoiceList.includes(invoiceKey)) {
+    		$.ajax({
+    			type : "GET",
+    			contentType : "application/json",
+    			url : "/home/getinvoice?key="+invoiceKey,
+    			dataType : 'json',			
+    			async : true,
+    			success : function(val) {
+    				invoiceList[index] = val.invoiceUniqueKey;
+    				$(data).parent().parent().find("#invoiceId").val(val.id);
+    				$(data).parent().parent().find("#invoiceAmount").val(val.invoiceTotalAmountAfterTax);
+    				var remaining = parseFloat(val.invoiceTotalAmountAfterTax) - parseFloat(val.invoicePaidAmt);
+    				$(data).parent().parent().find("#remainingAmount").val(parseFloat(remaining).toFixed(2))
+    			}
+    		});
+		} else {
+			createConfirmationMessageModal("Each invoice can be selected only once");
+			$(data).find('option:first').prop('selected', true);
+		}
+	} else {
+		ttlPayment[index] = 0;
+		invoiceList[index] = "";
+		$(data).parent().parent().find("#invoiceId").val("");
+		$(data).parent().parent().find("#invoiceAmount").val("");
+		$(data).parent().parent().find("#remainingAmount").val("");
+		$(data).parent().parent().find("#paymentAmount").val("");
+		$(data).parent().parent().find("#dueAmount").val("");
+	}
 }
