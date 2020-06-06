@@ -7,7 +7,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,9 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.model.InvoiceData;
 import com.bookkeepo.accounting.model.InvoiceType;
-import com.bookkeepo.accounting.service.CompanyDetailsService;
-import com.bookkeepo.accounting.service.InvoiceService;
-import com.bookkeepo.accounting.service.ItemService;
 import com.bookkeepo.accounting.util.CommonUtils;
 
 /**
@@ -26,16 +22,7 @@ import com.bookkeepo.accounting.util.CommonUtils;
  *
  */
 @Controller
-public class CreditNoteController {
-
-	@Autowired
-	private CompanyDetailsService companyDetailsService;
-
-	@Autowired
-	private InvoiceService invoiceService;
-
-	@Autowired
-	private ItemService itemService;
+public class CreditNoteController extends MasterController {
 
 	@RequestMapping(value = "/home/creditnote", method = RequestMethod.GET)
 	public ModelAndView setupSales(HttpServletRequest request) {

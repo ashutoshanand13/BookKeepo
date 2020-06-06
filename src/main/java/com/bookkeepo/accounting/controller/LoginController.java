@@ -9,8 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -20,13 +18,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.bookkeepo.accounting.configurations.LoginRegisterMessages;
-import com.bookkeepo.accounting.configurations.MessageProperties;
 import com.bookkeepo.accounting.entity.User;
 import com.bookkeepo.accounting.model.UserDetails;
-import com.bookkeepo.accounting.service.CompanyDetailsService;
-import com.bookkeepo.accounting.service.EmailService;
-import com.bookkeepo.accounting.service.UserService;
 import com.bookkeepo.accounting.util.CommonUtils;
 import com.bookkeepo.accounting.util.Constants;
 
@@ -35,25 +28,7 @@ import com.bookkeepo.accounting.util.Constants;
  *
  */
 @Controller
-public class LoginController {
-
-	@Autowired
-	private UserService userService;
-
-	@Autowired
-	CompanyDetailsService companyDetailsService;
-
-	@Autowired
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-	@Autowired
-	EmailService emailservice;
-	
-	@Autowired
-	MessageProperties messageproperties;
-	
-	@Autowired
-	LoginRegisterMessages loginregistermessageproperties;
+public class LoginController extends MasterController {
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String setup(ModelMap model) {
@@ -97,12 +72,12 @@ public class LoginController {
 			modelAndView.setViewName("register");
 		} else {
 			userService.saveUser(user);
-			modelAndView.addObject("successMessage",
-					loginregistermessageproperties.getRegistrationSuccessMessage());
+			modelAndView.addObject("successMessage", loginregistermessageproperties.getRegistrationSuccessMessage());
 			modelAndView.addObject("user", new User());
 			modelAndView.addObject("message", loginregistermessageproperties.getRegistrationSuccessMessage());
 			modelAndView.setViewName("login");
-			emailservice.sendEmail(user, messageproperties.getEmailFrom(), messageproperties.getAcctactivationSubject(), messageproperties.getAcctactivationBody());
+			emailservice.sendEmail(user, messageproperties.getEmailFrom(), messageproperties.getAcctactivationSubject(),
+					messageproperties.getAcctactivationBody());
 
 		}
 		return modelAndView;
@@ -123,8 +98,7 @@ public class LoginController {
 				userService.updateUser(userExists);
 				modelAndView.addObject("message", loginregistermessageproperties.getSuccessAcctActivationMessage());
 			} else {
-				modelAndView.addObject("message",
-						loginregistermessageproperties.getFailedAcctActivationMessage());
+				modelAndView.addObject("message", loginregistermessageproperties.getFailedAcctActivationMessage());
 			}
 		}
 		return modelAndView;
@@ -159,13 +133,16 @@ public class LoginController {
 				String newPassword = CommonUtils.generateCommonTextPassword();
 				modelAndView.addObject("message", loginregistermessageproperties.getNewPasswordSentMessage());
 				userExists.setPassword(bCryptPasswordEncoder.encode(newPassword));
-				emailservice.forgetPassword(userExists, messageproperties.getEmailFrom(), messageproperties.getForgetPasswordSubject(), messageproperties.getForgetPasswordBody(), newPassword);
+				emailservice.forgetPassword(userExists, messageproperties.getEmailFrom(),
+						messageproperties.getForgetPasswordSubject(), messageproperties.getForgetPasswordBody(),
+						newPassword);
 				userService.updateUser(userExists);
 			} else {
 				String newToken = CommonUtils.generateToken(userExists.getName());
 				modelAndView.addObject("message", loginregistermessageproperties.getActivationLinkSentMessage());
 				userExists.setToken(newToken);
-				emailservice.sendEmail(userExists, messageproperties.getEmailFrom(),  messageproperties.getAcctactivationSubject(), messageproperties.getAcctactivationBody());
+				emailservice.sendEmail(userExists, messageproperties.getEmailFrom(),
+						messageproperties.getAcctactivationSubject(), messageproperties.getAcctactivationBody());
 				userService.updateUser(userExists);
 			}
 		}

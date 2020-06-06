@@ -13,7 +13,6 @@ import java.util.Date;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,32 +23,16 @@ import com.bookkeepo.accounting.entity.Accounts;
 import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.entity.InvoiceDetails;
 import com.bookkeepo.accounting.model.json.InvoicePageData;
-import com.bookkeepo.accounting.service.AccountService;
-import com.bookkeepo.accounting.service.CompanyDetailsService;
-import com.bookkeepo.accounting.service.InvoiceService;
 import com.bookkeepo.accounting.util.InvoiceUtil;
-import com.google.gson.Gson;
 
 /**
  * @author sachingoyal
  *
  */
 @Controller
-public class InvoiceController {
-
-	@Autowired
-	InvoiceService invoiceService;
-
-	@Autowired
-	CompanyDetailsService companyDetailsService;
-
-	@Autowired
-	AccountService accountService;
+public class InvoiceController extends MasterController {
 
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
-
-	@Autowired
-	Gson gson;
 
 	@RequestMapping(value = "/home/submitInvoice", method = RequestMethod.POST, produces = MediaType.APPLICATION_PDF_VALUE)
 	public void setupSalesInvoiceData(@RequestBody String salesInvoiceJson, Principal principal,
