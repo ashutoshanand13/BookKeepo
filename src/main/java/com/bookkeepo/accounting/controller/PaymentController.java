@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -25,11 +24,6 @@ import com.bookkeepo.accounting.entity.BankDetails;
 import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.entity.Payment;
 import com.bookkeepo.accounting.entity.PaymentInvoices;
-import com.bookkeepo.accounting.service.AccountService;
-import com.bookkeepo.accounting.service.BankService;
-import com.bookkeepo.accounting.service.CompanyDetailsService;
-import com.bookkeepo.accounting.service.InvoiceService;
-import com.bookkeepo.accounting.service.PaymentService;
 import com.bookkeepo.accounting.util.Constants;
 
 /**
@@ -38,22 +32,7 @@ import com.bookkeepo.accounting.util.Constants;
  */
 
 @Controller
-public class PaymentController {
-
-	@Autowired
-	private AccountService accountService;
-
-	@Autowired
-	private PaymentService paymentService;
-
-	@Autowired
-	CompanyDetailsService companyDetailsService;
-
-	@Autowired
-	InvoiceService invoiceService;
-
-	@Autowired
-	private BankService bankService;
+public class PaymentController extends MasterController {
 
 	@RequestMapping(value = { "/home/addpayment" }, method = RequestMethod.GET)
 	public ModelAndView getPaymentScreen(HttpServletRequest request) {

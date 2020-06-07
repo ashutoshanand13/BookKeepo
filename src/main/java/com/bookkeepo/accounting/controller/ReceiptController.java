@@ -9,7 +9,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -22,10 +21,6 @@ import com.bookkeepo.accounting.entity.Accounts;
 import com.bookkeepo.accounting.entity.BankDetails;
 import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.entity.Receipts;
-import com.bookkeepo.accounting.service.AccountService;
-import com.bookkeepo.accounting.service.BankService;
-import com.bookkeepo.accounting.service.CompanyDetailsService;
-import com.bookkeepo.accounting.service.ReceiptService;
 
 /**
  * @author sachingoyal
@@ -33,19 +28,7 @@ import com.bookkeepo.accounting.service.ReceiptService;
  */
 
 @Controller
-public class ReceiptController {
-
-	@Autowired
-	private AccountService accountService;
-
-	@Autowired
-	private ReceiptService receiptService;
-
-	@Autowired
-	private CompanyDetailsService companyDetailsService;
-	
-	@Autowired
-	private BankService bankService;
+public class ReceiptController extends MasterController {
 
 	@RequestMapping(value = { "/home/addreceipt" }, method = RequestMethod.GET)
 	public ModelAndView getAddReceipt(HttpServletRequest request) {
@@ -67,13 +50,13 @@ public class ReceiptController {
 	}
 
 	@RequestMapping(value = "/home/addreceipt", method = RequestMethod.POST)
-	public ModelAndView addNewReceipt(@Valid @ModelAttribute("receipts") Receipts receipt, @RequestParam(required = false) String bankId, BindingResult bindingResult,
-			Principal principal) {
+	public ModelAndView addNewReceipt(@Valid @ModelAttribute("receipts") Receipts receipt,
+			@RequestParam(required = false) String bankId, BindingResult bindingResult, Principal principal) {
 		ModelAndView modelAndView = new ModelAndView();
 		Company company = companyDetailsService.findByUserName(principal.getName());
 		receipt.setReceiptOwner(principal.getName());
 		receipt.setAccountRefNo(accountService.findById(receipt.getAccountRefNo().getId()));
-		if(bankId != null) {
+		if (bankId != null) {
 			BankDetails bankDetails = bankService.findById(Integer.valueOf(bankId));
 			receipt.setBankDetails(bankDetails);
 		}

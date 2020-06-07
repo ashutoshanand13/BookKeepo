@@ -6,7 +6,6 @@ import java.security.Principal;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -17,16 +16,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bookkeepo.accounting.entity.Company;
-import com.bookkeepo.accounting.service.CompanyDetailsService;
 import com.bookkeepo.accounting.util.CommonUtils;
-import com.bookkeepo.accounting.util.Constants;
 import com.bookkeepo.accounting.util.ImageUtils;
 
 @Controller
-public class CompanyController {
-
-	@Autowired
-	CompanyDetailsService companyDetailsService;
+public class CompanyController extends MasterController {
 
 	@RequestMapping(value = { "/home/addcompany" }, method = RequestMethod.GET)
 	public ModelAndView getAddCompanyPage(HttpServletRequest request) {
@@ -56,9 +50,9 @@ public class CompanyController {
 		ModelAndView modelAndView = new ModelAndView(
 				CommonUtils.isPopulated(company.getPageName()) ? "redirect:" + company.getPageName() : "addCompany");
 		try {
-			if(companyLogo!=null && !companyLogo.getOriginalFilename().isEmpty()) {
-			company.setCompanyLogo(addresizedlogo(company, companyLogo));
-			company.setCompanyStringLogo(CommonUtils.getImgfromByteArray(company.getCompanyLogo()));
+			if (companyLogo != null && !companyLogo.getOriginalFilename().isEmpty()) {
+				company.setCompanyLogo(addresizedlogo(company, companyLogo));
+				company.setCompanyStringLogo(CommonUtils.getImgfromByteArray(company.getCompanyLogo()));
 			}
 		} catch (IOException e) {
 			company.setCompanyLogo(null);
