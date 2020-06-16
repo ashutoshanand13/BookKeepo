@@ -3,6 +3,10 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <div th:fragment="menu_withoutCompanyGSTIN">
+<!-- <div th:replace="fragments/commonmodal
+      :: commonModal(message='The invoice can't be created as you haven't added the company GSTIN. To proceed with this invoice creation, please click on Proceed', buttonname='Proceed',buttonaction='NA')">
+    </div> -->
+
 <div id="topheader">
 	<nav class="navbar navbar-expand-lg navbar-dark bg-success">
 		<a class="navbar-brand" href="/home">BookKeepo</a>
@@ -39,7 +43,7 @@
 					<div class="dropdown-menu dropdown-menu-right dropdown-default"
 						aria-labelledby="navbarDropdownMenuLink-333">
 						<!-- <a th:class="dropdown-item"
-					th:href="@{/home/salesinvoice}">Tax Invoice</a>
+					href="#commonmodal">Tax Invoice</a>
 						<a th:class="dropdown-item"
 					th:href="@{/home/creditnote}">Credit Note</a>
 						<a th:class="dropdown-item"
