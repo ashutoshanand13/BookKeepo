@@ -74,8 +74,8 @@
 					<tr>
 						<td class="pt-3-half"><input type="text" class="form-control"
 							name="partyAddress" placeholder="Address" required="required"></td>
-						<td class="pt-3-half"><input type="text" class="form-control"
-							name="invoiceNo" placeholder="PO No." required="required" onblur="checkInvoiceNo(this)"></td>
+						<td class="pt-3-half"><input type="text" th:value="${InvoiceNbr}" class="form-control"
+							name="invoiceNo" readonly="readonly"></td>
 						<td class="pt-3-half"><input type="text" class="form-control"
 							name="invoiceDate" onfocus="(this.type='date')"
 							onblur="if(!this.value)this.type='text'" placeholder="PO Date"
