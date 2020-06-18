@@ -9,12 +9,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -59,6 +61,7 @@ public class PaymentController {
 	public ModelAndView getPaymentScreen(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
 		String user = request.getUserPrincipal().getName();
+
 		Company company = companyDetailsService.findByUserName(user);
 		if (company == null) {
 			modelAndView.setViewName("redirect:/home/showProfile");
@@ -141,5 +144,25 @@ public class PaymentController {
 		modelAndView.setViewName("paymentData");
 		return modelAndView;
 	}
+	
+	@RequestMapping(value = { "/home/updatepayment" }, method = RequestMethod.GET)
+	public ModelAndView updatePayment(Principal principal) {
+		ModelAndView modelAndView = new ModelAndView();
+		String user = principal.getName();
+		modelAndView.addObject("paymentList", paymentService.fetchAllPayment(user));
+		modelAndView.setViewName("updatePayment");
+		return modelAndView;
+	}
 
+	
+	@RequestMapping(value = { "/home/updatepayment/{id}" })
+	public ModelAndView updatePaymentKey(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response) {
+
+		String user = request.getUserPrincipal().getName();
+		paymentService.deleteUsersByIDAndUser(Integer.valueOf(id), user);
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("redirect:/home/updatepayment");
+		return modelAndView;
+		
+	}
 }

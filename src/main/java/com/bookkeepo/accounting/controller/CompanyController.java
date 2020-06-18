@@ -19,7 +19,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.service.CompanyDetailsService;
 import com.bookkeepo.accounting.util.CommonUtils;
-import com.bookkeepo.accounting.util.Constants;
 import com.bookkeepo.accounting.util.ImageUtils;
 
 @Controller
