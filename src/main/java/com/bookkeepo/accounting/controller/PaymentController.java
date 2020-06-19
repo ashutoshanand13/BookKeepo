@@ -63,6 +63,7 @@ public class PaymentController extends MasterController {
 		}
 		payment.setPaymentCompanyDetails(company);
 		checkPaymentInvoiceDetails(payment);
+		payment.setPaymentDeleted(1);
 		paymentService.saveAccount(payment);
 		List<Accounts> accountList = accountService.fetchAccountName(principal.getName(), company);
 		Payment newPayment = new Payment();
@@ -138,7 +139,9 @@ public class PaymentController extends MasterController {
 	public ModelAndView updatePaymentKey(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response) {
 
 		String user = request.getUserPrincipal().getName();
-		paymentService.deleteUsersByIDAndUser(Integer.valueOf(id), user);
+		Payment payment = paymentService.findByIdAndPaymentOwner(Integer.valueOf(id), user);
+		payment.setPaymentDeleted(0);
+		paymentService.saveAccount(payment);
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("redirect:/home/updatepayment");
 		return modelAndView;
