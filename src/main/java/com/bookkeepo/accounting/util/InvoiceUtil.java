@@ -9,6 +9,7 @@ import java.net.MalformedURLException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -50,6 +51,8 @@ import com.itextpdf.text.pdf.PdfWriter;
 public class InvoiceUtil {
 
 	private static float[] columnItemTableWidths = null;
+	
+	private static final int FIRST_FISCAL_MONTH = Calendar.MARCH;
 
 	public static void updateInvoice(InvoiceDetails invoice, InvoicePageData salesInvoiceData, Company companyDetails) {
 
@@ -816,5 +819,18 @@ public class InvoiceUtil {
 			val = text;
 		}
 		return val;
+	}
+	
+	public static int getFiscalYear() {
+		Calendar calendarDate = Calendar.getInstance();
+		int month = calendarDate.get(Calendar.MONTH);
+		int year = calendarDate.get(Calendar.YEAR);
+		return (month >= FIRST_FISCAL_MONTH) ? year : year - 1;
+	}
+
+	public static String getFinancialYear() {
+		int year = getFiscalYear();
+		return year + "-" + (year + 1);
+
 	}
 }
