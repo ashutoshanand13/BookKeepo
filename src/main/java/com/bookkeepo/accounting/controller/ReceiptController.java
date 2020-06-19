@@ -84,6 +84,7 @@ public class ReceiptController {
 		}
 		receipt.setReceiptCompanyDetails(company);
 		checkReceiptInvoiceDetails(receipt);
+		receipt.setReceiptDeleted(1);
 		receiptService.saveAccount(receipt);
 		List<Accounts> accountList = accountService.fetchAccountName(principal.getName(), company);
 		modelAndView.addObject("receipts", new Receipts());
@@ -153,7 +154,9 @@ public class ReceiptController {
 	public ModelAndView updatePaymentKey(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response) {
 
 		String user = request.getUserPrincipal().getName();
-		receiptService.deleteUsersByIDAndUser(Integer.valueOf(id), user);
+		Receipts receipt = receiptService.findByIdAndReceiptOwner(Integer.valueOf(id), user);
+		receipt.setReceiptDeleted(0);
+		receiptService.saveAccount(receipt);
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("redirect:/home/updatereceipt");
 		return modelAndView;

@@ -675,7 +675,7 @@ public class InvoiceUtil {
 		InvoiceCompanyDetails company = invoice.getInvoiceAssoCompanyDetails();
 
 		PdfPCell cell = null;
-		if(company.getCompanyLogo().length != 0) {
+		if(company.getCompanyLogo() == null || company.getCompanyLogo().length != 0) {
 			Image img = Image.getInstance(company.getCompanyLogo());
 			img.scaleAbsolute(120f, 50f);
 			cell = new PdfPCell(img);

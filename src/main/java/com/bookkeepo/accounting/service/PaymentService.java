@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.bookkeepo.accounting.entity.Payment;
 import com.bookkeepo.accounting.repository.CompanyDetailsRepository;
@@ -20,7 +19,6 @@ import com.bookkeepo.accounting.repository.PaymentRepository;
  */
 
 @Service("paymentService")
-@Transactional
 public class PaymentService {
 
 	private PaymentRepository paymentRepository;
@@ -38,12 +36,12 @@ public class PaymentService {
 	}
 
 	public List<Payment> fetchAllPayment(String owner) {
-		return paymentRepository.findByPaymentOwnerAndPaymentCompanyDetails(owner,
-				companyDetailsRepository.findByUserNameAndCompanyActive(owner, 1));
+		return paymentRepository.findByPaymentOwnerAndPaymentCompanyDetailsAndPaymentDeleted(owner,
+				companyDetailsRepository.findByUserNameAndCompanyActive(owner, 1), 1);
 	}
 	
-	public void deleteUsersByIDAndUser(int id, String user) {
-		paymentRepository.deleteUsersByIDAndUser(id, user);
+	public Payment findByIdAndPaymentOwner(int id, String owner) {
+		return paymentRepository.findByIdAndPaymentOwner(id, owner);
 	}
 
 }
