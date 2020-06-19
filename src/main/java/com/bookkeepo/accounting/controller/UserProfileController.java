@@ -8,9 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,23 +21,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.entity.User;
 import com.bookkeepo.accounting.model.UserDetails;
-import com.bookkeepo.accounting.service.CompanyDetailsService;
-import com.bookkeepo.accounting.service.UserService;
 import com.bookkeepo.accounting.util.CommonUtils;
 import com.bookkeepo.accounting.util.ImageUtils;
 
-@Configuration
 @Controller
-public class UserProfileController {
-
-	@Autowired
-	private UserService userService;
-
-	@Autowired
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-	@Autowired
-	CompanyDetailsService companyDetailsService;
+public class UserProfileController extends MasterController {
 
 	@RequestMapping(value = { "/home/changePassword" }, method = RequestMethod.GET)
 	public ModelAndView getChangePasswordPage(HttpServletRequest request) {
@@ -129,16 +114,16 @@ public class UserProfileController {
 		if (companyRecord == null || companyRecord.size() == 0) {
 			company.setCompanyActive(1);
 		}
-		
+
 		try {
 			if (companyLogo != null && CommonUtils.isPopulated(companyLogo.getOriginalFilename())) {
-					company.setCompanyLogo(addresizedlogo(company, companyLogo));
-					company.setCompanyStringLogo(CommonUtils.getImgfromByteArray(company.getCompanyLogo()));
+				company.setCompanyLogo(addresizedlogo(company, companyLogo));
+				company.setCompanyStringLogo(CommonUtils.getImgfromByteArray(company.getCompanyLogo()));
 			}
 		} catch (IOException e) {
 			company.setCompanyLogo(null);
 		}
-		
+
 		company.setCompanyUniqueKey(CommonUtils.getUniqueID());
 		company.setUserName(principal.getName());
 		companyDetailsService.save(company);
@@ -146,7 +131,7 @@ public class UserProfileController {
 		modelAndView.setViewName("redirect:/home/showProfile");
 		return modelAndView;
 	}
-	
+
 	/**
 	 * @param company
 	 * @param companyLogo

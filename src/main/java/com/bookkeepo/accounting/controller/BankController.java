@@ -9,7 +9,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,8 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bookkeepo.accounting.entity.BankDetails;
 import com.bookkeepo.accounting.entity.Company;
-import com.bookkeepo.accounting.service.BankService;
-import com.bookkeepo.accounting.service.CompanyDetailsService;
 
 /**
  * @author Ashutosh Anand
@@ -28,13 +25,7 @@ import com.bookkeepo.accounting.service.CompanyDetailsService;
  */
 
 @Controller
-public class BankController {
-
-	@Autowired
-	private BankService bankService;
-
-	@Autowired
-	CompanyDetailsService companyDetailsService;
+public class BankController extends MasterController {
 
 	@RequestMapping(value = { "/home/addbank" }, method = RequestMethod.GET)
 	public ModelAndView getBankPage(HttpServletRequest request) {

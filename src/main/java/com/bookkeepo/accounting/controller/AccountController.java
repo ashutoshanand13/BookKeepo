@@ -8,7 +8,6 @@ import java.security.Principal;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,8 +17,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bookkeepo.accounting.entity.Accounts;
 import com.bookkeepo.accounting.entity.Company;
-import com.bookkeepo.accounting.service.AccountService;
-import com.bookkeepo.accounting.service.CompanyDetailsService;
 
 /**
  * @author sachingoyal
@@ -27,13 +24,7 @@ import com.bookkeepo.accounting.service.CompanyDetailsService;
  */
 
 @Controller
-public class AccountController {
-
-	@Autowired
-	private AccountService accountService;
-
-	@Autowired
-	private CompanyDetailsService companyDetailsService;
+public class AccountController extends MasterController {
 
 	@RequestMapping(value = { "/home/addaccount" }, method = RequestMethod.GET)
 	public ModelAndView getHomePage(HttpServletRequest request) {
@@ -44,7 +35,7 @@ public class AccountController {
 			modelAndView.setViewName("redirect:/home/showProfile");
 		} else {
 			modelAndView.addObject("accountList",
-					accountService.fetchAccountName(request.getUserPrincipal().getName(),company));
+					accountService.fetchAccountName(request.getUserPrincipal().getName(), company));
 			modelAndView.addObject("account", new Accounts());
 			modelAndView.setViewName("addaccount");
 		}
@@ -86,7 +77,7 @@ public class AccountController {
 			account.setAccountCompanyDetails(company);
 			accountService.saveAccount(account);
 			modelAndView.addObject("message", "Account Updated Successfully");
-			modelAndView.addObject("accountList", accountService.fetchAccountName(principal.getName(),company));
+			modelAndView.addObject("accountList", accountService.fetchAccountName(principal.getName(), company));
 			modelAndView.addObject("account", new Accounts());
 			modelAndView.setViewName("addaccount");
 		}
