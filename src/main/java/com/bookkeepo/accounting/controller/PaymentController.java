@@ -65,8 +65,6 @@ public class PaymentController extends MasterController {
 		}
 		payment.setPaymentCompanyDetails(company);
 		checkPaymentInvoiceDetails(payment);
-		payment.setPaymentDeleted(1);
-		
 		String formatDate = InvoiceUtil.reverseDate(payment.getPaymentDate());
 		payment.setPaymentDate(formatDate);
 		paymentService.saveAccount(payment);
@@ -129,7 +127,7 @@ public class PaymentController extends MasterController {
 		modelAndView.setViewName("paymentData");
 		return modelAndView;
 	}
-	
+
 	@RequestMapping(value = { "/home/updatepayment" }, method = RequestMethod.GET)
 	public ModelAndView updatePayment(Principal principal) {
 		ModelAndView modelAndView = new ModelAndView();
@@ -139,17 +137,17 @@ public class PaymentController extends MasterController {
 		return modelAndView;
 	}
 
-	
 	@RequestMapping(value = { "/home/updatepayment/{id}" })
-	public ModelAndView updatePaymentKey(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView updatePaymentKey(@PathVariable("id") String id, HttpServletRequest request,
+			HttpServletResponse response) {
 
 		String user = request.getUserPrincipal().getName();
 		Payment payment = paymentService.findByIdAndPaymentOwner(Integer.valueOf(id), user);
-		payment.setPaymentDeleted(0);
+		payment.setPaymentDeleted(1);
 		paymentService.saveAccount(payment);
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("redirect:/home/updatepayment");
 		return modelAndView;
-		
+
 	}
 }
