@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -27,12 +28,13 @@ import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.entity.Payment;
 import com.bookkeepo.accounting.entity.PaymentInvoices;
 import com.bookkeepo.accounting.util.Constants;
+import com.bookkeepo.accounting.util.InvoiceUtil;
 
 /**
  * @author sachingoyal
  *
  */
-
+@Configuration
 @Controller
 public class PaymentController extends MasterController {
 
@@ -63,7 +65,8 @@ public class PaymentController extends MasterController {
 		}
 		payment.setPaymentCompanyDetails(company);
 		checkPaymentInvoiceDetails(payment);
-		payment.setPaymentDeleted(1);
+		String formatDate = InvoiceUtil.reverseDate(payment.getPaymentDate());
+		payment.setPaymentDate(formatDate);
 		paymentService.saveAccount(payment);
 		List<Accounts> accountList = accountService.fetchAccountName(principal.getName(), company);
 		Payment newPayment = new Payment();
@@ -124,7 +127,7 @@ public class PaymentController extends MasterController {
 		modelAndView.setViewName("paymentData");
 		return modelAndView;
 	}
-	
+
 	@RequestMapping(value = { "/home/updatepayment" }, method = RequestMethod.GET)
 	public ModelAndView updatePayment(Principal principal) {
 		ModelAndView modelAndView = new ModelAndView();
@@ -134,17 +137,17 @@ public class PaymentController extends MasterController {
 		return modelAndView;
 	}
 
-	
 	@RequestMapping(value = { "/home/updatepayment/{id}" })
-	public ModelAndView updatePaymentKey(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView updatePaymentKey(@PathVariable("id") String id, HttpServletRequest request,
+			HttpServletResponse response) {
 
 		String user = request.getUserPrincipal().getName();
 		Payment payment = paymentService.findByIdAndPaymentOwner(Integer.valueOf(id), user);
-		payment.setPaymentDeleted(0);
+		payment.setPaymentDeleted(1);
 		paymentService.saveAccount(payment);
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("redirect:/home/updatepayment");
 		return modelAndView;
-		
+
 	}
 }

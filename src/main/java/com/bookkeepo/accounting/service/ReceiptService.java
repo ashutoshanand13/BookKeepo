@@ -36,7 +36,7 @@ public class ReceiptService {
 
 	public List<Receipts> fetchAllReceipt(String owner) {
 		return receiptRepository.findByReceiptOwnerAndReceiptCompanyDetailsAndReceiptDeleted(owner,
-				companyDetailsRepository.findByUserNameAndCompanyActive(owner, 1), 1);
+				companyDetailsRepository.findByUserNameAndCompanyActive(owner, 1), 0);
 	}
 	
 	public Receipts findByIdAndReceiptOwner(int id, String user) {

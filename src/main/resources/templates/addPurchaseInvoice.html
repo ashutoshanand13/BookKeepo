@@ -41,6 +41,21 @@
 					</tr>
 				</tbody>
 			</table>
+			
+			<div class="table-width">
+				<div class="form-group">
+					<label style="display: inline-block; font-size: 20px;">Purchase:</label>
+
+					<div style="display: inline-block;">
+						<select class="form-control" name="saleType" required="required">
+							<option class="form-control" value="Credit">Credit</option>
+							<option class="form-control" value="Cash">Cash</option>
+							<option class="form-control" value="Bank">Bank</option>
+						</select>
+					</div>
+					<div id="bankDiv" style="display: inline-block;"></div>
+				</div>
+			</div>
 
 			 <table id="invoiceDetailsTable" border="1"
 				class="table table-width table-responsive-md text-center">
