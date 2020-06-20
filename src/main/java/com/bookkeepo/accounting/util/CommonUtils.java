@@ -10,10 +10,14 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.util.FileCopyUtils;
+
+import com.bookkeepo.accounting.entity.Company;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -307,5 +311,14 @@ public class CommonUtils {
 		}
 		RandomStringGenerator pwdGenerator = new RandomStringGenerator.Builder().withinRange(low, hi).build();
 		return pwdGenerator.generate(length);
+	}
+	
+	/**
+	 * @param session
+	 * @param company
+	 */
+	public static void setSessionAttributes(HttpSession session,String menuToDisplay, Company company) {
+		session.setAttribute("CompanyGSTIN", menuToDisplay);
+		session.setAttribute("company", company);
 	}
 }
