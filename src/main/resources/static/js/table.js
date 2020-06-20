@@ -24,7 +24,6 @@
  
  var isGstValid = true;
  var shippingType ='';
- var isInvoiceNumberUnique = false;
  var tableIndex = 0;
 
  
@@ -225,7 +224,6 @@ function submitHandler(e){
 								$('input').focus();
 								$('input').blur();
 								isGstValid=false;
-								isInvoiceNumberUnique=false;
 								if(name==="billOfSupply") {
 									setBOSValues();
 								} else {
@@ -564,31 +562,6 @@ $("#againstInvoicedropdown").change(function() {
 		$("[name=againstInvoiceDate]").blur();
 	}
 });
-
-function checkInvoiceNo(value) {
-	var invoiceNo = $(value).val();
-	var pageName = $("[name=pageName]").val();
-
-	if(invoiceNo !== "") {
-		$.ajax({
-			type : "GET",
-			contentType : "application/json",
-			url : "/home/invoiceunique?invoiceNo=" + invoiceNo+"&pageName="+pageName,
-			dataType : 'json',				
-			success : function(data) {
-				if(data === null) {
-					isInvoiceNumberUnique = true;
-				}
-				else {
-					isInvoiceNumberUnique = false;
-					alert("Invoice Number/ Document Number already exists");
-					$(value).val("");
-					$(value).focus();
-				}
-			}
-			});
-	}
-}
 
 
 function checkAccountName(value) {
