@@ -14,7 +14,8 @@
 
 </head>
 <body>
-<div th:replace="fragments/menu :: ${#strings.isEmpty(CompanyGSTIN)} ? 'menu_withoutCompanyGSTIN' : 'menu_withCompanyGSTIN'"></div>
+<div th:replace="fragments/menu :: ${session.CompanyGSTIN} "></div>
+
 	<div class="form-body">
 		<div class="row">
 

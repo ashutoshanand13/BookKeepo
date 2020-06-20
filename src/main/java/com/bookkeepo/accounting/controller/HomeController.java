@@ -4,6 +4,7 @@
 package com.bookkeepo.accounting.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,20 +23,21 @@ import com.bookkeepo.accounting.entity.Company;
 public class HomeController extends MasterController {
 
 	@RequestMapping(value = { "/home" }, method = RequestMethod.GET)
-	public ModelAndView getAddAccount(HttpServletRequest request) {
+	public ModelAndView getAddAccount(HttpServletRequest request,HttpSession session) {
 		ModelAndView modelAndView = new ModelAndView();
 		String user = request.getUserPrincipal().getName();
 		Company company = companyDetailsService.findByUserName(user);
 		if (company == null) {
 			modelAndView.setViewName("redirect:/home/showProfile");
-			modelAndView.addObject("CompanyGSTIN", "");
+			//modelAndView.addObject("CompanyGSTIN", "");
+			session.setAttribute("CompanyGSTIN", "menu_withoutCompanyGSTIN");
 		} else {
 			modelAndView.setViewName("home");
 			if(StringUtils.isEmpty(company.getCompanyGstin())) {
-				modelAndView.addObject("CompanyGSTIN", "");
+				session.setAttribute("CompanyGSTIN", "menu_withoutCompanyGSTIN");
 			}
 			else {
-				modelAndView.addObject("CompanyGSTIN", "true");
+				session.setAttribute("CompanyGSTIN", "menu_withCompanyGSTIN");
 			}
 		}
 		return modelAndView;
