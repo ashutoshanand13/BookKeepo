@@ -37,7 +37,7 @@ public class PaymentService {
 
 	public List<Payment> fetchAllPayment(String owner) {
 		return paymentRepository.findByPaymentOwnerAndPaymentCompanyDetailsAndPaymentDeleted(owner,
-				companyDetailsRepository.findByUserNameAndCompanyActive(owner, 1), 1);
+				companyDetailsRepository.findByUserNameAndCompanyActive(owner, 1), 0);
 	}
 	
 	public Payment findByIdAndPaymentOwner(int id, String owner) {
