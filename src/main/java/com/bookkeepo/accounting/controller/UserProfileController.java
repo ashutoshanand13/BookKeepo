@@ -95,7 +95,7 @@ public class UserProfileController extends MasterController {
 		List<Company> companyList = companyDetailsService.fetchAllCompanies(principal.getName());
 		for (Company com : companyList) {
 			if (uniqueKey.equals(com.getCompanyUniqueKey())) {
-				com.setCompanyActive(1);
+				com.setCompanyActive(1); 
 				String menuToDisplay = CommonUtils.isPopulated(com.getCompanyGstin()) 
 						? "menu_withCompanyGSTIN":"menu_withoutCompanyGSTIN";
 				CommonUtils.setSessionAttributes(session, menuToDisplay, com);
