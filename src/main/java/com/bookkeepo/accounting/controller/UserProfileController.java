@@ -6,8 +6,10 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -89,14 +91,16 @@ public class UserProfileController extends MasterController {
 	public ModelAndView activateCompany(@PathVariable("uniqueKey") String uniqueKey, HttpServletRequest request,
 			HttpServletResponse response, Principal principal) throws IOException {
 		ModelAndView modelAndView = new ModelAndView();
-
+		HttpSession session = request.getSession();
 		List<Company> companyList = companyDetailsService.fetchAllCompanies(principal.getName());
 		for (Company com : companyList) {
 			if (uniqueKey.equals(com.getCompanyUniqueKey())) {
 				com.setCompanyActive(1);
+				String menuToDisplay = CommonUtils.isPopulated(com.getCompanyGstin()) 
+						? "menu_withCompanyGSTIN":"menu_withoutCompanyGSTIN";
+				CommonUtils.setSessionAttributes(session, menuToDisplay, com);
 			} else {
 				com.setCompanyActive(0);
-
 			}
 		}
 
@@ -108,8 +112,9 @@ public class UserProfileController extends MasterController {
 
 	@RequestMapping(value = { "/home/addnewcompany" }, method = RequestMethod.POST)
 	public ModelAndView addNewCompany(@Valid @ModelAttribute("company") Company company, BindingResult bindingResult,
-			Principal principal, @RequestParam("companyLogo") MultipartFile companyLogo) throws IOException {
+			Principal principal, @RequestParam("companyLogo") MultipartFile companyLogo, HttpServletRequest request) throws IOException {
 		ModelAndView modelAndView = new ModelAndView();
+		HttpSession session = request.getSession();
 		List<Company> companyRecord = companyDetailsService.fetchAllCompanies(principal.getName());
 		if (companyRecord == null || companyRecord.size() == 0) {
 			company.setCompanyActive(1);
@@ -129,6 +134,11 @@ public class UserProfileController extends MasterController {
 		companyDetailsService.save(company);
 		modelAndView.addObject("message", "New Company Added Successfully. ");
 		modelAndView.setViewName("redirect:/home/showProfile");
+		if(company.getCompanyActive()==1) {
+		String menuToDisplay = CommonUtils.isPopulated(company.getCompanyGstin()) 
+				? "menu_withCompanyGSTIN":"menu_withoutCompanyGSTIN";
+		CommonUtils.setSessionAttributes(session, menuToDisplay, company);
+		}
 		return modelAndView;
 	}
 
