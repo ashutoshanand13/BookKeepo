@@ -66,7 +66,6 @@ public class ReceiptController extends MasterController{
 		}
 		receipt.setReceiptCompanyDetails(company);
 		checkReceiptInvoiceDetails(receipt);
-		receipt.setReceiptDeleted(1);
 		
 		String formatDate = InvoiceUtil.reverseDate(receipt.getReceiptDate());
 		receipt.setReceiptDate(formatDate);
@@ -140,7 +139,7 @@ public class ReceiptController extends MasterController{
 
 		String user = request.getUserPrincipal().getName();
 		Receipts receipt = receiptService.findByIdAndReceiptOwner(Integer.valueOf(id), user);
-		receipt.setReceiptDeleted(0);
+		receipt.setReceiptDeleted(1);
 		receiptService.saveAccount(receipt);
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("redirect:/home/updatereceipt");
