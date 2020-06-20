@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -28,11 +27,6 @@ import com.bookkeepo.accounting.entity.BankDetails;
 import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.entity.ReceiptInvoices;
 import com.bookkeepo.accounting.entity.Receipts;
-import com.bookkeepo.accounting.service.AccountService;
-import com.bookkeepo.accounting.service.BankService;
-import com.bookkeepo.accounting.service.CompanyDetailsService;
-import com.bookkeepo.accounting.service.InvoiceService;
-import com.bookkeepo.accounting.service.ReceiptService;
 import com.bookkeepo.accounting.util.Constants;
 import com.bookkeepo.accounting.util.InvoiceUtil;
 
@@ -43,22 +37,7 @@ import com.bookkeepo.accounting.util.InvoiceUtil;
 
 @Configuration
 @Controller
-public class ReceiptController {
-
-	@Autowired
-	private AccountService accountService;
-
-	@Autowired
-	private ReceiptService receiptService;
-
-	@Autowired
-	private CompanyDetailsService companyDetailsService;
-	
-	@Autowired
-	private BankService bankService;
-	
-	@Autowired
-	InvoiceService invoiceService;
+public class ReceiptController extends MasterController{
 
 	@RequestMapping(value = { "/home/addreceipt" }, method = RequestMethod.GET)
 	public ModelAndView getAddReceipt(HttpServletRequest request) {
