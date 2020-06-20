@@ -134,12 +134,12 @@ public class InvoiceUtil {
 
 		if (invoice.getInvoiceType().equals(InvoiceType.Purchase_Invoice.getType())
 				|| invoice.getInvoiceType().equals(InvoiceType.Purchase_Order.getType())) {
-			invoiceAddressDetails.setInvoiceBillerName(salesInvoiceData.getPartyName());
+			invoiceAddressDetails.setInvoiceBillerName(invoice.getInvoiceAccountDetails().getAccountName());
 			invoiceAddressDetails.setInvoiceBillerAddressName(salesInvoiceData.getPartyAddress());
 			invoiceAddressDetails.setInvoiceBillerGst(salesInvoiceData.getGstinBill());
 			invoiceAddressDetails.setInvoiceBillerState(salesInvoiceData.getPartyState());
 
-			invoiceAddressDetails.setInvoicePartyName(salesInvoiceData.getPartyName());
+			invoiceAddressDetails.setInvoicePartyName(invoice.getInvoiceAccountDetails().getAccountName());
 			invoiceAddressDetails.setInvoicePartyAddressName(salesInvoiceData.getPartyAddress());
 			invoiceAddressDetails.setInvoicePartyState(salesInvoiceData.getPartyState());
 			invoiceAddressDetails.setInvoicePartyGst(salesInvoiceData.getGstinBill());
