@@ -20,6 +20,8 @@ import com.bookkeepo.accounting.entity.Payment;
 @Repository("paymentRepository")
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
-	List<Payment> findByPaymentOwnerAndPaymentCompanyDetails(String owner, Company company);
+	List<Payment> findByPaymentOwnerAndPaymentCompanyDetailsAndPaymentDeleted(String owner, Company company, int isDeleted);
+	
+	Payment findByIdAndPaymentOwner(int id, String owner);
 
 }

@@ -24,12 +24,11 @@
  
  var isGstValid = true;
  var shippingType ='';
- var isInvoiceNumberUnique = false;
  var tableIndex = 0;
 
  
- var controllerMap = { salesInvoice: "/home/submitInvoice", exportInvoice: "/home/submitInvoice", debitNote:"/home/submitInvoice", creditNote:"/home/submitInvoice" , purchaseOrder:"/home/submitInvoice"  , purchaseInvoice:"/home/submitInvoice", billOfSupply:"/home/submitInvoice"};
- var fileMap = { salesInvoice: "Tax_Invoice", exportInvoice: "Export_Invoice", debitNote:"Debit_Note", creditNote:"Credit_Note", purchaseOrder:"Purchase_Order", purchaseInvoice:"Purchase_Invoice", billOfSupply:"Bill_Of_Supply" };
+ var controllerMap = { salesInvoice: "/home/submitInvoice", exportInvoice: "/home/submitInvoice", debitNote:"/home/submitInvoice", creditNote:"/home/submitInvoice" , purchaseOrder:"/home/submitInvoice"  , purchaseInvoice:"/home/submitInvoice", billOfSupply:"/home/submitInvoice", retailInvoice:"/home/submitInvoice"};
+ var fileMap = { salesInvoice: "Tax_Invoice", exportInvoice: "Export_Invoice", debitNote:"Debit_Note", creditNote:"Credit_Note", purchaseOrder:"Purchase_Order", purchaseInvoice:"Purchase_Invoice", billOfSupply:"Bill_Of_Supply", retailInvoice:"Retail_Invoice" };
  
  var gstRegex = /^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$/;
  
@@ -182,7 +181,7 @@ function submitHandler(e){
    fileName = fileName+"_"+$("[name=invoiceNo]").val()+".pdf";
 
    var f = $("#form")[0];
-   if(isGstValid && f.reportValidity() && isInvoiceNumberUnique) {
+   if(isGstValid && f.reportValidity()) {
 		$('#tableJson table').map(function(i, table){
 			   var $rows = $("#" +table.id).find('tr:not(:hidden)');
 			   var newFormData = [];
@@ -203,7 +202,7 @@ function submitHandler(e){
 						var json = JSON.stringify($('#form').serializeJSON())
 								.replace(/\\/g, "").replace("\"[", "[")
 								.replace("]\"", "]");
-						
+						debugger;
 						$('#overlay').fadeIn();
 						
 						$.ajax({
@@ -225,13 +224,13 @@ function submitHandler(e){
 								$('input').focus();
 								$('input').blur();
 								isGstValid=false;
-								isInvoiceNumberUnique=false;
 								if(name==="billOfSupply") {
 									setBOSValues();
 								} else {
 									setValues();
 								}
 								window.scrollTo(0, 0);
+								$('#bankDiv').empty();
 							}
 						});
 						$('#overlay').delay(500).fadeOut();
@@ -564,31 +563,6 @@ $("#againstInvoicedropdown").change(function() {
 	}
 });
 
-function checkInvoiceNo(value) {
-	var invoiceNo = $(value).val();
-	var pageName = $("[name=pageName]").val();
-
-	if(invoiceNo !== "") {
-		$.ajax({
-			type : "GET",
-			contentType : "application/json",
-			url : "/home/invoiceunique?invoiceNo=" + invoiceNo+"&pageName="+pageName,
-			dataType : 'json',				
-			success : function(data) {
-				if(data === null) {
-					isInvoiceNumberUnique = true;
-				}
-				else {
-					isInvoiceNumberUnique = false;
-					alert("Invoice Number/ Document Number already exists");
-					$(value).val("");
-					$(value).focus();
-				}
-			}
-			});
-	}
-}
-
 
 function checkAccountName(value) {
 	var accountName = $(value).val().trim();
@@ -812,7 +786,7 @@ function getBankData(data) {
 	}
 }
 
-function getBankList(){
+function getBankList() {
 	$("[name=bankId]").empty();
 	
 	$.ajax({
@@ -847,6 +821,7 @@ function getInvoiceData(data) {
 	if(value === "Invoice Ref"){
 		if(account !== "0") {
 			$("#invoicePayment").show();
+			$("#invoiceReceipt").show();
 			$invoiceTable.find('tbody tr').each(function (index) {
 			var $tblrow = $(this);
 			getInvoiceList(account, $tblrow);
@@ -865,14 +840,23 @@ function getInvoiceData(data) {
 		        	}
 				});
 	        });
+			if(dropdown.length === 0) {
+				createConfirmationMessageModal("No Invoice(s) were found for this account");
+				$('#paymentReference option:first').prop('selected', true);
+				$('#receiptReference option:first').prop('selected', true);
+				$("#invoicePayment").hide();
+				$("#invoiceReceipt").hide();
+				emptyTable();
+			}
 		} else {
 			createConfirmationMessageModal("Please select an account");
 			$('#paymentReference option:first').prop('selected', true);
+			$('#receiptReference option:first').prop('selected', true);
 		}
 	} else {
 		$("#invoicePayment").hide();
+		$("#invoiceReceipt").hide();
 		emptyTable();
-		$('#paymentRef').empty();
 	}
 }
 
@@ -953,4 +937,46 @@ function setInvoice(data) {
 		$(data).parent().parent().find("#paymentAmount").val("");
 		$(data).parent().parent().find("#dueAmount").val("");
 	}
+}
+
+$("[name=saleType]").change(function() {
+	getBankDataInvoice($("[name=saleType]"));
+});
+
+function getBankDataInvoice(data) {
+
+	var saleType = $(data).val();
+	if(saleType === "Bank"){
+		$('#bankDiv').html('<select class="form-control" name="bankId" required="required"></select>');
+		getBankListInvoice();
+	} else {
+		$('#bankDiv').empty();
+	}
+}
+
+function getBankListInvoice() {
+
+	$("[name=bankId]").empty();
+	
+	$.ajax({
+		type : "GET",
+		contentType : "application/json",
+		url : "/home/getbanklist",
+		dataType : 'json',			
+		async : false,
+		success : function(data) {	
+			if(data !== null) {
+				$.each(data, function (i, item) {
+				    $('[name=bankId]').append($('<option>', { 
+				        value: item.id,
+				        text : item.userBankName 
+				    }));
+				});
+			} else {
+				createConfirmationMessageModal("Please add a bank first");
+				$("[name=saleType]").find('option:first').prop('selected', true);
+				$('#bankDiv').empty();
+		}
+		}
+	});
 }

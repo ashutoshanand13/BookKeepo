@@ -36,8 +36,12 @@ public class PaymentService {
 	}
 
 	public List<Payment> fetchAllPayment(String owner) {
-		return paymentRepository.findByPaymentOwnerAndPaymentCompanyDetails(owner,
-				companyDetailsRepository.findByUserNameAndCompanyActive(owner, 1));
+		return paymentRepository.findByPaymentOwnerAndPaymentCompanyDetailsAndPaymentDeleted(owner,
+				companyDetailsRepository.findByUserNameAndCompanyActive(owner, 1), 1);
+	}
+	
+	public Payment findByIdAndPaymentOwner(int id, String owner) {
+		return paymentRepository.findByIdAndPaymentOwner(id, owner);
 	}
 
 }

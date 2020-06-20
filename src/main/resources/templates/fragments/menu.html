@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<div th:fragment="menu_withoutCompanyGSTIN">
+<!-- <div th:replace="fragments/commonmodal
+      :: commonModal(message='The invoice can't be created as you haven't added the company GSTIN. To proceed with this invoice creation, please click on Proceed', buttonname='Proceed',buttonaction='NA')">
+    </div> -->
+
+<div id="topheader">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-success">
+		<a class="navbar-brand" href="/home">BookKeepo</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse"
+			data-target="#navbarColor02" aria-controls="navbarColor02"
+			aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarColor02">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item active"><a th:class="nav-link"
+					th:href="@{/home}">Home</a></li>
+				<li class="nav-item dropdown"><a
+					class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333"
+					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Company Details</a>
+					<div class="dropdown-menu dropdown-menu-right dropdown-default"
+						aria-labelledby="navbarDropdownMenuLink-333">
+						<a th:class="dropdown-item"
+					th:href="@{/home/addcompany}">Update Company</a>
+						<a th:class="dropdown-item"
+					th:href="@{/home/addaccount}">Add/Update Account</a> 
+						<a th:class="dropdown-item"
+					th:href="@{/home/addpayment}">Add Payment</a>
+						<a th:class="dropdown-item"
+					th:href="@{/home/addreceipt}">Add Receipts</a>
+						<a th:class="dropdown-item"
+					th:href="@{/home/updatereceipt}">Update Receipt</a>
+						<a th:class="dropdown-item"
+					th:href="@{/home/updatepayment}">Update Payment</a>
+					</div>
+				</li>
+				<li class="nav-item dropdown"><a
+					class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333"
+					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Invoicing</a>
+					<div class="dropdown-menu dropdown-menu-right dropdown-default"
+						aria-labelledby="navbarDropdownMenuLink-333">
+						<!-- <a th:class="dropdown-item"
+					href="#commonmodal">Tax Invoice</a>
+						<a th:class="dropdown-item"
+					th:href="@{/home/creditnote}">Credit Note</a>
+						<a th:class="dropdown-item"
+					th:href="@{/home/debitnote}">Debit Note</a>
+					<a th:class="dropdown-item"
+					th:href="@{/home/exportinvoice}">Export Invoice</a>
+						<a th:class="dropdown-item"
+					th:href="@{/home/addpurchaseorder}">Purchase Order</a>
+						<a th:class="dropdown-item"
+					th:href="@{/home/addpurchaseinvoice}">Purchase Invoice</a>
+						<a th:class="dropdown-item"
+					th:href="@{/home/billofsupply}">Bill of Supply</a> -->
+						<a th:class="dropdown-item"
+					th:href="@{/home/retailinvoice}">Retail Invoice</a>
+					</div>
+				</li>
+				<li><a th:class="nav-link"
+					th:href="@{/home/additem}">Add Item</a></li>
+				<li><a th:class="nav-link"
+					th:href="@{/home/addbank}">Add Bank</a></li>
+					<li class="nav-item dropdown"><a
+					class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333"
+					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Reports</a>
+					<div class="dropdown-menu dropdown-menu-right dropdown-default"
+						aria-labelledby="navbarDropdownMenuLink-333">
+						<a th:class="dropdown-item"
+					th:href="@{/home/reports}">Generate Reports</a> 
+					<a th:class="dropdown-item"
+					th:href="@{/home/showInvoice}">Invoice Reports</a> 
+						<a th:class="dropdown-item"
+					th:href="@{/home/showitem}">Item Reports</a>
+					<a th:class="dropdown-item"
+					th:href="@{/home/showpayment}">Payment Reports</a>
+					<a th:class="dropdown-item"
+					th:href="@{/home/showreceipt}">Receipt Reports</a>
+					</div>
+				</li>
+			</ul>
+			
+			<ul class="navbar-nav ml-auto nav-flex-icons">
+				<li class="nav-item dropdown"><a
+					class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333"
+					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Accounts </a>
+					<div class="dropdown-menu dropdown-menu-right dropdown-default"
+						aria-labelledby="navbarDropdownMenuLink-333">
+						<a class="dropdown-item" th:href="@{/home/showProfile}">Company Profile</a> <a
+							class="dropdown-item" th:href="@{/home/changePassword}">Change Password</a> <a class="dropdown-item"
+							th:href="@{/logout}">Sign Out</a>
+					</div></li>
+			</ul>
+		</div>
+	</nav>
+	</div>
+	</div>
+	<div th:fragment="menu_withCompanyGSTIN">
+<div id="topheader">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-success">
+		<a class="navbar-brand" href="/home">BookKeepo</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse"
+			data-target="#navbarColor02" aria-controls="navbarColor02"
+			aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarColor02">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item active"><a th:class="nav-link"
+					th:href="@{/home}">Home</a></li>
+				<li class="nav-item dropdown"><a
+					class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333"
+					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Company Details</a>
+					<div class="dropdown-menu dropdown-menu-right dropdown-default"
+						aria-labelledby="navbarDropdownMenuLink-333">
+						<a th:class="dropdown-item"
+					th:href="@{/home/addcompany}">Update Company</a>
+						<a th:class="dropdown-item"
+					th:href="@{/home/addaccount}">Add/Update Account</a> 
+						<a th:class="dropdown-item"
+					th:href="@{/home/addpayment}">Add Payment</a>
+						<a th:class="dropdown-item"
+					th:href="@{/home/addreceipt}">Add Receipts</a>
+						<a th:class="dropdown-item"
+					th:href="@{/home/updatereceipt}">Update Receipt</a>
+						<a th:class="dropdown-item"
+					th:href="@{/home/updatepayment}">Update Payment</a>
+					</div>
+				</li>
+				<li class="nav-item dropdown"><a
+					class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333"
+					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Invoicing</a>
+					<div class="dropdown-menu dropdown-menu-right dropdown-default"
+						aria-labelledby="navbarDropdownMenuLink-333">
+						<a th:class="dropdown-item"
+					th:href="@{/home/salesinvoice}">Tax Invoice</a>
+						<a th:class="dropdown-item"
+					th:href="@{/home/creditnote}">Credit Note</a>
+						<a th:class="dropdown-item"
+					th:href="@{/home/debitnote}">Debit Note</a>
+					<a th:class="dropdown-item"
+					th:href="@{/home/exportinvoice}">Export Invoice</a>
+						<a th:class="dropdown-item"
+					th:href="@{/home/addpurchaseorder}">Purchase Order</a>
+						<a th:class="dropdown-item"
+					th:href="@{/home/addpurchaseinvoice}">Purchase Invoice</a>
+						<a th:class="dropdown-item"
+					th:href="@{/home/billofsupply}">Bill of Supply</a>
+						<a th:class="dropdown-item"
+					th:href="@{/home/retailinvoice}">Retail Invoice</a>
+					</div>
+				</li>
+				<li><a th:class="nav-link"
+					th:href="@{/home/additem}">Add Item</a></li>
+				<li><a th:class="nav-link"
+					th:href="@{/home/addbank}">Add Bank</a></li>
+					<li class="nav-item dropdown"><a
+					class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333"
+					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Reports</a>
+					<div class="dropdown-menu dropdown-menu-right dropdown-default"
+						aria-labelledby="navbarDropdownMenuLink-333">
+						<a th:class="dropdown-item"
+					th:href="@{/home/reports}">Generate Reports</a> 
+					<a th:class="dropdown-item"
+					th:href="@{/home/showInvoice}">Invoice Reports</a> 
+						<a th:class="dropdown-item"
+					th:href="@{/home/showitem}">Item Reports</a>
+					<a th:class="dropdown-item"
+					th:href="@{/home/showpayment}">Payment Reports</a>
+					<a th:class="dropdown-item"
+					th:href="@{/home/showreceipt}">Receipt Reports</a>
+					</div>
+				</li>
+			</ul>
+			
+			<ul class="navbar-nav ml-auto nav-flex-icons">
+				<li class="nav-item dropdown"><a
+					class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333"
+					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Accounts </a>
+					<div class="dropdown-menu dropdown-menu-right dropdown-default"
+						aria-labelledby="navbarDropdownMenuLink-333">
+						<a class="dropdown-item" th:href="@{/home/showProfile}">Company Profile</a> <a
+							class="dropdown-item" th:href="@{/home/changePassword}">Change Password</a> <a class="dropdown-item"
+							th:href="@{/logout}">Sign Out</a>
+					</div></li>
+			</ul>
+		</div>
+	</nav>
+	</div>
+	</div>

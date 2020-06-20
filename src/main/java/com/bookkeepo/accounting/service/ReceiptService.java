@@ -35,8 +35,12 @@ public class ReceiptService {
 	}
 
 	public List<Receipts> fetchAllReceipt(String owner) {
-		return receiptRepository.findByReceiptOwnerAndReceiptCompanyDetails(owner,
-				companyDetailsRepository.findByUserNameAndCompanyActive(owner, 1));
+		return receiptRepository.findByReceiptOwnerAndReceiptCompanyDetailsAndReceiptDeleted(owner,
+				companyDetailsRepository.findByUserNameAndCompanyActive(owner, 1), 1);
+	}
+	
+	public Receipts findByIdAndReceiptOwner(int id, String user) {
+		return receiptRepository.findByIdAndReceiptOwner(id, user);
 	}
 
 }
