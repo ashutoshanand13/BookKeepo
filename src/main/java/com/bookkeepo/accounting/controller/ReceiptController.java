@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -33,12 +34,14 @@ import com.bookkeepo.accounting.service.CompanyDetailsService;
 import com.bookkeepo.accounting.service.InvoiceService;
 import com.bookkeepo.accounting.service.ReceiptService;
 import com.bookkeepo.accounting.util.Constants;
+import com.bookkeepo.accounting.util.InvoiceUtil;
 
 /**
  * @author sachingoyal
  *
  */
 
+@Configuration
 @Controller
 public class ReceiptController {
 
@@ -85,6 +88,9 @@ public class ReceiptController {
 		receipt.setReceiptCompanyDetails(company);
 		checkReceiptInvoiceDetails(receipt);
 		receipt.setReceiptDeleted(1);
+		
+		String formatDate = InvoiceUtil.reverseDate(receipt.getReceiptDate());
+		receipt.setReceiptDate(formatDate);
 		receiptService.saveAccount(receipt);
 		List<Accounts> accountList = accountService.fetchAccountName(principal.getName(), company);
 		modelAndView.addObject("receipts", new Receipts());

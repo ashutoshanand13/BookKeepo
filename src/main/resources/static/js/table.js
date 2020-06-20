@@ -182,7 +182,7 @@ function submitHandler(e){
    fileName = fileName+"_"+$("[name=invoiceNo]").val()+".pdf";
 
    var f = $("#form")[0];
-   if(isGstValid && f.reportValidity() && isInvoiceNumberUnique) {
+   if(isGstValid && f.reportValidity()) {
 		$('#tableJson table').map(function(i, table){
 			   var $rows = $("#" +table.id).find('tr:not(:hidden)');
 			   var newFormData = [];
@@ -203,7 +203,7 @@ function submitHandler(e){
 						var json = JSON.stringify($('#form').serializeJSON())
 								.replace(/\\/g, "").replace("\"[", "[")
 								.replace("]\"", "]");
-						
+						debugger;
 						$('#overlay').fadeIn();
 						
 						$.ajax({
@@ -232,6 +232,7 @@ function submitHandler(e){
 									setValues();
 								}
 								window.scrollTo(0, 0);
+								$('#bankDiv').empty();
 							}
 						});
 						$('#overlay').delay(500).fadeOut();
@@ -812,7 +813,7 @@ function getBankData(data) {
 	}
 }
 
-function getBankList(){
+function getBankList() {
 	$("[name=bankId]").empty();
 	
 	$.ajax({
@@ -963,4 +964,46 @@ function setInvoice(data) {
 		$(data).parent().parent().find("#paymentAmount").val("");
 		$(data).parent().parent().find("#dueAmount").val("");
 	}
+}
+
+$("[name=saleType]").change(function() {
+	getBankDataInvoice($("[name=saleType]"));
+});
+
+function getBankDataInvoice(data) {
+
+	var saleType = $(data).val();
+	if(saleType === "Bank"){
+		$('#bankDiv').html('<select class="form-control" name="bankId" required="required"></select>');
+		getBankListInvoice();
+	} else {
+		$('#bankDiv').empty();
+	}
+}
+
+function getBankListInvoice() {
+
+	$("[name=bankId]").empty();
+	
+	$.ajax({
+		type : "GET",
+		contentType : "application/json",
+		url : "/home/getbanklist",
+		dataType : 'json',			
+		async : false,
+		success : function(data) {	
+			if(data !== null) {
+				$.each(data, function (i, item) {
+				    $('[name=bankId]').append($('<option>', { 
+				        value: item.id,
+				        text : item.userBankName 
+				    }));
+				});
+			} else {
+				createConfirmationMessageModal("Please add a bank first");
+				$("[name=saleType]").find('option:first').prop('selected', true);
+				$('#bankDiv').empty();
+		}
+		}
+	});
 }
