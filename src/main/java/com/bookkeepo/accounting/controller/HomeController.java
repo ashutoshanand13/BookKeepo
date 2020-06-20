@@ -29,16 +29,8 @@ public class HomeController extends MasterController {
 		Company company = companyDetailsService.findByUserName(user);
 		if (company == null) {
 			modelAndView.setViewName("redirect:/home/showProfile");
-			//modelAndView.addObject("CompanyGSTIN", "");
-			session.setAttribute("CompanyGSTIN", "menu_withoutCompanyGSTIN");
 		} else {
 			modelAndView.setViewName("home");
-			if(StringUtils.isEmpty(company.getCompanyGstin())) {
-				session.setAttribute("CompanyGSTIN", "menu_withoutCompanyGSTIN");
-			}
-			else {
-				session.setAttribute("CompanyGSTIN", "menu_withCompanyGSTIN");
-			}
 		}
 		return modelAndView;
 	}
