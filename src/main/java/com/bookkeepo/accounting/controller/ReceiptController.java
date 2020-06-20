@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -27,35 +27,17 @@ import com.bookkeepo.accounting.entity.BankDetails;
 import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.entity.ReceiptInvoices;
 import com.bookkeepo.accounting.entity.Receipts;
-import com.bookkeepo.accounting.service.AccountService;
-import com.bookkeepo.accounting.service.BankService;
-import com.bookkeepo.accounting.service.CompanyDetailsService;
-import com.bookkeepo.accounting.service.InvoiceService;
-import com.bookkeepo.accounting.service.ReceiptService;
 import com.bookkeepo.accounting.util.Constants;
+import com.bookkeepo.accounting.util.InvoiceUtil;
 
 /**
  * @author sachingoyal
  *
  */
 
+@Configuration
 @Controller
-public class ReceiptController {
-
-	@Autowired
-	private AccountService accountService;
-
-	@Autowired
-	private ReceiptService receiptService;
-
-	@Autowired
-	private CompanyDetailsService companyDetailsService;
-	
-	@Autowired
-	private BankService bankService;
-	
-	@Autowired
-	InvoiceService invoiceService;
+public class ReceiptController extends MasterController{
 
 	@RequestMapping(value = { "/home/addreceipt" }, method = RequestMethod.GET)
 	public ModelAndView getAddReceipt(HttpServletRequest request) {
@@ -84,7 +66,9 @@ public class ReceiptController {
 		}
 		receipt.setReceiptCompanyDetails(company);
 		checkReceiptInvoiceDetails(receipt);
-		receipt.setReceiptDeleted(1);
+		
+		String formatDate = InvoiceUtil.reverseDate(receipt.getReceiptDate());
+		receipt.setReceiptDate(formatDate);
 		receiptService.saveAccount(receipt);
 		List<Accounts> accountList = accountService.fetchAccountName(principal.getName(), company);
 		modelAndView.addObject("receipts", new Receipts());
@@ -155,7 +139,7 @@ public class ReceiptController {
 
 		String user = request.getUserPrincipal().getName();
 		Receipts receipt = receiptService.findByIdAndReceiptOwner(Integer.valueOf(id), user);
-		receipt.setReceiptDeleted(0);
+		receipt.setReceiptDeleted(1);
 		receiptService.saveAccount(receipt);
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("redirect:/home/updatereceipt");
