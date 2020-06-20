@@ -19,6 +19,7 @@ import org.thymeleaf.util.StringUtils;
 
 import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.service.CompanyDetailsService;
+import com.bookkeepo.accounting.util.CommonUtils;
 
 /**
  * @author Ashutosh Anand
@@ -36,17 +37,19 @@ public class MySuccessHandler implements AuthenticationSuccessHandler {
 		HttpSession session = request.getSession();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String user = auth.getName();
+		String menutoDisplay = "menu_withoutCompanyGSTIN";
 		Company company = companyDetailsService.findByUserName(user);
 		if (company == null) {
-			session.setAttribute("CompanyGSTIN", "menu_withoutCompanyGSTIN");
+			session.setAttribute("CompanyGSTIN", menutoDisplay);
 		} else {
 			if (StringUtils.isEmpty(company.getCompanyGstin())) {
-				session.setAttribute("CompanyGSTIN", "menu_withoutCompanyGSTIN");
+				CommonUtils.setSessionAttributes(session,menutoDisplay, company);
 			} else {
-				session.setAttribute("CompanyGSTIN", "menu_withCompanyGSTIN");
+				menutoDisplay = "menu_withCompanyGSTIN";
+				CommonUtils.setSessionAttributes(session,menutoDisplay, company);
 			}
 		}
+		response.sendRedirect("home");
 
 	}
-	
 }

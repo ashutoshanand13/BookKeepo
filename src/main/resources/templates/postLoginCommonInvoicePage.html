@@ -14,7 +14,7 @@
 
 </head>
 <body>
-<div th:replace="fragments/menu :: ${#strings.isEmpty(CompanyGSTIN)} ? 'menu_withoutCompanyGSTIN' : 'menu_withCompanyGSTIN'"></div>
+<div th:replace="fragments/menu :: ${session.CompanyGSTIN} "></div>
 	<div layout:fragment="invoice_fragment"></div>
 	<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
 	<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
