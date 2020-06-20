@@ -76,6 +76,9 @@ public class Receipts {
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "receipt_invoice_reference_no")
 	private List<ReceiptInvoices> receiptInvoiceDetails;
+	
+	@Column(name = "receipt_deleted", nullable = false)
+	private int receiptDeleted;
 
 	/**
 	 * @return the id
@@ -257,6 +260,20 @@ public class Receipts {
 	 */
 	public void setReceiptInvoiceDetails(List<ReceiptInvoices> receiptInvoiceDetails) {
 		this.receiptInvoiceDetails = receiptInvoiceDetails;
+	}
+
+	/**
+	 * @return the receiptDeleted
+	 */
+	public int getReceiptDeleted() {
+		return receiptDeleted;
+	}
+
+	/**
+	 * @param receiptDeleted the receiptDeleted to set
+	 */
+	public void setReceiptDeleted(int receiptDeleted) {
+		this.receiptDeleted = receiptDeleted;
 	}
 
 }

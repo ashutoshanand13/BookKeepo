@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.bookkeepo.accounting.entity.Accounts;
 import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.entity.InvoiceDetails;
+import com.bookkeepo.accounting.entity.Payment;
+import com.bookkeepo.accounting.entity.Receipts;
 import com.bookkeepo.accounting.model.json.InvoicePageData;
 import com.bookkeepo.accounting.util.InvoiceUtil;
 
@@ -50,12 +52,37 @@ public class InvoiceController extends MasterController {
 
 		Company companyDetails = companyDetailsService.findByUserName(principal.getName());
 
+		Payment payment = InvoiceUtil.createPayment(salesInvoiceData);
+		
+		Receipts receipt = InvoiceUtil.createReceipt(salesInvoiceData);
+		
 		if (salesInvoiceData.getAccountNo() != 0) {
 			Accounts account = accountService.findById(salesInvoiceData.getAccountNo());
 			invoice.setInvoiceAccountDetails(account);
+
+			if (payment != null) {
+				payment.setAccountRefNo(account);
+				payment.setPaymentOwner(principal.getName());
+				payment.setPaymentCompanyDetails(companyDetails);
+				if (salesInvoiceData.getBankId() != null) {
+					payment.setBankDetails(bankService.findById(Integer.valueOf(salesInvoiceData.getBankId())));
+				}
+				paymentService.saveAccount(payment);
+
+			}
+			if (receipt != null) {
+				receipt.setAccountRefNo(account);
+				receipt.setReceiptOwner(principal.getName());
+				receipt.setReceiptCompanyDetails(companyDetails);
+				if (salesInvoiceData.getBankId() != null) {
+					receipt.setBankDetails(bankService.findById(Integer.valueOf(salesInvoiceData.getBankId())));
+				}
+				receiptService.saveAccount(receipt);
+			}
 		}
 
 		InvoiceUtil.updateInvoice(invoice, salesInvoiceData, companyDetails);
+		
 		invoiceService.saveInvoice(invoice);
 
 		ByteArrayOutputStream invoiceData = InvoiceUtil.createPDF(invoice);

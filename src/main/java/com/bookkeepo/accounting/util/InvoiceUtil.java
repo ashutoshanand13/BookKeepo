@@ -22,6 +22,8 @@ import com.bookkeepo.accounting.entity.InvoiceCompanyDetails;
 import com.bookkeepo.accounting.entity.InvoiceDetails;
 import com.bookkeepo.accounting.entity.InvoiceOtherDetails;
 import com.bookkeepo.accounting.entity.InvoiceProductDetails;
+import com.bookkeepo.accounting.entity.Payment;
+import com.bookkeepo.accounting.entity.Receipts;
 import com.bookkeepo.accounting.model.InvoiceSubType;
 import com.bookkeepo.accounting.model.InvoiceType;
 import com.bookkeepo.accounting.model.json.InvoicePageData;
@@ -675,7 +677,7 @@ public class InvoiceUtil {
 		InvoiceCompanyDetails company = invoice.getInvoiceAssoCompanyDetails();
 
 		PdfPCell cell = null;
-		if(company.getCompanyLogo().length != 0) {
+		if(company.getCompanyLogo() != null && company.getCompanyLogo().length != 0) {
 			Image img = Image.getInstance(company.getCompanyLogo());
 			img.scaleAbsolute(120f, 50f);
 			cell = new PdfPCell(img);
@@ -775,14 +777,13 @@ public class InvoiceUtil {
 		table.addCell(cell);
 	}
 
-	private static String reverseDate(String date) {
+	public static String reverseDate(String date) {
 		if (date != null && date.contains("-")) {
 			String[] dateArr = date.split("-");
 			List<String> listOfDate = Arrays.asList(dateArr);
 			Collections.reverse(listOfDate);
 			String[] reversed = listOfDate.toArray(dateArr);
 			date = String.join("-", reversed);
-
 		}
 		return date;
 	}
@@ -832,5 +833,38 @@ public class InvoiceUtil {
 		int year = getFiscalYear();
 		return year + "-" + (year + 1);
 
+	}
+	
+	public static Payment createPayment(InvoicePageData salesInvoiceData) {
+		Payment payment = null;
+		if (!"Credit".equals(salesInvoiceData.getSaleType())
+				&& salesInvoiceData.getPageName().equals(InvoiceType.Purchase_Invoice.getType())) {
+			payment = new Payment();
+			payment.setPaymentAmount(salesInvoiceData.getTotalAmountAfterTax());
+			payment.setPaymentDate(reverseDate(salesInvoiceData.getInvoiceDate()));
+			payment.setPaymentDeleted(1);
+			payment.setPaymentDescription("Auto generated payment for "+salesInvoiceData.getSaleType()+" Purchase");
+			payment.setPaymentReference("On Account");
+			payment.setPaymentMode(salesInvoiceData.getSaleType());
+		}
+		
+		return payment;
+	}
+	
+	public static Receipts createReceipt(InvoicePageData salesInvoiceData) {
+		Receipts receipt = null;
+		if (!"Credit".equals(salesInvoiceData.getSaleType())
+				&& (salesInvoiceData.getPageName().equals(InvoiceType.Tax_Invoice.getType())
+						|| salesInvoiceData.getPageName().equals(InvoiceType.Export_Invoice.getType()))) {
+			receipt = new Receipts();
+			receipt.setReceiptAmount(salesInvoiceData.getTotalAmountAfterTax());
+			receipt.setReceiptDate(reverseDate(salesInvoiceData.getInvoiceDate()));
+			receipt.setReceiptDeleted(1);
+			receipt.setReceiptDescription("Auto generated receipt for "+salesInvoiceData.getSaleType() + " Sale");
+			receipt.setReceiptReference("On Account");
+			receipt.setReceiptMode(salesInvoiceData.getSaleType());
+		}
+		
+		return receipt;
 	}
 }

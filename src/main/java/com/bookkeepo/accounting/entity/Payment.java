@@ -76,6 +76,9 @@ public class Payment {
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "payment_invoice_reference_no")
 	private List<PaymentInvoices> paymentInvoiceDetails;
+	
+	@Column(name = "payment_deleted", nullable = false)
+	private int paymentDeleted;
 
 	/**
 	 * @return the id
@@ -257,6 +260,20 @@ public class Payment {
 	 */
 	public void setPaymentInvoiceDetails(List<PaymentInvoices> paymentInvoiceDetails) {
 		this.paymentInvoiceDetails = paymentInvoiceDetails;
+	}
+
+	/**
+	 * @return the paymentDeleted
+	 */
+	public int getPaymentDeleted() {
+		return paymentDeleted;
+	}
+
+	/**
+	 * @param paymentDeleted the paymentDeleted to set
+	 */
+	public void setPaymentDeleted(int paymentDeleted) {
+		this.paymentDeleted = paymentDeleted;
 	}
 
 }
