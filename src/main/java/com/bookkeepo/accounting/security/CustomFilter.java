@@ -44,7 +44,6 @@ public class CustomFilter extends GenericFilterBean {
 		if (urls.contains(httpServletRequest.getRequestURI())) {
 			if (httpServletRequest.getSession().getAttribute("CompanyGSTIN").equals("menu_withoutCompanyGSTIN")) {
 				httpServletReponse.sendRedirect("/error");
-				return;
 			}
 		}
 
