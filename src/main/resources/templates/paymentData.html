@@ -14,7 +14,7 @@
 		<h5>Get more things done with BookKeepo platform.</h5>
 		<br/>
 		<p>Company Name : <b><span th:text= "${session.company!=null} ? ${session.company.CompanyName}:''" ></span></b></p>
-		<p>Company GSTIN : <span th:text= "${session.company.companyGstin!=null && session.company.companyGstin!=''} ? ${session.company.companyGstin}:'N/A'" /></span></p>
+		<p>Company GSTIN : <span th:text= "${session.company.companyGstin!=null && session.company.companyGstin!=''} ? ${session.company.companyGstin}:'Not Available'" /></span></p>
 	</div>
 </div>
 	<div layout:fragment="form_content" id="form_content">
