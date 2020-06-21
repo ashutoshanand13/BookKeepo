@@ -134,12 +134,12 @@ public class InvoiceUtil {
 
 		if (invoice.getInvoiceType().equals(InvoiceType.Purchase_Invoice.getType())
 				|| invoice.getInvoiceType().equals(InvoiceType.Purchase_Order.getType())) {
-			invoiceAddressDetails.setInvoiceBillerName(salesInvoiceData.getPartyName());
+			invoiceAddressDetails.setInvoiceBillerName(invoice.getInvoiceAccountDetails().getAccountName());
 			invoiceAddressDetails.setInvoiceBillerAddressName(salesInvoiceData.getPartyAddress());
 			invoiceAddressDetails.setInvoiceBillerGst(salesInvoiceData.getGstinBill());
 			invoiceAddressDetails.setInvoiceBillerState(salesInvoiceData.getPartyState());
 
-			invoiceAddressDetails.setInvoicePartyName(salesInvoiceData.getPartyName());
+			invoiceAddressDetails.setInvoicePartyName(invoice.getInvoiceAccountDetails().getAccountName());
 			invoiceAddressDetails.setInvoicePartyAddressName(salesInvoiceData.getPartyAddress());
 			invoiceAddressDetails.setInvoicePartyState(salesInvoiceData.getPartyState());
 			invoiceAddressDetails.setInvoicePartyGst(salesInvoiceData.getGstinBill());
@@ -842,7 +842,6 @@ public class InvoiceUtil {
 			payment = new Payment();
 			payment.setPaymentAmount(salesInvoiceData.getTotalAmountAfterTax());
 			payment.setPaymentDate(reverseDate(salesInvoiceData.getInvoiceDate()));
-			payment.setPaymentDeleted(1);
 			payment.setPaymentDescription("Auto generated payment for "+salesInvoiceData.getSaleType()+" Purchase");
 			payment.setPaymentReference("On Account");
 			payment.setPaymentMode(salesInvoiceData.getSaleType());
@@ -859,7 +858,6 @@ public class InvoiceUtil {
 			receipt = new Receipts();
 			receipt.setReceiptAmount(salesInvoiceData.getTotalAmountAfterTax());
 			receipt.setReceiptDate(reverseDate(salesInvoiceData.getInvoiceDate()));
-			receipt.setReceiptDeleted(1);
 			receipt.setReceiptDescription("Auto generated receipt for "+salesInvoiceData.getSaleType() + " Sale");
 			receipt.setReceiptReference("On Account");
 			receipt.setReceiptMode(salesInvoiceData.getSaleType());
