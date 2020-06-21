@@ -28,6 +28,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private AccessDeniedHandler accessDeniedHandler;
+	
+	@Autowired
+	private MySuccessHandler successHandler;
 
 	@Autowired
 	private DataSource dataSource;
@@ -50,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/", "/css/**", "/js/**", "/images/**", "/registration", "/signInError", "/webfonts/**",
 						"/accountactivation/**")
 				.permitAll().antMatchers("/home/**").hasAuthority("USER").anyRequest().authenticated().and().formLogin()
-				.loginPage("/login").defaultSuccessUrl("/home").permitAll().and().logout().permitAll().and()
+				.loginPage("/login").successHandler(successHandler).permitAll().and().logout().permitAll().and()
 				.exceptionHandling().accessDeniedHandler(accessDeniedHandler);
 
 	}

@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.security.Principal;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -46,7 +48,8 @@ public class CompanyController extends MasterController {
 
 	@RequestMapping(value = "/home/addcompany", method = RequestMethod.POST)
 	public ModelAndView addCompany(@Valid @ModelAttribute("company") Company company, BindingResult bindingResult,
-			Principal principal, @RequestParam("companyLogo") MultipartFile companyLogo) {
+			Principal principal, @RequestParam("companyLogo") MultipartFile companyLogo, HttpServletRequest request) {
+		HttpSession session = request.getSession();
 		ModelAndView modelAndView = new ModelAndView(
 				CommonUtils.isPopulated(company.getPageName()) ? "redirect:" + company.getPageName() : "addCompany");
 		try {
@@ -65,6 +68,9 @@ public class CompanyController extends MasterController {
 			modelAndView.addObject("message", "Company details updated successfully!");
 			modelAndView.addObject("company", company);
 		}
+		String menuToDisplay = CommonUtils.isPopulated(company.getCompanyGstin()) 
+				? "menu_withCompanyGSTIN":"menu_withoutCompanyGSTIN";
+		CommonUtils.setSessionAttributes(session, menuToDisplay, company);
 		return modelAndView;
 	}
 

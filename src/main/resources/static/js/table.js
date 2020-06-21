@@ -510,9 +510,11 @@ $("[name=accountNo]").change(function() {
 				$("[name=gstinShip]").val(data.gstin);
 				$("[name=stateBill]").val(data.accountState);
 				$("[name=stateShip]").val(data.accountState);
+				$("[name=partyAddress]").val(data.accountAddress);
+				$("[name=partyState]").val(data.accountState);
 				$("[name=gstinBill]").focus();
 				$("[name=gstinShip]").focus();
-				$("[name=gstinShip]").blur();
+				$("[name=gstinBill]").blur();
 			}
 			});
 	} else {
@@ -523,9 +525,11 @@ $("[name=accountNo]").change(function() {
 		$("[name=gstinShip]").val("");
 		$("[name=stateBill]").val("");
 		$("[name=stateShip]").val("");
+		$("[name=partyAddress]").val("");
+		$("[name=partyState]").val("");
 		$("[name=gstinBill]").focus();
 		$("[name=gstinShip]").focus();
-		$("[name=gstinShip]").blur();
+		$("[name=gstinBill]").blur();
 		
 		if(accountNo === "-1"){
 			$("[name=accountNo]").val("0");
@@ -979,4 +983,28 @@ function getBankListInvoice() {
 		}
 		}
 	});
+}
+
+function getAccountListPurchase() {
+	$("[name=accountNo]").empty();
+	$("[name=partyAddress]").val("");
+	$("[name=gstinBill]").val("");
+	$("[name=partyState]").val("");
+	$("[name=gstinBill]").focus();
+	$("[name=gstinBill]").blur()
+	$.ajax({
+		type : "GET",
+		contentType : "application/json",
+		url : "/home/getaccountlist",
+		dataType : 'json',			
+		async : false,
+		success : function(data) {			
+			$.each(data, function (i, item) {
+			    $('[name=accountNo]').append($('<option>', { 
+			        value: item.id,
+			        text : item.accountName 
+			    }));
+			});
+		}
+		});
 }
