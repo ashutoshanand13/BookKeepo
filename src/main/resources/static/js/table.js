@@ -21,14 +21,14 @@
  var invoiceList = [];
  var dropdown = []
  
- 
- var isGstValid = true;
  var shippingType ='';
  var tableIndex = 0;
 
  
  var controllerMap = { salesInvoice: "/home/submitInvoice", exportInvoice: "/home/submitInvoice", debitNote:"/home/submitInvoice", creditNote:"/home/submitInvoice" , purchaseOrder:"/home/submitInvoice"  , purchaseInvoice:"/home/submitInvoice", billOfSupply:"/home/submitInvoice", retailInvoice:"/home/submitInvoice"};
  var fileMap = { salesInvoice: "Tax_Invoice", exportInvoice: "Export_Invoice", debitNote:"Debit_Note", creditNote:"Credit_Note", purchaseOrder:"Purchase_Order", purchaseInvoice:"Purchase_Invoice", billOfSupply:"Bill_Of_Supply", retailInvoice:"Retail_Invoice" };
+ 
+ var gstCodeStateMap = {"01":"JAMMU & KASHMIR","02":"HIMACHAL PRADESH	","03":"PUNJAB","04":"CHANDIGARH","05":"UTTARAKHAND","06":"DELHI","08":"RAJASTHAN","09":"UTTAR PRADESH","10":"BIHAR","11":"SIKKIM","12":"ARUNACHAL PRADESH","13":"NAGALAND","14":"MANIPUR","15":"MIZORAM","16":"TRIPURA","17":"MEGHLAYA","18":"ASSAM","19":"WEST BENGAL","20":"JHARKHAND","21":"ODISHA","22":"CHATTISGARH","22":"MADHYA PRADESH","24":"GUJARAT","25":"DAMAN AND DIU","26":"DADRA AND NAGAR HAVELI","27":"MAHARASHTRA",        "28":"ANDHRA PRADESH (Old)","29":"KARNATAKA","30":"GOA","31":"LAKSHWADEEP","32":"KERALA","33":"TAMIL NADU","34":"PUDUCHERRY","35":"ANDAMAN AND NICOBAR ISLANDS","36":"TELANGANA","37":"ANDHRA PRADESH (New)","38":"LADAKH","-1":"OTHER" }
  
  var gstRegex = /^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$/;
  
@@ -79,13 +79,7 @@ else
 
 function validateGST(val){
 	removeTableColumnClass();
-	 var value = $(val).val();
-	 if(!gstRegex.test(value) || value === "") {
-			isGstValid=true;
-		 } else {
-		 isGstValid=true;
-	 }
-	 updateTableColumn(true);
+	updateTableColumn(true);
  }
 
 function removeTableColumnClass() {
@@ -101,6 +95,7 @@ function updateTableColumn(showAlert) {
 	removeTableColumnClass();
 	var gstHeader = $('#headerGstin').text();
 	var gstValue = $("[name=gstinBill]").val();
+	var state = $("[name=stateBill]").val();
 	
 	if(gstValue !== "") {
 		if (gstHeader.substring(0, 2) !== gstValue.substring(0, 2)) {
@@ -108,19 +103,35 @@ function updateTableColumn(showAlert) {
 		} else {
 			disableColumns("Intra");
 		}
-	} else {
-		disableColumns("Intra");
+	} else if (state !== ""){
+		if (gstHeader.substring(0, 2) !== getKeyByValue(state)) {
+			disableColumns("Inter");
+		} else {
+			disableColumns("Intra");
+		}
 	}
 	
 
 	if (showAlert) {
-		if (gstHeader.substring(0, 2) === gstValue.substring(0, 2)) {
-			setAlert("Intra-State Form")
-		} else if(gstHeader!==""&&gstValue!=="") {
-			setAlert("Inter-State Form")
+		if(gstValue !== "") {
+			if (gstHeader.substring(0, 2) === gstValue.substring(0, 2)) {
+				setAlert("Intra-State Form")
+			} else if(gstHeader !== "" && gstValue !== "") {
+				setAlert("Inter-State Form")
+			}
+		} else if (state !== "") {
+			if (gstHeader.substring(0, 2) === getKeyByValue(state)) {
+				setAlert("Intra-State Form")
+			} else if(gstHeader !== "" && getKeyByValue(state) !== "") {
+				setAlert("Inter-State Form")
+			}
 		}
 	}
 }
+
+function getKeyByValue(searchValue) {
+	  return Object.keys(gstCodeStateMap).find(key => gstCodeStateMap[key] === searchValue);
+	}
 
 function disableColumns(subType) {
 		if (subType === "Intra") {
@@ -181,7 +192,7 @@ function submitHandler(e){
    fileName = fileName+"_"+$("[name=invoiceNo]").val()+".pdf";
 
    var f = $("#form")[0];
-   if(isGstValid && f.reportValidity()) {
+   if(f.reportValidity()) {
 		$('#tableJson table').map(function(i, table){
 			   var $rows = $("#" +table.id).find('tr:not(:hidden)');
 			   var newFormData = [];
@@ -223,7 +234,6 @@ function submitHandler(e){
 								f.reset();
 								$('input').focus();
 								$('input').blur();
-								isGstValid=false;
 								if(name==="billOfSupply") {
 									setBOSValues();
 								} else {
@@ -508,12 +518,13 @@ $("[name=accountNo]").change(function() {
 				$("[name=addressShip]").val(data.accountAddress);
 				$("[name=gstinBill]").val(data.gstin);
 				$("[name=gstinShip]").val(data.gstin);
-				$("[name=stateBill]").val(data.accountState);
-				$("[name=stateShip]").val(data.accountState);
+				$("[name=stateBill]").val(gstCodeStateMap[data.accountState]);
+				$("[name=stateShip]").val(gstCodeStateMap[data.accountState]);
 				$("[name=partyAddress]").val(data.accountAddress);
-				$("[name=partyState]").val(data.accountState);
+				$("[name=partyState]").val(gstCodeStateMap[data.accountState]);
 				$("[name=gstinBill]").focus();
 				$("[name=gstinShip]").focus();
+				$("[name=gstinShip]").blur();
 				$("[name=gstinBill]").blur();
 			}
 			});
@@ -529,6 +540,7 @@ $("[name=accountNo]").change(function() {
 		$("[name=partyState]").val("");
 		$("[name=gstinBill]").focus();
 		$("[name=gstinShip]").focus();
+		$("[name=gstinShip]").blur();
 		$("[name=gstinBill]").blur();
 		
 		if(accountNo === "-1"){
@@ -624,7 +636,6 @@ function getAccountList() {
 
 function setBOSValues() {
 
-	isGstValid=true;
     $tableBOSID.find('tbody tr').each(function (index) {
     	
         var $tblrow = $(this);
@@ -685,7 +696,6 @@ function setBOSValues() {
 
 function resetBOSValues() {
 
-	isGstValid =true;
 	 ttlAmount = [];
 	 ttlQty = [];
 	 ttlTotalAmount = [];
