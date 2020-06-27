@@ -1,14 +1,55 @@
 package com.bookkeepo.accounting.model;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.CreationTimestamp;
+
+import lombok.Data;
+
 /**
-* @author Ashutosh
+* @author Ashutosh Anand
 */
+@Data
+@Entity
+@Table(name = "record_contra_cash_details")
 public class RecordContraCash {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "record_contracash_id")
+	private int id;
+	
+	@Column(name = "payFrom")
 	private String payFrom;
+	
+	@Column(name = "payTo")
 	private String payTo;
+	
+	@Column(name = "record_contra_amount")
 	private String recordContraAmount;
+	
+	@Column(name = "record_contra_date")
 	private String recordContraDate;
+	
+	@Column(name = "record_contra_description")
 	private String recordContraDescription;
+	
+	@Column(name = "record_contra_owner", nullable = false, updatable = false)
+	private String recordContraOwner;
+	
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "record_contra_creation_date", nullable = false, updatable = false)
+	private Date recordContraCreationDate;
 	/**
 	 * @return the payFrom
 	 */
@@ -68,6 +109,42 @@ public class RecordContraCash {
 	 */
 	public void setRecordContraDescription(String recordContraDescription) {
 		this.recordContraDescription = recordContraDescription;
+	}
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
+	/**
+	 * @return the recordContraOwner
+	 */
+	public String getRecordContraOwner() {
+		return recordContraOwner;
+	}
+	/**
+	 * @param recordContraOwner the recordContraOwner to set
+	 */
+	public void setRecordContraOwner(String recordContraOwner) {
+		this.recordContraOwner = recordContraOwner;
+	}
+	/**
+	 * @return the recordContraCreationDate
+	 */
+	public Date getRecordContraCreationDate() {
+		return recordContraCreationDate;
+	}
+	/**
+	 * @param recordContraCreationDate the recordContraCreationDate to set
+	 */
+	public void setRecordContraCreationDate(Date recordContraCreationDate) {
+		this.recordContraCreationDate = recordContraCreationDate;
 	}
 
 	
