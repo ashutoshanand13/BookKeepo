@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bookkeepo.accounting.entity.Accounts;
 import com.bookkeepo.accounting.entity.Company;
+import com.bookkeepo.accounting.util.Constants;
 
 /**
  * @author sachingoyal
@@ -36,6 +37,8 @@ public class AccountController extends MasterController {
 		} else {
 			modelAndView.addObject("accountList",
 					accountService.fetchAccountName(request.getUserPrincipal().getName(), company));
+			modelAndView.addObject("accountLedgerType",accountLedgerService.findAllAccountType());
+			modelAndView.addObject("stateMap",Constants.gstCodeStateMap);
 			modelAndView.addObject("account", new Accounts());
 			modelAndView.setViewName("addaccount");
 		}
@@ -78,6 +81,8 @@ public class AccountController extends MasterController {
 			accountService.saveAccount(account);
 			modelAndView.addObject("message", "Account Updated Successfully");
 			modelAndView.addObject("accountList", accountService.fetchAccountName(principal.getName(), company));
+			modelAndView.addObject("accountLedgerType",accountLedgerService.findAllAccountType());
+			modelAndView.addObject("stateMap",Constants.gstCodeStateMap);
 			modelAndView.addObject("account", new Accounts());
 			modelAndView.setViewName("addaccount");
 		}
