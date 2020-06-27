@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 /**
  * @author sachingoyal
@@ -55,6 +56,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.permitAll().antMatchers("/home/**").hasAuthority("USER").anyRequest().authenticated().and().formLogin()
 				.loginPage("/login").successHandler(successHandler).permitAll().and().logout().permitAll().and()
 				.exceptionHandling().accessDeniedHandler(accessDeniedHandler);
-
+		http.addFilterAfter(new CustomFilter(), BasicAuthenticationFilter.class);
 	}
 }
