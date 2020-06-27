@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 
 import com.bookkeepo.accounting.configurations.LoginRegisterMessages;
 import com.bookkeepo.accounting.configurations.MessageProperties;
+import com.bookkeepo.accounting.service.AccountLedgerService;
 import com.bookkeepo.accounting.service.AccountService;
 import com.bookkeepo.accounting.service.BankService;
 import com.bookkeepo.accounting.service.CompanyDetailsService;
@@ -71,5 +72,8 @@ public class MasterController {
 
 	@Autowired
 	protected ReportService reportService;
+	
+	@Autowired
+	protected AccountLedgerService accountLedgerService;
 
 }

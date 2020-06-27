@@ -45,16 +45,8 @@
 							<div id = "name_alert"></div>
 							<select name="selectbasic" class="form-control" th:field="*{accountType}"
 							required="required">
-							<option class="form-control" value="">Select Account
-								type</option>
-							<option class="form-control" value="Debtor">Debtor</option>
-							<option class="form-control" value="Creditor">Creditor</option>
-							<option class="form-control" value="Loan">Loan</option>
-							<option class="form-control" value="Advances">Advances</option>
-							<option class="form-control" value="Expense">Expense</option>
-							<option class="form-control" value="Income">Income</option>
-							<option class="form-control" value="Contra">Contra</option>
-							<option class="form-control" value="Others">Others</option>
+							<option th:each="account : ${accountLedgerType}" th:value="${account.accountType}"
+							th:text="${account.accountType}"></option>
 						</select> <input type="text" class="form-control" th:field="*{gstin}"
 							placeholder="GST Number"
 							pattern="^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$"

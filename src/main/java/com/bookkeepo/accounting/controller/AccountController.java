@@ -36,6 +36,7 @@ public class AccountController extends MasterController {
 		} else {
 			modelAndView.addObject("accountList",
 					accountService.fetchAccountName(request.getUserPrincipal().getName(), company));
+			modelAndView.addObject("accountLedgerType",accountLedgerService.findAllAccountType());
 			modelAndView.addObject("account", new Accounts());
 			modelAndView.setViewName("addaccount");
 		}
