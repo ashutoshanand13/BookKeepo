@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{postLoginCommonPage}">
+
+<head>
+<title>Record Expense</title>
+</head>
+<div class="img-holder fluid-height"
+	layout:fragment="screen_description">
+	<div class="bg"></div>
+	<h5>Get more things done with BookKeepo platform.</h5>
+	<br/>
+		<p>Company Name : <b><span th:text= "${session.company!=null} ? ${session.company.CompanyName}:''" ></span></b></p>
+		<p>Company GSTIN : <span th:text= "${session.company.companyGstin!=null && session.company.companyGstin!=''} ? ${session.company.companyGstin}:'Not Available'" /></span></p>
+</div>
+<div layout:fragment="form_content" id="form_content">
+	<div class="form-items">
+		<h3 class="form-title doubleunderlinetext">Record an Expense - Outstanding Expense/Payable Expense</h3>
+		<div id="alert" th:if="${message}" th:text="${message} "
+			class="alert alert-info fade-in"></div>
+		<form autocomplete="off" th:action="@{/home/recordexpense}"
+			th:object="${expense}" method="post" class="form-horizontal" role="form"
+			enctype="multipart/form-data">
+			<div class="row">
+				<div class="col-md-6 form-group"><label class="mandatory field-description text-uppercase">Expense Account</label>
+					<select th:attr="onChange = 'autofillValues(\'' + ${accountList} +'\')'" th:field="*{expenseWithAccountReference.id}"
+							class="form-control" id="selectbasic" name="selectbasic">
+							<option th:each="accountValue : ${accountList}" th:value="${accountValue.id}"
+								th:text="${accountValue.accountName}"></option>
+						</select>
+						
+					<label class="mandatory field-description text-uppercase">Date</label>
+					<input type="date" class="form-control" name="expenseDate"
+						th:field="*{expenseDate}" required>
+					<label class="field-description">Description</label>
+					<textarea class="form-control" th:field="*{expenseDescription}"></textarea>
+				</div>
+				<div class="col-md-6 form-group"><label class="mandatory field-description text-uppercase">Expense Type</label>
+					<input type="text" class="form-control" id="expenseType" name="expenseType" readonly="readonly" required>
+					<label class="mandatory field-description">Amount</label>
+					<input type="text" onfocus="(this.type='number')" onblur="(this.type='text')" min="0"
+						class="form-control" name="recordContraAmount" th:field="*{expenseAmount}" required>
+				</div>
+			</div>
+			<div class="form-button text-right">
+				<button type="reset" class="btn btn-light">Reset</button>
+				<button id="submit" type="submit" class="ibtn">Save</button>
+			</div>
+
+		</form>
+	</div>
+</div>
+<th:block layout:fragment="scripts">
+	<script type="text/javascript">
+	$(document).ready(function() {
+		$("#selectbasic").change(function() {
+			getAccountData();
+		});
+	});
+	
+	function getAccountData() {
+		var accountId = $("#selectbasic").val();
+		if(accountId !== '0'){
+			$.ajax({
+				type : "GET",
+				contentType : "application/json",
+				url : "/home/getAccountData?accountName=" + accountId,
+				dataType : 'json',				
+				success : function(data) {
+					$("[name=expenseType").val(data.accountType);
+				}
+				});
+		} else {
+			$("[name=expenseType").val("");
+		}
+	};
+	</script>
+</th:block>

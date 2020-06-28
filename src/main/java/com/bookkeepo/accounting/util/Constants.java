@@ -3,8 +3,10 @@
  */
 package com.bookkeepo.accounting.util;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,6 +34,10 @@ public class Constants {
 	public static int INVOICE_REF_COUNT = 5;
 	
     public static final Map<String, String> gstCodeStateMap = initMap();
+    
+    public static final List<String> expenseAccountTypes = initExpenseList();
+    
+    public static final List<String> incomeAccountTypes = initIncomeList();
 
     private static Map<String, String> initMap() {
         Map<String, String> map = new LinkedHashMap<>();
@@ -76,4 +82,19 @@ public class Constants {
         map.put("-1","OTHER");
         return Collections.unmodifiableMap(map);
     }
+
+	private static List<String> initExpenseList() {
+		List<String> expenseList = new ArrayList<String>();
+		expenseList.add("Indirect Expenses");
+		expenseList.add("Direct Expenses");
+		return Collections.unmodifiableList(expenseList);
+	}
+	
+	private static List<String> initIncomeList() {
+		List<String> incomeList = new ArrayList<String>();
+		incomeList.add("Indirect Incomes");
+		incomeList.add("Direct Incomes");
+		return Collections.unmodifiableList(incomeList);
+	}
+    
 }
