@@ -25,21 +25,20 @@
 			enctype="multipart/form-data">
 			<div class="row">
 				<div class="col-md-6 form-group"><label class="mandatory field-description text-uppercase">Expense Account</label>
-					<select name="selectbasic" class="form-control" th:field="*{expenseAccount}" required="required">
-							<option class="form-control" value="CASH">Cash</option>
-							<option class="form-control" value="BANK">Bank</option>
+					<select th:attr="onChange = 'autofillValues(\'' + ${accountList} +'\')'" th:field="*{expenseWithAccountReference.id}"
+							class="form-control" id="selectbasic" name="selectbasic">
+							<option th:each="accountValue : ${accountList}" th:value="${accountValue.id}"
+								th:text="${accountValue.accountName}"></option>
 						</select>
-					<label class="field-description">Date</label>
+						
+					<label class="mandatory field-description text-uppercase">Date</label>
 					<input type="date" class="form-control" name="expenseDate"
 						th:field="*{expenseDate}" required>
 					<label class="field-description">Description</label>
 					<textarea class="form-control" th:field="*{expenseDescription}"></textarea>
 				</div>
 				<div class="col-md-6 form-group"><label class="mandatory field-description text-uppercase">Expense Type</label>
-					<select name="selectbasic" class="form-control" th:field="*{expenseType}" required="required">
-							<option class="form-control" value="CASH">Cash</option>
-							<option class="form-control" value="BANK">Bank</option>
-						</select>
+					<input type="text" class="form-control" id="expenseType" name="expenseType" readonly="readonly" required>
 					<label class="mandatory field-description">Amount</label>
 					<input type="text" onfocus="(this.type='number')" onblur="(this.type='text')" min="0"
 						class="form-control" name="recordContraAmount" th:field="*{expenseAmount}" required>
@@ -55,5 +54,27 @@
 </div>
 <th:block layout:fragment="scripts">
 	<script type="text/javascript">
+	$(document).ready(function() {
+		$("#selectbasic").change(function() {
+			getAccountData();
+		});
+	});
+	
+	function getAccountData() {
+		var accountId = $("#selectbasic").val();
+		if(accountId !== '0'){
+			$.ajax({
+				type : "GET",
+				contentType : "application/json",
+				url : "/home/getAccountData?accountName=" + accountId,
+				dataType : 'json',				
+				success : function(data) {
+					$("[name=expenseType").val(data.accountType);
+				}
+				});
+		} else {
+			$("[name=expenseType").val("");
+		}
+	};
 	</script>
 </th:block>

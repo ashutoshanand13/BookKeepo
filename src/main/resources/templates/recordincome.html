@@ -25,24 +25,22 @@
 			enctype="multipart/form-data">
 			<div class="row">
 				<div class="col-md-6 form-group"><label class="mandatory field-description text-uppercase">Income Account</label>
-					<select name="selectbasic" class="form-control" th:field="*{incomeAccount}" required="required">
-							<option class="form-control" value="CASH">Cash</option>
-							<option class="form-control" value="BANK">Bank</option>
+					<select th:attr="onChange = 'autofillValues(\'' + ${accountList} +'\')'" th:field="*{incomeWithAccountReference.id}"
+							class="form-control" id="selectbasic" name="selectbasic">
+							<option th:each="accountValue : ${accountList}" th:value="${accountValue.id}"
+								th:text="${accountValue.accountName}"></option>
 						</select>
-					<label class="field-description">Date</label>
+					<label class="mandatory field-description text-uppercase">Date</label>
 					<input type="date" class="form-control" name="incomeDate"
-						th:field="*{expenseDate}" required>
+						th:field="*{incomeDate}" required>
 					<label class="field-description">Income Description</label>
 					<textarea class="form-control" th:field="*{incomeDescription}"></textarea>
 				</div>
 				<div class="col-md-6 form-group"><label class="mandatory field-description text-uppercase">Income Type</label>
-					<select name="selectbasic" class="form-control" th:field="*{expenseType}" required="required">
-							<option class="form-control" value="CASH">Cash</option>
-							<option class="form-control" value="BANK">Bank</option>
-						</select>
-					<label class="mandatory field-description">Amount</label>
+					<input type="text" class="form-control" id="incomeType" name="incomeType" readonly="readonly" required>
+					<label class="mandatory field-description text-uppercase">Amount</label>
 					<input type="text" onfocus="(this.type='number')" onblur="(this.type='text')" min="0"
-						class="form-control" name="recordContraAmount" th:field="*{expenseAmount}" required>
+						class="form-control" name="incomeAmount" th:field="*{incomeAmount}" required>
 				</div>
 			</div>
 			<div class="form-button text-right">
@@ -55,5 +53,27 @@
 </div>
 <th:block layout:fragment="scripts">
 	<script type="text/javascript">
+	$(document).ready(function() {
+		$("#selectbasic").change(function() {
+			getAccountData();
+		});
+	});
+	
+	function getAccountData() {
+		var accountId = $("#selectbasic").val();
+		if(accountId !== '0'){
+			$.ajax({
+				type : "GET",
+				contentType : "application/json",
+				url : "/home/getAccountData?accountName=" + accountId,
+				dataType : 'json',				
+				success : function(data) {
+					$("[name=incomeType").val(data.accountType);
+				}
+				});
+		} else {
+			$("[name=incomeType").val("");
+		}
+	};
 	</script>
 </th:block>

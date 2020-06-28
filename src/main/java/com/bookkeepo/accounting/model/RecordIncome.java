@@ -1,38 +1,61 @@
 package com.bookkeepo.accounting.model;
+
+import java.util.Date;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.CreationTimestamp;
+
+import com.bookkeepo.accounting.entity.Accounts;
+
+import lombok.Data;
+
 /**
 * @author Ashutosh
 */
+@Data
+@Entity
+@Table(name = "record_income_details")
 public class RecordIncome {
 	
-	private String incomeAccount;
-	private String incomeDescription;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "record_income_id")
+	private int id;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "recordincome_account_reference_no", updatable = false)
+	private Accounts incomeWithAccountReference;
+	
+	@Column(name = "income_date")
 	private String incomeDate;
+	
+	@Column(name = "income_type")
 	private String incomeType;
+	
+	@Column(name = "income_amount")
 	private String incomeAmount;
-	/**
-	 * @return the incomeAccount
-	 */
-	public String getIncomeAccount() {
-		return incomeAccount;
-	}
-	/**
-	 * @param incomeAccount the incomeAccount to set
-	 */
-	public void setIncomeAccount(String incomeAccount) {
-		this.incomeAccount = incomeAccount;
-	}
-	/**
-	 * @return the incomeDescription
-	 */
-	public String getIncomeDescription() {
-		return incomeDescription;
-	}
-	/**
-	 * @param incomeDescription the incomeDescription to set
-	 */
-	public void setIncomeDescription(String incomeDescription) {
-		this.incomeDescription = incomeDescription;
-	}
+	
+	@Column(name = "income_description")
+	private String incomeDescription;
+	
+	@Column(name = "record_income_owner", nullable = false, updatable = false)
+	private String recordIncomeOwner;
+	
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "record_income_creation_date", nullable = false, updatable = false)
+	private Date recordIncomeCreationDate;
 	/**
 	 * @return the incomeDate
 	 */
@@ -68,6 +91,66 @@ public class RecordIncome {
 	 */
 	public void setIncomeAmount(String incomeAmount) {
 		this.incomeAmount = incomeAmount;
+	}
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
+	/**
+	 * @return the incomeWithAccountReference
+	 */
+	public Accounts getIncomeWithAccountReference() {
+		return incomeWithAccountReference;
+	}
+	/**
+	 * @param incomeWithAccountReference the incomeWithAccountReference to set
+	 */
+	public void setIncomeWithAccountReference(Accounts incomeWithAccountReference) {
+		this.incomeWithAccountReference = incomeWithAccountReference;
+	}
+	/**
+	 * @return the recordIncomeOwner
+	 */
+	public String getRecordIncomeOwner() {
+		return recordIncomeOwner;
+	}
+	/**
+	 * @param recordIncomeOwner the recordIncomeOwner to set
+	 */
+	public void setRecordIncomeOwner(String recordIncomeOwner) {
+		this.recordIncomeOwner = recordIncomeOwner;
+	}
+	/**
+	 * @return the recordIncomeCreationDate
+	 */
+	public Date getRecordIncomeCreationDate() {
+		return recordIncomeCreationDate;
+	}
+	/**
+	 * @param recordIncomeCreationDate the recordIncomeCreationDate to set
+	 */
+	public void setRecordIncomeCreationDate(Date recordIncomeCreationDate) {
+		this.recordIncomeCreationDate = recordIncomeCreationDate;
+	}
+	/**
+	 * @return the incomeDescription
+	 */
+	public String getIncomeDescription() {
+		return incomeDescription;
+	}
+	/**
+	 * @param incomeDescription the incomeDescription to set
+	 */
+	public void setIncomeDescription(String incomeDescription) {
+		this.incomeDescription = incomeDescription;
 	}
 	
 	
