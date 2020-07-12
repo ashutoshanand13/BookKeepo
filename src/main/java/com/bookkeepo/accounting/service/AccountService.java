@@ -94,4 +94,21 @@ public class AccountService {
 				accountOwner, name, companyDetailsRepository.findByUserNameAndCompanyActive(accountOwner, 1));
 		return accountList.size() == 0 ? null : accountList;
 	}
+	
+	public List<Accounts> findByAccountOwnerAndAccountTypes(String accountOwner, List<String> accountType) {
+		List<Accounts> accountList = new ArrayList<Accounts>();
+		Accounts selectAccount = new Accounts();
+		selectAccount.setId(0);
+		selectAccount.setAccountName("Select Account");
+		accountList.add(selectAccount);
+		
+		List<Accounts> dbAccountList = accountRepository.findByAccountOwnerAndAccountTypes(accountOwner, accountType);
+
+		if (!dbAccountList.isEmpty()) {
+			accountList.addAll(dbAccountList);
+		}
+				
+		
+		return accountList;
+	}
 }

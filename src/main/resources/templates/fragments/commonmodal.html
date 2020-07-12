@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<div th:fragment="commonModal(message,buttonname,buttonaction)">
+	<div class="modal fade" id="commonmodal">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<!-- Modal body -->
+				<div class="modal-body">
+					<span style="font-size: 15px" class="glyphicon glyphicon-cog" th:text="${message}"></span>
+				</div>
+				<div class="modal-footer">
+					<button type="button"
+						class="btn btn-success btn-block bigbuttonwithoutmargins modalbuttoncolor"
+						data-dismiss="modal" id="buttondata" th:value="${buttonname}"></button>
+					<br />
+					<button type="button"
+						class="btn btn-danger btn-block bigbuttonwithoutmargins"
+						data-dismiss="modal" id="buttondata" value="false">Cancel</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+</div>

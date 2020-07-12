@@ -1,9 +1,12 @@
  const $tableID = $('#table');
  const $tableBOSID = $('#tableBOS');
+ const $invoiceTable = $('#invoiceTable');
  
  const $BTN = $('#export-btn');
  const $EXPORT = $('#export');
  var $tblrows = $("#itemTable tbody tr");
+ 
+ //For Invoice pages only
  var ttlAmount = [];
  var ttlQty = [];
  var ttlTaxableValue = [];
@@ -12,19 +15,27 @@
  var ttlSgst = [];
  var ttlTotalAmount = [];
  var discount = [];
- var isGstValid = true;
- var shippingType ='';
- var isInvoiceNumberUnique = false;
  
- var controllerMap = { salesInvoice: "/home/submitInvoice", exportInvoice: "/home/submitInvoice", debitNote:"/home/submitInvoice", creditNote:"/home/submitInvoice" , purchaseOrder:"/home/submitInvoice"  , purchaseInvoice:"/home/submitInvoice", billOfSupply:"/home/submitInvoice"};
- var fileMap = { salesInvoice: "Tax_Invoice", exportInvoice: "Export_Invoice", debitNote:"Debit_Note", creditNote:"Credit_Note", purchaseOrder:"Purchase_Order", purchaseInvoice:"Purchase_Invoice", billOfSupply:"Bill_Of_Supply" };
+ // For payment and receipt only
+ var ttlPayment = [];
+ var invoiceList = [];
+ var dropdown = []
+ 
+ var shippingType ='';
+ var tableIndex = 0;
+
+ 
+ var controllerMap = { salesInvoice: "/home/submitInvoice", exportInvoice: "/home/submitInvoice", debitNote:"/home/submitInvoice", creditNote:"/home/submitInvoice" , purchaseOrder:"/home/submitInvoice"  , purchaseInvoice:"/home/submitInvoice", billOfSupply:"/home/submitInvoice", retailInvoice:"/home/submitInvoice"};
+ var fileMap = { salesInvoice: "Tax_Invoice", exportInvoice: "Export_Invoice", debitNote:"Debit_Note", creditNote:"Credit_Note", purchaseOrder:"Purchase_Order", purchaseInvoice:"Purchase_Invoice", billOfSupply:"Bill_Of_Supply", retailInvoice:"Retail_Invoice" };
+ 
+ var gstCodeStateMap = {"01":"JAMMU & KASHMIR","02":"HIMACHAL PRADESH	","03":"PUNJAB","04":"CHANDIGARH","05":"UTTARAKHAND","06":"DELHI","08":"RAJASTHAN","09":"UTTAR PRADESH","10":"BIHAR","11":"SIKKIM","12":"ARUNACHAL PRADESH","13":"NAGALAND","14":"MANIPUR","15":"MIZORAM","16":"TRIPURA","17":"MEGHLAYA","18":"ASSAM","19":"WEST BENGAL","20":"JHARKHAND","21":"ODISHA","22":"CHATTISGARH","22":"MADHYA PRADESH","24":"GUJARAT","25":"DAMAN AND DIU","26":"DADRA AND NAGAR HAVELI","27":"MAHARASHTRA",        "28":"ANDHRA PRADESH (Old)","29":"KARNATAKA","30":"GOA","31":"LAKSHWADEEP","32":"KERALA","33":"TAMIL NADU","34":"PUDUCHERRY","35":"ANDAMAN AND NICOBAR ISLANDS","36":"TELANGANA","37":"ANDHRA PRADESH (New)","38":"LADAKH","-1":"OTHER" }
  
  var gstRegex = /^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$/;
  
  const newTr = '<tr>            <td class="pt-3-half"><input type="text" id="srNo" name="excluded:skip" placeholder="Sr No" readonly="readonly"></td>            <td class="pt-3-half"><input list="data" id="productDesc" class="form-control" placeholder="Product Description" required="required" autocomplete="off"></td>            <td class="pt-3-half"><input type="text" id="hsnCode" name="excluded:skip" placeholder="HSN Code"></td>            <td class="pt-3-half"><input type="text" id="uom" name="excluded:skip" placeholder="UOM"></td>            <td class="pt-3-half"><input type="text" onfocus="(this.type="number")" onblur="(this.type="text")" min="0" id="qty" name="excluded:skip" placeholder="QTY" required="required"></td>            <td class="pt-3-half"><input type="text" onfocus="(this.type="number")" onblur="(this.type="text")" min="0" id="rate" name="excluded:skip" placeholder="Rate" required="required"></td>            <td class="pt-3-half"><input type="text" id="amount" name="excluded:skip" placeholder="Amount" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" onfocus="(this.type="number")" onblur="(this.type="text")" min="0" id="discount" name="excluded:skip" placeholder="Discount" required="required"></td>            <td class="pt-3-half"><input type="text" onfocus="(this.type="number")" onblur="(this.type="text")" min="0" id="gstRate" name="excluded:skip" placeholder="GST Rate" required="required"></td>            <td class="pt-3-half"><input type="text" id="taxableValue" name="excluded:skip" placeholder="Taxable Value" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="cgst" name="excluded:skip" placeholder="CGST" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="sgst" name="excluded:skip" placeholder="SGST" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="igst" name="excluded:skip" placeholder="IGST" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" id="totalAmount" name="excluded:skip" placeholder="Total Amount" readonly="readonly"></td>			<td>			<figure style="display:flex;">              <span class="table-add"><img class="autoResizeImage" style="margin-right: 2px;" src="/images/add.png" alt=""></span>              <span class="table-remove"><img class="autoResizeImage" style="margin-left: 2px;" src="/images/remove.png" alt=""></span>              </figure>            </td>          </tr>';
  
  const newBOSTr = '<tr>            <td class="pt-3-half"><input type="text" id="srNo" name="excluded:skip" placeholder="Sr No" readonly="readonly"></td>            <td class="pt-3-half"><input list="data" id="productDesc" class="form-control" placeholder="Product Description" required="required" autocomplete="off"></td>            <td class="pt-3-half"><input type="text" id="hsnCode" name="excluded:skip" placeholder="HSN Code"></td>            <td class="pt-3-half"><input type="text" id="uom" name="excluded:skip" placeholder="UOM"></td>            <td class="pt-3-half"><input type="text" onfocus="(this.type="number")" onblur="(this.type="text")" min="0" id="qty" name="excluded:skip" placeholder="QTY" required="required"></td>            <td class="pt-3-half"><input type="text" onfocus="(this.type="number")" onblur="(this.type="text")" min="0" id="rate" name="excluded:skip" placeholder="Rate" required="required"></td>            <td class="pt-3-half"><input type="text" id="amount" name="excluded:skip" placeholder="Amount" readonly="readonly"></td>            <td class="pt-3-half"><input type="text" onfocus="(this.type="number")" onblur="(this.type="text")" min="0" id="discount" name="excluded:skip" placeholder="Discount" required="required"></td>            <td class="pt-3-half"><input type="text" id="totalAmount" name="excluded:skip" placeholder="Total Amount" readonly="readonly"></td>			<td>			<figure style="display:flex;">              <span class="table-add"><img class="autoResizeImage" style="margin-right: 2px;" src="/images/add.png" alt=""></span>              <span class="table-remove"><img class="autoResizeImage" style="margin-left: 2px;" src="/images/remove.png" alt=""></span>              </figure>            </td>          </tr>';
-
+ 
  $tableID.on('click', '.table-remove', function () {
 if ($tableID.find('tbody tr').length !== 1) {
    $(this).parents('tr').detach();
@@ -54,7 +65,7 @@ else
  
  
  $tableBOSID.on('click', '.table-remove', function () {
-	 if ($tableID.find('tbody tr').length !== 1) {
+	 if ($tableBOSID.find('tbody tr').length !== 1) {
 	    $(this).parents('tr').detach();
 	       
 	    setBOSValues();
@@ -68,13 +79,7 @@ else
 
 function validateGST(val){
 	removeTableColumnClass();
-	 var value = $(val).val();
-	 if(!gstRegex.test(value) || value === "") {
-			isGstValid=true;
-		 } else {
-		 isGstValid=true;
-	 }
-	 updateTableColumn(true);
+	updateTableColumn(true);
  }
 
 function removeTableColumnClass() {
@@ -90,6 +95,7 @@ function updateTableColumn(showAlert) {
 	removeTableColumnClass();
 	var gstHeader = $('#headerGstin').text();
 	var gstValue = $("[name=gstinBill]").val();
+	var state = $("[name=stateBill]").val();
 	
 	if(gstValue !== "") {
 		if (gstHeader.substring(0, 2) !== gstValue.substring(0, 2)) {
@@ -97,19 +103,35 @@ function updateTableColumn(showAlert) {
 		} else {
 			disableColumns("Intra");
 		}
-	} else {
-		disableColumns("Intra");
+	} else if (state !== ""){
+		if (gstHeader.substring(0, 2) !== getKeyByValue(state)) {
+			disableColumns("Inter");
+		} else {
+			disableColumns("Intra");
+		}
 	}
 	
 
 	if (showAlert) {
-		if (gstHeader.substring(0, 2) === gstValue.substring(0, 2)) {
-			setAlert("Intra-State Form")
-		} else if(gstHeader!==""&&gstValue!=="") {
-			setAlert("Inter-State Form")
+		if(gstValue !== "") {
+			if (gstHeader.substring(0, 2) === gstValue.substring(0, 2)) {
+				setAlert("Intra-State Form")
+			} else if(gstHeader !== "" && gstValue !== "") {
+				setAlert("Inter-State Form")
+			}
+		} else if (state !== "") {
+			if (gstHeader.substring(0, 2) === getKeyByValue(state)) {
+				setAlert("Intra-State Form")
+			} else if(gstHeader !== "" && getKeyByValue(state) !== "") {
+				setAlert("Inter-State Form")
+			}
 		}
 	}
 }
+
+function getKeyByValue(searchValue) {
+	  return Object.keys(gstCodeStateMap).find(key => gstCodeStateMap[key] === searchValue);
+	}
 
 function disableColumns(subType) {
 		if (subType === "Intra") {
@@ -170,7 +192,7 @@ function submitHandler(e){
    fileName = fileName+"_"+$("[name=invoiceNo]").val()+".pdf";
 
    var f = $("#form")[0];
-   if(isGstValid && f.reportValidity() && isInvoiceNumberUnique) {
+   if(f.reportValidity()) {
 		$('#tableJson table').map(function(i, table){
 			   var $rows = $("#" +table.id).find('tr:not(:hidden)');
 			   var newFormData = [];
@@ -191,7 +213,7 @@ function submitHandler(e){
 						var json = JSON.stringify($('#form').serializeJSON())
 								.replace(/\\/g, "").replace("\"[", "[")
 								.replace("]\"", "]");
-						
+						debugger;
 						$('#overlay').fadeIn();
 						
 						$.ajax({
@@ -212,14 +234,13 @@ function submitHandler(e){
 								f.reset();
 								$('input').focus();
 								$('input').blur();
-								isGstValid=false;
-								isInvoiceNumberUnique=false;
 								if(name==="billOfSupply") {
 									setBOSValues();
 								} else {
 									setValues();
 								}
 								window.scrollTo(0, 0);
+								$('#bankDiv').empty();
 							}
 						});
 						$('#overlay').delay(500).fadeOut();
@@ -497,11 +518,14 @@ $("[name=accountNo]").change(function() {
 				$("[name=addressShip]").val(data.accountAddress);
 				$("[name=gstinBill]").val(data.gstin);
 				$("[name=gstinShip]").val(data.gstin);
-				$("[name=stateBill]").val(data.accountState);
-				$("[name=stateShip]").val(data.accountState);
+				$("[name=stateBill]").val(gstCodeStateMap[data.accountState]);
+				$("[name=stateShip]").val(gstCodeStateMap[data.accountState]);
+				$("[name=partyAddress]").val(data.accountAddress);
+				$("[name=partyState]").val(gstCodeStateMap[data.accountState]);
 				$("[name=gstinBill]").focus();
 				$("[name=gstinShip]").focus();
 				$("[name=gstinShip]").blur();
+				$("[name=gstinBill]").blur();
 			}
 			});
 	} else {
@@ -512,9 +536,12 @@ $("[name=accountNo]").change(function() {
 		$("[name=gstinShip]").val("");
 		$("[name=stateBill]").val("");
 		$("[name=stateShip]").val("");
+		$("[name=partyAddress]").val("");
+		$("[name=partyState]").val("");
 		$("[name=gstinBill]").focus();
 		$("[name=gstinShip]").focus();
 		$("[name=gstinShip]").blur();
+		$("[name=gstinBill]").blur();
 		
 		if(accountNo === "-1"){
 			$("[name=accountNo]").val("0");
@@ -551,31 +578,6 @@ $("#againstInvoicedropdown").change(function() {
 		$("[name=againstInvoiceDate]").blur();
 	}
 });
-
-function checkInvoiceNo(value) {
-	var invoiceNo = $(value).val();
-	var pageName = $("[name=pageName]").val();
-
-	if(invoiceNo !== "") {
-		$.ajax({
-			type : "GET",
-			contentType : "application/json",
-			url : "/home/invoiceunique?invoiceNo=" + invoiceNo+"&pageName="+pageName,
-			dataType : 'json',				
-			success : function(data) {
-				if(data === null) {
-					isInvoiceNumberUnique = true;
-				}
-				else {
-					isInvoiceNumberUnique = false;
-					alert("Invoice Number/ Document Number already exists");
-					$(value).val("");
-					$(value).focus();
-				}
-			}
-			});
-	}
-}
 
 
 function checkAccountName(value) {
@@ -634,7 +636,6 @@ function getAccountList() {
 
 function setBOSValues() {
 
-	isGstValid=true;
     $tableBOSID.find('tbody tr').each(function (index) {
     	
         var $tblrow = $(this);
@@ -695,7 +696,6 @@ function setBOSValues() {
 
 function resetBOSValues() {
 
-	isGstValid =true;
 	 ttlAmount = [];
 	 ttlQty = [];
 	 ttlTotalAmount = [];
@@ -800,7 +800,7 @@ function getBankData(data) {
 	}
 }
 
-function getBankList(){
+function getBankList() {
 	$("[name=bankId]").empty();
 	
 	$.ajax({
@@ -826,4 +826,195 @@ function getBankList(){
 		}
 		}
 	});
+}
+
+
+function getInvoiceData(data) {
+	var value = $(data).val();
+	var account = $("#selectbasic").val();
+	if(value === "Invoice Ref"){
+		if(account !== "0") {
+			$("#invoicePayment").show();
+			$("#invoiceReceipt").show();
+			$invoiceTable.find('tbody tr').each(function (index) {
+			var $tblrow = $(this);
+			getInvoiceList(account, $tblrow);
+				
+	        $tblrow.on('change', function () {
+		        	var payment = parseFloat($tblrow.find("#paymentAmount").val());
+		        	ttlPayment[index] = checkValueNaN(payment);
+		        	var dueAmount = parseFloat($tblrow.find("#remainingAmount").val()) - payment;
+		        	if(!isNaN(dueAmount)) {
+		        		if(dueAmount < 0) {
+		        			$tblrow.find("#paymentAmount").val("");
+		        			createConfirmationMessageModal("Payment cannot be greater than remaining amount");
+		        		} else {
+		        			$tblrow.find("#dueAmount").val(dueAmount.toFixed(2));
+		        		}
+		        	}
+				});
+	        });
+			if(dropdown.length === 0) {
+				createConfirmationMessageModal("No Invoice(s) were found for this account");
+				$('#paymentReference option:first').prop('selected', true);
+				$('#receiptReference option:first').prop('selected', true);
+				$("#invoicePayment").hide();
+				$("#invoiceReceipt").hide();
+				emptyTable();
+			}
+		} else {
+			createConfirmationMessageModal("Please select an account");
+			$('#paymentReference option:first').prop('selected', true);
+			$('#receiptReference option:first').prop('selected', true);
+		}
+	} else {
+		$("#invoicePayment").hide();
+		$("#invoiceReceipt").hide();
+		emptyTable();
+	}
+}
+
+function getInvoiceList(account, row) {
+
+	$(row).find("#invoiceDropdown").empty();
+	$(row).find('input').val("");
+	if(dropdown.length === 0) {
+		$.ajax({
+			type : "GET",
+			contentType : "application/json",
+			url : "/home/getinvoicelist?accountName="+account,
+			dataType : 'json',			
+			async : false,
+			success : function(data) {	
+				if(data !== null) {
+					dropdown = data;
+					$.each(data, function (i, item) {
+						$(row).find("#invoiceDropdown").append($('<option>', { 
+					        value: item.invoiceUniqueKey,
+					        text : item.invoiceNumber 
+					    }));
+					});
+				} 
+			}
+		});
+	} else {
+		$.each(dropdown, function (i, item) {
+			$(row).find("#invoiceDropdown").append($('<option>', { 
+		        value: item.invoiceUniqueKey,
+		        text : item.invoiceNumber 
+		    }));
+		});
+	}
+}
+
+function emptyTable() {
+	ttlPayment = [];
+	invoiceList = [];
+	dropdown = [];
+	$invoiceTable.find('tbody tr').each(function (index) {
+		var $tblrow = $(this);
+		$tblrow.find('input').val("");
+        });
+}
+
+function setInvoice(data) {
+	
+	var invoiceKey = $(data).val();
+	var index = $(data).parent().parent().index();
+
+	if(invoiceKey !== "0") {
+		if(!invoiceList.includes(invoiceKey)) {
+    		$.ajax({
+    			type : "GET",
+    			contentType : "application/json",
+    			url : "/home/getinvoice?key="+invoiceKey,
+    			dataType : 'json',			
+    			async : true,
+    			success : function(val) {
+    				invoiceList[index] = val.invoiceUniqueKey;
+    				$(data).parent().parent().find("#invoiceId").val(val.id);
+    				$(data).parent().parent().find("#invoiceAmount").val(val.invoiceTotalAmountAfterTax);
+    				var remaining = parseFloat(val.invoiceTotalAmountAfterTax) - parseFloat(val.invoicePaidAmt);
+    				$(data).parent().parent().find("#remainingAmount").val(parseFloat(remaining).toFixed(2))
+    			}
+    		});
+		} else {
+			createConfirmationMessageModal("Each invoice can be selected only once");
+			$(data).find('option:first').prop('selected', true);
+		}
+	} else {
+		ttlPayment[index] = 0;
+		invoiceList[index] = "";
+		$(data).parent().parent().find("#invoiceId").val("");
+		$(data).parent().parent().find("#invoiceAmount").val("");
+		$(data).parent().parent().find("#remainingAmount").val("");
+		$(data).parent().parent().find("#paymentAmount").val("");
+		$(data).parent().parent().find("#dueAmount").val("");
+	}
+}
+
+$("[name=saleType]").change(function() {
+	getBankDataInvoice($("[name=saleType]"));
+});
+
+function getBankDataInvoice(data) {
+
+	var saleType = $(data).val();
+	if(saleType === "Bank"){
+		$('#bankDiv').html('<select class="form-control" name="bankId" required="required"></select>');
+		getBankListInvoice();
+	} else {
+		$('#bankDiv').empty();
+	}
+}
+
+function getBankListInvoice() {
+
+	$("[name=bankId]").empty();
+	
+	$.ajax({
+		type : "GET",
+		contentType : "application/json",
+		url : "/home/getbanklist",
+		dataType : 'json',			
+		async : false,
+		success : function(data) {	
+			if(data !== null) {
+				$.each(data, function (i, item) {
+				    $('[name=bankId]').append($('<option>', { 
+				        value: item.id,
+				        text : item.userBankName 
+				    }));
+				});
+			} else {
+				createConfirmationMessageModal("Please add a bank first");
+				$("[name=saleType]").find('option:first').prop('selected', true);
+				$('#bankDiv').empty();
+		}
+		}
+	});
+}
+
+function getAccountListPurchase() {
+	$("[name=accountNo]").empty();
+	$("[name=partyAddress]").val("");
+	$("[name=gstinBill]").val("");
+	$("[name=partyState]").val("");
+	$("[name=gstinBill]").focus();
+	$("[name=gstinBill]").blur()
+	$.ajax({
+		type : "GET",
+		contentType : "application/json",
+		url : "/home/getaccountlist",
+		dataType : 'json',			
+		async : false,
+		success : function(data) {			
+			$.each(data, function (i, item) {
+			    $('[name=accountNo]').append($('<option>', { 
+			        value: item.id,
+			        text : item.accountName 
+			    }));
+			});
+		}
+		});
 }

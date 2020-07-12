@@ -42,6 +42,21 @@
 				</tbody>
 			</table>
 
+			<div class="table-width">
+				<div class="form-group">
+					<label style="display: inline-block; font-size: 20px;">Sale:</label>
+
+					<div style="display: inline-block;">
+						<select class="form-control" name="saleType" required="required">
+							<option class="form-control" value="Credit">Credit</option>
+							<option class="form-control" value="Cash">Cash</option>
+							<option class="form-control" value="Bank">Bank</option>
+						</select>
+					</div>
+					<div id="bankDiv" style="display: inline-block;"></div>
+				</div>
+			</div>
+			
 			<table id="invoiceDetailsTable" border="1"
 				class="table table-width table-responsive-md text-center">
 				<thead class="table-width">
@@ -53,8 +68,8 @@
 				</thead>
 				<tbody class="table-width">
 					<tr>
-						<td class="pt-3-half"><input type="text" class="form-control"
-							name="invoiceNo" placeholder="Invoice No." required="required" onblur="checkInvoiceNo(this)"></td>
+						<td class="pt-3-half"><input type="text" th:value="${InvoiceNbr}" class="form-control"
+							name="invoiceNo" readonly="readonly"></td>
 						<td class="pt-3-half"><input type="text" class="form-control"
 							name="poNo" placeholder="PO No." required="required"></td>
 					</tr>

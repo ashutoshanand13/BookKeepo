@@ -20,5 +20,7 @@ import com.bookkeepo.accounting.entity.Receipts;
 @Repository("receiptRepository")
 public interface ReceiptRepository extends JpaRepository<Receipts, Long> {
 
-	List<Receipts> findByReceiptOwnerAndReceiptCompanyDetails(String owner, Company company);
+	List<Receipts> findByReceiptOwnerAndReceiptCompanyDetailsAndReceiptDeleted(String owner, Company company, int isDeleted);
+	
+	Receipts findByIdAndReceiptOwner(int id, String owner);
 }

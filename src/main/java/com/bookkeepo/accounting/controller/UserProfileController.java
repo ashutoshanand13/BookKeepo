@@ -6,11 +6,10 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,23 +23,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.entity.User;
 import com.bookkeepo.accounting.model.UserDetails;
-import com.bookkeepo.accounting.service.CompanyDetailsService;
-import com.bookkeepo.accounting.service.UserService;
 import com.bookkeepo.accounting.util.CommonUtils;
 import com.bookkeepo.accounting.util.ImageUtils;
 
-@Configuration
 @Controller
-public class UserProfileController {
-
-	@Autowired
-	private UserService userService;
-
-	@Autowired
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-	@Autowired
-	CompanyDetailsService companyDetailsService;
+public class UserProfileController extends MasterController {
 
 	@RequestMapping(value = { "/home/changePassword" }, method = RequestMethod.GET)
 	public ModelAndView getChangePasswordPage(HttpServletRequest request) {
@@ -104,14 +91,16 @@ public class UserProfileController {
 	public ModelAndView activateCompany(@PathVariable("uniqueKey") String uniqueKey, HttpServletRequest request,
 			HttpServletResponse response, Principal principal) throws IOException {
 		ModelAndView modelAndView = new ModelAndView();
-
+		HttpSession session = request.getSession();
 		List<Company> companyList = companyDetailsService.fetchAllCompanies(principal.getName());
 		for (Company com : companyList) {
 			if (uniqueKey.equals(com.getCompanyUniqueKey())) {
 				com.setCompanyActive(1);
+				String menuToDisplay = CommonUtils.isPopulated(com.getCompanyGstin()) 
+						? "menu_withCompanyGSTIN":"menu_withoutCompanyGSTIN";
+				CommonUtils.setSessionAttributes(session, menuToDisplay, com);
 			} else {
 				com.setCompanyActive(0);
-
 			}
 		}
 
@@ -123,41 +112,36 @@ public class UserProfileController {
 
 	@RequestMapping(value = { "/home/addnewcompany" }, method = RequestMethod.POST)
 	public ModelAndView addNewCompany(@Valid @ModelAttribute("company") Company company, BindingResult bindingResult,
-			Principal principal, @RequestParam("companyLogo") MultipartFile companyLogo) throws IOException {
+			Principal principal, @RequestParam("companyLogo") MultipartFile companyLogo, HttpServletRequest request) throws IOException {
 		ModelAndView modelAndView = new ModelAndView();
+		HttpSession session = request.getSession();
 		List<Company> companyRecord = companyDetailsService.fetchAllCompanies(principal.getName());
 		if (companyRecord == null || companyRecord.size() == 0) {
 			company.setCompanyActive(1);
 		}
-		
+
 		try {
 			if (companyLogo != null && CommonUtils.isPopulated(companyLogo.getOriginalFilename())) {
-				if (ImageUtils.validateFile(companyLogo)) {
-					company.setCompanyLogo(addresizedlogo(company, companyLogo));
-					company.setCompanyStringLogo(CommonUtils.getImgfromByteArray(company.getCompanyLogo()));
-				} else {
-					modelAndView.addObject("logoImage", company.getCompanyStringLogo());
-					modelAndView.addObject("message", "Please upload a valid png/jpg image");
-					modelAndView.addObject("company", company);
-				}
-			} else {
-				if (company.getCompanyStringLogo()
-						.equals(CommonUtils.getImgfromResource("/static/images/image-400x400.jpg")))
-					company.setCompanyLogo(null);
-				else
-					company.setCompanyLogo(CommonUtils.getByteArrayfromImage(company.getCompanyStringLogo()));
+				company.setCompanyLogo(addresizedlogo(company, companyLogo));
+				company.setCompanyStringLogo(CommonUtils.getImgfromByteArray(company.getCompanyLogo()));
 			}
 		} catch (IOException e) {
+			company.setCompanyLogo(null);
 		}
-		
+
 		company.setCompanyUniqueKey(CommonUtils.getUniqueID());
 		company.setUserName(principal.getName());
 		companyDetailsService.save(company);
 		modelAndView.addObject("message", "New Company Added Successfully. ");
 		modelAndView.setViewName("redirect:/home/showProfile");
+		if(company.getCompanyActive()==1) {
+		String menuToDisplay = CommonUtils.isPopulated(company.getCompanyGstin()) 
+				? "menu_withCompanyGSTIN":"menu_withoutCompanyGSTIN";
+		CommonUtils.setSessionAttributes(session, menuToDisplay, company);
+		}
 		return modelAndView;
 	}
-	
+
 	/**
 	 * @param company
 	 * @param companyLogo

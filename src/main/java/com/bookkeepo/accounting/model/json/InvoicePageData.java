@@ -142,6 +142,14 @@ public class InvoicePageData {
 	@SerializedName("linkedInvoiceNo")
 	@Expose
 	private String linkedInvoiceNo;
+	
+	@SerializedName("saleType")
+	@Expose
+	private String saleType;
+	
+	@SerializedName("bankId")
+	@Expose
+	private String bankId;
 
 	public String getInvoiceNo() {
 		return invoiceNo;
@@ -543,13 +551,42 @@ public class InvoicePageData {
 		this.linkedInvoiceNo = linkedInvoiceNo;
 	}
 
+	/**
+	 * @return the saleType
+	 */
+	public String getSaleType() {
+		return saleType;
+	}
+
+	/**
+	 * @param saleType the saleType to set
+	 */
+	public void setSaleType(String saleType) {
+		this.saleType = saleType;
+	}
+
+	/**
+	 * @return the bankId
+	 */
+	public String getBankId() {
+		return bankId;
+	}
+
+	/**
+	 * @param bankId the bankId to set
+	 */
+	public void setBankId(String bankId) {
+		this.bankId = bankId;
+	}
+
 	@Override
 	public String toString() {
-		return "Example [invoiceNo=" + invoiceNo + ", poNo=" + poNo + ", invoiceDate=" + invoiceDate + ", poDate="
-				+ poDate + ", dateOfSupply=" + dateOfSupply + ", transportMode=" + transportMode + ", placeOfSupply="
-				+ placeOfSupply + ", vehicleNo=" + vehicleNo + ", state=" + state + ", reverseCharge=" + reverseCharge
-				+ ", accountNo=" + accountNo + ", nameShip=" + nameShip + ", addressBill=" + addressBill
-				+ ", addressShip=" + addressShip + ", gstinBill=" + gstinBill + ", gstinShip=" + gstinShip
+		return "InvoicePageData [invoiceNo=" + invoiceNo + ", poNo=" + poNo + ", invoiceDate=" + invoiceDate
+				+ ", poDate=" + poDate + ", dateOfSupply=" + dateOfSupply + ", transportMode=" + transportMode
+				+ ", placeOfSupply=" + placeOfSupply + ", vehicleNo=" + vehicleNo + ", state=" + state
+				+ ", reverseCharge=" + reverseCharge + ", againstInvoice=" + againstInvoice + ", againstInvoiceDate="
+				+ againstInvoiceDate + ", accountNo=" + accountNo + ", nameShip=" + nameShip + ", addressBill="
+				+ addressBill + ", addressShip=" + addressShip + ", gstinBill=" + gstinBill + ", gstinShip=" + gstinShip
 				+ ", stateBill=" + stateBill + ", stateShip=" + stateShip + ", itemList=" + itemList + ", ttlQty="
 				+ ttlQty + ", ttlAmount=" + ttlAmount + ", ttlTaxableValue=" + ttlTaxableValue + ", ttlCgst=" + ttlCgst
 				+ ", ttlSgst=" + ttlSgst + ", ttlIgst=" + ttlIgst + ", ttlTotalAmount=" + ttlTotalAmount
@@ -557,7 +594,9 @@ public class InvoicePageData {
 				+ ", totalAddSGst=" + totalAddSGst + ", totalAddCGst=" + totalAddCGst + ", totalTaxAmount="
 				+ totalTaxAmount + ", totalAmountAfterTax=" + totalAmountAfterTax + ", gstReverseCharge="
 				+ gstReverseCharge + ", bankAccountNumber=" + bankAccountNumber + ", bankifsc=" + bankifsc
-				+ ", termsConditions=" + termsConditions + "]";
+				+ ", termsConditions=" + termsConditions + ", partyName=" + partyName + ", partyAddress=" + partyAddress
+				+ ", partyDate=" + partyDate + ", partyState=" + partyState + ", pageName=" + pageName
+				+ ", linkedInvoiceNo=" + linkedInvoiceNo + ", saleType=" + saleType + ", bankId=" + bankId + "]";
 	}
 
 }

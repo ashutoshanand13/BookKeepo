@@ -41,5 +41,6 @@ dependencies {
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.2.6.RELEASE'
 	compile group: 'org.apache.commons', name: 'commons-text', version: '1.8'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	compileOnly("org.springframework.boot:spring-boot-devtools")
 }
 }

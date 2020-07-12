@@ -9,7 +9,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,8 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.entity.ProductDetails;
-import com.bookkeepo.accounting.service.CompanyDetailsService;
-import com.bookkeepo.accounting.service.ItemService;
 
 /**
  * @author Yash Singh
@@ -28,13 +25,7 @@ import com.bookkeepo.accounting.service.ItemService;
  */
 
 @Controller
-public class ItemController {
-
-	@Autowired
-	private ItemService itemService;
-
-	@Autowired
-	CompanyDetailsService companyDetailsService;
+public class ItemController extends MasterController {
 
 	@RequestMapping(value = { "/home/additem" }, method = RequestMethod.GET)
 	public ModelAndView getItemPage(HttpServletRequest request) {
@@ -44,7 +35,7 @@ public class ItemController {
 		if (company == null) {
 			modelAndView.setViewName("redirect:/home/showProfile");
 		} else {
-			List<ProductDetails> itemList = itemService.fetchAllItemsForItems(user,company);
+			List<ProductDetails> itemList = itemService.fetchAllItemsForItems(user, company);
 			modelAndView.addObject("itemList", itemList);
 			modelAndView.addObject("item", new ProductDetails());
 		}
@@ -63,7 +54,7 @@ public class ItemController {
 		itemService.saveProductItem(item);
 		modelAndView.addObject("message", "Item Updated Successfully");
 		modelAndView.addObject("item", new ProductDetails());
-		modelAndView.addObject("itemList", itemService.fetchAllItemsForItems(user,company));
+		modelAndView.addObject("itemList", itemService.fetchAllItemsForItems(user, company));
 		return modelAndView;
 	}
 
