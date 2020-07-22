@@ -25,9 +25,9 @@
 			enctype="multipart/form-data">
 			<div class="row">
 				<div class="col-md-6 form-group"><label class="mandatory field-description text-uppercase">Pay From</label>
-					<select name="selectbasic" class="form-control" th:field="*{payFrom}" required="required">
-							<option class="form-control" value="CASH">Cash</option>
+					<select name="selectbasic" class="form-control" th:field="*{payFrom}" required="required" id="payFrom" onchange="payFromCheck()">
 							<option class="form-control" value="BANK">Bank</option>
+							<option class="form-control" value="CASH" id="paytoCash">Cash</option>
 						</select>
 					<label class="mandatory field-description text-uppercase">Date</label>
 					<input type="date" class="form-control" name="recordContraDate"
@@ -36,9 +36,9 @@
 					<textarea class="form-control" th:field="*{recordContraDescription}"></textarea>
 				</div>
 				<div class="col-md-6 form-group"><label class="mandatory field-description text-uppercase">Pay To</label>
-					<select name="selectbasic" class="form-control" th:field="*{payTo}" required="required">
-							<option class="form-control" value="CASH">Cash</option>
-							<option class="form-control" value="BANK">Bank</option>
+					<select name="selectbasic" class="form-control" th:field="*{payTo}" required="required" id="payTo" onchange="payToCheck()">
+							<option class="form-control" value="BANK" selected>Bank</option>
+							<option class="form-control" value="CASH" id="payfromCash">Cash</option>
 						</select>
 					<label class="mandatory field-description text-uppercase">Amount</label>
 					<input type="text" onfocus="(this.type='number')" onblur="(this.type='text')" min="0"
@@ -55,6 +55,19 @@
 </div>
 <th:block layout:fragment="scripts">
 	<script type="text/javascript">
-	
+	function payFromCheck(){
+	    var select = document.getElementById("payFrom").value;
+	    if(select == "CASH")
+	    document.getElementById("payfromCash").disabled = true;
+	    else
+	    document.getElementById("payfromCash").disabled = false;
+	}
+	function payToCheck(){
+	    var select = document.getElementById("payTo").value;
+	    if(select == "CASH")
+	    document.getElementById("paytoCash").disabled = true;
+	    else
+	    document.getElementById("paytoCash").disabled = false;
+	}
 	</script>
 </th:block>
