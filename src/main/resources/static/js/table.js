@@ -792,11 +792,37 @@ $(function () {
 function getBankData(data) {
 	var payment = $(data).val();
 	if(payment === "Bank"){
-		$('#bankDropdown').html('<select class="form-control" name="bankId" onfocus="getBankList()" required="required"></select>');
+		$('#bankDropdown').html('<select class="form-control" name="bankId"  onclick="notSameBank()" name="coursetype" id="coursetype" required="required"></select>');
 		getBankList();
 	} else {
 		$('#bankDropdown').empty();
 		$('#bankAlert').empty();
+	}
+}
+
+function notSameBank(){
+	    var val = $('#coursetype').val();
+	    var val2 = $('#coursetype2').val();
+	       if(val == val2){
+	    	   $('button[name="submit"]').prop('disabled',true);
+	    	   $('#sameBankAlert').html(
+						'<div class="alert alert-info text-center" role="alert">'
+						  +'You can not select same bank.'+
+						  '</div>');
+		} else {
+	    	   $('button[name="submit"]').prop('disabled', false);
+	    	   $('#sameBankAlert').empty();
+		}   
+	}
+
+function getBankDataFrom(data) {
+	var payment = $(data).val();
+	if(payment === "Bank"){
+		$('#bankDropdown2').html('<select class="form-control" name="bankId"  onclick="notSameBank()" name="coursetype2" id="coursetype2" required="required"></select>');
+		getBankList();
+	} else {
+		$('#bankDropdown2').empty();
+		$('#bankAlert2').empty();
 	}
 }
 
@@ -812,10 +838,19 @@ function getBankList() {
 		success : function(data) {	
 			if(data !== null) {
 				$.each(data, function (i, item) {
+				console.log(data);
+				if(item.id === 0) {
+				    $('[name=bankId]').append($('<option hidden>', { 
+				        value: item.id,
+				        text : item.userBankName 
+				    }));
+				} else {
+				
 				    $('[name=bankId]').append($('<option>', { 
 				        value: item.id,
 				        text : item.userBankName 
 				    }));
+				    }
 				});
 			$('#bankAlert').empty();
 			} else {

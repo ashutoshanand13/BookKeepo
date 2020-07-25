@@ -47,7 +47,13 @@ public class BankService {
 
 		List<BankDetails> dbItemList = bankRepository.findByUserBankCreatorAndBankCompanyDetails(owner, company);
 		if (!dbItemList.isEmpty()) {
-			return dbItemList;
+			BankDetails tempBank = new BankDetails();
+			tempBank.setId(0);
+			tempBank.setUserBankName("Select Bank");
+			List<BankDetails> temp = new ArrayList();
+			temp.add(tempBank);
+			temp.addAll(dbItemList);
+			return temp;
 		}
 
 		return null;
