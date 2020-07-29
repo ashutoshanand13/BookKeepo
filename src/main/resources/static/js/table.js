@@ -792,7 +792,7 @@ $(function () {
 function getBankData(data) {
 	var payment = $(data).val();
 	if(payment === "Bank"){
-		$('#bankDropdown').html('<select class="form-control" name="bankId"  onclick="notSameBank()" name="coursetype" id="coursetype" required="required"></select>');
+		$('#bankDropdown').html('<select class="form-control" name="bankId"  onclick="notSameBank()" onfocus="getBankList()" name="banklist" id="banklist" required="required"></select>');
 		getBankList();
 	} else {
 		$('#bankDropdown').empty();
@@ -801,9 +801,10 @@ function getBankData(data) {
 }
 
 function notSameBank(){
-	    var val = $('#coursetype').val();
-	    var val2 = $('#coursetype2').val();
-	       if(val == val2){
+	    var val = $('#banklist').val();
+	    var val2 = $('#banklist2').val();
+	    $("select>option.hide").wrap('<span>');
+	    if(val == val2){
 	    	   $('button[name="submit"]').prop('disabled',true);
 	    	   $('#sameBankAlert').html(
 						'<div class="alert alert-info text-center" role="alert">'
@@ -815,10 +816,11 @@ function notSameBank(){
 		}   
 	}
 
+
 function getBankDataFrom(data) {
 	var payment = $(data).val();
 	if(payment === "Bank"){
-		$('#bankDropdown2').html('<select class="form-control" name="bankId"  onclick="notSameBank()" name="coursetype2" id="coursetype2" required="required"></select>');
+		$('#bankDropdown2').html('<select class="form-control" name="bankId"  onclick="notSameBank()" name="banklist2" id="banklist2" required="required"></select>');
 		getBankList();
 	} else {
 		$('#bankDropdown2').empty();
@@ -828,7 +830,6 @@ function getBankDataFrom(data) {
 
 function getBankList() {
 	$("[name=bankId]").empty();
-	
 	$.ajax({
 		type : "GET",
 		contentType : "application/json",
@@ -839,18 +840,10 @@ function getBankList() {
 			if(data !== null) {
 				$.each(data, function (i, item) {
 				console.log(data);
-				if(item.id === 0) {
-				    $('[name=bankId]').append($('<option hidden>', { 
-				        value: item.id,
-				        text : item.userBankName 
-				    }));
-				} else {
-				
 				    $('[name=bankId]').append($('<option>', { 
 				        value: item.id,
 				        text : item.userBankName 
 				    }));
-				    }
 				});
 			$('#bankAlert').empty();
 			} else {
@@ -861,6 +854,7 @@ function getBankList() {
 		}
 		}
 	});
+	return notSameBank();
 }
 
 
