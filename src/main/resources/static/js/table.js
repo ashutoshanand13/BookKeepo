@@ -850,7 +850,6 @@ function getBankList() {
 		success : function(data) {	
 			if(data !== null) {
 				$.each(data, function (i, item) {
-				console.log(data);
 				    $('[name=bankId]').append($('<option>', { 
 				        value: item.id,
 				        text : item.userBankName 
