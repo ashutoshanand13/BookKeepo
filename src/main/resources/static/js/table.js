@@ -789,6 +789,17 @@ $(function () {
     });
 });
 
+function getBankDataForRecordContraCash(data) {
+	var payment = $(data).val();
+	if(payment === "Bank"){
+		$('#bankDropdown1').html('<select class="form-control" name="bankId"  onclick="notSameBank()" name="banklist" id="banklist" required="required"></select>');
+		getBankList();
+	} else {
+		$('#bankDropdown1').empty();
+		$('#bankAlert1').empty();
+	}
+}
+
 function getBankData(data) {
 	var payment = $(data).val();
 	if(payment === "Bank"){

@@ -23,6 +23,7 @@
 		<form autocomplete="off" th:action="@{/home/recordcontracash}"
 			th:object="${contracash}" method="post" class="form-horizontal" role="form"
 			enctype="multipart/form-data">
+			<div id=sameBankAlert></div>
 			<div class="row">
 				<div class="col-md-6 form-group"><label class="mandatory field-description text-uppercase">Pay From</label>
 					<select name="selectbasic" class="form-control" th:field="*{payFrom}" required="required" id="payFrom" onchange="payFromCheck()">
@@ -30,9 +31,8 @@
 							<option class="form-control" value="Bank">Bank</option>
 							<option class="form-control" value="CASH" id="paytoCash">Cash</option>
 						</select>
-						<div id=bankDropdown></div>
-						<div id=bankAlert></div>
-						<div id=sameBankAlert></div>
+						<div id=bankDropdown1></div>
+						<div id=bankAlert1></div>
 					<label class="mandatory field-description text-uppercase">Date</label>
 					<input type="date" class="form-control" name="recordContraDate"
 						th:field="*{recordContraDate}" required>
@@ -64,7 +64,7 @@
 	<script type="text/javascript">
 	$(document).ready(function() {
 		$("#payFrom").change(function() {
-			getBankData($("#payFrom"));
+			getBankDataForRecordContraCash($("#payFrom"));
 		});	
 	});
 	$(document).ready(function() {
