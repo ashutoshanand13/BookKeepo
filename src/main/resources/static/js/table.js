@@ -792,7 +792,7 @@ $(function () {
 function getBankData(data) {
 	var payment = $(data).val();
 	if(payment === "Bank"){
-		$('#bankDropdown').html('<select class="form-control" name="bankId" onfocus="getBankList()" required="required"></select>');
+		$('#bankDropdown').html('<select class="form-control" id="bankId" name="bankId" onclick="notSameBank()" onfocus="getBankList()" required="required"></select>');
 		getBankList();
 	} else {
 		$('#bankDropdown').empty();
@@ -800,9 +800,46 @@ function getBankData(data) {
 	}
 }
 
+function notSameBank(){
+	    var val = $('[name="payFromBankId"]').val();
+	    var val2 = $('[name="payToBankId"]').val();
+	    $("select>option.hide").wrap('<span>');
+	    if(val == val2){
+	    	   $('button[name="submit"]').prop('disabled',true);
+	    	   $('#sameBankAlert').html(
+						'<div class="alert alert-info text-center" role="alert">'
+						  +'You can not select same bank.'+
+						  '</div>');
+		} else {
+	    	   $('button[name="submit"]').prop('disabled', false);
+	    	   $('#sameBankAlert').empty();
+		}   
+	}
+
+function getBankDataForRecordContraCash(data) {
+	var payment = $(data).val();
+	if(payment === "Bank"){
+		$('#bankDropdown1').html('<select class="form-control" id="bankId" name="payFromBankId"  onclick="notSameBank()" required="required"></select>');
+		getBankList();
+	} else {
+		$('#bankDropdown1').empty();
+		$('#bankAlert1').empty();
+	}
+}
+
+function getBankDataFrom(data) {
+	var payment = $(data).val();
+	if(payment === "Bank"){
+		$('#bankDropdown2').html('<select class="form-control" id="bankId" name="payToBankId" onclick="notSameBank()" required="required"></select>');
+		getBankList();
+	} else {
+		$('#bankDropdown2').empty();
+		$('#bankAlert2').empty();
+	}
+}
+
 function getBankList() {
-	$("[name=bankId]").empty();
-	
+	$("#bankId").empty();
 	$.ajax({
 		type : "GET",
 		contentType : "application/json",
@@ -812,7 +849,7 @@ function getBankList() {
 		success : function(data) {	
 			if(data !== null) {
 				$.each(data, function (i, item) {
-				    $('[name=bankId]').append($('<option>', { 
+				    $('#bankId').append($('<option>', { 
 				        value: item.id,
 				        text : item.userBankName 
 				    }));
@@ -826,6 +863,7 @@ function getBankList() {
 		}
 		}
 	});
+	return notSameBank();
 }
 
 
