@@ -816,30 +816,62 @@ function notSameBank(){
 		}   
 	}
 
-function getBankDataForRecordContraCash(data) {
+function getBankDataFrom(data) {
 	var payment = $(data).val();
 	if(payment === "Bank"){
 		$('#bankDropdown1').html('<select class="form-control" id="bankId" name="payFromBankId"  onclick="notSameBank()" required="required"></select>');
-		getBankList();
+		getBankListForContraCash();
 	} else {
 		$('#bankDropdown1').empty();
 		$('#bankAlert1').empty();
 	}
 }
 
-function getBankDataFrom(data) {
+function getBankDataTo(data) {
 	var payment = $(data).val();
 	if(payment === "Bank"){
 		$('#bankDropdown2').html('<select class="form-control" id="bankId" name="payToBankId" onclick="notSameBank()" required="required"></select>');
-		getBankList();
+		getBankListForContraCash();
 	} else {
 		$('#bankDropdown2').empty();
 		$('#bankAlert2').empty();
 	}
 }
 
-function getBankList() {
+function getBankListForContraCash() {
 	$("#bankId").empty();
+	$.ajax({
+		type : "GET",
+		contentType : "application/json",
+		url : "/home/getbanklist",
+		dataType : 'json',			
+		async : false,
+		success : function(data) {	
+			if(data !== null) {
+				$.each(data, function (i, item) {
+				    $('select[name="payToBankId"]').append($('<option>', { 
+				        value: item.id,
+				        text : item.userBankName 
+				    }));
+				     $('select[name="payFromBankId"]').append($('<option>', { 
+				        value: item.id,
+				        text : item.userBankName 
+				    }));
+				});
+			$('#bankAlert').empty();
+			} else {
+				$('#bankAlert').html(
+						'<div class="alert alert-info text-center" role="alert">'
+						  +'You have no bank account added. Please add one <a href="/home/addbank" class="alert-link">here</a>.'+
+						  '</div>');
+		}
+		}
+	});
+	return notSameBank();
+}
+
+function getBankList() {
+$("#bankId").empty();
 	$.ajax({
 		type : "GET",
 		contentType : "application/json",
@@ -863,7 +895,6 @@ function getBankList() {
 		}
 		}
 	});
-	return notSameBank();
 }
 
 
