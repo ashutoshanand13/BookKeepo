@@ -89,3 +89,32 @@
 	</th:block>
 	</div>
 </div>
+<th:block layout:fragment="scripts">
+	<link rel="stylesheet"
+		th:href="@{/css/datatables/jquery.dataTables.min.css}">
+	<link rel="stylesheet"
+		th:href="@{/css/datatables/buttons.dataTables.min.css}">
+	<script type="text/javascript" th:src="@{/js/datatables/jquery.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/datatables/jszip.min.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/js/datatables/jquery.dataTables.min.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/js/datatables/dataTables.buttons.min.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/js/datatables/buttons.flash.min.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/js/datatables/buttons.html5.min.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/js/datatables/buttons.print.min.js}"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			var table = $('.table').DataTable({
+				"paging":   false,
+				"info":     false,
+				"searching": false,
+				dom : 'Bfrtip',
+				buttons : [ 'csv', 'excel' ]
+			});
+		});
+	</script>
+</th:block>
