@@ -6,6 +6,7 @@ package com.bookkeepo.accounting.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.bookkeepo.accounting.entity.Accounts;
@@ -32,5 +33,8 @@ public interface InvoiceRepository extends JpaRepository<InvoiceDetails, Long> {
 			String invoiceSubType,Company company);
 	
 	List<InvoiceDetails> findByInvoiceAccountDetailsAndInvoiceOwner(Accounts account, String owner);
+	
+	@Query("SELECT a FROM InvoiceDetails a INNER JOIN Accounts b on a.invoiceAccountDetails = b.id where a.invoiceOwner = ?1 and b.accountType = ?2")
+	List<InvoiceDetails> findByAccountTypeAndAccountOwner(String owner, String accountType);
 
 }
