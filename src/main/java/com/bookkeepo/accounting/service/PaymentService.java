@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bookkeepo.accounting.entity.Accounts;
 import com.bookkeepo.accounting.entity.Payment;
 import com.bookkeepo.accounting.repository.CompanyDetailsRepository;
 import com.bookkeepo.accounting.repository.PaymentRepository;
@@ -42,6 +43,10 @@ public class PaymentService {
 	
 	public Payment findByIdAndPaymentOwner(int id, String owner) {
 		return paymentRepository.findByIdAndPaymentOwner(id, owner);
+	}
+	
+	public List<Payment> findByAccountRefNo(Accounts account) {
+		return paymentRepository.findByAccountRefNo(account);
 	}
 
 }

@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bookkeepo.accounting.entity.Accounts;
 import com.bookkeepo.accounting.entity.Receipts;
 import com.bookkeepo.accounting.repository.CompanyDetailsRepository;
 import com.bookkeepo.accounting.repository.ReceiptRepository;
@@ -43,4 +44,7 @@ public class ReceiptService {
 		return receiptRepository.findByIdAndReceiptOwner(id, user);
 	}
 
+	public List<Receipts> findByAccountRefNo(Accounts account) {
+		return receiptRepository.findByAccountRefNo(account);
+	}
 }
