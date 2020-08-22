@@ -789,21 +789,10 @@ $(function () {
     });
 });
 
-function getBankDataForRecordContraCash(data) {
-	var payment = $(data).val();
-	if(payment === "Bank"){
-		$('#bankDropdown1').html('<select class="form-control" name="bankId"  onclick="notSameBank()" name="banklist" id="banklist" required="required"></select>');
-		getBankList();
-	} else {
-		$('#bankDropdown1').empty();
-		$('#bankAlert1').empty();
-	}
-}
-
 function getBankData(data) {
 	var payment = $(data).val();
 	if(payment === "Bank"){
-		$('#bankDropdown').html('<select class="form-control" name="bankId"  onclick="notSameBank()" onfocus="getBankList()" name="banklist" id="banklist" required="required"></select>');
+		$('#bankDropdown').html('<select class="form-control" id="bankId" name="bankId" onclick="notSameBank()" onfocus="getBankList()" required="required"></select>');
 		getBankList();
 	} else {
 		$('#bankDropdown').empty();
@@ -812,8 +801,8 @@ function getBankData(data) {
 }
 
 function notSameBank(){
-	    var val = $('#banklist').val();
-	    var val2 = $('#banklist2').val();
+	    var val = $('[name="payFromBankId"]').val();
+	    var val2 = $('[name="payToBankId"]').val();
 	    $("select>option.hide").wrap('<span>');
 	    if(val == val2){
 	    	   $('button[name="submit"]').prop('disabled',true);
@@ -827,20 +816,30 @@ function notSameBank(){
 		}   
 	}
 
-
 function getBankDataFrom(data) {
 	var payment = $(data).val();
 	if(payment === "Bank"){
-		$('#bankDropdown2').html('<select class="form-control" name="bankId"  onclick="notSameBank()" name="banklist2" id="banklist2" required="required"></select>');
-		getBankList();
+		$('#bankDropdown1').html('<select class="form-control" id="bankId" name="payFromBankId"  onclick="notSameBank()" required="required"></select>');
+		getBankListForContraCash();
+	} else {
+		$('#bankDropdown1').empty();
+		$('#bankAlert1').empty();
+	}
+}
+
+function getBankDataTo(data) {
+	var payment = $(data).val();
+	if(payment === "Bank"){
+		$('#bankDropdown2').html('<select class="form-control" id="bankId" name="payToBankId" onclick="notSameBank()" required="required"></select>');
+		getBankListForContraCash();
 	} else {
 		$('#bankDropdown2').empty();
 		$('#bankAlert2').empty();
 	}
 }
 
-function getBankList() {
-	$("[name=bankId]").empty();
+function getBankListForContraCash() {
+	$("#bankId").empty();
 	$.ajax({
 		type : "GET",
 		contentType : "application/json",
@@ -850,7 +849,11 @@ function getBankList() {
 		success : function(data) {	
 			if(data !== null) {
 				$.each(data, function (i, item) {
-				    $('[name=bankId]').append($('<option>', { 
+				    $('select[name="payToBankId"]').append($('<option>', { 
+				        value: item.id,
+				        text : item.userBankName 
+				    }));
+				     $('select[name="payFromBankId"]').append($('<option>', { 
 				        value: item.id,
 				        text : item.userBankName 
 				    }));
@@ -865,6 +868,33 @@ function getBankList() {
 		}
 	});
 	return notSameBank();
+}
+
+function getBankList() {
+$("#bankId").empty();
+	$.ajax({
+		type : "GET",
+		contentType : "application/json",
+		url : "/home/getbanklist",
+		dataType : 'json',			
+		async : false,
+		success : function(data) {	
+			if(data !== null) {
+				$.each(data, function (i, item) {
+				    $('#bankId').append($('<option>', { 
+				        value: item.id,
+				        text : item.userBankName 
+				    }));
+				});
+			$('#bankAlert').empty();
+			} else {
+				$('#bankAlert').html(
+						'<div class="alert alert-info text-center" role="alert">'
+						  +'You have no bank account added. Please add one <a href="/home/addbank" class="alert-link">here</a>.'+
+						  '</div>');
+		}
+		}
+	});
 }
 
 

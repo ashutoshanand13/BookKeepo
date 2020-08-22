@@ -10,8 +10,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bookkeepo.accounting.entity.BankDetails;
 import com.bookkeepo.accounting.model.RecordContraCash;
 import com.bookkeepo.accounting.util.InvoiceUtil;
 
@@ -33,14 +35,25 @@ public class RecordContraCashController extends MasterController {
 	@RequestMapping(value = { "/home/recordcontracash" }, method = RequestMethod.POST)
 	public ModelAndView addRecordContraCash(@Valid @ModelAttribute("contracash") RecordContraCash contracash,
 			BindingResult bindingResult,
-			Principal principal) {
+			Principal principal,
+			@RequestParam(required=false) String payFromBankId,
+			@RequestParam(required=false) String payToBankId) {
 		ModelAndView modelAndView = new ModelAndView("recordcontracash");
 		contracash.setRecordContraOwner(principal.getName());
 		contracash.setRecordContraDate(InvoiceUtil.reverseDate(contracash.getRecordContraDate()));
+		if(payFromBankId != null) {
+			BankDetails bankDetails = bankService.findById(Integer.valueOf(payFromBankId));
+			contracash.setPayFromBank(bankDetails.getUserBankName());
+			contracash.setPayFromBankId(payFromBankId);
+		}
+		if(payToBankId!=null) {
+			BankDetails bankDetails = bankService.findById(Integer.valueOf(payToBankId));
+			contracash.setPayToBank(bankDetails.getUserBankName());
+			contracash.setPayToBankId(payToBankId);
+		}
 		contracashService.saveRecordContraCashEntry(contracash);
 		modelAndView.addObject("message", "Record Contra Cash Added Successfully");
 		modelAndView.addObject("contracash", new RecordContraCash());
 		return modelAndView;
 	}
-
-}
+	}
