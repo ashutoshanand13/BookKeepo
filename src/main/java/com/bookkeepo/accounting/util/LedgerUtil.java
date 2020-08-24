@@ -59,8 +59,8 @@ public class LedgerUtil{
 		
 		for (InvoiceDetails invoice : nullGuard(invoices)) {
 			if (InvoiceUtil.isValidDate(ledger.getStartDate(), ledger.getEndDate(),
-					CommonUtils.convertDateIntoFormat(invoice.getInvoiceDate()))) {
-				
+					CommonUtils.convertDateIntoFormat(invoice.getInvoiceDate())) && invoice.getId() != 0) {
+				Accounts account = invoice.getInvoiceAccountDetails();
 				List<LedgerColumns> invoiceData;
 				
 				if(ledgerMap.get(invoice.getInvoiceAccountDetails()) == null) {
@@ -68,7 +68,7 @@ public class LedgerUtil{
 					LedgerColumns column = new LedgerColumns();
 					column.setParticulars(invoice.getInvoiceType());
 					column.setDate(invoice.getInvoiceDate());
-					if(DEBIT.equals(accountLedger.findByAccountType(ledger.getAccountType()).getAccountpostive())){
+					if(DEBIT.equals(accountLedger.findByAccountType(account.getAccountType()).getAccountpostive())){
 						column.setDebit(invoice.getInvoiceTotalAmountAfterTax());
 					} else {
 						column.setCredit(invoice.getInvoiceTotalAmountAfterTax());
@@ -81,7 +81,7 @@ public class LedgerUtil{
 					LedgerColumns column = new LedgerColumns();
 					column.setParticulars(invoice.getInvoiceType());
 					column.setDate(invoice.getInvoiceDate());
-					if(DEBIT.equals(accountLedger.findByAccountType(ledger.getAccountType()).getAccountpostive())){
+					if(DEBIT.equals(accountLedger.findByAccountType(account.getAccountType()).getAccountpostive())){
 						column.setDebit(invoice.getInvoiceTotalAmountAfterTax());
 					} else {
 						column.setCredit(invoice.getInvoiceTotalAmountAfterTax());
@@ -122,7 +122,7 @@ public class LedgerUtil{
 						column.setCredit(ledgerReceipt.getReceiptAmount());
 						
 						receiptData.add(column);
-						ledgerMap.put(ledgerReceipt.getAccountRefNo(), receiptData);
+						ledgerMap.put(account, receiptData);
 					}
 					
 				}
@@ -153,12 +153,24 @@ public class LedgerUtil{
 						column.setDebit(ledgerPayment.getPaymentAmount());
 						
 						paymentData.add(column);
-						ledgerMap.put(ledgerPayment.getAccountRefNo(), paymentData);
+						ledgerMap.put(account, paymentData);
 					}
 					
 				}
 				
 			}
+			
+			List<LedgerColumns> particulars = ledgerMap.get(account);
+			double creditSum = 0, debitSum=0;
+			for(LedgerColumns column : nullGuard(particulars)) {
+				creditSum += column.getCredit() !=null ? Double.valueOf(column.getCredit()) : 0;
+				debitSum += column.getDebit() != null ? Double.valueOf(column.getDebit()) : 0;
+			}
+			LedgerColumns balance = new LedgerColumns();
+			balance.setBalance(String.valueOf(debitSum-creditSum));
+			balance.setParticulars("Balance");
+			particulars.add(balance);
+			ledgerMap.put(account, particulars);
 		}
 		
 		return ledgerMap;
