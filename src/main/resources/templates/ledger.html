@@ -34,12 +34,11 @@
 			<div class="row">
 				<div class="col-md-3 form-group">
 					<div class="form-group">
-						<label>Choose Account Type </label> 
-						<select name="selectbasic" class="form-control"
-							 th:field="*{accountType}" required="required">
-							<option th:each="account : ${accountLedgerType}"
-								th:value="${account.accountType}"
-								th:text="${account.accountType}"></option>
+						<label>Choose Account Type </label> <select name="selectbasic"
+							class="form-control" th:field="*{accountId}" required="required">
+							<option th:each="accountValue : ${accountList}"
+								th:value="${accountValue.id}"
+								th:text="${accountValue.accountName}"></option>
 						</select>
 					</div>
 				</div>
@@ -62,11 +61,14 @@
 			</div>
 		</form>
 	</div>
-	
+
 	<div th:if="${not #lists.isEmpty(ledgerMap)}">
-	<th:block th:each="account : ${ledgerMap}">
-	<span th:text="${account.key.accountName}"></span>
-				<table id="ledgerTable" class="table table-responsive-md text-center" style="width: 80%; border: 1px solid black;">
+		<th:block th:each="account : ${ledgerMap}">
+			<table id="ledgerTable" class="table table-responsive-md text-center"
+				style="width: 80%; float: left; border: 1px solid black;">
+				<caption
+					style="caption-side: top; text-align: center; font-weight: bold;"
+					th:text="${account.key.accountName}"></caption>
 				<thead>
 					<tr>
 						<th>Particulars</th>
@@ -76,17 +78,29 @@
 					</tr>
 				</thead>
 				<tbody>
-				<th:block th:each="ledger : ${account.value}">
-				<tr>
-				<td th:text="${ledger.particulars}"></td>
-				<td th:text="${ledger.date}"></td>
-				<td th:text="${ledger.debit != null} ? ${ledger.debit} : ''"></td>
-				<td th:text="${ledger.credit != null} ? ${ledger.credit} : ''"></td>
-				</tr>
-				</th:block>
+					<th:block th:each="ledger : ${account.value}">
+						<tr th:if="${ledger.particulars != 'Balance'}">
+							<td th:text="${ledger.particulars}"></td>
+							<td th:text="${ledger.date}"></td>
+							<td th:text="${ledger.debit != null} ? ${ledger.debit} : ''"></td>
+							<td th:text="${ledger.credit != null} ? ${ledger.credit} : ''"></td>
+						</tr>
+					</th:block>
 				</tbody>
+				<tfoot>
+					<th:block th:each="ledger : ${account.value}">
+						<tr th:if="${ledger.particulars == 'Balance'}">
+							<td th:text="${ledger.particulars}"></td>
+							<th>&nbsp;</th>
+							<th>&nbsp;</th>
+							<td th:text="${ledger.balance != null} ? ${ledger.balance} : ''"></td>
+						</tr>
+
+					</th:block>
+				</tfoot>
 			</table>
-	</th:block>
+
+		</th:block>
 	</div>
 </div>
 <th:block layout:fragment="scripts">
@@ -109,11 +123,18 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			var table = $('.table').DataTable({
-				"paging":   false,
-				"info":     false,
-				"searching": false,
+				"paging" : false,
+				"info" : false,
+				"searching" : false,
 				dom : 'Bfrtip',
-				buttons : [ 'csv', 'excel' ]
+
+				buttons : [ {
+					extend : 'excelHtml5',
+					footer : true
+				}, {
+					extend : 'csvHtml5',
+					footer : true
+				} ]
 			});
 		});
 	</script>

@@ -9,20 +9,20 @@ package com.bookkeepo.accounting.model;
  */
 public class LedgerInfo {
 	
-	private String accountType;
+	private String accountId;
 	private String startDate;
 	private String endDate;
 	/**
 	 * @return the account
 	 */
-	public String getAccountType() {
-		return accountType;
+	public String getAccountId() {
+		return accountId;
 	}
 	/**
 	 * @param account the account to set
 	 */
-	public void setAccountType(String accountType) {
-		this.accountType = accountType;
+	public void setAccountId(String accountId) {
+		this.accountId = accountId;
 	}
 	/**
 	 * @return the startDate
