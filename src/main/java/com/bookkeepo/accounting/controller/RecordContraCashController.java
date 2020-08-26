@@ -43,11 +43,13 @@ public class RecordContraCashController extends MasterController {
 		contracash.setRecordContraDate(InvoiceUtil.reverseDate(contracash.getRecordContraDate()));
 		if(payFromBankId != null) {
 			BankDetails bankDetails = bankService.findById(Integer.valueOf(payFromBankId));
-			contracash.setBankDetails(bankDetails);
+			contracash.setBankDetailsFrom(bankDetails);
+			contracash.setPayFromBank(bankDetails.getUserBankName());
 		}
 		if(payToBankId!=null) {
 			BankDetails bankDetails = bankService.findById(Integer.valueOf(payToBankId));
-			contracash.setBankDetails(bankDetails);
+			contracash.setBankDetailsTo(bankDetails);
+			contracash.setPayToBank(bankDetails.getUserBankName());
 		}
 		contracashService.saveRecordContraCashEntry(contracash);
 		modelAndView.addObject("message", "Record Contra Cash Added Successfully");

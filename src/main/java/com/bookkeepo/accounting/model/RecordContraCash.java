@@ -39,6 +39,12 @@ public class RecordContraCash {
 	@Column(name = "payTo")
 	private String payTo;
 
+	@Column(name = "pay_from_bank")
+	private String payFromBank;
+
+	@Column(name = "pay_to_bank")
+	private String payToBank;
+	
 	@Column(name = "record_contra_amount")
 	private String recordContraAmount;
 
@@ -57,21 +63,40 @@ public class RecordContraCash {
 	private Date recordContraCreationDate;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "payment_bank_reference_no", updatable = false)
-	private BankDetails bankDetails;
+	@JoinColumn(name = "pay_from_bank_id", updatable = false)
+	private BankDetails bankDetailsFrom;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "pay_to_bank_id", updatable = false)
+	private BankDetails bankDetailsTo;
+
 
 	/**
-	 * @return the bankDetails
+	 * @return the bankDetailsFrom
 	 */
-	public BankDetails getBankDetails() {
-		return bankDetails;
+	public BankDetails getBankDetailsFrom() {
+		return bankDetailsFrom;
 	}
 
 	/**
-	 * @param bankDetails the bankDetails to set
+	 * @param bankDetailsFrom the bankDetailsFrom to set
 	 */
-	public void setBankDetails(BankDetails bankDetails) {
-		this.bankDetails = bankDetails;
+	public void setBankDetailsFrom(BankDetails bankDetailsFrom) {
+		this.bankDetailsFrom = bankDetailsFrom;
+	}
+
+	/**
+	 * @return the bankDetailsTo
+	 */
+	public BankDetails getBankDetailsTo() {
+		return bankDetailsTo;
+	}
+
+	/**
+	 * @param bankDetailsTo the bankDetailsTo to set
+	 */
+	public void setBankDetailsTo(BankDetails bankDetailsTo) {
+		this.bankDetailsTo = bankDetailsTo;
 	}
 
 	/**
@@ -184,6 +209,34 @@ public class RecordContraCash {
 	 */
 	public void setRecordContraCreationDate(Date recordContraCreationDate) {
 		this.recordContraCreationDate = recordContraCreationDate;
+	}
+
+	/**
+	 * @return the payFromBank
+	 */
+	public String getPayFromBank() {
+		return payFromBank;
+	}
+
+	/**
+	 * @param payFromBank the payFromBank to set
+	 */
+	public void setPayFromBank(String payFromBank) {
+		this.payFromBank = payFromBank;
+	}
+
+	/**
+	 * @return the payToBank
+	 */
+	public String getPayToBank() {
+		return payToBank;
+	}
+
+	/**
+	 * @param payToBank the payToBank to set
+	 */
+	public void setPayToBank(String payToBank) {
+		this.payToBank = payToBank;
 	}
 
 }
