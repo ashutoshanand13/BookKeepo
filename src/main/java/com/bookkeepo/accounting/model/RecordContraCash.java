@@ -39,12 +39,6 @@ public class RecordContraCash {
 	@Column(name = "payTo")
 	private String payTo;
 
-	@Column(name = "pay_from_bank")
-	private String payFromBank;
-
-	@Column(name = "pay_to_bank")
-	private String payToBank;
-	
 	@Column(name = "record_contra_amount")
 	private String recordContraAmount;
 
@@ -209,34 +203,6 @@ public class RecordContraCash {
 	 */
 	public void setRecordContraCreationDate(Date recordContraCreationDate) {
 		this.recordContraCreationDate = recordContraCreationDate;
-	}
-
-	/**
-	 * @return the payFromBank
-	 */
-	public String getPayFromBank() {
-		return payFromBank;
-	}
-
-	/**
-	 * @param payFromBank the payFromBank to set
-	 */
-	public void setPayFromBank(String payFromBank) {
-		this.payFromBank = payFromBank;
-	}
-
-	/**
-	 * @return the payToBank
-	 */
-	public String getPayToBank() {
-		return payToBank;
-	}
-
-	/**
-	 * @param payToBank the payToBank to set
-	 */
-	public void setPayToBank(String payToBank) {
-		this.payToBank = payToBank;
 	}
 
 }
