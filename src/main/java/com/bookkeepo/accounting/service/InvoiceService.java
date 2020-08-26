@@ -161,4 +161,8 @@ public class InvoiceService {
 
 		return null;
 	}
+	
+	public List<InvoiceDetails> findByAccountTypeAndAccountOwner(String owner, String accountType){
+		return invoiceRepository.findByAccountTypeAndAccountOwner(owner, accountType);
+	}
 }

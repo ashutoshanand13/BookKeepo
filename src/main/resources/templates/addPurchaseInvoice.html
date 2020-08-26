@@ -88,7 +88,7 @@
 					</tr>
 					<tr>
 						<td class="pt-3-half"><input type="text" class="form-control"
-							name="partyAddress" placeholder="Address" required="required"></td>
+							name="partyAddress" placeholder="Address" readonly="readonly" required="required"></td>
 						<td class="pt-3-half"><input type="text" th:value="${InvoiceNbr}" class="form-control"
 							name="invoiceNo" readonly="readonly"></td>
 						<td class="pt-3-half"><input type="text" class="form-control"
@@ -101,7 +101,7 @@
 							name="gstinBill" placeholder="GSTIN" onblur="validateGST(this)"
 							pattern="^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$"
 							required="required"
-							oninvalid="this.setCustomValidity('GST Identification Number is not valid. It should be in this 11AAAAA1111Z1A1 format')" oninput="setCustomValidity('')"></td>
+							oninvalid="this.setCustomValidity('GST Identification Number is not valid. It should be in this 11AAAAA1111Z1A1 format')" oninput="setCustomValidity('')" readonly="readonly"></td>
 						<td class="pt-3-half"><input type="text" class="form-control"
 							name="vehicleNo" placeholder="Vehicle No" required="required"></td>
 							<td class="pt-3-half" bgcolor="#EEFF74"><input type="text"

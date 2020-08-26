@@ -31,5 +31,8 @@ public class AccountLedgerService {
 		return accountLedgerRepository.findAll();
 	}
 
+	public AccountLedger findByAccountType(String accountType) {
+		return accountLedgerRepository.findByAccountType(accountType);
+	}
 	
 }

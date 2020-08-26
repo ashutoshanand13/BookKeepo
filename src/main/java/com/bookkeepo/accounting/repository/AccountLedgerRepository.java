@@ -16,6 +16,6 @@ import com.bookkeepo.accounting.entity.AccountLedger;
 @Repository("accountLedgerRepository")
 public interface AccountLedgerRepository extends JpaRepository<AccountLedger, Long> {
 
-	
+	AccountLedger findByAccountType(String accountType);
 
 }
