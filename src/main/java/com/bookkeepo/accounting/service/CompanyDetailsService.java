@@ -22,8 +22,8 @@ public class CompanyDetailsService {
 		return companyDetailsRepository.findByUserNameAndCompanyActive(name, 1);
 	}
 
-	public void save(Company company) {
-		companyDetailsRepository.save(company);
+	public Company save(Company company) {
+		return companyDetailsRepository.save(company);
 	}
 
 	public void saveAll(List<Company> companyList) {

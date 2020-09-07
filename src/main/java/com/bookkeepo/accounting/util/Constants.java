@@ -31,6 +31,8 @@ public class Constants {
 
 	public static String FORGET_PASSWORD_IDENTIFIER = "0";
 	
+	public static String DEFAULT_ACCOUNT_ON_COMPANY_CREATION = "Cash-in-hand";
+	
 	public static int INVOICE_REF_COUNT = 5;
 	
     public static final Map<String, String> gstCodeStateMap = initMap();
