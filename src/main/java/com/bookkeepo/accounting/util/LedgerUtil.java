@@ -3,8 +3,10 @@
  */
 package com.bookkeepo.accounting.util;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.bookkeepo.accounting.entity.Accounts;
+import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.entity.InvoiceDetails;
 import com.bookkeepo.accounting.entity.Payment;
 import com.bookkeepo.accounting.entity.Receipts;
@@ -191,6 +194,20 @@ public class LedgerUtil{
 		  } else {
 		    return item;
 		  }
+		}
+
+		public static Map<Accounts, List<LedgerColumns>> setUpCashlLedgers(LedgerInfo ledger, Company company) {
+			Date startDate=null;
+			Date endDate=null;
+			try {
+				startDate = CommonUtils.convertToDate(ledger.getStartDate());
+				endDate = CommonUtils.convertToDate(ledger.getEndDate());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			List<Payment> temp = payment.findByStartEndDate(company, startDate, endDate);
+
+			return null;
 		}
 
 }
