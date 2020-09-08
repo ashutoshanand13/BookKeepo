@@ -2,6 +2,7 @@ package com.bookkeepo.accounting.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Collections;
@@ -320,5 +321,10 @@ public class CommonUtils {
 	public static void setSessionAttributes(HttpSession session,String menuToDisplay, Company company) {
 		session.setAttribute("CompanyGSTIN", menuToDisplay);
 		session.setAttribute("company", company);
+	}
+	
+	public static Date convertToDate(String date) throws ParseException 
+	{
+		return sdf.parse(date);
 	}
 }
