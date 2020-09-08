@@ -196,18 +196,52 @@ public class LedgerUtil{
 		  }
 		}
 
-		public static Map<Accounts, List<LedgerColumns>> setUpCashlLedgers(LedgerInfo ledger, Company company) {
-			Date startDate=null;
-			Date endDate=null;
+		public static Map<Accounts, List<LedgerColumns>> setUpCashLedgers(Accounts account, LedgerInfo ledger,
+				Company company) {
+			Date startDate = null;
+			Date endDate = null;
+			Map<Accounts, List<LedgerColumns>> ledgerMap = new HashMap<Accounts, List<LedgerColumns>>();
+			List<LedgerColumns> ledgerData = new ArrayList<LedgerColumns>();
+			LedgerColumns ledgerColumnData = null;
+
 			try {
 				startDate = CommonUtils.convertToDate(ledger.getStartDate());
 				endDate = CommonUtils.convertToDate(ledger.getEndDate());
+				endDate.setTime(endDate.getTime()+86399000L);
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
-			List<Payment> temp = payment.findByStartEndDate(company, startDate, endDate);
+			List<Payment> listofPayments = payment.findByStartEndDate(company, startDate, endDate);
+			List<Receipts> listofReceipts = receipt.findAllByReceiptCompanyDetailsAndReceiptCreationDateBetween(company,
+					startDate, endDate);
 
-			return null;
+			Double debitSum = 0.0;
+			Double creditSum = 0.0;
+
+			for (Payment ledgerPayment : nullGuard(listofPayments)) {
+				ledgerColumnData = new LedgerColumns();
+				ledgerColumnData.setParticulars("Payment " + ledgerPayment.getPaymentMode());
+				ledgerColumnData.setDate(ledgerPayment.getPaymentDate());
+				ledgerColumnData.setDebit(ledgerPayment.getPaymentAmount());
+				debitSum += Double.valueOf(ledgerPayment.getPaymentAmount());
+				ledgerData.add(ledgerColumnData);
+			}
+
+			for (Receipts ledgerReceipt : nullGuard(listofReceipts)) {
+				ledgerColumnData = new LedgerColumns();
+				ledgerColumnData.setParticulars("Receipt " + ledgerReceipt.getReceiptMode());
+				ledgerColumnData.setDate(ledgerReceipt.getReceiptDate());
+				ledgerColumnData.setCredit(ledgerReceipt.getReceiptAmount());
+				creditSum += Double.valueOf(ledgerReceipt.getReceiptAmount());
+				ledgerData.add(ledgerColumnData);
+			}
+			ledgerColumnData = new LedgerColumns();
+			ledgerColumnData.setBalance(String.valueOf(debitSum - creditSum));
+			ledgerColumnData.setParticulars("Balance");
+			ledgerData.add(ledgerColumnData);
+			ledgerMap.put(account, ledgerData);
+
+			return ledgerMap;
 		}
 
 }

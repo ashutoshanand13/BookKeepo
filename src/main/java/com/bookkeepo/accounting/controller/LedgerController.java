@@ -58,10 +58,11 @@ public class LedgerController extends MasterController {
 		}
 		
 		Map<Accounts, List<LedgerColumns>> ledgerMap = null;
+		Accounts account = accountService.findById(Integer.valueOf(ledger.getAccountId()));
 		
-		if(accountService.findById(Integer.valueOf(ledger.getAccountId())).getAccountType().equals(Constants.DEFAULT_ACCOUNT_ON_COMPANY_CREATION)) {
+		if(account.getAccountType().equals(Constants.DEFAULT_ACCOUNT_ON_COMPANY_CREATION)) {
 			
-			ledgerMap = LedgerUtil.setUpCashlLedgers(ledger,company);
+			ledgerMap = LedgerUtil.setUpCashLedgers(account, ledger,company);
 		} else {
 			List<InvoiceDetails> invoices = invoiceService.findByInvoiceAccountDetailsAndInvoiceOwner(
 					accountService.findById(Integer.valueOf(ledger.getAccountId())), user);
