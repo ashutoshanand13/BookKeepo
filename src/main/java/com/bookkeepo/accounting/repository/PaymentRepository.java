@@ -29,11 +29,10 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
 	
 	List<Payment> findByAccountRefNo(Accounts account);
 	
-	/*
-	 * @Query("SELECT o FROM Payment o WHERE o.paymentCompanyDetails=?1 AND o.paymentCreationDate BETWEEN ?2 AND ?3"
-	 * ) List<Payment> findByStartEndDate(Company company, Date startDate, Date
-	 * endDate);
-	 */
+	
+	@Query("SELECT o FROM Payment o WHERE o.paymentCompanyDetails=?1 AND str_to_date(o.paymentDate,'%d-%m-%Y') BETWEEN ?2 AND ?3")
+	List<Payment> findByStartEndDate(Company company, Date startDate, Date endDate);
+	 
 	
 	List<Payment> findAllByPaymentCompanyDetailsAndPaymentCreationDateBetween(Company company, Date startDate, Date
 			 endDate);
