@@ -212,8 +212,7 @@ public class LedgerUtil{
 				e.printStackTrace();
 			}
 			List<Payment> listofPayments = payment.findByStartEndDate(company, startDate, endDate);
-			List<Receipts> listofReceipts = receipt.findAllByReceiptCompanyDetailsAndReceiptCreationDateBetween(company,
-					startDate, endDate);
+			List<Receipts> listofReceipts = receipt.findByStartEndDate(company, startDate, endDate);
 
 			Double debitSum = 0.0;
 			Double creditSum = 0.0;

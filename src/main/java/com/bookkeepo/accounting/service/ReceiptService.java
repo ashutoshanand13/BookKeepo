@@ -50,8 +50,8 @@ public class ReceiptService {
 		return receiptRepository.findByAccountRefNo(account);
 	}
 	
-	public List<Receipts> findAllByReceiptCompanyDetailsAndReceiptCreationDateBetween(Company company, Date startDate, Date
+	public List<Receipts> findByStartEndDate(Company company, Date startDate, Date
 			 endDate){
-		return receiptRepository.findAllByReceiptCompanyDetailsAndReceiptCreationDateBetween(company,startDate,endDate);
+		return receiptRepository.findByStartEndDate(company,startDate,endDate);
 	}
 }

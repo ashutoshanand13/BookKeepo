@@ -52,7 +52,7 @@ public class PaymentService {
 	}
 	
 	public List<Payment> findByStartEndDate(Company company, Date startDate, Date endDate){
-		return paymentRepository.findAllByPaymentCompanyDetailsAndPaymentCreationDateBetween(company, startDate, endDate);
+		return paymentRepository.findByStartEndDate(company, startDate, endDate);
 	}
 
 }
