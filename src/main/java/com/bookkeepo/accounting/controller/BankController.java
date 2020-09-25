@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bookkeepo.accounting.entity.Accounts;
 import com.bookkeepo.accounting.entity.BankDetails;
 import com.bookkeepo.accounting.entity.Company;
+import com.bookkeepo.accounting.util.Constants;
 
 /**
  * @author Ashutosh Anand
@@ -50,6 +52,15 @@ public class BankController extends MasterController {
 		Company company = companyDetailsService.findByUserName(principal.getName());
 		bank.setUserBankCreator(principal.getName());
 		bank.setBankCompanyDetails(company);
+		if (bank.getId() == 0) {
+			Accounts account = new Accounts();
+			account.setAccountOwner(principal.getName());
+			account.setAccountName(bank.getUserBankName());
+			account.setAccountType(Constants.DEFAULT_ACCOUNT_ON_BANK_CREATION);
+			Company companyforAccount = companyDetailsService.save(company);
+			account.setAccountCompanyDetails(companyforAccount);
+			accountService.saveAccount(account);
+		}
 		bankService.saveBank(bank);
 		modelAndView.addObject("message", "Bank details added Successfully.");
 		modelAndView.addObject("bank", new BankDetails());
