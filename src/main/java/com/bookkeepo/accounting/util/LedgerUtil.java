@@ -70,7 +70,8 @@ public class LedgerUtil {
 
 		for (InvoiceDetails invoice : nullGuard(invoices)) {
 			if (InvoiceUtil.isValidDate(ledger.getStartDate(), ledger.getEndDate(),
-					CommonUtils.convertDateIntoFormat(invoice.getInvoiceDate())) && invoice.getId() != 0) {
+					CommonUtils.convertDateIntoFormat(invoice.getInvoiceDate())) && invoice.getId() != 0
+					&& !invoice.getInvoiceType().equals(InvoiceType.Purchase_Order.getType())) {
 				List<LedgerColumns> invoiceData;
 
 				if (ledgerMap.get(invoice.getInvoiceAccountDetails()) == null) {
