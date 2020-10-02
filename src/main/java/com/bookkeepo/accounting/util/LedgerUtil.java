@@ -219,19 +219,19 @@ public class LedgerUtil{
 
 			for (Payment ledgerPayment : nullGuard(listofPayments)) {
 				ledgerColumnData = new LedgerColumns();
-				ledgerColumnData.setParticulars("Payment " + ledgerPayment.getPaymentMode());
+				ledgerColumnData.setParticulars("Payment-"+ledgerPayment.getAccountRefNo().getAccountName()+"-"+ ledgerPayment.getPaymentMode());
 				ledgerColumnData.setDate(ledgerPayment.getPaymentDate());
-				ledgerColumnData.setDebit(ledgerPayment.getPaymentAmount());
-				debitSum += Double.valueOf(ledgerPayment.getPaymentAmount());
+				ledgerColumnData.setCredit(ledgerPayment.getPaymentAmount());
+				creditSum += Double.valueOf(ledgerPayment.getPaymentAmount());
 				ledgerData.add(ledgerColumnData);
 			}
 
 			for (Receipts ledgerReceipt : nullGuard(listofReceipts)) {
 				ledgerColumnData = new LedgerColumns();
-				ledgerColumnData.setParticulars("Receipt " + ledgerReceipt.getReceiptMode());
+				ledgerColumnData.setParticulars("Receipt-"+ledgerReceipt.getAccountRefNo().getAccountName()+"-"+ledgerReceipt.getReceiptMode());
 				ledgerColumnData.setDate(ledgerReceipt.getReceiptDate());
-				ledgerColumnData.setCredit(ledgerReceipt.getReceiptAmount());
-				creditSum += Double.valueOf(ledgerReceipt.getReceiptAmount());
+				ledgerColumnData.setDebit(ledgerReceipt.getReceiptAmount());
+				debitSum += Double.valueOf(ledgerReceipt.getReceiptAmount());
 				ledgerData.add(ledgerColumnData);
 			}
 			ledgerColumnData = new LedgerColumns();

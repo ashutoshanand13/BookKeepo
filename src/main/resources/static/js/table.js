@@ -1074,7 +1074,7 @@ function getAccountListPurchase() {
 	$.ajax({
 		type : "GET",
 		contentType : "application/json",
-		url : "/home/getaccountlist",
+		url : "/home/getaccountlistpurchase",
 		dataType : 'json',			
 		async : false,
 		success : function(data) {			
