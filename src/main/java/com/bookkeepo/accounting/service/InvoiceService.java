@@ -165,4 +165,20 @@ public class InvoiceService {
 	public List<InvoiceDetails> findByAccountTypeAndAccountOwner(String owner, String accountType){
 		return invoiceRepository.findByAccountTypeAndAccountOwner(owner, accountType);
 	}
+	
+	public List<InvoiceData> findByInvoiceOwnerAndInvoiceTypesAndInvoiceCompanyDetails(String owner, List<String> invoiceTypes){
+		List<InvoiceData> invoiceList = new ArrayList<InvoiceData>();
+		InvoiceData selectInvoice = new InvoiceData();
+		selectInvoice.setId(0);
+		selectInvoice.setInvoiceNumber("Select Against Invoice");
+		invoiceList.add(selectInvoice);
+		List<InvoiceDetails> allInvoice= invoiceRepository.findByInvoiceOwnerAndInvoiceTypeAndInvoiceCompanyDetails(owner, invoiceTypes,companyDetailsRepository.findByUserNameAndCompanyActive(owner, 1));
+		for (InvoiceDetails invoice : allInvoice) {
+			InvoiceData dbinvoice = new InvoiceData();
+			dbinvoice.setId(invoice.getId());
+			dbinvoice.setInvoiceNumber(invoice.getInvoiceNumber());
+			invoiceList.add(dbinvoice);
+		}
+		return invoiceList;
+	}
 }

@@ -37,4 +37,6 @@ public interface InvoiceRepository extends JpaRepository<InvoiceDetails, Long> {
 	@Query("SELECT a FROM InvoiceDetails a INNER JOIN Accounts b on a.invoiceAccountDetails = b.id where a.invoiceOwner = ?1 and b.accountType = ?2")
 	List<InvoiceDetails> findByAccountTypeAndAccountOwner(String owner, String accountType);
 
+	@Query("SELECT a FROM InvoiceDetails a where a.invoiceOwner= ?1 and a.invoiceCompanyDetails= ?3 and a.invoiceType in (?2)")
+	List<InvoiceDetails> findByInvoiceOwnerAndInvoiceTypeAndInvoiceCompanyDetails(String invoiceOwner, List<String> invoiceTypes, Company company);
 }
