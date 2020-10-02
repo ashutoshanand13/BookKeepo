@@ -111,4 +111,20 @@ public class AccountService {
 		
 		return accountList;
 	}
+	
+	public List<Accounts> findAccounts(String owner, Company company) {
+		List<Accounts> accountList = new ArrayList<Accounts>();
+		Accounts accounts = new Accounts();
+		accounts.setId(0);
+		accounts.setAccountName("Select Account");
+		accountList.add(accounts);
+
+		List<Accounts> dbAccountList = accountRepository.findAccounts(owner, company);
+
+		if (!dbAccountList.isEmpty()) {
+			accountList.addAll(dbAccountList);
+		}
+
+		return accountList;
+	}
 }
