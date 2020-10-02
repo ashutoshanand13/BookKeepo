@@ -21,6 +21,7 @@ import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.entity.InvoiceDetails;
 import com.bookkeepo.accounting.entity.Payment;
 import com.bookkeepo.accounting.entity.Receipts;
+import com.bookkeepo.accounting.model.InvoiceType;
 import com.bookkeepo.accounting.model.LedgerColumns;
 import com.bookkeepo.accounting.model.LedgerInfo;
 import com.bookkeepo.accounting.service.AccountLedgerService;
@@ -77,7 +78,9 @@ public class LedgerUtil {
 					LedgerColumns column = new LedgerColumns();
 					column.setParticulars(invoice.getInvoiceType());
 					column.setDate(invoice.getInvoiceDate());
-					if (DEBIT.equals(accountLedger.findByAccountType(account.getAccountType()).getAccountpostive())) {
+					if ((DEBIT.equals(accountLedger.findByAccountType(account.getAccountType()).getAccountpostive())
+							&& !invoice.getInvoiceType().equals(InvoiceType.Credit_Note.getType()))
+							|| invoice.getInvoiceType().equals(InvoiceType.Debit_Note.getType())) {
 						column.setDebit(invoice.getInvoiceTotalAmountAfterTax());
 					} else {
 						column.setCredit(invoice.getInvoiceTotalAmountAfterTax());
@@ -90,7 +93,9 @@ public class LedgerUtil {
 					LedgerColumns column = new LedgerColumns();
 					column.setParticulars(invoice.getInvoiceType());
 					column.setDate(invoice.getInvoiceDate());
-					if (DEBIT.equals(accountLedger.findByAccountType(account.getAccountType()).getAccountpostive())) {
+					if ((DEBIT.equals(accountLedger.findByAccountType(account.getAccountType()).getAccountpostive())
+							&& !invoice.getInvoiceType().equals(InvoiceType.Credit_Note.getType()))
+							|| invoice.getInvoiceType().equals(InvoiceType.Debit_Note.getType())) {
 						column.setDebit(invoice.getInvoiceTotalAmountAfterTax());
 					} else {
 						column.setCredit(invoice.getInvoiceTotalAmountAfterTax());
@@ -254,7 +259,7 @@ public class LedgerUtil {
 				ledgerColumnData.setDebit(ledgerReceipt.getReceiptAmount());
 				debitSum += Double.valueOf(ledgerReceipt.getReceiptAmount());
 				ledgerData.add(ledgerColumnData);
-			} else if(ledgerReceipt.getReceiptMode().equals("Bank")
+			} else if (ledgerReceipt.getReceiptMode().equals("Bank")
 					&& account.getAccountType().equals(Constants.DEFAULT_ACCOUNT_ON_BANK_CREATION)
 					&& account.getAccountName().equals(ledgerReceipt.getBankDetails().getUserBankName())) {
 				ledgerColumnData = new LedgerColumns();
