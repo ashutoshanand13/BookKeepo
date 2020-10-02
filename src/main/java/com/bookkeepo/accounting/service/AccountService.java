@@ -63,7 +63,7 @@ public class AccountService {
 		return accountList;
 	}
 
-	public List<Accounts> fetchAccountNameForInvoice(String user) {
+	public List<Accounts> fetchAccountNameForInvoice(String user, String accountType) {
 		List<Accounts> accountList = new ArrayList<Accounts>();
 		Accounts selectAccount = new Accounts();
 		selectAccount.setId(0);
@@ -75,8 +75,8 @@ public class AccountService {
 		newAccount.setAccountName("Add New Account");
 		accountList.add(newAccount);
 
-		List<Accounts> dbAccountList = accountRepository.findByAccountOwnerAndAccountCompanyDetails(user,
-				companyDetailsRepository.findByUserNameAndCompanyActive(user, 1));
+		List<Accounts> dbAccountList = accountRepository.findByAccountOwnerAndAccountCompanyDetailsAndAccountType(user,
+				companyDetailsRepository.findByUserNameAndCompanyActive(user, 1), accountType);
 
 		if (!dbAccountList.isEmpty()) {
 			accountList.addAll(dbAccountList);

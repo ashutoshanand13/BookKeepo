@@ -3,8 +3,10 @@
  */
 package com.bookkeepo.accounting.util;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.bookkeepo.accounting.entity.Accounts;
+import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.entity.InvoiceDetails;
 import com.bookkeepo.accounting.entity.Payment;
 import com.bookkeepo.accounting.entity.Receipts;
@@ -191,6 +194,53 @@ public class LedgerUtil{
 		  } else {
 		    return item;
 		  }
+		}
+
+		public static Map<Accounts, List<LedgerColumns>> setUpCashLedgers(Accounts account, LedgerInfo ledger,
+				Company company) {
+			Date startDate = null;
+			Date endDate = null;
+			Map<Accounts, List<LedgerColumns>> ledgerMap = new HashMap<Accounts, List<LedgerColumns>>();
+			List<LedgerColumns> ledgerData = new ArrayList<LedgerColumns>();
+			LedgerColumns ledgerColumnData = null;
+
+			try {
+				startDate = CommonUtils.convertToDate(ledger.getStartDate());
+				endDate = CommonUtils.convertToDate(ledger.getEndDate());
+				endDate.setTime(endDate.getTime()+86399000L);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			List<Payment> listofPayments = payment.findByStartEndDate(company, startDate, endDate);
+			List<Receipts> listofReceipts = receipt.findByStartEndDate(company, startDate, endDate);
+
+			Double debitSum = 0.0;
+			Double creditSum = 0.0;
+
+			for (Payment ledgerPayment : nullGuard(listofPayments)) {
+				ledgerColumnData = new LedgerColumns();
+				ledgerColumnData.setParticulars("Payment-"+ledgerPayment.getAccountRefNo().getAccountName()+"-"+ ledgerPayment.getPaymentMode());
+				ledgerColumnData.setDate(ledgerPayment.getPaymentDate());
+				ledgerColumnData.setCredit(ledgerPayment.getPaymentAmount());
+				creditSum += Double.valueOf(ledgerPayment.getPaymentAmount());
+				ledgerData.add(ledgerColumnData);
+			}
+
+			for (Receipts ledgerReceipt : nullGuard(listofReceipts)) {
+				ledgerColumnData = new LedgerColumns();
+				ledgerColumnData.setParticulars("Receipt-"+ledgerReceipt.getAccountRefNo().getAccountName()+"-"+ledgerReceipt.getReceiptMode());
+				ledgerColumnData.setDate(ledgerReceipt.getReceiptDate());
+				ledgerColumnData.setDebit(ledgerReceipt.getReceiptAmount());
+				debitSum += Double.valueOf(ledgerReceipt.getReceiptAmount());
+				ledgerData.add(ledgerColumnData);
+			}
+			ledgerColumnData = new LedgerColumns();
+			ledgerColumnData.setBalance(String.valueOf(debitSum - creditSum));
+			ledgerColumnData.setParticulars("Balance");
+			ledgerData.add(ledgerColumnData);
+			ledgerMap.put(account, ledgerData);
+
+			return ledgerMap;
 		}
 
 }

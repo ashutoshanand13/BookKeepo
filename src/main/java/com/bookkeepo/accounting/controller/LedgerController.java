@@ -21,6 +21,7 @@ import com.bookkeepo.accounting.entity.InvoiceDetails;
 import com.bookkeepo.accounting.model.LedgerColumns;
 import com.bookkeepo.accounting.model.LedgerInfo;
 import com.bookkeepo.accounting.util.CommonUtils;
+import com.bookkeepo.accounting.util.Constants;
 import com.bookkeepo.accounting.util.LedgerUtil;
 
 /**
@@ -55,10 +56,18 @@ public class LedgerController extends MasterController {
 			modelAndView.setViewName("ledger");
 			return modelAndView;
 		}
-
-		List<InvoiceDetails> invoices = invoiceService.findByInvoiceAccountDetailsAndInvoiceOwner(
-				accountService.findById(Integer.valueOf(ledger.getAccountId())), user);
-		Map<Accounts, List<LedgerColumns>> ledgerMap = LedgerUtil.setUpLedgers(invoices, ledger);
+		
+		Map<Accounts, List<LedgerColumns>> ledgerMap = null;
+		Accounts account = accountService.findById(Integer.valueOf(ledger.getAccountId()));
+		
+		if(account.getAccountType().equals(Constants.DEFAULT_ACCOUNT_ON_COMPANY_CREATION)) {
+			
+			ledgerMap = LedgerUtil.setUpCashLedgers(account, ledger,company);
+		} else {
+			List<InvoiceDetails> invoices = invoiceService.findByInvoiceAccountDetailsAndInvoiceOwner(
+					accountService.findById(Integer.valueOf(ledger.getAccountId())), user);
+			ledgerMap = LedgerUtil.setUpLedgers(invoices, ledger);
+		}
 		modelAndView.addObject("ledger", ledger);
 		modelAndView.addObject("ledgerMap", ledgerMap);
 		modelAndView.setViewName("ledger");

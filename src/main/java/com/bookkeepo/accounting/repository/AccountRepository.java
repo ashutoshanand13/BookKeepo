@@ -21,6 +21,8 @@ import com.bookkeepo.accounting.entity.Company;
 public interface AccountRepository extends JpaRepository<Accounts, Long> {
 
 	List<Accounts> findByAccountOwnerAndAccountCompanyDetails(String owner, Company company);
+	
+	List<Accounts> findByAccountOwnerAndAccountCompanyDetailsAndAccountType(String owner, Company company, String accountType);
 
 	Accounts findById(int id);
 
