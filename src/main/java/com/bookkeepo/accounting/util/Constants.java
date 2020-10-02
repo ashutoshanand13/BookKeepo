@@ -33,6 +33,8 @@ public class Constants {
 	
 	public static String DEFAULT_ACCOUNT_ON_COMPANY_CREATION = "Cash-in-hand";
 	
+	public static String DEFAULT_ACCOUNT_ON_BANK_CREATION = "Bank Accounts";
+	
 	public static String SUNDRY_DEBTOR = "Sundry Debtors";
 	
 	public static String SUNDRY_CREDITOR = "Sundry Creditors";
