@@ -70,7 +70,7 @@ public class ReceiptController extends MasterController{
 		String formatDate = InvoiceUtil.reverseDate(receipt.getReceiptDate());
 		receipt.setReceiptDate(formatDate);
 		receiptService.saveAccount(receipt);
-		List<Accounts> accountList = accountService.fetchAccountName(principal.getName(), company);
+		List<Accounts> accountList = accountService.findAccounts(principal.getName(), company);
 		modelAndView.addObject("receipts", new Receipts());
 		modelAndView.addObject("message", "Receipt Details Successfully Added");
 		modelAndView.setViewName("addReceipt");
@@ -98,7 +98,7 @@ public class ReceiptController extends MasterController{
 	
 	protected void makePageReadyforLoad(HttpServletRequest request, ModelAndView modelAndView, Company company) {
 		String user = request.getUserPrincipal().getName();
-		List<Accounts> accountList = accountService.fetchAccountName(user, company);
+		List<Accounts> accountList = accountService.findAccounts(user, company);
 		Receipts receipt = new Receipts();
 		addReceiptInvoices(receipt);
 		modelAndView.addObject("receipts", receipt);

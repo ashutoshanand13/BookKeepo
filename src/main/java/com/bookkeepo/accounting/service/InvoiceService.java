@@ -181,4 +181,8 @@ public class InvoiceService {
 		}
 		return invoiceList;
 	}
+	
+	public List<InvoiceDetails> findByInvoiceAccountDetails(Accounts account) {
+		return invoiceRepository.findByInvoiceAccountDetails(account);
+	}
 }
