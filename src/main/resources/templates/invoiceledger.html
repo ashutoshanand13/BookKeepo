@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{postLoginCommonPage}">
+
+<head>
+<title>View Invoice Ledgers</title>
+</head>
+<div layout:fragment="screen_description">
+	<div class="img-holder">
+		<div class="bg"></div>
+		<h5>Get more things done with BookKeepo platform.</h5>
+		<br />
+		<p>
+			Company Name : <b><span
+				th:text="${session.company!=null} ? ${session.company.CompanyName}:''"></span></b>
+		</p>
+		<p>
+			Company GSTIN : <span
+				th:text="${session.company.companyGstin!=null && session.company.companyGstin!=''} ? ${session.company.companyGstin}:'Not Available'" /></span>
+		</p>
+	</div>
+</div>
+<div layout:fragment="form_content" id="form_content">
+	<div class="form-items">
+		<h3 class="form-title doubleunderlinetext">Select Invoice Ledgers</h3>
+		<div id="alert" th:if="${message}" th:text="${message} "
+			class="alert alert-info fade-in"></div>
+		<div id="alert_placeholder"></div>
+		<form autocomplete="off" th:action="@{/home/invoiceledger}"
+			th:object="${ledger}" method="post" class="form-horizontal"
+			role="form">
+			<div class="row">
+				<div class="col-md-3 form-group">
+					<div class="form-group">
+						<label>Choose Invoice Type </label>
+						<select name="selectbasic"
+						class="form-control" th:field="*{invoiceType}"
+						required="required">
+						<option class="form-control" value="Purchase Invoice">Purchase Invoice</option>
+						<option class="form-control" value="Sales Invoice">Sales Invoice</option>
+					</select>
+					</div>
+				</div>
+				<div class="col-md-3 form-group">
+					<div class="form-group">
+						<label>Choose Start Date </label> <input type="date"
+							th:field="*{startDate}" class="form-control">
+					</div>
+				</div>
+				<div class="col-md-3 form-group">
+					<div class="form-group">
+						<label>Choose End Date </label> <input type="date"
+							th:field="*{endDate}" class="form-control">
+					</div>
+				</div>
+			</div>
+			<div class="form-button text-right">
+				<button type="reset" class="btn btn-light">Reset</button>
+				<button id="submit" type="submit" class="ibtn">Submit</button>
+			</div>
+		</form>
+	</div>
+
+	<div th:if="${not #lists.isEmpty(ledgerMap)}">
+		<th:block th:each="account : ${ledgerMap}">
+			<table id="ledgerTable" class="table table-responsive-md text-center"
+				style="width: 80%; float: left; border: 1px solid black;">
+				<caption
+					style="caption-side: top; text-align: center; font-weight: bold;"
+					th:text="${account.key.accountName}"></caption>
+				<thead>
+					<tr>
+						<th>Particulars</th>
+						<th>Date</th>
+						<th>Debit</th>
+						<th>Credit</th>
+					</tr>
+				</thead>
+				<tbody>
+					<th:block th:each="ledger : ${account.value}">
+						<tr th:if="${ledger.particulars != 'Balance'}">
+							<td th:text="${ledger.particulars}"></td>
+							<td th:text="${ledger.date}"></td>
+							<td th:text="${ledger.debit != null} ? ${ledger.debit} : ''"></td>
+							<td th:text="${ledger.credit != null} ? ${ledger.credit} : ''"></td>
+						</tr>
+					</th:block>
+				</tbody>
+				<tfoot>
+					<th:block th:each="ledger : ${account.value}">
+						<tr th:if="${ledger.particulars == 'Balance'}">
+							<td th:text="${ledger.particulars}"></td>
+							<th>&nbsp;</th>
+							<th>&nbsp;</th>
+							<td th:text="${ledger.balance != null} ? ${ledger.balance} : ''"></td>
+						</tr>
+
+					</th:block>
+				</tfoot>
+			</table>
+
+		</th:block>
+	</div>
+</div>
+<th:block layout:fragment="scripts">
+	<link rel="stylesheet"
+		th:href="@{/css/datatables/jquery.dataTables.min.css}">
+	<link rel="stylesheet"
+		th:href="@{/css/datatables/buttons.dataTables.min.css}">
+	<script type="text/javascript" th:src="@{/js/datatables/jquery.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/datatables/jszip.min.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/js/datatables/jquery.dataTables.min.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/js/datatables/dataTables.buttons.min.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/js/datatables/buttons.flash.min.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/js/datatables/buttons.html5.min.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/js/datatables/buttons.print.min.js}"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			var table = $('.table').DataTable({
+				"paging" : false,
+				"info" : false,
+				"searching" : false,
+				dom : 'Bfrtip',
+
+				buttons : [ {
+					extend : 'excelHtml5',
+					footer : true
+				}, {
+					extend : 'csvHtml5',
+					footer : true
+				} ]
+			});
+		});
+	</script>
+</th:block>
