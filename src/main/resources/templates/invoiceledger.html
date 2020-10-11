@@ -63,13 +63,9 @@
 		</form>
 	</div>
 
-	<div th:if="${not #lists.isEmpty(ledgerMap)}">
-		<th:block th:each="account : ${ledgerMap}">
+	<div th:if="${not #lists.isEmpty(ledgerData)}">
 			<table id="ledgerTable" class="table table-responsive-md text-center"
 				style="width: 80%; float: left; border: 1px solid black;">
-				<caption
-					style="caption-side: top; text-align: center; font-weight: bold;"
-					th:text="${account.key.accountName}"></caption>
 				<thead>
 					<tr>
 						<th>Particulars</th>
@@ -79,7 +75,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<th:block th:each="ledger : ${account.value}">
+					<th:block th:each="ledger : ${ledgerData}">
 						<tr th:if="${ledger.particulars != 'Balance'}">
 							<td th:text="${ledger.particulars}"></td>
 							<td th:text="${ledger.date}"></td>
@@ -89,7 +85,7 @@
 					</th:block>
 				</tbody>
 				<tfoot>
-					<th:block th:each="ledger : ${account.value}">
+					<th:block th:each="ledger : ${ledgerData}">
 						<tr th:if="${ledger.particulars == 'Balance'}">
 							<td th:text="${ledger.particulars}"></td>
 							<th>&nbsp;</th>
@@ -100,8 +96,6 @@
 					</th:block>
 				</tfoot>
 			</table>
-
-		</th:block>
 	</div>
 </div>
 <th:block layout:fragment="scripts">
