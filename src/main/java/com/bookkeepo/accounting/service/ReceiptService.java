@@ -3,11 +3,14 @@
  */
 package com.bookkeepo.accounting.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bookkeepo.accounting.entity.Accounts;
+import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.entity.Receipts;
 import com.bookkeepo.accounting.repository.CompanyDetailsRepository;
 import com.bookkeepo.accounting.repository.ReceiptRepository;
@@ -35,8 +38,20 @@ public class ReceiptService {
 	}
 
 	public List<Receipts> fetchAllReceipt(String owner) {
-		return receiptRepository.findByReceiptOwnerAndReceiptCompanyDetails(owner,
-				companyDetailsRepository.findByUserNameAndCompanyActive(owner, 1));
+		return receiptRepository.findByReceiptOwnerAndReceiptCompanyDetailsAndReceiptDeleted(owner,
+				companyDetailsRepository.findByUserNameAndCompanyActive(owner, 1), 0);
+	}
+	
+	public Receipts findByIdAndReceiptOwner(int id, String user) {
+		return receiptRepository.findByIdAndReceiptOwner(id, user);
 	}
 
+	public List<Receipts> findByAccountRefNo(Accounts account) {
+		return receiptRepository.findByAccountRefNo(account);
+	}
+	
+	public List<Receipts> findByStartEndDate(Company company, Date startDate, Date
+			 endDate){
+		return receiptRepository.findByStartEndDate(company,startDate,endDate);
+	}
 }

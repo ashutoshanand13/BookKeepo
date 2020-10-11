@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,8 +25,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.bookkeepo.accounting.entity.InvoiceDetails;
 import com.bookkeepo.accounting.model.Reports;
 import com.bookkeepo.accounting.model.ReportsData;
-import com.bookkeepo.accounting.service.InvoiceService;
-import com.bookkeepo.accounting.service.ReportService;
 import com.bookkeepo.accounting.util.CommonUtils;
 import com.bookkeepo.accounting.util.InvoiceUtil;
 
@@ -37,13 +34,7 @@ import com.bookkeepo.accounting.util.InvoiceUtil;
  */
 
 @Controller
-public class ReportController {
-
-	@Autowired
-	private InvoiceService invoiceService;
-
-	@Autowired
-	ReportService reportService;
+public class ReportController extends MasterController {
 
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 

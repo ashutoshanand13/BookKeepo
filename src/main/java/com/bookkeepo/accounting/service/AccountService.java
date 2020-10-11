@@ -63,7 +63,7 @@ public class AccountService {
 		return accountList;
 	}
 
-	public List<Accounts> fetchAccountNameForInvoice(String user) {
+	public List<Accounts> fetchAccountNameForInvoice(String user, String accountType) {
 		List<Accounts> accountList = new ArrayList<Accounts>();
 		Accounts selectAccount = new Accounts();
 		selectAccount.setId(0);
@@ -75,8 +75,8 @@ public class AccountService {
 		newAccount.setAccountName("Add New Account");
 		accountList.add(newAccount);
 
-		List<Accounts> dbAccountList = accountRepository.findByAccountOwnerAndAccountCompanyDetails(user,
-				companyDetailsRepository.findByUserNameAndCompanyActive(user, 1));
+		List<Accounts> dbAccountList = accountRepository.findByAccountOwnerAndAccountCompanyDetailsAndAccountType(user,
+				companyDetailsRepository.findByUserNameAndCompanyActive(user, 1), accountType);
 
 		if (!dbAccountList.isEmpty()) {
 			accountList.addAll(dbAccountList);
@@ -93,5 +93,22 @@ public class AccountService {
 		List<Accounts> accountList = accountRepository.findByAccountOwnerAndAccountNameAndAccountCompanyDetails(
 				accountOwner, name, companyDetailsRepository.findByUserNameAndCompanyActive(accountOwner, 1));
 		return accountList.size() == 0 ? null : accountList;
+	}
+	
+	public List<Accounts> findByAccountOwnerAndAccountTypes(String accountOwner, List<String> accountType) {
+		List<Accounts> accountList = new ArrayList<Accounts>();
+		Accounts selectAccount = new Accounts();
+		selectAccount.setId(0);
+		selectAccount.setAccountName("Select Account");
+		accountList.add(selectAccount);
+		
+		List<Accounts> dbAccountList = accountRepository.findByAccountOwnerAndAccountTypes(accountOwner, accountType);
+
+		if (!dbAccountList.isEmpty()) {
+			accountList.addAll(dbAccountList);
+		}
+				
+		
+		return accountList;
 	}
 }

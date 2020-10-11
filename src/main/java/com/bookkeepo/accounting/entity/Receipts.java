@@ -1,6 +1,7 @@
 package com.bookkeepo.accounting.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -9,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -66,10 +68,17 @@ public class Receipts {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "receipt_company_reference_no", updatable = false)
 	private Company receiptCompanyDetails;
-	
+
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "payment_bank_reference_no" , updatable = false)
+	@JoinColumn(name = "payment_bank_reference_no", updatable = false)
 	private BankDetails bankDetails;
+
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "receipt_invoice_reference_no")
+	private List<ReceiptInvoices> receiptInvoiceDetails;
+	
+	@Column(name = "receipt_deleted", nullable = false)
+	private int receiptDeleted;
 
 	/**
 	 * @return the id
@@ -237,6 +246,34 @@ public class Receipts {
 	 */
 	public void setBankDetails(BankDetails bankDetails) {
 		this.bankDetails = bankDetails;
+	}
+
+	/**
+	 * @return the receiptInvoiceDetails
+	 */
+	public List<ReceiptInvoices> getReceiptInvoiceDetails() {
+		return receiptInvoiceDetails;
+	}
+
+	/**
+	 * @param receiptInvoiceDetails the receiptInvoiceDetails to set
+	 */
+	public void setReceiptInvoiceDetails(List<ReceiptInvoices> receiptInvoiceDetails) {
+		this.receiptInvoiceDetails = receiptInvoiceDetails;
+	}
+
+	/**
+	 * @return the receiptDeleted
+	 */
+	public int getReceiptDeleted() {
+		return receiptDeleted;
+	}
+
+	/**
+	 * @param receiptDeleted the receiptDeleted to set
+	 */
+	public void setReceiptDeleted(int receiptDeleted) {
+		this.receiptDeleted = receiptDeleted;
 	}
 
 }

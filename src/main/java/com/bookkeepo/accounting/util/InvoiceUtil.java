@@ -9,6 +9,7 @@ import java.net.MalformedURLException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -21,6 +22,8 @@ import com.bookkeepo.accounting.entity.InvoiceCompanyDetails;
 import com.bookkeepo.accounting.entity.InvoiceDetails;
 import com.bookkeepo.accounting.entity.InvoiceOtherDetails;
 import com.bookkeepo.accounting.entity.InvoiceProductDetails;
+import com.bookkeepo.accounting.entity.Payment;
+import com.bookkeepo.accounting.entity.Receipts;
 import com.bookkeepo.accounting.model.InvoiceSubType;
 import com.bookkeepo.accounting.model.InvoiceType;
 import com.bookkeepo.accounting.model.json.InvoicePageData;
@@ -50,6 +53,8 @@ import com.itextpdf.text.pdf.PdfWriter;
 public class InvoiceUtil {
 
 	private static float[] columnItemTableWidths = null;
+	
+	private static final int FIRST_FISCAL_MONTH = Calendar.MARCH;
 
 	public static void updateInvoice(InvoiceDetails invoice, InvoicePageData salesInvoiceData, Company companyDetails) {
 
@@ -87,6 +92,9 @@ public class InvoiceUtil {
 		invoice.setInvoiceProductDetails(getProductList(salesInvoiceData));
 
 		invoice.setInvoiceOtherDetails(getOtherDetails(salesInvoiceData));
+		
+		invoice.setInvoicePaidAmt("0.00");
+		invoice.setInvoicePaid(0);
 	}
 
 	public static InvoiceCompanyDetails getComanyDetails(Company companyDetails) {
@@ -126,12 +134,12 @@ public class InvoiceUtil {
 
 		if (invoice.getInvoiceType().equals(InvoiceType.Purchase_Invoice.getType())
 				|| invoice.getInvoiceType().equals(InvoiceType.Purchase_Order.getType())) {
-			invoiceAddressDetails.setInvoiceBillerName(salesInvoiceData.getPartyName());
+			invoiceAddressDetails.setInvoiceBillerName(invoice.getInvoiceAccountDetails().getAccountName());
 			invoiceAddressDetails.setInvoiceBillerAddressName(salesInvoiceData.getPartyAddress());
 			invoiceAddressDetails.setInvoiceBillerGst(salesInvoiceData.getGstinBill());
 			invoiceAddressDetails.setInvoiceBillerState(salesInvoiceData.getPartyState());
 
-			invoiceAddressDetails.setInvoicePartyName(salesInvoiceData.getPartyName());
+			invoiceAddressDetails.setInvoicePartyName(invoice.getInvoiceAccountDetails().getAccountName());
 			invoiceAddressDetails.setInvoicePartyAddressName(salesInvoiceData.getPartyAddress());
 			invoiceAddressDetails.setInvoicePartyState(salesInvoiceData.getPartyState());
 			invoiceAddressDetails.setInvoicePartyGst(salesInvoiceData.getGstinBill());
@@ -358,7 +366,8 @@ public class InvoiceUtil {
 					insertCell(table, "Transport Mode: ", getValue(invoice.getInvoiceTransportMode()), Element.ALIGN_LEFT, 2,
 							bfBold12, bf12, 1, "#FFFFFF", 0.5f, 1f);
 				}
-			} else if (invoice.getInvoiceType().equals(InvoiceType.Bill_Supply.getType())) {
+			} else if (invoice.getInvoiceType().equals(InvoiceType.Bill_Supply.getType())
+					|| invoice.getInvoiceType().equals(InvoiceType.Retail_Invoice.getType())) {
 				insertCell(table, "Invoice No: ", getValue(invoice.getInvoiceNumber()), Element.ALIGN_LEFT, 2, bfBold12, bf12, 1,
 						"#FFFFFF", 1f, 0.5f);
 				insertCell(table, "PO No: ", getValue(invoice.getInvoicePoNumber()), Element.ALIGN_LEFT, 2, bfBold12, bf12, 1,
@@ -384,7 +393,8 @@ public class InvoiceUtil {
 
 			if (!(invoice.getInvoiceType().equals(InvoiceType.Purchase_Invoice.getType())
 					|| invoice.getInvoiceType().equals(InvoiceType.Purchase_Order.getType())
-					|| invoice.getInvoiceType().equals(InvoiceType.Bill_Supply.getType()))) {
+					|| invoice.getInvoiceType().equals(InvoiceType.Bill_Supply.getType())
+					|| invoice.getInvoiceType().equals(InvoiceType.Retail_Invoice.getType()))) {
 				insertCell(table, "Bill to Party", Element.ALIGN_CENTER, 2, bfBold12, 1, "#BFD6E9", 1f, 0.5f, 0f);
 				insertCell(table, "Ship to Party", Element.ALIGN_CENTER, 2, bfBold12, 1, "#BFD6E9", 0.5f, 1f, 0f);
 
@@ -405,7 +415,8 @@ public class InvoiceUtil {
 				insertCell(table, "State: ", getValue(invoice.getInvoiceAddressDetails().getInvoicePartyState()),
 						Element.ALIGN_LEFT, 2, bfBold12, bf12, 1, "#FFFFFF", 0.5f, 1f);
 				insertCell(table, "", Element.ALIGN_LEFT, 4, bfBold12, 1, "#FFFFFF", 1f, 1f, 0f);
-			} else if(invoice.getInvoiceType().equals(InvoiceType.Bill_Supply.getType())){
+			} else if (invoice.getInvoiceType().equals(InvoiceType.Bill_Supply.getType())
+					|| invoice.getInvoiceType().equals(InvoiceType.Retail_Invoice.getType())) {
 				insertCell(table, "Bill to Party", Element.ALIGN_CENTER, 2, bfBold12, 1, "#BFD6E9", 1f, 0.5f, 0f);
 				insertCell(table, "Ship to Party", Element.ALIGN_CENTER, 2, bfBold12, 1, "#BFD6E9", 0.5f, 1f, 0f);
 
@@ -420,7 +431,8 @@ public class InvoiceUtil {
 				insertCell(table, "", Element.ALIGN_LEFT, 4, bfBold12, 1, "#FFFFFF", 1f, 1f, 0f);
 			}
 
-			if(!invoice.getInvoiceType().equals(InvoiceType.Bill_Supply.getType())) {
+			if (!(invoice.getInvoiceType().equals(InvoiceType.Bill_Supply.getType())
+					|| invoice.getInvoiceType().equals(InvoiceType.Retail_Invoice.getType()))) {
 				
 				insertCell(itemTable, "Sr. No.", Element.ALIGN_CENTER, 1, bfBold12, 1, "#BFD6E9", 1f, 0.5f, 30f);
 				insertCell(itemTable, "Product Description", Element.ALIGN_CENTER, 1, bfBold12, 1, "#BFD6E9", 0.5f, 0.5f,
@@ -665,7 +677,7 @@ public class InvoiceUtil {
 		InvoiceCompanyDetails company = invoice.getInvoiceAssoCompanyDetails();
 
 		PdfPCell cell = null;
-		if(company.getCompanyLogo().length != 0) {
+		if(company.getCompanyLogo() != null && company.getCompanyLogo().length != 0) {
 			Image img = Image.getInstance(company.getCompanyLogo());
 			img.scaleAbsolute(120f, 50f);
 			cell = new PdfPCell(img);
@@ -683,7 +695,7 @@ public class InvoiceUtil {
 		tableHeader.addCell(cell);
 
 		String companyColumn = company.getCompanyName() + "\n\n" + company.getCompanyAddress() + "\n\nTel: "
-				+ company.getCompanyTelephone() + "\nGSTIN: " + company.getCompanyGstin() + "\n";
+				+ getValue(company.getCompanyTelephone()) + "\nGSTIN: " + getValue(company.getCompanyGstin()) + "\n";
 
 		PdfPCell cell2 = new PdfPCell(
 				new Phrase(companyColumn.trim(), new Font(FontFamily.TIMES_ROMAN, 10, Font.BOLD)));
@@ -765,14 +777,13 @@ public class InvoiceUtil {
 		table.addCell(cell);
 	}
 
-	private static String reverseDate(String date) {
+	public static String reverseDate(String date) {
 		if (date != null && date.contains("-")) {
 			String[] dateArr = date.split("-");
 			List<String> listOfDate = Arrays.asList(dateArr);
 			Collections.reverse(listOfDate);
 			String[] reversed = listOfDate.toArray(dateArr);
 			date = String.join("-", reversed);
-
 		}
 		return date;
 	}
@@ -809,5 +820,49 @@ public class InvoiceUtil {
 			val = text;
 		}
 		return val;
+	}
+	
+	public static int getFiscalYear() {
+		Calendar calendarDate = Calendar.getInstance();
+		int month = calendarDate.get(Calendar.MONTH);
+		int year = calendarDate.get(Calendar.YEAR);
+		return (month >= FIRST_FISCAL_MONTH) ? year : year - 1;
+	}
+
+	public static String getFinancialYear() {
+		int year = getFiscalYear();
+		return year + "-" + (year + 1);
+
+	}
+	
+	public static Payment createPayment(InvoicePageData salesInvoiceData) {
+		Payment payment = null;
+		if (!"Credit".equals(salesInvoiceData.getSaleType())
+				&& salesInvoiceData.getPageName().equals(InvoiceType.Purchase_Invoice.getType())) {
+			payment = new Payment();
+			payment.setPaymentAmount(salesInvoiceData.getTotalAmountAfterTax());
+			payment.setPaymentDate(reverseDate(salesInvoiceData.getInvoiceDate()));
+			payment.setPaymentDescription("Auto generated payment for "+salesInvoiceData.getSaleType()+" Purchase");
+			payment.setPaymentReference("On Account");
+			payment.setPaymentMode(salesInvoiceData.getSaleType());
+		}
+		
+		return payment;
+	}
+	
+	public static Receipts createReceipt(InvoicePageData salesInvoiceData) {
+		Receipts receipt = null;
+		if (!"Credit".equals(salesInvoiceData.getSaleType())
+				&& (salesInvoiceData.getPageName().equals(InvoiceType.Tax_Invoice.getType())
+						|| salesInvoiceData.getPageName().equals(InvoiceType.Export_Invoice.getType()))) {
+			receipt = new Receipts();
+			receipt.setReceiptAmount(salesInvoiceData.getTotalAmountAfterTax());
+			receipt.setReceiptDate(reverseDate(salesInvoiceData.getInvoiceDate()));
+			receipt.setReceiptDescription("Auto generated receipt for "+salesInvoiceData.getSaleType() + " Sale");
+			receipt.setReceiptReference("On Account");
+			receipt.setReceiptMode(salesInvoiceData.getSaleType());
+		}
+		
+		return receipt;
 	}
 }
