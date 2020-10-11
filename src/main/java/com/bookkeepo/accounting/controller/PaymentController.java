@@ -68,7 +68,7 @@ public class PaymentController extends MasterController {
 		String formatDate = InvoiceUtil.reverseDate(payment.getPaymentDate());
 		payment.setPaymentDate(formatDate);
 		paymentService.saveAccount(payment);
-		List<Accounts> accountList = accountService.fetchAccountName(principal.getName(), company);
+		List<Accounts> accountList = accountService.findAccounts(principal.getName(), company);
 		Payment newPayment = new Payment();
 		addPaymentInvoices(newPayment);
 		modelAndView.addObject("payment", newPayment);
@@ -102,7 +102,7 @@ public class PaymentController extends MasterController {
 	 */
 	protected void makePageReadyforLoad(HttpServletRequest request, ModelAndView modelAndView, Company company) {
 		String user = request.getUserPrincipal().getName();
-		List<Accounts> accountList = accountService.fetchAccountName(user, company);
+		List<Accounts> accountList = accountService.findAccounts(user, company);
 		Payment payment = new Payment();
 		addPaymentInvoices(payment);
 		modelAndView.addObject("payment", payment);

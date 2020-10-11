@@ -16,6 +16,7 @@ import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.model.InvoiceData;
 import com.bookkeepo.accounting.model.InvoiceType;
 import com.bookkeepo.accounting.util.CommonUtils;
+import com.bookkeepo.accounting.util.InvoiceUtil;
 
 /**
  * @author Yash Singh
@@ -29,8 +30,8 @@ public class CreditNoteController extends MasterController {
 		String user = request.getUserPrincipal().getName();
 		ModelAndView modelAndView = new ModelAndView();
 		Company company = companyDetailsService.findByUserName(user);
-		List<InvoiceData> ownerInvoices = invoiceService.findByInvoiceOwnerAndInvoiceType(user,
-				InvoiceType.Tax_Invoice.getType());
+		List<String> invoicestobeShown = InvoiceUtil.showRequiredInvoices();
+		List<InvoiceData> ownerInvoices = invoiceService.findByInvoiceOwnerAndInvoiceTypesAndInvoiceCompanyDetails(user, invoicestobeShown);
 		if (company == null) {
 			modelAndView.setViewName("redirect:/home/showProfile");
 		} else if (ownerInvoices.size() == 1) {

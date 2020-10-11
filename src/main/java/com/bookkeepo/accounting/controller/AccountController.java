@@ -36,7 +36,7 @@ public class AccountController extends MasterController {
 			modelAndView.setViewName("redirect:/home/showProfile");
 		} else {
 			modelAndView.addObject("accountList",
-					accountService.fetchAccountName(request.getUserPrincipal().getName(), company));
+					accountService.findAccounts(request.getUserPrincipal().getName(), company));
 			modelAndView.addObject("accountLedgerType",accountLedgerService.findAllAccountType());
 			modelAndView.addObject("stateMap",Constants.gstCodeStateMap);
 			modelAndView.addObject("account", new Accounts());
@@ -80,7 +80,7 @@ public class AccountController extends MasterController {
 			account.setAccountCompanyDetails(company);
 			accountService.saveAccount(account);
 			modelAndView.addObject("message", "Account Updated Successfully");
-			modelAndView.addObject("accountList", accountService.fetchAccountName(principal.getName(), company));
+			modelAndView.addObject("accountList", accountService.findAccounts(principal.getName(), company));
 			modelAndView.addObject("accountLedgerType",accountLedgerService.findAllAccountType());
 			modelAndView.addObject("stateMap",Constants.gstCodeStateMap);
 			modelAndView.addObject("account", new Accounts());
