@@ -4,6 +4,7 @@
 package com.bookkeepo.accounting.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -185,4 +186,9 @@ public class InvoiceService {
 	public List<InvoiceDetails> findByInvoiceAccountDetails(Accounts account) {
 		return invoiceRepository.findByInvoiceAccountDetails(account);
 	}
+	
+	public List<InvoiceDetails> findByStartEndDate(List<String> invoiceType,String owner,Date startDate,Date endDate) {
+		return invoiceRepository.findByStartEndDate(invoiceType,owner,startDate,endDate);
+	}
+
 }

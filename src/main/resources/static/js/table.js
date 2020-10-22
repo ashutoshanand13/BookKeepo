@@ -576,6 +576,10 @@ $("#againstInvoicedropdown").change(function() {
                 $("[name=stateShip]").val(gstCodeStateMap[data.invoiceAccountDetails.accountState]);
                 $("[name=partyAddress]").val(data.invoiceAccountDetails.accountAddress);
                 $("[name=partyState]").val(gstCodeStateMap[data.invoiceAccountDetails.accountState]);
+				$("[name=gstinBill]").focus();
+                $("[name=gstinShip]").focus();
+                $("[name=gstinShip]").blur();
+                $("[name=gstinBill]").blur();
                 $("[name=againstInvoiceDate]").blur();
             }
             });
@@ -598,6 +602,10 @@ $("#againstInvoicedropdown").change(function() {
         $("[name=partyState]").val("");
 		$("[name=nameBill]").val("");
         $("[name=againstInvoiceDate]").blur();
+		$("[name=gstinBill]").focus();
+        $("[name=gstinShip]").focus();
+        $("[name=gstinShip]").blur();
+        $("[name=gstinBill]").blur();
     }
 });
 

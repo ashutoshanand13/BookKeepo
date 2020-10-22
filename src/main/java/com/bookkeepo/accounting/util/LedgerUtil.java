@@ -281,4 +281,28 @@ public class LedgerUtil {
 		return ledgerMap;
 	}
 
+	public static List<LedgerColumns> ledgerforInvoices(List<InvoiceDetails> invoiceData) {
+		List<LedgerColumns> ledgerdata = new ArrayList<LedgerColumns>();
+		Double creditSum=0.0;
+		Double debitSum=0.0;
+		for(InvoiceDetails invoice:nullGuard(invoiceData)) {
+			LedgerColumns data = new LedgerColumns();
+			data.setParticulars(invoice.getInvoiceAccountDetails().getAccountName()+"-"+invoice.getInvoiceType());
+			data.setDate(invoice.getInvoiceDate());
+			if (DEBIT.equals(accountLedger.findByAccountType(invoice.getInvoiceAccountDetails().getAccountType()).getAccountpostive())){
+				data.setDebit(invoice.getInvoiceTotalAmountAfterTax());
+				debitSum+=Double.valueOf(data.getDebit());
+			} else {
+				data.setCredit(invoice.getInvoiceTotalAmountAfterTax());
+				creditSum+=Double.valueOf(data.getCredit());
+			}
+			ledgerdata.add(data);
+		}
+		LedgerColumns ledgerColumnData = new LedgerColumns();
+		ledgerColumnData.setBalance(String.valueOf(debitSum - creditSum));
+		ledgerColumnData.setParticulars("Balance");
+		ledgerdata.add(ledgerColumnData);
+		return ledgerdata;
+	}
+
 }
