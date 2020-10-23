@@ -94,4 +94,10 @@ public class AjaxController extends MasterController {
 	public @ResponseBody String getInvoice(@RequestParam String key, HttpServletRequest request) {
 		return gson.toJson(invoiceService.findByInvoiceUniqueKey(key));
 	}
+	
+	@RequestMapping(value = "/home/getexpenseaccountlist", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody String getExpenseAccountList(HttpServletRequest request) {
+		return gson.toJson(accountService.findByAccountOwnerAndAccountTypes(request.getUserPrincipal().getName(),
+				Constants.expenseAccountTypes));
+	}
 }

@@ -26,9 +26,7 @@
 			<div class="row">
 				<div class="col-md-6 form-group"><label class="mandatory field-description text-uppercase">Expense Account</label>
 					<select th:attr="onChange = 'autofillValues(\'' + ${accountList} +'\')'" th:field="*{expenseWithAccountReference.id}"
-							class="form-control" id="selectbasic" name="selectbasic">
-							<option th:each="accountValue : ${accountList}" th:value="${accountValue.id}"
-								th:text="${accountValue.accountName}"></option>
+							class="form-control" id="selectbasic" onfocus="getExpenseAccountList()">
 						</select>
 						
 					<label class="mandatory field-description text-uppercase">Date</label>
@@ -42,6 +40,13 @@
 					<label class="mandatory field-description">Amount</label>
 					<input type="text" onfocus="(this.type='number')" onblur="(this.type='text')" min="0"
 						class="form-control" name="recordContraAmount" th:field="*{expenseAmount}" required>
+						
+					<label class="mandatory field-description">Expense Account Payable</label> <select th:field="*{expensePayableWithAccountReference.id}"
+						class="form-control" id="selectbasicPayable">
+						<option th:each="accountValue : ${accountList}"
+							th:value="${accountValue.id}"
+							th:text="${accountValue.accountName}"></option>
+					</select>
 				</div>
 			</div>
 			<div class="form-button text-right">
@@ -62,19 +67,46 @@
 	
 	function getAccountData() {
 		var accountId = $("#selectbasic").val();
-		if(accountId !== '0'){
+		if(accountId !== '0' && accountId !== '-1'){
 			$.ajax({
 				type : "GET",
 				contentType : "application/json",
 				url : "/home/getAccountData?accountName=" + accountId,
 				dataType : 'json',				
 				success : function(data) {
-					$("[name=expenseType").val(data.accountType);
+					$("[name=expenseType]").val(data.accountType);
 				}
 				});
 		} else {
-			$("[name=expenseType").val("");
+			$("[name=expenseType]").val("");
+			
+			if(accountId === "-1"){
+				$("[name=accountId]").val("0");
+				window.open('/home/addaccount','_blank');
+			}
 		}
 	};
+	
+	
+	function getExpenseAccountList() {
+		$("#selectbasic").empty();
+		$.ajax({
+			type : "GET",
+			contentType : "application/json",
+			url : "/home/getexpenseaccountlist",
+			dataType : 'json',			
+			async : false,
+			success : function(data) {			
+				console.log(data);
+				$.each(data, function (i, item) {
+				    $("#selectbasic").append($('<option>', { 
+				        value: item.id,
+				        text : item.accountName 
+				    }));
+				});
+			}
+			});
+	}
+
 	</script>
 </th:block>

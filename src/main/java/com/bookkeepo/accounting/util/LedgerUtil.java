@@ -24,10 +24,12 @@ import com.bookkeepo.accounting.entity.Receipts;
 import com.bookkeepo.accounting.model.InvoiceType;
 import com.bookkeepo.accounting.model.LedgerColumns;
 import com.bookkeepo.accounting.model.LedgerInfo;
+import com.bookkeepo.accounting.model.RecordExpense;
 import com.bookkeepo.accounting.service.AccountLedgerService;
 import com.bookkeepo.accounting.service.InvoiceService;
 import com.bookkeepo.accounting.service.PaymentService;
 import com.bookkeepo.accounting.service.ReceiptService;
+import com.bookkeepo.accounting.service.RecordExpenseService;
 
 /**
  * @author Yash Singh
@@ -40,6 +42,7 @@ public class LedgerUtil {
 	private static PaymentService payment;
 	private static AccountLedgerService accountLedger;
 	private static InvoiceService invoice;
+	private static RecordExpenseService recordExpense;
 
 	private static String DEBIT = "Dr";
 
@@ -54,6 +57,9 @@ public class LedgerUtil {
 
 	@Autowired
 	InvoiceService invoiceService;
+	
+	@Autowired
+	RecordExpenseService recordExpenseService;
 
 	@PostConstruct
 	public void init() {
@@ -61,6 +67,7 @@ public class LedgerUtil {
 		LedgerUtil.payment = paymentService;
 		LedgerUtil.accountLedger = accountLedgerService;
 		LedgerUtil.invoice = invoiceService;
+		LedgerUtil.recordExpense = recordExpenseService;
 	}
 
 	public static Map<Accounts, List<LedgerColumns>> setUpLedgers(Accounts account, LedgerInfo ledger) {
@@ -174,7 +181,50 @@ public class LedgerUtil {
 			}
 
 		}
+		
+		Date startDate = null;
+		Date endDate = null;
 
+		try {
+			startDate = CommonUtils.convertToDate(ledger.getStartDate());
+			endDate = CommonUtils.convertToDate(ledger.getEndDate());
+			endDate.setTime(endDate.getTime() + 86399000L);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		List<RecordExpense> expenseList = recordExpense.findExpensePayableByRecordExpenseOwner(account.getAccountOwner(), account, startDate, endDate);
+
+		for(RecordExpense expense:nullGuard(expenseList)) {
+			List<LedgerColumns> expenseData;
+			if (ledgerMap.get(account) == null) {
+				expenseData = new ArrayList<LedgerColumns>();
+				LedgerColumns data = new LedgerColumns();
+				data.setParticulars(expense.getExpenseWithAccountReference().getAccountName());
+				data.setDate(expense.getExpenseDate());
+				if (DEBIT.equals(accountLedger.findByAccountType(account.getAccountType()).getAccountpostive())) {
+					data.setDebit(expense.getExpenseAmount());
+				} else {
+					data.setCredit(expense.getExpenseAmount());
+				}
+				expenseData.add(data);
+				ledgerMap.put(account, expenseData);
+			} else {
+				expenseData = ledgerMap.get(account);
+				LedgerColumns data = new LedgerColumns();
+				data.setParticulars(expense.getExpenseWithAccountReference().getAccountName()+" Payable");
+				data.setDate(expense.getExpenseDate());
+				if (DEBIT.equals(accountLedger.findByAccountType(account.getAccountType()).getAccountpostive())) {
+					data.setDebit(expense.getExpenseAmount());
+				} else {
+					data.setCredit(expense.getExpenseAmount());
+				}
+				expenseData.add(data);
+				ledgerMap.put(account, expenseData);
+			}
+			
+		}
+		
 		List<LedgerColumns> particulars = ledgerMap.get(account);
 		double creditSum = 0, debitSum = 0;
 		for (LedgerColumns column : nullGuard(particulars)) {
@@ -303,6 +353,46 @@ public class LedgerUtil {
 		ledgerColumnData.setParticulars("Balance");
 		ledgerdata.add(ledgerColumnData);
 		return ledgerdata;
+	}
+
+	public static Map<Accounts, List<LedgerColumns>> setUpExpenseLedgers(Accounts account, LedgerInfo ledger) {
+		
+		Date startDate = null;
+		Date endDate = null;
+
+		try {
+			startDate = CommonUtils.convertToDate(ledger.getStartDate());
+			endDate = CommonUtils.convertToDate(ledger.getEndDate());
+			endDate.setTime(endDate.getTime() + 86399000L);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		
+		Map<Accounts, List<LedgerColumns>> ledgerMap = new HashMap<Accounts, List<LedgerColumns>>();
+		List<RecordExpense> expenseList = recordExpense.findExpenseByRecordExpenseOwner(account.getAccountOwner(), account, startDate, endDate);
+		List<LedgerColumns> ledgerData = new ArrayList<LedgerColumns>();
+		Double debitSum = 0.0;
+		Double creditSum = 0.0;
+		for(RecordExpense expense:nullGuard(expenseList)) {
+			LedgerColumns data = new LedgerColumns();
+			data.setParticulars(expense.getExpenseWithAccountReference().getAccountName()+" Payable");
+			data.setDate(expense.getExpenseDate());
+			if (DEBIT.equals(accountLedger.findByAccountType(account.getAccountType()).getAccountpostive())) {
+				data.setDebit(expense.getExpenseAmount());
+				debitSum += Double.valueOf(expense.getExpenseAmount());
+			} else {
+				data.setCredit(expense.getExpenseAmount());
+				creditSum += Double.valueOf(expense.getExpenseAmount());
+			}
+			ledgerData.add(data);
+		}
+		LedgerColumns ledgerColumnData = new LedgerColumns();
+		ledgerColumnData.setBalance(String.valueOf(debitSum - creditSum));
+		ledgerColumnData.setParticulars("Balance");
+		ledgerData.add(ledgerColumnData);
+		ledgerMap.put(account, ledgerData);
+		return ledgerMap;
 	}
 
 }
