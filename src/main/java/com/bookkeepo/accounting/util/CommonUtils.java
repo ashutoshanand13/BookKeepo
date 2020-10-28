@@ -19,6 +19,7 @@ import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Component;
 import org.springframework.util.FileCopyUtils;
 
 import com.bookkeepo.accounting.entity.Company;
@@ -28,6 +29,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
+@Component
 public class CommonUtils {
 
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
