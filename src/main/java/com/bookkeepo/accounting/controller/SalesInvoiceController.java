@@ -30,7 +30,6 @@ public class SalesInvoiceController extends MasterController {
 		if (company == null) {
 			modelAndView.setViewName("redirect:/home/showProfile");
 		} else {
-			System.out.println(company.getCompanyName());
 			modelAndView.addObject("company", company);
 			modelAndView.addObject("logoImage", CommonUtils.getImgfromByteArray(company.getCompanyLogo()));
 			modelAndView.addObject("itemList", itemService.findByProductOwner(user));
