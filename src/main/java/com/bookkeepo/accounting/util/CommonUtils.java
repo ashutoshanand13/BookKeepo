@@ -347,13 +347,10 @@ public class CommonUtils {
 		Company company = null;
 		HttpSession session = request.getSession();
 		if (null != session && null != session.getAttribute("company"))
-		{
 			 company = (Company) session.getAttribute("company");
-		}
 		else
-		{
 			 company = companyDetails.findByUserName(request.getUserPrincipal().getName());
-		}
+		
 		return company;
 	}
 }
