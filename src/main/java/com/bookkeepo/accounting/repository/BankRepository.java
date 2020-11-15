@@ -21,5 +21,7 @@ public interface BankRepository extends JpaRepository<BankDetails, Long> {
 	List<BankDetails> findByUserBankCreatorAndBankCompanyDetails(String owner, Company company);
 
 	BankDetails findById(int id);
+	
+	BankDetails findByUserBankAccount(String bankAccount);
 
 }

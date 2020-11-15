@@ -24,12 +24,14 @@ import com.bookkeepo.accounting.entity.Receipts;
 import com.bookkeepo.accounting.model.InvoiceType;
 import com.bookkeepo.accounting.model.LedgerColumns;
 import com.bookkeepo.accounting.model.LedgerInfo;
+import com.bookkeepo.accounting.model.RecordContraCash;
 import com.bookkeepo.accounting.model.RecordExpense;
 import com.bookkeepo.accounting.model.RecordIncome;
 import com.bookkeepo.accounting.service.AccountLedgerService;
 import com.bookkeepo.accounting.service.InvoiceService;
 import com.bookkeepo.accounting.service.PaymentService;
 import com.bookkeepo.accounting.service.ReceiptService;
+import com.bookkeepo.accounting.service.RecordContraCashService;
 import com.bookkeepo.accounting.service.RecordExpenseService;
 import com.bookkeepo.accounting.service.RecordIncomeService;
 
@@ -46,6 +48,7 @@ public class LedgerUtil {
 	private static InvoiceService invoice;
 	private static RecordExpenseService recordExpense;
 	private static RecordIncomeService recordIncome;
+	private static RecordContraCashService recordSS;
 
 	private static String DEBIT = "Dr";
 
@@ -66,6 +69,9 @@ public class LedgerUtil {
 	
 	@Autowired
 	RecordIncomeService recordIncomeService;
+	
+	@Autowired
+	RecordContraCashService recordContraCashService;
 
 	@PostConstruct
 	public void init() {
@@ -75,6 +81,7 @@ public class LedgerUtil {
 		LedgerUtil.invoice = invoiceService;
 		LedgerUtil.recordExpense = recordExpenseService;
 		LedgerUtil.recordIncome = recordIncomeService;
+		LedgerUtil.recordSS = recordContraCashService;
 	}
 
 	public static Map<Accounts, List<LedgerColumns>> setUpLedgers(Accounts account, LedgerInfo ledger) {
@@ -312,6 +319,19 @@ public class LedgerUtil {
 		}
 		List<Payment> listofPayments = payment.findByStartEndDate(company, startDate, endDate);
 		List<Receipts> listofReceipts = receipt.findByStartEndDate(company, startDate, endDate);
+		
+		
+		List<RecordContraCash> payTo, payFrom;
+		
+		if(account.getAccountType().equals(Constants.DEFAULT_ACCOUNT_ON_COMPANY_CREATION)) {
+			payFrom = recordSS.findByPayFromAndRecordContraOwner("CASH", account.getAccountOwner(), startDate, endDate);
+			payTo = recordSS.findByPayToAndRecordContraOwner("CASH", account.getAccountOwner(), startDate, endDate);
+		} else {
+			payFrom = recordSS.findByBankDetailsFromAndRecordContraOwner(account, account.getAccountOwner(), startDate, endDate);
+			payTo = recordSS.findByBankDetailsToAndRecordContraOwner(account, account.getAccountOwner(), startDate, endDate);
+		}
+		
+		
 
 		Double debitSum = 0.0;
 		Double creditSum = 0.0;
@@ -360,6 +380,33 @@ public class LedgerUtil {
 				ledgerData.add(ledgerColumnData);
 			}
 		}
+		
+		for (RecordContraCash recordCC : nullGuard(payTo)) {
+			ledgerColumnData = new LedgerColumns();
+			if (recordCC.getPayFrom().equals("CASH")) {
+				ledgerColumnData.setParticulars("CASH");
+			} else {
+				ledgerColumnData.setParticulars(recordCC.getBankDetailsFrom().getAccountName());
+			}
+			debitSum += Double.valueOf(recordCC.getRecordContraAmount());
+			ledgerColumnData.setDebit(recordCC.getRecordContraAmount());
+			ledgerColumnData.setDate(recordCC.getRecordContraDate());
+			ledgerData.add(ledgerColumnData);
+		}
+		
+		for (RecordContraCash recordCC : nullGuard(payFrom)) {
+			ledgerColumnData = new LedgerColumns();
+			if (recordCC.getPayTo().equals("CASH")) {
+				ledgerColumnData.setParticulars("CASH");
+			} else {
+				ledgerColumnData.setParticulars(recordCC.getBankDetailsTo().getAccountName());
+			}
+			creditSum += Double.valueOf(recordCC.getRecordContraAmount());
+			ledgerColumnData.setCredit(recordCC.getRecordContraAmount());
+			ledgerColumnData.setDate(recordCC.getRecordContraDate());
+			ledgerData.add(ledgerColumnData);
+		}
+
 		ledgerColumnData = new LedgerColumns();
 		ledgerColumnData.setBalance(String.valueOf(debitSum - creditSum));
 		ledgerColumnData.setParticulars("Balance");

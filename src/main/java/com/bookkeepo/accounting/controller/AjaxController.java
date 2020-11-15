@@ -106,4 +106,9 @@ public class AjaxController extends MasterController {
 		return gson.toJson(accountService.findByAccountOwnerAndAccountTypes(request.getUserPrincipal().getName(),
 				Constants.incomeAccountTypes));
 	}
+	
+	@RequestMapping(value = "/home/checkBank", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody String checkBank(@RequestParam String bankAccount, HttpServletRequest request) {
+		return gson.toJson(bankService.findByUserBankAccount(bankAccount));
+	}
 }
