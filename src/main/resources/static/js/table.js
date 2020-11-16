@@ -881,11 +881,11 @@ function getBankListForContraCash() {
 				$.each(data, function (i, item) {
 				    $('select[name="payToBankId"]').append($('<option>', { 
 				        value: item.id,
-				        text : item.userBankName 
+				        text : item.userBankAccount 
 				    }));
 				     $('select[name="payFromBankId"]').append($('<option>', { 
 				        value: item.id,
-				        text : item.userBankName 
+				        text : item.userBankAccount 
 				    }));
 				});
 			$('#bankAlert').empty();
@@ -913,7 +913,7 @@ $("#bankId").empty();
 				$.each(data, function (i, item) {
 				    $('#bankId').append($('<option>', { 
 				        value: item.id,
-				        text : item.userBankName 
+				        text : item.userBankAccount 
 				    }));
 				});
 			$('#bankAlert').empty();
@@ -1082,7 +1082,7 @@ function getBankListInvoice() {
 				$.each(data, function (i, item) {
 				    $('[name=bankId]').append($('<option>', { 
 				        value: item.id,
-				        text : item.userBankName 
+				        text : item.userBankAccount 
 				    }));
 				});
 			} else {
