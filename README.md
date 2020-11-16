@@ -22,8 +22,8 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+  <a href="https://www.bookkeepo.com">
+    <img src="https://user-images.githubusercontent.com/7820888/99257224-b41ed380-283c-11eb-8493-5d442f735e57.png" alt="Logo">
   </a>
 
   <h3 align="center">BookKeepo</h3>
