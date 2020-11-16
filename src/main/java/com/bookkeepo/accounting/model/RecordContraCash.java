@@ -16,7 +16,7 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import com.bookkeepo.accounting.entity.BankDetails;
+import com.bookkeepo.accounting.entity.Accounts;
 
 import lombok.Data;
 
@@ -58,38 +58,38 @@ public class RecordContraCash {
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "pay_from_bank_id", updatable = false)
-	private BankDetails bankDetailsFrom;
+	private Accounts bankDetailsFrom;
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "pay_to_bank_id", updatable = false)
-	private BankDetails bankDetailsTo;
+	private Accounts bankDetailsTo;
 
 
 	/**
 	 * @return the bankDetailsFrom
 	 */
-	public BankDetails getBankDetailsFrom() {
+	public Accounts getBankDetailsFrom() {
 		return bankDetailsFrom;
 	}
 
 	/**
 	 * @param bankDetailsFrom the bankDetailsFrom to set
 	 */
-	public void setBankDetailsFrom(BankDetails bankDetailsFrom) {
+	public void setBankDetailsFrom(Accounts bankDetailsFrom) {
 		this.bankDetailsFrom = bankDetailsFrom;
 	}
 
 	/**
 	 * @return the bankDetailsTo
 	 */
-	public BankDetails getBankDetailsTo() {
+	public Accounts getBankDetailsTo() {
 		return bankDetailsTo;
 	}
 
 	/**
 	 * @param bankDetailsTo the bankDetailsTo to set
 	 */
-	public void setBankDetailsTo(BankDetails bankDetailsTo) {
+	public void setBankDetailsTo(Accounts bankDetailsTo) {
 		this.bankDetailsTo = bankDetailsTo;
 	}
 

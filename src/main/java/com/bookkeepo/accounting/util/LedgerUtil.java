@@ -24,12 +24,16 @@ import com.bookkeepo.accounting.entity.Receipts;
 import com.bookkeepo.accounting.model.InvoiceType;
 import com.bookkeepo.accounting.model.LedgerColumns;
 import com.bookkeepo.accounting.model.LedgerInfo;
+import com.bookkeepo.accounting.model.RecordContraCash;
 import com.bookkeepo.accounting.model.RecordExpense;
+import com.bookkeepo.accounting.model.RecordIncome;
 import com.bookkeepo.accounting.service.AccountLedgerService;
 import com.bookkeepo.accounting.service.InvoiceService;
 import com.bookkeepo.accounting.service.PaymentService;
 import com.bookkeepo.accounting.service.ReceiptService;
+import com.bookkeepo.accounting.service.RecordContraCashService;
 import com.bookkeepo.accounting.service.RecordExpenseService;
+import com.bookkeepo.accounting.service.RecordIncomeService;
 
 /**
  * @author Yash Singh
@@ -43,6 +47,8 @@ public class LedgerUtil {
 	private static AccountLedgerService accountLedger;
 	private static InvoiceService invoice;
 	private static RecordExpenseService recordExpense;
+	private static RecordIncomeService recordIncome;
+	private static RecordContraCashService recordSS;
 
 	private static String DEBIT = "Dr";
 
@@ -60,6 +66,12 @@ public class LedgerUtil {
 	
 	@Autowired
 	RecordExpenseService recordExpenseService;
+	
+	@Autowired
+	RecordIncomeService recordIncomeService;
+	
+	@Autowired
+	RecordContraCashService recordContraCashService;
 
 	@PostConstruct
 	public void init() {
@@ -68,6 +80,8 @@ public class LedgerUtil {
 		LedgerUtil.accountLedger = accountLedgerService;
 		LedgerUtil.invoice = invoiceService;
 		LedgerUtil.recordExpense = recordExpenseService;
+		LedgerUtil.recordIncome = recordIncomeService;
+		LedgerUtil.recordSS = recordContraCashService;
 	}
 
 	public static Map<Accounts, List<LedgerColumns>> setUpLedgers(Accounts account, LedgerInfo ledger) {
@@ -194,6 +208,7 @@ public class LedgerUtil {
 		}
 		
 		List<RecordExpense> expenseList = recordExpense.findExpensePayableByRecordExpenseOwner(account.getAccountOwner(), account, startDate, endDate);
+		List<RecordIncome> incomeList = recordIncome.findIncomePayableByRecordIncomeOwner(account.getAccountOwner(), account, startDate, endDate);
 
 		for(RecordExpense expense:nullGuard(expenseList)) {
 			List<LedgerColumns> expenseData;
@@ -212,12 +227,42 @@ public class LedgerUtil {
 			} else {
 				expenseData = ledgerMap.get(account);
 				LedgerColumns data = new LedgerColumns();
-				data.setParticulars(expense.getExpenseWithAccountReference().getAccountName()+" Payable");
+				data.setParticulars(expense.getExpenseWithAccountReference().getAccountName());
 				data.setDate(expense.getExpenseDate());
 				if (DEBIT.equals(accountLedger.findByAccountType(account.getAccountType()).getAccountpostive())) {
 					data.setDebit(expense.getExpenseAmount());
 				} else {
 					data.setCredit(expense.getExpenseAmount());
+				}
+				expenseData.add(data);
+				ledgerMap.put(account, expenseData);
+			}
+			
+		}
+		
+		for(RecordIncome income:nullGuard(incomeList)) {
+			List<LedgerColumns> expenseData;
+			if (ledgerMap.get(account) == null) {
+				expenseData = new ArrayList<LedgerColumns>();
+				LedgerColumns data = new LedgerColumns();
+				data.setParticulars(income.getIncomeWithAccountReference().getAccountName());
+				data.setDate(income.getIncomeDate());
+				if (DEBIT.equals(accountLedger.findByAccountType(account.getAccountType()).getAccountpostive())) {
+					data.setDebit(income.getIncomeAmount());
+				} else {
+					data.setCredit(income.getIncomeAmount());
+				}
+				expenseData.add(data);
+				ledgerMap.put(account, expenseData);
+			} else {
+				expenseData = ledgerMap.get(account);
+				LedgerColumns data = new LedgerColumns();
+				data.setParticulars(income.getIncomeWithAccountReference().getAccountName());
+				data.setDate(income.getIncomeDate());
+				if (DEBIT.equals(accountLedger.findByAccountType(account.getAccountType()).getAccountpostive())) {
+					data.setDebit(income.getIncomeAmount());
+				} else {
+					data.setCredit(income.getIncomeAmount());
 				}
 				expenseData.add(data);
 				ledgerMap.put(account, expenseData);
@@ -274,6 +319,19 @@ public class LedgerUtil {
 		}
 		List<Payment> listofPayments = payment.findByStartEndDate(company, startDate, endDate);
 		List<Receipts> listofReceipts = receipt.findByStartEndDate(company, startDate, endDate);
+		
+		
+		List<RecordContraCash> payTo, payFrom;
+		
+		if(account.getAccountType().equals(Constants.DEFAULT_ACCOUNT_ON_COMPANY_CREATION)) {
+			payFrom = recordSS.findByPayFromAndRecordContraOwner("CASH", account.getAccountOwner(), startDate, endDate);
+			payTo = recordSS.findByPayToAndRecordContraOwner("CASH", account.getAccountOwner(), startDate, endDate);
+		} else {
+			payFrom = recordSS.findByBankDetailsFromAndRecordContraOwner(account, account.getAccountOwner(), startDate, endDate);
+			payTo = recordSS.findByBankDetailsToAndRecordContraOwner(account, account.getAccountOwner(), startDate, endDate);
+		}
+		
+		
 
 		Double debitSum = 0.0;
 		Double creditSum = 0.0;
@@ -322,6 +380,33 @@ public class LedgerUtil {
 				ledgerData.add(ledgerColumnData);
 			}
 		}
+		
+		for (RecordContraCash recordCC : nullGuard(payTo)) {
+			ledgerColumnData = new LedgerColumns();
+			if (recordCC.getPayFrom().equals("CASH")) {
+				ledgerColumnData.setParticulars("CASH");
+			} else {
+				ledgerColumnData.setParticulars(recordCC.getBankDetailsFrom().getAccountName());
+			}
+			debitSum += Double.valueOf(recordCC.getRecordContraAmount());
+			ledgerColumnData.setDebit(recordCC.getRecordContraAmount());
+			ledgerColumnData.setDate(recordCC.getRecordContraDate());
+			ledgerData.add(ledgerColumnData);
+		}
+		
+		for (RecordContraCash recordCC : nullGuard(payFrom)) {
+			ledgerColumnData = new LedgerColumns();
+			if (recordCC.getPayTo().equals("CASH")) {
+				ledgerColumnData.setParticulars("CASH");
+			} else {
+				ledgerColumnData.setParticulars(recordCC.getBankDetailsTo().getAccountName());
+			}
+			creditSum += Double.valueOf(recordCC.getRecordContraAmount());
+			ledgerColumnData.setCredit(recordCC.getRecordContraAmount());
+			ledgerColumnData.setDate(recordCC.getRecordContraDate());
+			ledgerData.add(ledgerColumnData);
+		}
+
 		ledgerColumnData = new LedgerColumns();
 		ledgerColumnData.setBalance(String.valueOf(debitSum - creditSum));
 		ledgerColumnData.setParticulars("Balance");
@@ -384,6 +469,47 @@ public class LedgerUtil {
 			} else {
 				data.setCredit(expense.getExpenseAmount());
 				creditSum += Double.valueOf(expense.getExpenseAmount());
+			}
+			ledgerData.add(data);
+		}
+		LedgerColumns ledgerColumnData = new LedgerColumns();
+		ledgerColumnData.setBalance(String.valueOf(debitSum - creditSum));
+		ledgerColumnData.setParticulars("Balance");
+		ledgerData.add(ledgerColumnData);
+		ledgerMap.put(account, ledgerData);
+		return ledgerMap;
+	}
+	
+	
+	public static Map<Accounts, List<LedgerColumns>> setUpIncomeLedgers(Accounts account, LedgerInfo ledger) {
+		
+		Date startDate = null;
+		Date endDate = null;
+
+		try {
+			startDate = CommonUtils.convertToDate(ledger.getStartDate());
+			endDate = CommonUtils.convertToDate(ledger.getEndDate());
+			endDate.setTime(endDate.getTime() + 86399000L);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		
+		Map<Accounts, List<LedgerColumns>> ledgerMap = new HashMap<Accounts, List<LedgerColumns>>();
+		List<RecordIncome> incomeList = recordIncome.findIncomeByRecordIncomeOwner(account.getAccountOwner(), account, startDate, endDate);
+		List<LedgerColumns> ledgerData = new ArrayList<LedgerColumns>();
+		Double debitSum = 0.0;
+		Double creditSum = 0.0;
+		for(RecordIncome expense:nullGuard(incomeList)) {
+			LedgerColumns data = new LedgerColumns();
+			data.setParticulars(expense.getIncomeWithAccountReference().getAccountName()+" Payable");
+			data.setDate(expense.getIncomeDate());
+			if (DEBIT.equals(accountLedger.findByAccountType(account.getAccountType()).getAccountpostive())) {
+				data.setDebit(expense.getIncomeAmount());
+				debitSum += Double.valueOf(expense.getIncomeAmount());
+			} else {
+				data.setCredit(expense.getIncomeAmount());
+				creditSum += Double.valueOf(expense.getIncomeAmount());
 			}
 			ledgerData.add(data);
 		}

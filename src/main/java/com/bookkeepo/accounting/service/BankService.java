@@ -32,7 +32,7 @@ public class BankService {
 		List<BankDetails> createdbankslist = new ArrayList<BankDetails>();
 		BankDetails newBankDetails = new BankDetails();
 		newBankDetails.setId(0);
-		newBankDetails.setUserBankName("Add New Bank");
+		newBankDetails.setUserBankAccount("Add New Bank");
 		createdbankslist.add(newBankDetails);
 
 		List<BankDetails> dbItemList = bankRepository.findByUserBankCreatorAndBankCompanyDetails(owner, company);
@@ -59,5 +59,9 @@ public class BankService {
 
 	public BankDetails findById(int id) {
 		return bankRepository.findById(id);
+	}
+	
+	public BankDetails findByUserBankAccount(String bankAccount) {
+		return bankRepository.findByUserBankAccount(bankAccount);
 	}
 }

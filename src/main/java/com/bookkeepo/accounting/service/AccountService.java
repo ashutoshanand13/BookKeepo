@@ -150,4 +150,9 @@ public class AccountService {
 
 		return accountList;
 	}
+	
+	public Accounts findByAccountNameAndAccountType(String name, String type) {
+		return accountRepository.findByAccountNameAndAccountType(name, type);
+	}
+	
 }

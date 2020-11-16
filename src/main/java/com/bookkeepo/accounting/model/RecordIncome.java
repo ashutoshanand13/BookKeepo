@@ -17,6 +17,7 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.bookkeepo.accounting.entity.Accounts;
+import com.bookkeepo.accounting.entity.Company;
 
 import lombok.Data;
 
@@ -37,6 +38,10 @@ public class RecordIncome {
 	@JoinColumn(name = "recordincome_account_reference_no", updatable = false)
 	private Accounts incomeWithAccountReference;
 	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "recordincomepayable_account_reference_no", updatable = false)
+	private Accounts incomePayableWithAccountReference;
+	
 	@Column(name = "income_date")
 	private String incomeDate;
 	
@@ -56,6 +61,12 @@ public class RecordIncome {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "record_income_creation_date", nullable = false, updatable = false)
 	private Date recordIncomeCreationDate;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "record_income_company_reference_no", updatable = false)
+	private Company incomeCompanyDetails;
+	
+	
 	/**
 	 * @return the incomeDate
 	 */
@@ -151,6 +162,30 @@ public class RecordIncome {
 	 */
 	public void setIncomeDescription(String incomeDescription) {
 		this.incomeDescription = incomeDescription;
+	}
+	/**
+	 * @return the incomePayableWithAccountReference
+	 */
+	public Accounts getIncomePayableWithAccountReference() {
+		return incomePayableWithAccountReference;
+	}
+	/**
+	 * @param incomePayableWithAccountReference the incomePayableWithAccountReference to set
+	 */
+	public void setIncomePayableWithAccountReference(Accounts incomePayableWithAccountReference) {
+		this.incomePayableWithAccountReference = incomePayableWithAccountReference;
+	}
+	/**
+	 * @return the incomeCompanyDetails
+	 */
+	public Company getIncomeCompanyDetails() {
+		return incomeCompanyDetails;
+	}
+	/**
+	 * @param incomeCompanyDetails the incomeCompanyDetails to set
+	 */
+	public void setIncomeCompanyDetails(Company incomeCompanyDetails) {
+		this.incomeCompanyDetails = incomeCompanyDetails;
 	}
 	
 	
