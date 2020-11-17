@@ -27,6 +27,7 @@ import com.bookkeepo.accounting.entity.BankDetails;
 import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.entity.Payment;
 import com.bookkeepo.accounting.entity.PaymentInvoices;
+import com.bookkeepo.accounting.util.CommonUtils;
 import com.bookkeepo.accounting.util.Constants;
 import com.bookkeepo.accounting.util.InvoiceUtil;
 
@@ -43,7 +44,7 @@ public class PaymentController extends MasterController {
 		ModelAndView modelAndView = new ModelAndView();
 		String user = request.getUserPrincipal().getName();
 
-		Company company = companyDetailsService.findByUserName(user);
+		Company company = CommonUtils.getSessionAttributes(request);
 		if (company == null) {
 			modelAndView.setViewName("redirect:/home/showProfile");
 		} else {
@@ -54,9 +55,9 @@ public class PaymentController extends MasterController {
 
 	@RequestMapping(value = { "/home/addpayment" }, method = RequestMethod.POST)
 	public ModelAndView addNewPayment(@Valid @ModelAttribute("payment") Payment payment,
-			@RequestParam(required = false) String bankId, BindingResult bindingResult, Principal principal) {
+			@RequestParam(required = false) String bankId, BindingResult bindingResult, Principal principal, HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
-		Company company = companyDetailsService.findByUserName(principal.getName());
+		Company company = CommonUtils.getSessionAttributes(request);
 		payment.setPaymentOwner(principal.getName());
 		payment.setAccountRefNo(accountService.findById(payment.getAccountRefNo().getId()));
 		if (bankId != null) {

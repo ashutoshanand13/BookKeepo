@@ -48,7 +48,7 @@ public class SalesInvoiceController extends MasterController {
 		String user = request.getUserPrincipal().getName();
 		ModelAndView modelAndView = new ModelAndView("salesInvoice");
 		modelAndView.addObject("message", message);
-		Company company = companyDetailsService.findByUserName(user);
+		Company company = CommonUtils.getSessionAttributes(request);
 		modelAndView.addObject("company", company);
 		modelAndView.addObject("logoImage", CommonUtils.getImgfromByteArray(company.getCompanyLogo()));
 		modelAndView.addObject("itemList", itemService.findByProductOwner(user));

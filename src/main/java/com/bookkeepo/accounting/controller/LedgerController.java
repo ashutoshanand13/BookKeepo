@@ -34,7 +34,7 @@ public class LedgerController extends MasterController {
 	public ModelAndView showLedger(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
 		String user = request.getUserPrincipal().getName();
-		Company company = companyDetailsService.findByUserName(user);
+		Company company = CommonUtils.getSessionAttributes(request);
 		modelAndView.addObject("ledger", new LedgerInfo());
 		modelAndView.addObject("accountList",
 				accountService.fetchAccountName(request.getUserPrincipal().getName(), company));
@@ -46,7 +46,7 @@ public class LedgerController extends MasterController {
 	public ModelAndView generateLedger(@Valid LedgerInfo ledger, HttpServletRequest request, Principal principal) {
 		ModelAndView modelAndView = new ModelAndView();
 		String user = request.getUserPrincipal().getName();
-		Company company = companyDetailsService.findByUserName(user);
+		Company company = CommonUtils.getSessionAttributes(request);
 		modelAndView.addObject("accountList",
 				accountService.fetchAccountName(request.getUserPrincipal().getName(), company));
 		if (CommonUtils.isPopulated(ledger.getStartDate()) && CommonUtils.isPopulated(ledger.getEndDate())
