@@ -17,6 +17,7 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.bookkeepo.accounting.entity.Accounts;
+import com.bookkeepo.accounting.entity.Company;
 
 import lombok.Data;
 
@@ -37,6 +38,10 @@ public class RecordExpense {
 	@JoinColumn(name = "recordexpense_account_reference_no", updatable = false)
 	private Accounts expenseWithAccountReference;
 	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "recordexpensepayable_account_reference_no", updatable = false)
+	private Accounts expensePayableWithAccountReference;
+	
 	@Column(name = "expense_date")
 	private String expenseDate;
 	
@@ -53,6 +58,12 @@ public class RecordExpense {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "record_expense_creation_date", nullable = false, updatable = false)
 	private Date recordExpenseCreationDate;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "record_expense_company_reference_no", updatable = false)
+	private Company expenseCompanyDetails;
+	
+	
 	/**
 	 * @return the expenseDate
 	 */
@@ -136,6 +147,30 @@ public class RecordExpense {
 	 */
 	public void setRecordExpenseCreationDate(Date recordExpenseCreationDate) {
 		this.recordExpenseCreationDate = recordExpenseCreationDate;
+	}
+	/**
+	 * @return the expensePayableWithAccountReference
+	 */
+	public Accounts getExpensePayableWithAccountReference() {
+		return expensePayableWithAccountReference;
+	}
+	/**
+	 * @param expensePayableWithAccountReference the expensePayableWithAccountReference to set
+	 */
+	public void setExpensePayableWithAccountReference(Accounts expensePayableWithAccountReference) {
+		this.expensePayableWithAccountReference = expensePayableWithAccountReference;
+	}
+	/**
+	 * @return the expenseCompanyDetails
+	 */
+	public Company getExpenseCompanyDetails() {
+		return expenseCompanyDetails;
+	}
+	/**
+	 * @param expenseCompanyDetails the expenseCompanyDetails to set
+	 */
+	public void setExpenseCompanyDetails(Company expenseCompanyDetails) {
+		this.expenseCompanyDetails = expenseCompanyDetails;
 	}
 	
 	

@@ -55,10 +55,9 @@ public class BankController extends MasterController {
 		if (bank.getId() == 0) {
 			Accounts account = new Accounts();
 			account.setAccountOwner(principal.getName());
-			account.setAccountName(bank.getUserBankName());
+			account.setAccountName(bank.getUserBankAccount());
 			account.setAccountType(Constants.DEFAULT_ACCOUNT_ON_BANK_CREATION);
-			Company companyforAccount = companyDetailsService.save(company);
-			account.setAccountCompanyDetails(companyforAccount);
+			account.setAccountCompanyDetails(company);
 			accountService.saveAccount(account);
 		}
 		bankService.saveBank(bank);

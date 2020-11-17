@@ -552,31 +552,61 @@ $("[name=accountNo]").change(function() {
 });
 
 $("#againstInvoicedropdown").change(function() {
-	var invoiceNumber = $("#againstInvoicedropdown").val();
-	
-	if(invoiceNumber !== "0") {
-		$.ajax({
-			type : "GET",
-			contentType : "application/json",
-			url : "/home/invoicedetails?invoiceNo=" + invoiceNumber,
-			dataType : 'json',				
-			success : function(data) {
-				$("[name=againstInvoiceDate]").val(data.invoiceDate);
-				$("[name=state]").val(data.invoiceState);
-				$("[name=reverseCharge]").val(data.invoiceReverseCharge);
-				$("[name=linkedInvoiceNo]").val(data.invoiceNumber);
-				$("[name=againstInvoiceDate]").blur();
-			}
-			});
-		
-	} 
-	else {
-		$("[name=againstInvoiceDate]").val("");
-		$("[name=state]").val("");
-		$("[name=reverseCharge]").val("");
-		$("[name=linkedInvoiceNo]").val("");
-		$("[name=againstInvoiceDate]").blur();
-	}
+    var invoiceNumber = $("#againstInvoicedropdown").val();
+   
+    if(invoiceNumber !== "0") {
+        $.ajax({
+            type : "GET",
+            contentType : "application/json",
+            url : "/home/invoicedetails?invoiceNo=" + invoiceNumber,
+            dataType : 'json',               
+            success : function(data) {
+				$("[name=nameBill]").val(data.invoiceAccountDetails.accountName);
+                $("[name=againstInvoiceDate]").val(data.invoiceDate);
+                $("[name=state]").val(data.invoiceState);
+                $("[name=reverseCharge]").val(data.invoiceReverseCharge);
+                $("[name=linkedInvoiceNo]").val(data.invoiceNumber);
+                $("[name=accountNo]").val(data.invoiceAccountDetails.id);
+                $("[name=nameShip]").val(data.invoiceAccountDetails.accountName);
+                $("[name=addressBill]").val(data.invoiceAccountDetails.accountAddress);
+                $("[name=addressShip]").val(data.invoiceAccountDetails.accountAddress);
+                $("[name=gstinBill]").val(data.invoiceAccountDetails.gstin);
+                $("[name=gstinShip]").val(data.invoiceAccountDetails.gstin);
+                $("[name=stateBill]").val(gstCodeStateMap[data.invoiceAccountDetails.accountState]);
+                $("[name=stateShip]").val(gstCodeStateMap[data.invoiceAccountDetails.accountState]);
+                $("[name=partyAddress]").val(data.invoiceAccountDetails.accountAddress);
+                $("[name=partyState]").val(gstCodeStateMap[data.invoiceAccountDetails.accountState]);
+				$("[name=gstinBill]").focus();
+                $("[name=gstinShip]").focus();
+                $("[name=gstinShip]").blur();
+                $("[name=gstinBill]").blur();
+                $("[name=againstInvoiceDate]").blur();
+            }
+            });
+       
+    }
+    else {
+        $("[name=againstInvoiceDate]").val("");
+        $("[name=state]").val("");
+        $("[name=accountNo]").val("");
+        $("[name=reverseCharge]").val("");
+        $("[name=linkedInvoiceNo]").val("");
+        $("[name=nameShip]").val("");
+        $("[name=addressBill]").val("");
+        $("[name=addressShip]").val("");
+        $("[name=gstinBill]").val("");
+        $("[name=gstinShip]").val("");
+        $("[name=stateBill]").val("");
+        $("[name=stateShip]").val("");
+        $("[name=partyAddress]").val("");
+        $("[name=partyState]").val("");
+		$("[name=nameBill]").val("");
+        $("[name=againstInvoiceDate]").blur();
+		$("[name=gstinBill]").focus();
+        $("[name=gstinShip]").focus();
+        $("[name=gstinShip]").blur();
+        $("[name=gstinBill]").blur();
+    }
 });
 
 
@@ -851,11 +881,11 @@ function getBankListForContraCash() {
 				$.each(data, function (i, item) {
 				    $('select[name="payToBankId"]').append($('<option>', { 
 				        value: item.id,
-				        text : item.userBankName 
+				        text : item.userBankAccount 
 				    }));
 				     $('select[name="payFromBankId"]').append($('<option>', { 
 				        value: item.id,
-				        text : item.userBankName 
+				        text : item.userBankAccount 
 				    }));
 				});
 			$('#bankAlert').empty();
@@ -883,7 +913,7 @@ $("#bankId").empty();
 				$.each(data, function (i, item) {
 				    $('#bankId').append($('<option>', { 
 				        value: item.id,
-				        text : item.userBankName 
+				        text : item.userBankAccount 
 				    }));
 				});
 			$('#bankAlert').empty();
@@ -1052,7 +1082,7 @@ function getBankListInvoice() {
 				$.each(data, function (i, item) {
 				    $('[name=bankId]').append($('<option>', { 
 				        value: item.id,
-				        text : item.userBankName 
+				        text : item.userBankAccount 
 				    }));
 				});
 			} else {

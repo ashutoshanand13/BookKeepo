@@ -17,7 +17,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bookkeepo.accounting.entity.Accounts;
 import com.bookkeepo.accounting.entity.Company;
-import com.bookkeepo.accounting.entity.InvoiceDetails;
 import com.bookkeepo.accounting.model.LedgerColumns;
 import com.bookkeepo.accounting.model.LedgerInfo;
 import com.bookkeepo.accounting.util.CommonUtils;
@@ -56,17 +55,22 @@ public class LedgerController extends MasterController {
 			modelAndView.setViewName("ledger");
 			return modelAndView;
 		}
-		
+
 		Map<Accounts, List<LedgerColumns>> ledgerMap = null;
 		Accounts account = accountService.findById(Integer.valueOf(ledger.getAccountId()));
-		
-		if(account.getAccountType().equals(Constants.DEFAULT_ACCOUNT_ON_COMPANY_CREATION)) {
-			
-			ledgerMap = LedgerUtil.setUpCashLedgers(account, ledger,company);
+
+		if (account.getAccountType().equals(Constants.DEFAULT_ACCOUNT_ON_COMPANY_CREATION)
+				|| account.getAccountType().equals(Constants.DEFAULT_ACCOUNT_ON_BANK_CREATION)) {
+			ledgerMap = LedgerUtil.setUpCashAndBankLedgers(account, ledger, company);
+		} else if (Constants.expenseAccountTypes.contains(account.getAccountType())) {
+			ledgerMap = LedgerUtil.setUpExpenseLedgers(accountService.findById(Integer.valueOf(ledger.getAccountId())),
+					ledger);
+		} else if(Constants.incomeAccountTypes.contains(account.getAccountType())) {
+			ledgerMap = LedgerUtil.setUpIncomeLedgers(accountService.findById(Integer.valueOf(ledger.getAccountId())),
+					ledger);
 		} else {
-			List<InvoiceDetails> invoices = invoiceService.findByInvoiceAccountDetailsAndInvoiceOwner(
-					accountService.findById(Integer.valueOf(ledger.getAccountId())), user);
-			ledgerMap = LedgerUtil.setUpLedgers(invoices, ledger);
+			ledgerMap = LedgerUtil.setUpLedgers(accountService.findById(Integer.valueOf(ledger.getAccountId())),
+					ledger);
 		}
 		modelAndView.addObject("ledger", ledger);
 		modelAndView.addObject("ledgerMap", ledgerMap);

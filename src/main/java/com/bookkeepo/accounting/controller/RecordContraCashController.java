@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.bookkeepo.accounting.entity.BankDetails;
+import com.bookkeepo.accounting.entity.Accounts;
 import com.bookkeepo.accounting.model.RecordContraCash;
+import com.bookkeepo.accounting.util.Constants;
 import com.bookkeepo.accounting.util.InvoiceUtil;
 
 /**
@@ -42,11 +43,13 @@ public class RecordContraCashController extends MasterController {
 		contracash.setRecordContraOwner(principal.getName());
 		contracash.setRecordContraDate(InvoiceUtil.reverseDate(contracash.getRecordContraDate()));
 		if(payFromBankId != null) {
-			BankDetails bankDetails = bankService.findById(Integer.valueOf(payFromBankId));
+			String name = bankService.findById(Integer.valueOf(payFromBankId)).getUserBankAccount();
+			Accounts bankDetails = accountService.findByAccountNameAndAccountType(name, Constants.DEFAULT_ACCOUNT_ON_BANK_CREATION);
 			contracash.setBankDetailsFrom(bankDetails);
 		}
 		if(payToBankId!=null) {
-			BankDetails bankDetails = bankService.findById(Integer.valueOf(payToBankId));
+			String name = bankService.findById(Integer.valueOf(payToBankId)).getUserBankAccount();
+			Accounts bankDetails = accountService.findByAccountNameAndAccountType(name, Constants.DEFAULT_ACCOUNT_ON_BANK_CREATION);
 			contracash.setBankDetailsTo(bankDetails);
 		}
 		contracashService.saveRecordContraCashEntry(contracash);

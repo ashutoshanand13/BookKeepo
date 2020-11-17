@@ -23,8 +23,13 @@ public interface AccountRepository extends JpaRepository<Accounts, Long> {
 	List<Accounts> findByAccountOwnerAndAccountCompanyDetails(String owner, Company company);
 	
 	List<Accounts> findByAccountOwnerAndAccountCompanyDetailsAndAccountType(String owner, Company company, String accountType);
+	
+	@Query("select u from Accounts u where u.accountOwner = ?1 and u.accountCompanyDetails in ?2 and u.accountType not in ('Cash-in-hand','Bank Accounts')")
+	List<Accounts> findAccounts(String owner, Company company);
 
 	Accounts findById(int id);
+	
+	Accounts findByAccountNameAndAccountType(String name, String type);
 
 	Accounts findByAccountOwnerAndAccountPanAndAccountCompanyDetails(String accountOwner, String accountPan,
 			Company company);
