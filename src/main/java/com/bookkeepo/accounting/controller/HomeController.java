@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bookkeepo.accounting.entity.Company;
+import com.bookkeepo.accounting.util.CommonUtils;
 
 /**
  * @author sachingoyal
@@ -25,7 +26,7 @@ public class HomeController extends MasterController {
 	public ModelAndView getAddAccount(HttpServletRequest request,HttpSession session) {
 		ModelAndView modelAndView = new ModelAndView();
 		String user = request.getUserPrincipal().getName();
-		Company company = companyDetailsService.findByUserName(user);
+		Company company = CommonUtils.getSessionAttributes(request);
 		if (company == null) {
 			modelAndView.setViewName("redirect:/home/showProfile");
 		} else {

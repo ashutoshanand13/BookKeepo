@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.bookkeepo.accounting.entity.Accounts;
 import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.model.RecordExpense;
+import com.bookkeepo.accounting.util.CommonUtils;
 import com.bookkeepo.accounting.util.Constants;
 import com.bookkeepo.accounting.util.InvoiceUtil;
 
@@ -37,9 +38,9 @@ public class RecordExpenseController extends MasterController {
 
 	@RequestMapping(value = { "/home/recordexpense" }, method = RequestMethod.POST)
 	public ModelAndView addRecordExpense(@Valid @ModelAttribute("expense") RecordExpense recordexpense,
-			BindingResult bindingResult, Principal principal) {
+			BindingResult bindingResult, Principal principal, HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView("recordexpense");
-		Company company = companyDetailsService.findByUserName(principal.getName());
+		Company company = CommonUtils.getSessionAttributes(request);
 		recordexpense.setExpenseCompanyDetails(company);
 		recordexpense.setRecordExpenseOwner(principal.getName());
 		recordexpense.setExpenseDate(InvoiceUtil.reverseDate(recordexpense.getExpenseDate()));

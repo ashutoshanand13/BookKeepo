@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bookkeepo.accounting.entity.Accounts;
 import com.bookkeepo.accounting.entity.Company;
+import com.bookkeepo.accounting.util.CommonUtils;
 import com.bookkeepo.accounting.util.Constants;
 
 /**
@@ -31,7 +32,7 @@ public class AccountController extends MasterController {
 	public ModelAndView getHomePage(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
 		String user = request.getUserPrincipal().getName();
-		Company company = companyDetailsService.findByUserName(user);
+		Company company = CommonUtils.getSessionAttributes(request);
 		if (company == null) {
 			modelAndView.setViewName("redirect:/home/showProfile");
 		} else {
@@ -48,7 +49,7 @@ public class AccountController extends MasterController {
 
 	@RequestMapping(value = "/home/addaccount", method = RequestMethod.POST)
 	public ModelAndView addNewAccount(@Valid @ModelAttribute("account") Accounts account, BindingResult bindingResult,
-			Principal principal) {
+			Principal principal,HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
 
 		if (account.getId() == 0) {
@@ -75,7 +76,7 @@ public class AccountController extends MasterController {
 			modelAndView.setViewName("addaccount");
 		} else {
 			account.setAccountOwner(principal.getName());
-			Company company = companyDetailsService.findByUserName(principal.getName());
+			Company company = CommonUtils.getSessionAttributes(request);
 
 			account.setAccountCompanyDetails(company);
 			accountService.saveAccount(account);
