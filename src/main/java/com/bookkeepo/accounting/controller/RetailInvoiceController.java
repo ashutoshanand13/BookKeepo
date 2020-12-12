@@ -33,6 +33,8 @@ public class RetailInvoiceController extends MasterController{
 			modelAndView.addObject("logoImage", CommonUtils.getImgfromByteArray(company.getCompanyLogo()));
 			modelAndView.addObject("itemList", itemService.findByProductOwner(user));
 			modelAndView.addObject("pageName", InvoiceType.Retail_Invoice.getType());
+			modelAndView.addObject("InvoiceNbr",
+					invoiceService.getInvoiceNumber(user, InvoiceType.Retail_Invoice.getType()));
 			modelAndView.setViewName("retailInvoice");
 		}
 		return modelAndView;
