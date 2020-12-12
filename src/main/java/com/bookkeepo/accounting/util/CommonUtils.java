@@ -2,6 +2,7 @@ package com.bookkeepo.accounting.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Collections;
@@ -10,24 +11,32 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.text.RandomStringGenerator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Component;
 import org.springframework.util.FileCopyUtils;
 
 import com.bookkeepo.accounting.entity.Company;
+import com.bookkeepo.accounting.service.CompanyDetailsService;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
+@Component
 public class CommonUtils {
 
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	private static SimpleDateFormat dbformat = new SimpleDateFormat("dd-MM-yyyy");
-
+	
+	private static CompanyDetailsService companyDetails;
+	
 	private static String[] units = { "", " One", " Two", " Three", " Four", " Five", " Six", " Seven", " Eight",
 			" Nine" };
 	private static String[] teen = { " Ten", " Eleven", " Twelve", " Thirteen", " Fourteen", " Fifteen", " Sixteen",
@@ -36,6 +45,14 @@ public class CommonUtils {
 			" Ninety" };
 	private static String[] maxs = { "", "", " Hundred", " Thousand", " Lakh", " Crore" };
 
+	@Autowired
+	protected CompanyDetailsService companyDetailsService;
+	
+	@PostConstruct
+    public void init() {
+		CommonUtils.companyDetails = companyDetailsService;
+	}
+	
 	/*
 	 * Use this method to get the image from the resource
 	 */
@@ -320,5 +337,20 @@ public class CommonUtils {
 	public static void setSessionAttributes(HttpSession session,String menuToDisplay, Company company) {
 		session.setAttribute("CompanyGSTIN", menuToDisplay);
 		session.setAttribute("company", company);
+	}
+	
+	public static Date convertToDate(String date) throws ParseException 
+	{
+		return sdf.parse(date);
+	}
+	public static Company getSessionAttributes(HttpServletRequest request) {
+		Company company = null;
+		HttpSession session = request.getSession();
+		if (null != session && null != session.getAttribute("company"))
+			 company = (Company) session.getAttribute("company");
+		else
+			 company = companyDetails.findByUserName(request.getUserPrincipal().getName());
+		
+		return company;
 	}
 }

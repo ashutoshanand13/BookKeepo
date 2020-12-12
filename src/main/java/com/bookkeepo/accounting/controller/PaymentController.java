@@ -27,6 +27,7 @@ import com.bookkeepo.accounting.entity.BankDetails;
 import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.entity.Payment;
 import com.bookkeepo.accounting.entity.PaymentInvoices;
+import com.bookkeepo.accounting.util.CommonUtils;
 import com.bookkeepo.accounting.util.Constants;
 import com.bookkeepo.accounting.util.InvoiceUtil;
 
@@ -43,7 +44,7 @@ public class PaymentController extends MasterController {
 		ModelAndView modelAndView = new ModelAndView();
 		String user = request.getUserPrincipal().getName();
 
-		Company company = companyDetailsService.findByUserName(user);
+		Company company = CommonUtils.getSessionAttributes(request);
 		if (company == null) {
 			modelAndView.setViewName("redirect:/home/showProfile");
 		} else {
@@ -54,9 +55,9 @@ public class PaymentController extends MasterController {
 
 	@RequestMapping(value = { "/home/addpayment" }, method = RequestMethod.POST)
 	public ModelAndView addNewPayment(@Valid @ModelAttribute("payment") Payment payment,
-			@RequestParam(required = false) String bankId, BindingResult bindingResult, Principal principal) {
+			@RequestParam(required = false) String bankId, BindingResult bindingResult, Principal principal, HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
-		Company company = companyDetailsService.findByUserName(principal.getName());
+		Company company = CommonUtils.getSessionAttributes(request);
 		payment.setPaymentOwner(principal.getName());
 		payment.setAccountRefNo(accountService.findById(payment.getAccountRefNo().getId()));
 		if (bankId != null) {
@@ -68,7 +69,7 @@ public class PaymentController extends MasterController {
 		String formatDate = InvoiceUtil.reverseDate(payment.getPaymentDate());
 		payment.setPaymentDate(formatDate);
 		paymentService.saveAccount(payment);
-		List<Accounts> accountList = accountService.fetchAccountName(principal.getName(), company);
+		List<Accounts> accountList = accountService.findAccounts(principal.getName(), company);
 		Payment newPayment = new Payment();
 		addPaymentInvoices(newPayment);
 		modelAndView.addObject("payment", newPayment);
@@ -102,7 +103,7 @@ public class PaymentController extends MasterController {
 	 */
 	protected void makePageReadyforLoad(HttpServletRequest request, ModelAndView modelAndView, Company company) {
 		String user = request.getUserPrincipal().getName();
-		List<Accounts> accountList = accountService.fetchAccountName(user, company);
+		List<Accounts> accountList = accountService.findAccounts(user, company);
 		Payment payment = new Payment();
 		addPaymentInvoices(payment);
 		modelAndView.addObject("payment", payment);

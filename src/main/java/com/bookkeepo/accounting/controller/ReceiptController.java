@@ -27,6 +27,7 @@ import com.bookkeepo.accounting.entity.BankDetails;
 import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.entity.ReceiptInvoices;
 import com.bookkeepo.accounting.entity.Receipts;
+import com.bookkeepo.accounting.util.CommonUtils;
 import com.bookkeepo.accounting.util.Constants;
 import com.bookkeepo.accounting.util.InvoiceUtil;
 
@@ -43,7 +44,7 @@ public class ReceiptController extends MasterController{
 	public ModelAndView getAddReceipt(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
 		String user = request.getUserPrincipal().getName();
-		Company company = companyDetailsService.findByUserName(user);
+		Company company = CommonUtils.getSessionAttributes(request);
 		if (company == null) {
 			modelAndView.setViewName("redirect:/home/showProfile");
 		} else {
@@ -55,9 +56,9 @@ public class ReceiptController extends MasterController{
 
 	@RequestMapping(value = "/home/addreceipt", method = RequestMethod.POST)
 	public ModelAndView addNewReceipt(@Valid @ModelAttribute("receipts") Receipts receipt, @RequestParam(required = false) String bankId, BindingResult bindingResult,
-			Principal principal) {
+			Principal principal, HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
-		Company company = companyDetailsService.findByUserName(principal.getName());
+		Company company = CommonUtils.getSessionAttributes(request);
 		receipt.setReceiptOwner(principal.getName());
 		receipt.setAccountRefNo(accountService.findById(receipt.getAccountRefNo().getId()));
 		if(bankId != null) {
@@ -70,7 +71,7 @@ public class ReceiptController extends MasterController{
 		String formatDate = InvoiceUtil.reverseDate(receipt.getReceiptDate());
 		receipt.setReceiptDate(formatDate);
 		receiptService.saveAccount(receipt);
-		List<Accounts> accountList = accountService.fetchAccountName(principal.getName(), company);
+		List<Accounts> accountList = accountService.findAccounts(principal.getName(), company);
 		modelAndView.addObject("receipts", new Receipts());
 		modelAndView.addObject("message", "Receipt Details Successfully Added");
 		modelAndView.setViewName("addReceipt");
@@ -98,7 +99,7 @@ public class ReceiptController extends MasterController{
 	
 	protected void makePageReadyforLoad(HttpServletRequest request, ModelAndView modelAndView, Company company) {
 		String user = request.getUserPrincipal().getName();
-		List<Accounts> accountList = accountService.fetchAccountName(user, company);
+		List<Accounts> accountList = accountService.findAccounts(user, company);
 		Receipts receipt = new Receipts();
 		addReceiptInvoices(receipt);
 		modelAndView.addObject("receipts", receipt);

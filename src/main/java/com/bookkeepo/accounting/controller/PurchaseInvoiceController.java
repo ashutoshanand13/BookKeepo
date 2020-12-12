@@ -24,7 +24,7 @@ public class PurchaseInvoiceController extends MasterController {
 	public ModelAndView getPurchaseInvoicePage(HttpServletRequest request) {
 		String user = request.getUserPrincipal().getName();
 		ModelAndView modelAndView = new ModelAndView();
-		Company company = companyDetailsService.findByUserName(user);
+		Company company = CommonUtils.getSessionAttributes(request);
 		if (company == null) {
 			modelAndView.setViewName("redirect:/home/showProfile");
 		} else {

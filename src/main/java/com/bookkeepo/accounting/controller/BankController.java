@@ -16,8 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bookkeepo.accounting.entity.Accounts;
 import com.bookkeepo.accounting.entity.BankDetails;
 import com.bookkeepo.accounting.entity.Company;
+import com.bookkeepo.accounting.util.CommonUtils;
+import com.bookkeepo.accounting.util.Constants;
 
 /**
  * @author Ashutosh Anand
@@ -31,7 +34,7 @@ public class BankController extends MasterController {
 	public ModelAndView getBankPage(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView("addBank");
 		String user = request.getUserPrincipal().getName();
-		Company company = companyDetailsService.findByUserName(user);
+		Company company = CommonUtils.getSessionAttributes(request);
 		if (company == null) {
 			modelAndView.setViewName("redirect:/home/showProfile");
 		} else {
@@ -50,6 +53,14 @@ public class BankController extends MasterController {
 		Company company = companyDetailsService.findByUserName(principal.getName());
 		bank.setUserBankCreator(principal.getName());
 		bank.setBankCompanyDetails(company);
+		if (bank.getId() == 0) {
+			Accounts account = new Accounts();
+			account.setAccountOwner(principal.getName());
+			account.setAccountName(bank.getUserBankAccount());
+			account.setAccountType(Constants.DEFAULT_ACCOUNT_ON_BANK_CREATION);
+			account.setAccountCompanyDetails(company);
+			accountService.saveAccount(account);
+		}
 		bankService.saveBank(bank);
 		modelAndView.addObject("message", "Bank details added Successfully.");
 		modelAndView.addObject("bank", new BankDetails());

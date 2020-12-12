@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{postLoginCommonPage}">
+
+<head>
+<title>Record Contra Cash</title>
+</head>
+<div class="img-holder fluid-height"
+	layout:fragment="screen_description">
+	<div class="bg"></div>
+	<h5>Get more things done with BookKeepo platform.</h5>
+	<br/>
+		<p>Company Name : <b><span th:text= "${session.company!=null} ? ${session.company.CompanyName}:''" ></span></b></p>
+		<p>Company GSTIN : <span th:text= "${session.company.companyGstin!=null && session.company.companyGstin!=''} ? ${session.company.companyGstin}:'Not Available'" /></span></p>
+</div>
+<div layout:fragment="form_content" id="form_content">
+	<div class="form-items">
+		<h3 class="form-title doubleunderlinetext">Record Contra Cash - Bank Transaction</h3>
+		<div id="alert" th:if="${message}" th:text="${message} "
+			class="alert alert-info fade-in"></div>
+		<form autocomplete="off" th:action="@{/home/recordcontracash}"
+			th:object="${contracash}" method="post" class="form-horizontal" role="form"
+			enctype="multipart/form-data">
+			<div id=sameBankAlert></div>
+			<div class="row">
+				<div class="col-md-6 form-group"><label class="mandatory field-description text-uppercase">Pay From</label>
+					<select name="selectbasic" class="form-control" th:field="*{payFrom}" required="required" id="payFrom" onchange="payFromCheck()">
+							<option class="form-control" value="" hidden selected>Select Mode</option>
+							<option class="form-control" value="Bank">Bank</option>
+							<option class="form-control" value="CASH" id="paytoCash">Cash</option>
+						</select>
+						<div id=bankDropdown1></div>
+						<div id=bankAlert1></div>
+					<label class="mandatory field-description text-uppercase">Date</label>
+					<input type="date" class="form-control" name="recordContraDate"
+						th:field="*{recordContraDate}" required>
+					<label class="field-description">Description</label>
+					<textarea class="form-control" th:field="*{recordContraDescription}"></textarea>
+				</div>
+				<div class="col-md-6 form-group"><label class="mandatory field-description text-uppercase">Pay To</label>
+					<select name="selectbasic" class="form-control" th:field="*{payTo}" required="required" id="payTo" onchange="payToCheck()">
+							<option class="form-control" value="" hidden selected>Select Mode</option>
+							<option class="form-control" value="Bank">Bank</option>
+							<option class="form-control" value="CASH" id="payfromCash">Cash</option>
+						</select>
+						<div id=bankDropdown2></div>
+						<div id=bankAlert2></div>
+					<label class="mandatory field-description text-uppercase">Amount</label>
+					<input type="text" onfocus="(this.type='number')" onblur="(this.type='text')" min="0"
+						class="form-control" name="recordContraAmount" th:field="*{recordContraAmount}" required>
+				</div>
+			</div>
+			<div class="form-button text-right">
+				<button type="reset" class="btn btn-light">Reset</button>
+				<button name="submit" id="submit" type="submit" class="ibtn">Save</button>
+			</div>
+
+		</form>
+	</div>
+</div>
+<th:block layout:fragment="scripts">
+	<script type="text/javascript">
+	$(document).ready(function() {
+		$("#payFrom").change(function() {
+			getBankDataFrom($("#payFrom"));
+		});	
+	});
+	$(document).ready(function() {
+		$("#payTo").change(function() {
+			getBankDataTo($("#payTo"));
+		});	
+	});
+	
+
+		function payFromCheck(){
+	    var select = document.getElementById("payFrom").value;
+	    if(select == "CASH")
+	    document.getElementById("payfromCash").disabled = true;
+	    else
+	    document.getElementById("payfromCash").disabled = false;
+	}
+	function payToCheck(){
+	    var select = document.getElementById("payTo").value;
+	    if(select == "CASH")
+	    document.getElementById("paytoCash").disabled = true;
+	    else
+	    document.getElementById("paytoCash").disabled = false;
+	}
+	</script>
+</th:block>

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 
 import com.bookkeepo.accounting.configurations.LoginRegisterMessages;
 import com.bookkeepo.accounting.configurations.MessageProperties;
+import com.bookkeepo.accounting.service.AccountLedgerService;
 import com.bookkeepo.accounting.service.AccountService;
 import com.bookkeepo.accounting.service.BankService;
 import com.bookkeepo.accounting.service.CompanyDetailsService;
@@ -18,6 +19,9 @@ import com.bookkeepo.accounting.service.InvoiceService;
 import com.bookkeepo.accounting.service.ItemService;
 import com.bookkeepo.accounting.service.PaymentService;
 import com.bookkeepo.accounting.service.ReceiptService;
+import com.bookkeepo.accounting.service.RecordContraCashService;
+import com.bookkeepo.accounting.service.RecordExpenseService;
+import com.bookkeepo.accounting.service.RecordIncomeService;
 import com.bookkeepo.accounting.service.ReportService;
 import com.bookkeepo.accounting.service.UserService;
 import com.google.gson.Gson;
@@ -71,5 +75,17 @@ public class MasterController {
 
 	@Autowired
 	protected ReportService reportService;
+	
+	@Autowired
+	protected AccountLedgerService accountLedgerService;
+	
+	@Autowired
+	protected RecordExpenseService expenseService;
+	
+	@Autowired
+	protected RecordIncomeService incomeService;
+	
+	@Autowired
+	protected RecordContraCashService contracashService;
 
 }

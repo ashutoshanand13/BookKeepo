@@ -865,4 +865,15 @@ public class InvoiceUtil {
 		
 		return receipt;
 	}
+	
+	public static List<String> showRequiredInvoices() {
+		List<String> invoicestobeShown = new ArrayList<String>();
+		invoicestobeShown.add(InvoiceType.Tax_Invoice.getType());
+		invoicestobeShown.add(InvoiceType.Export_Invoice.getType());
+		invoicestobeShown.add(InvoiceType.Purchase_Invoice.getType());
+		invoicestobeShown.add(InvoiceType.Purchase_Order.getType());
+		invoicestobeShown.add(InvoiceType.Bill_Supply.getType());
+		invoicestobeShown.add(InvoiceType.Retail_Invoice.getType());
+		return invoicestobeShown;
+	}
 }

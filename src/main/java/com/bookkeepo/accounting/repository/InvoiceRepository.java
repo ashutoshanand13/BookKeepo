@@ -3,9 +3,11 @@
  */
 package com.bookkeepo.accounting.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.bookkeepo.accounting.entity.Accounts;
@@ -32,5 +34,15 @@ public interface InvoiceRepository extends JpaRepository<InvoiceDetails, Long> {
 			String invoiceSubType,Company company);
 	
 	List<InvoiceDetails> findByInvoiceAccountDetailsAndInvoiceOwner(Accounts account, String owner);
+	
+	List<InvoiceDetails> findByInvoiceAccountDetails(Accounts account);
+	
+	@Query("SELECT a FROM InvoiceDetails a INNER JOIN Accounts b on a.invoiceAccountDetails = b.id where a.invoiceOwner = ?1 and b.accountType = ?2")
+	List<InvoiceDetails> findByAccountTypeAndAccountOwner(String owner, String accountType);
 
+	@Query("SELECT a FROM InvoiceDetails a where a.invoiceOwner= ?1 and a.invoiceCompanyDetails= ?3 and a.invoiceType in (?2)")
+	List<InvoiceDetails> findByInvoiceOwnerAndInvoiceTypeAndInvoiceCompanyDetails(String invoiceOwner, List<String> invoiceTypes, Company company);
+	
+	@Query("SELECT o FROM InvoiceDetails o WHERE o.invoiceType in (?1) AND o.invoiceOwner=?2 AND str_to_date(o.invoiceDate,'%d-%m-%Y') BETWEEN ?3 AND ?4")
+	List<InvoiceDetails> findByStartEndDate(List<String> invoiceType,String invoiceOwner, Date startDate, Date endDate);
 }

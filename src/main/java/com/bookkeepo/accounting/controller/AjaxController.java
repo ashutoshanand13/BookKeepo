@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.bookkeepo.accounting.entity.Accounts;
 import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.util.CommonUtils;
+import com.bookkeepo.accounting.util.Constants;
 
 /**
  * @author sachingoyal
@@ -68,7 +69,12 @@ public class AjaxController extends MasterController {
 
 	@RequestMapping(value = "/home/getaccountlist", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody String getAccountList(HttpServletRequest request) {
-		return gson.toJson(accountService.fetchAccountNameForInvoice(request.getUserPrincipal().getName()));
+		return gson.toJson(accountService.fetchAccountNameForInvoice(request.getUserPrincipal().getName(), Constants.SUNDRY_DEBTOR));
+	}
+	
+	@RequestMapping(value = "/home/getaccountlistpurchase", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody String getAccountListPurchase(HttpServletRequest request) {
+		return gson.toJson(accountService.fetchAccountNameForInvoice(request.getUserPrincipal().getName(), Constants.SUNDRY_CREDITOR));
 	}
 
 	@RequestMapping(value = "/home/getbanklist", method = RequestMethod.GET, produces = "application/json")
@@ -87,5 +93,22 @@ public class AjaxController extends MasterController {
 	@RequestMapping(value = "/home/getinvoice", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody String getInvoice(@RequestParam String key, HttpServletRequest request) {
 		return gson.toJson(invoiceService.findByInvoiceUniqueKey(key));
+	}
+	
+	@RequestMapping(value = "/home/getexpenseaccountlist", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody String getExpenseAccountList(HttpServletRequest request) {
+		return gson.toJson(accountService.findByAccountOwnerAndAccountTypes(request.getUserPrincipal().getName(),
+				Constants.expenseAccountTypes));
+	}
+	
+	@RequestMapping(value = "/home/getincomeaccountlist", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody String getIncomeAccountList(HttpServletRequest request) {
+		return gson.toJson(accountService.findByAccountOwnerAndAccountTypes(request.getUserPrincipal().getName(),
+				Constants.incomeAccountTypes));
+	}
+	
+	@RequestMapping(value = "/home/checkBank", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody String checkBank(@RequestParam String bankAccount, HttpServletRequest request) {
+		return gson.toJson(bankService.findByUserBankAccount(bankAccount));
 	}
 }

@@ -20,10 +20,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bookkeepo.accounting.entity.Accounts;
 import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.entity.User;
 import com.bookkeepo.accounting.model.UserDetails;
 import com.bookkeepo.accounting.util.CommonUtils;
+import com.bookkeepo.accounting.util.Constants;
 import com.bookkeepo.accounting.util.ImageUtils;
 
 @Controller
@@ -79,7 +81,7 @@ public class UserProfileController extends MasterController {
 	public ModelAndView deleteCompany(@PathVariable("uniqueKey") String uniqueKey, HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 		ModelAndView modelAndView = new ModelAndView();
-		Company company = companyDetailsService.findByCompanyUniqueKey(uniqueKey);
+		Company company = CommonUtils.getSessionAttributes(request);
 		company.setCompanyDeleted(1);
 		companyDetailsService.save(company);
 		modelAndView.setViewName("redirect:/home/showProfile");
@@ -116,6 +118,8 @@ public class UserProfileController extends MasterController {
 		ModelAndView modelAndView = new ModelAndView();
 		HttpSession session = request.getSession();
 		List<Company> companyRecord = companyDetailsService.fetchAllCompanies(principal.getName());
+		Accounts account = new Accounts();
+		account.setAccountName(Constants.DEFAULT_ACCOUNT_ON_COMPANY_CREATION);
 		if (companyRecord == null || companyRecord.size() == 0) {
 			company.setCompanyActive(1);
 		}
@@ -131,7 +135,12 @@ public class UserProfileController extends MasterController {
 
 		company.setCompanyUniqueKey(CommonUtils.getUniqueID());
 		company.setUserName(principal.getName());
-		companyDetailsService.save(company);
+		account.setAccountOwner(principal.getName());
+		account.setAccountType(Constants.DEFAULT_ACCOUNT_ON_COMPANY_CREATION);
+		Company companyforAccount= companyDetailsService.save(company);
+		account.setAccountCompanyDetails(companyforAccount);
+		accountService.saveAccount(account);
+		
 		modelAndView.addObject("message", "New Company Added Successfully. ");
 		modelAndView.setViewName("redirect:/home/showProfile");
 		if(company.getCompanyActive()==1) {
