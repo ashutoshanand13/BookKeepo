@@ -144,7 +144,7 @@
 						<td data-th-text="${company.companyDesc}"></td>
 						<td th:if="${company.companyActive == 1}" data-th-text="Yes"></td>
 						<td th:if="${company.companyActive == 0}" data-th-text="No"></td>
-						<td>
+						<td th:if="${company.companyActive == 0}">
 							<a th:href="'javascript:activateCompany(\'' + ${company.companyUniqueKey} +'\');'">Activate</a>
 						</td>
 						<td>
