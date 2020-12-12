@@ -137,6 +137,12 @@ public class InvoiceService {
 			invoiceNumberDate.setInvoiceNumberBillSupply(newInvoiceNbr);
 			invoiceNumberRepository.save(invoiceNumberDate);
 			break;
+		case "Retail Invoice":
+			newInvoiceNbr = invoiceNumberDate.getInvoiceNumberRetailInvoice() + 1;
+			invoiceNumber = InvoiceUtil.getFinancialYear() + "/" + "RI/" + newInvoiceNbr;
+			invoiceNumberDate.setInvoiceNumberRetailInvoice(newInvoiceNbr);
+			invoiceNumberRepository.save(invoiceNumberDate);
+			break;
 		default:
 			newInvoiceNbr = invoiceNumberDate.getInvoiceNumberDefault() + 1;
 			invoiceNumber = InvoiceUtil.getFinancialYear() + "/" + "DEF/" + newInvoiceNbr;
@@ -162,18 +168,20 @@ public class InvoiceService {
 
 		return null;
 	}
-	
-	public List<InvoiceDetails> findByAccountTypeAndAccountOwner(String owner, String accountType){
+
+	public List<InvoiceDetails> findByAccountTypeAndAccountOwner(String owner, String accountType) {
 		return invoiceRepository.findByAccountTypeAndAccountOwner(owner, accountType);
 	}
-	
-	public List<InvoiceData> findByInvoiceOwnerAndInvoiceTypesAndInvoiceCompanyDetails(String owner, List<String> invoiceTypes){
+
+	public List<InvoiceData> findByInvoiceOwnerAndInvoiceTypesAndInvoiceCompanyDetails(String owner,
+			List<String> invoiceTypes) {
 		List<InvoiceData> invoiceList = new ArrayList<InvoiceData>();
 		InvoiceData selectInvoice = new InvoiceData();
 		selectInvoice.setId(0);
 		selectInvoice.setInvoiceNumber("Select Against Invoice");
 		invoiceList.add(selectInvoice);
-		List<InvoiceDetails> allInvoice= invoiceRepository.findByInvoiceOwnerAndInvoiceTypeAndInvoiceCompanyDetails(owner, invoiceTypes,companyDetailsRepository.findByUserNameAndCompanyActive(owner, 1));
+		List<InvoiceDetails> allInvoice = invoiceRepository.findByInvoiceOwnerAndInvoiceTypeAndInvoiceCompanyDetails(
+				owner, invoiceTypes, companyDetailsRepository.findByUserNameAndCompanyActive(owner, 1));
 		for (InvoiceDetails invoice : allInvoice) {
 			InvoiceData dbinvoice = new InvoiceData();
 			dbinvoice.setId(invoice.getId());
@@ -182,13 +190,14 @@ public class InvoiceService {
 		}
 		return invoiceList;
 	}
-	
+
 	public List<InvoiceDetails> findByInvoiceAccountDetails(Accounts account) {
 		return invoiceRepository.findByInvoiceAccountDetails(account);
 	}
-	
-	public List<InvoiceDetails> findByStartEndDate(List<String> invoiceType,String owner,Date startDate,Date endDate) {
-		return invoiceRepository.findByStartEndDate(invoiceType,owner,startDate,endDate);
+
+	public List<InvoiceDetails> findByStartEndDate(List<String> invoiceType, String owner, Date startDate,
+			Date endDate) {
+		return invoiceRepository.findByStartEndDate(invoiceType, owner, startDate, endDate);
 	}
 
 }
