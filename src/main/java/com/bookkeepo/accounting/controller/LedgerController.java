@@ -34,7 +34,7 @@ public class LedgerController extends MasterController {
 	public ModelAndView showLedger(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
 		String user = request.getUserPrincipal().getName();
-		Company company = companyDetailsService.findByUserName(user);
+		Company company = CommonUtils.getSessionAttributes(request);
 		modelAndView.addObject("ledger", new LedgerInfo());
 		modelAndView.addObject("accountList",
 				accountService.fetchAccountName(request.getUserPrincipal().getName(), company));
@@ -46,7 +46,7 @@ public class LedgerController extends MasterController {
 	public ModelAndView generateLedger(@Valid LedgerInfo ledger, HttpServletRequest request, Principal principal) {
 		ModelAndView modelAndView = new ModelAndView();
 		String user = request.getUserPrincipal().getName();
-		Company company = companyDetailsService.findByUserName(user);
+		Company company = CommonUtils.getSessionAttributes(request);
 		modelAndView.addObject("accountList",
 				accountService.fetchAccountName(request.getUserPrincipal().getName(), company));
 		if (CommonUtils.isPopulated(ledger.getStartDate()) && CommonUtils.isPopulated(ledger.getEndDate())
@@ -62,6 +62,12 @@ public class LedgerController extends MasterController {
 		if (account.getAccountType().equals(Constants.DEFAULT_ACCOUNT_ON_COMPANY_CREATION)
 				|| account.getAccountType().equals(Constants.DEFAULT_ACCOUNT_ON_BANK_CREATION)) {
 			ledgerMap = LedgerUtil.setUpCashAndBankLedgers(account, ledger, company);
+		} else if (Constants.expenseAccountTypes.contains(account.getAccountType())) {
+			ledgerMap = LedgerUtil.setUpExpenseLedgers(accountService.findById(Integer.valueOf(ledger.getAccountId())),
+					ledger);
+		} else if(Constants.incomeAccountTypes.contains(account.getAccountType())) {
+			ledgerMap = LedgerUtil.setUpIncomeLedgers(accountService.findById(Integer.valueOf(ledger.getAccountId())),
+					ledger);
 		} else {
 			ledgerMap = LedgerUtil.setUpLedgers(accountService.findById(Integer.valueOf(ledger.getAccountId())),
 					ledger);

@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
 import com.bookkeepo.accounting.entity.Accounts;
 import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.entity.InvoiceDetails;
-import com.bookkeepo.accounting.entity.Payment;
 
 /**
  * @author sachingoyal

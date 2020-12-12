@@ -33,8 +33,8 @@ public class AccountService {
 
 	}
 
-	public void saveAccount(Accounts account) {
-		accountRepository.save(account);
+	public Accounts saveAccount(Accounts account) {
+		 return accountRepository.save(account);
 	}
 
 	public Accounts findAccountByGstin(String gst, String owner) {
@@ -102,6 +102,11 @@ public class AccountService {
 		selectAccount.setAccountName("Select Account");
 		accountList.add(selectAccount);
 		
+		Accounts newAccount = new Accounts();
+		newAccount.setId(-1);
+		newAccount.setAccountName("Add New Account");
+		accountList.add(newAccount);
+		
 		List<Accounts> dbAccountList = accountRepository.findByAccountOwnerAndAccountTypes(accountOwner, accountType);
 
 		if (!dbAccountList.isEmpty()) {
@@ -127,4 +132,27 @@ public class AccountService {
 
 		return accountList;
 	}
+	
+	
+	public List<Accounts> fetchAccountNameForExpenseAndIncome(String user, String accountType) {
+		List<Accounts> accountList = new ArrayList<Accounts>();
+		Accounts selectAccount = new Accounts();
+		selectAccount.setId(0);
+		selectAccount.setAccountName("Auto-create Account");
+		accountList.add(selectAccount);
+
+		List<Accounts> dbAccountList = accountRepository.findByAccountOwnerAndAccountCompanyDetailsAndAccountType(user,
+				companyDetailsRepository.findByUserNameAndCompanyActive(user, 1), accountType);
+
+		if (!dbAccountList.isEmpty()) {
+			accountList.addAll(dbAccountList);
+		}
+
+		return accountList;
+	}
+	
+	public Accounts findByAccountNameAndAccountType(String name, String type) {
+		return accountRepository.findByAccountNameAndAccountType(name, type);
+	}
+	
 }

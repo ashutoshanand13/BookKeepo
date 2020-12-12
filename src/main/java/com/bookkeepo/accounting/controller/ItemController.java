@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.entity.ProductDetails;
+import com.bookkeepo.accounting.util.CommonUtils;
 
 /**
  * @author Yash Singh
@@ -31,7 +32,7 @@ public class ItemController extends MasterController {
 	public ModelAndView getItemPage(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView("addItem");
 		String user = request.getUserPrincipal().getName();
-		Company company = companyDetailsService.findByUserName(user);
+		Company company = CommonUtils.getSessionAttributes(request);
 		if (company == null) {
 			modelAndView.setViewName("redirect:/home/showProfile");
 		} else {
@@ -45,10 +46,10 @@ public class ItemController extends MasterController {
 
 	@RequestMapping(value = "/home/additem", method = RequestMethod.POST)
 	public ModelAndView addItem(@Valid @ModelAttribute("item") ProductDetails item, BindingResult bindingResult,
-			Principal principal) {
+			Principal principal,HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView("addItem");
 		String user = principal.getName();
-		Company company = companyDetailsService.findByUserName(user);
+		Company company = CommonUtils.getSessionAttributes(request);
 		item.setProductOwner(principal.getName());
 		item.setProductCompanyDetails(company);
 		itemService.saveProductItem(item);

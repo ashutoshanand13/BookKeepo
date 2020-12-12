@@ -30,7 +30,7 @@ public class DebitNoteController extends MasterController {
 	public ModelAndView setupSales(HttpServletRequest request) {
 		String user = request.getUserPrincipal().getName();
 		ModelAndView modelAndView = new ModelAndView();
-		Company company = companyDetailsService.findByUserName(user);
+		Company company = CommonUtils.getSessionAttributes(request);
 		List<String> invoicestobeShown = InvoiceUtil.showRequiredInvoices();
 		List<InvoiceData> ownerInvoices = invoiceService.findByInvoiceOwnerAndInvoiceTypesAndInvoiceCompanyDetails(user, invoicestobeShown);
 		if (company == null) {
