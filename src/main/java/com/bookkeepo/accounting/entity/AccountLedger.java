@@ -38,6 +38,23 @@ public class AccountLedger {
 
 	@Column(name = "account_ledger_negative")
 	private String accountNegative;
+	
+	@Column(name = "account_normal_balance")
+	private String accountNormalBalance;
+
+	/**
+	 * @return the accountNormalBalance
+	 */
+	public String getAccountNormalBalance() {
+		return accountNormalBalance;
+	}
+
+	/**
+	 * @param accountNormalBalance the accountNormalBalance to set
+	 */
+	public void setAccountNormalBalance(String accountNormalBalance) {
+		this.accountNormalBalance = accountNormalBalance;
+	}
 
 	/**
 	 * @return the id
