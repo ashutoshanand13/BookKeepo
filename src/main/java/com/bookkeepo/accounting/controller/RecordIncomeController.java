@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.bookkeepo.accounting.entity.Accounts;
 import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.model.RecordIncome;
+import com.bookkeepo.accounting.util.CommonUtils;
 import com.bookkeepo.accounting.util.Constants;
 import com.bookkeepo.accounting.util.InvoiceUtil;
 
@@ -37,9 +38,9 @@ public class RecordIncomeController extends MasterController {
 
 	@RequestMapping(value = { "/home/recordincome" }, method = RequestMethod.POST)
 	public ModelAndView addIncome(@Valid @ModelAttribute("income") RecordIncome recordincome,
-			BindingResult bindingResult, Principal principal) {
+			BindingResult bindingResult, Principal principal,HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView("recordincome");
-		Company company = companyDetailsService.findByUserName(principal.getName());
+		Company company = CommonUtils.getSessionAttributes(request);
 		recordincome.setRecordIncomeOwner(principal.getName());
 		recordincome.setIncomeDate(InvoiceUtil.reverseDate(recordincome.getIncomeDate()));
 		recordincome.setIncomeWithAccountReference(

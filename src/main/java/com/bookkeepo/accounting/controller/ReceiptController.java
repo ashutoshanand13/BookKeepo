@@ -27,6 +27,7 @@ import com.bookkeepo.accounting.entity.BankDetails;
 import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.entity.ReceiptInvoices;
 import com.bookkeepo.accounting.entity.Receipts;
+import com.bookkeepo.accounting.util.CommonUtils;
 import com.bookkeepo.accounting.util.Constants;
 import com.bookkeepo.accounting.util.InvoiceUtil;
 
@@ -43,7 +44,7 @@ public class ReceiptController extends MasterController{
 	public ModelAndView getAddReceipt(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
 		String user = request.getUserPrincipal().getName();
-		Company company = companyDetailsService.findByUserName(user);
+		Company company = CommonUtils.getSessionAttributes(request);
 		if (company == null) {
 			modelAndView.setViewName("redirect:/home/showProfile");
 		} else {
@@ -55,9 +56,9 @@ public class ReceiptController extends MasterController{
 
 	@RequestMapping(value = "/home/addreceipt", method = RequestMethod.POST)
 	public ModelAndView addNewReceipt(@Valid @ModelAttribute("receipts") Receipts receipt, @RequestParam(required = false) String bankId, BindingResult bindingResult,
-			Principal principal) {
+			Principal principal, HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
-		Company company = companyDetailsService.findByUserName(principal.getName());
+		Company company = CommonUtils.getSessionAttributes(request);
 		receipt.setReceiptOwner(principal.getName());
 		receipt.setAccountRefNo(accountService.findById(receipt.getAccountRefNo().getId()));
 		if(bankId != null) {
