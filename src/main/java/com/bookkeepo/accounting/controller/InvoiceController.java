@@ -11,6 +11,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.MediaType;
@@ -25,6 +26,7 @@ import com.bookkeepo.accounting.entity.InvoiceDetails;
 import com.bookkeepo.accounting.entity.Payment;
 import com.bookkeepo.accounting.entity.Receipts;
 import com.bookkeepo.accounting.model.json.InvoicePageData;
+import com.bookkeepo.accounting.util.CommonUtils;
 import com.bookkeepo.accounting.util.InvoiceUtil;
 
 /**
@@ -38,7 +40,7 @@ public class InvoiceController extends MasterController {
 
 	@RequestMapping(value = "/home/submitInvoice", method = RequestMethod.POST, produces = MediaType.APPLICATION_PDF_VALUE)
 	public void setupSalesInvoiceData(@RequestBody String salesInvoiceJson, Principal principal,
-			HttpServletResponse response) throws IOException {
+			HttpServletResponse response,HttpServletRequest request) throws IOException {
 		InvoicePageData salesInvoiceData = null;
 		try {
 			salesInvoiceData = gson.fromJson(salesInvoiceJson, InvoicePageData.class);
@@ -50,7 +52,7 @@ public class InvoiceController extends MasterController {
 		invoice.setInvoiceType(salesInvoiceData.getPageName());
 		invoice.setInvoiceOwner(principal.getName());
 
-		Company companyDetails = companyDetailsService.findByUserName(principal.getName());
+		Company companyDetails = CommonUtils.getSessionAttributes(request);
 
 		Payment payment = InvoiceUtil.createPayment(salesInvoiceData);
 		

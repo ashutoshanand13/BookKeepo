@@ -50,7 +50,7 @@ public class LedgerInvoiceController extends MasterController {
 			throws ParseException {
 		ModelAndView modelAndView = new ModelAndView();
 		String user = request.getUserPrincipal().getName();
-		Company company = companyDetailsService.findByUserName(user);
+		Company company = CommonUtils.getSessionAttributes(request);
 		if (CommonUtils.isPopulated(ledger.getStartDate()) && CommonUtils.isPopulated(ledger.getEndDate())
 				&& !CommonUtils.isValidEndDate(ledger.getStartDate(), ledger.getEndDate())) {
 			modelAndView.addObject("ledger", new LedgerInfo());

@@ -81,7 +81,7 @@ public class UserProfileController extends MasterController {
 	public ModelAndView deleteCompany(@PathVariable("uniqueKey") String uniqueKey, HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 		ModelAndView modelAndView = new ModelAndView();
-		Company company = companyDetailsService.findByCompanyUniqueKey(uniqueKey);
+		Company company = CommonUtils.getSessionAttributes(request);
 		company.setCompanyDeleted(1);
 		companyDetailsService.save(company);
 		modelAndView.setViewName("redirect:/home/showProfile");
