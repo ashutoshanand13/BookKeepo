@@ -270,7 +270,7 @@ public class LedgerUtil {
 			
 		}
 		
-		List<LedgerColumns> particulars = ledgerMap.get(account);
+		List<LedgerColumns> particulars = ledgerMap.get(account)!=null ? ledgerMap.get(account):new ArrayList<LedgerColumns>();
 		double creditSum = 0, debitSum = 0;
 		for (LedgerColumns column : nullGuard(particulars)) {
 			creditSum += column.getCredit() != null ? Double.valueOf(column.getCredit()) : 0;
