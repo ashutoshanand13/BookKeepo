@@ -545,6 +545,7 @@ public class LedgerUtil {
 			balance.setBalance(String.valueOf(debitSum - (creditSum + Double.valueOf(account.getOpeningBalanceAmount()))));
 		else
 			balance.setBalance(String.valueOf((debitSum + Double.valueOf(account.getOpeningBalanceAmount())) - creditSum));
+		balance.setAccountNormalBalance(accountLedger.findByAccountType(account.getAccountType()).getAccountNormalBalance());
 		trialBalanceList.add(balance);
 		trialBalance.put(account, trialBalanceList);
 		return trialBalance;
