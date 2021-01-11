@@ -60,7 +60,19 @@
 							pattern="^([A-Z]){5}([0-9]){4}([A-Z]){1}$"
 							oninvalid="this.setCustomValidity('Enter a valid PAN ID')" oninput="setCustomValidity('')">
 						<label th:if="${#fields.hasErrors('accountPan')}"
-							th:errors="*{accountPan}" class="validation-message"></label>
+							th:errors="*{accountPan}" class="validation-message"></label> 
+							
+							<select class="form-control" th:field="*{openingBalanceType}"
+							required="required" id="openingBalanceSelect">
+							<option value="" data-default>Opening Balance Type</option>
+							<option value="Dr">Debit</option>
+							<option value="Cr">Credit</option>
+						</select>
+						
+						<input type="text"
+							onfocus="(this.type='number')" onblur="(this.type='text')"
+							min="0" class="form-control"
+							th:field="*{openingBalanceAmount}" placeholder="Opening Balance Amount" required>
 					</div>
 				</div>
 				<div class="col-md-6 form-group">
@@ -115,6 +127,12 @@
 		$("#selectbasic").change(function() {
 			getAccountData();
 		});
+		
+		$("#openingBalanceSelect").change(function() {
+			getOpeningBalanceType();
+		});
+		
+		
 	});
 	
 	function getAccountData() {
@@ -127,29 +145,35 @@
 				url : "/home/getAccountData?accountName=" + accountId,
 				dataType : 'json',				
 				success : function(data) {
-					$("[name=accountName").val(data.accountName);
-					$("[name=accountType").val(data.accountType);
-					$("[name=gstin").val(data.gstin);
-					$("[name=accountPan").val(data.accountPan);
-					$("[name=accountEmail").val(data.accountEmail);
-					$("[name=accountContact").val(data.accountContact);
-					$("[name=accountAddress").val(data.accountAddress);
-					$("[name=accountState").val(data.accountState);
-					$("[name=accountPincode").val(data.accountPincode);
-					$("[name=id").val(data.id);
+					$("[name=accountName]").val(data.accountName);
+					$("[name=accountType]").val(data.accountType);
+					$("[name=gstin]").val(data.gstin);
+					$("[name=accountPan]").val(data.accountPan);
+					$("[name=accountEmail]").val(data.accountEmail);
+					$("[name=accountContact]").val(data.accountContact);
+					$("[name=accountAddress]").val(data.accountAddress);
+					$("[name=accountState]").val(data.accountState);
+					$("[name=accountPincode]").val(data.accountPincode);
+					$("[name=openingBalanceType]").val(data.openingBalanceType);
+					$("[name=openingBalanceAmount]").val(data.openingBalanceAmount);
+					$("[name=id]").val(data.id);
+					getOpeningBalanceType();
 				}
 				});
 		} else {
-			$("[name=accountName").val("");
-			$("[name=accountType").val("");
-			$("[name=gstin").val("");
-			$("[name=accountPan").val("");
-			$("[name=accountEmail").val("");
-			$("[name=accountContact").val("");
-			$("[name=accountAddress").val("");
-			$("[name=accountState").val("");
-			$("[name=accountPincode").val("");
-			$("[name=id").val(0);
+			$("[name=accountName]").val("");
+			$("[name=accountType]").val("");
+			$("[name=gstin]").val("");
+			$("[name=accountPan]").val("");
+			$("[name=accountEmail]").val("");
+			$("[name=accountContact]").val("");
+			$("[name=accountAddress]").val("");
+			$("[name=accountState]").val("");
+			$("[name=accountPincode]").val("");
+			$("[name=openingBalanceType]").val("");
+			$("[name=openingBalanceAmount]").val("");
+			$("[name=id]").val(0);
+			getOpeningBalanceType();
 		}
 	};
 	
@@ -167,6 +191,17 @@
 			return false;
 		}
 		return true;
+	}
+	
+	function getOpeningBalanceType() {
+		var type = $("#openingBalanceSelect").val();
+		
+		if( type === "") {
+			$("[name=openingBalanceAmount]").val('');
+			$("[name=openingBalanceAmount]").prop('disabled', true);
+		} else {
+			$("[name=openingBalanceAmount]").prop('disabled', false);
+		}
 	}
 	</script>
 </th:block>
