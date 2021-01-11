@@ -27,6 +27,7 @@ import com.bookkeepo.accounting.model.LedgerInfo;
 import com.bookkeepo.accounting.model.RecordContraCash;
 import com.bookkeepo.accounting.model.RecordExpense;
 import com.bookkeepo.accounting.model.RecordIncome;
+import com.bookkeepo.accounting.model.TrialBalanceCol;
 import com.bookkeepo.accounting.service.AccountLedgerService;
 import com.bookkeepo.accounting.service.InvoiceService;
 import com.bookkeepo.accounting.service.PaymentService;
@@ -277,6 +278,8 @@ public class LedgerUtil {
 			debitSum += column.getDebit() != null ? Double.valueOf(column.getDebit()) : 0;
 		}
 		LedgerColumns balance = new LedgerColumns();
+		balance.setCreditSum(String.valueOf(creditSum));
+		balance.setDebitSum(String.valueOf(debitSum));
 		balance.setBalance(String.valueOf(debitSum - creditSum));
 		balance.setParticulars("Balance");
 		particulars.add(balance);
@@ -520,5 +523,33 @@ public class LedgerUtil {
 		ledgerMap.put(account, ledgerData);
 		return ledgerMap;
 	}
+	
+	public static Map<Accounts, List<TrialBalanceCol>> trialBalanceLedger(Accounts account, LedgerInfo ledger) {
+		Map<Accounts, List<LedgerColumns>> ledgerMap = setUpLedgers(account, ledger);
+		Map<Accounts, List<TrialBalanceCol>> trialBalance = new HashMap();
+		
+		List<LedgerColumns> particulars = ledgerMap.get(account);
+		List<TrialBalanceCol> trialBalanceList = new ArrayList<>();
+		double creditSum = 0, debitSum = 0;
+		for (LedgerColumns column : particulars) {
+			if(null != column)
+			{
+			creditSum += column.getCredit() != null ? Double.valueOf(column.getCredit()) : 0;
+			debitSum += column.getDebit() != null ? Double.valueOf(column.getDebit()) : 0;
+			}
+		}
+		TrialBalanceCol balance = new TrialBalanceCol();
+		balance.setCreditSum(String.valueOf(creditSum));
+		balance.setDebitSum(String.valueOf(debitSum));
+		if(account.getOpeningBalanceType().equalsIgnoreCase("cr"))
+			balance.setBalance(String.valueOf(debitSum - (creditSum + Double.valueOf(account.getOpeningBalanceAmount()))));
+		else
+			balance.setBalance(String.valueOf((debitSum + Double.valueOf(account.getOpeningBalanceAmount())) - creditSum));
+		trialBalanceList.add(balance);
+		trialBalance.put(account, trialBalanceList);
+		return trialBalance;
+		
+	}
+	
 
 }

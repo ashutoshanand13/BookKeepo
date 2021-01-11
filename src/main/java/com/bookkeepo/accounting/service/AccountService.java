@@ -133,6 +133,9 @@ public class AccountService {
 		return accountList;
 	}
 	
+	public List<Accounts> findAccountList(String owner, Company company) {
+		return accountRepository.findAccounts(owner, company);
+	}
 	
 	public List<Accounts> fetchAccountNameForExpenseAndIncome(String user, String accountType) {
 		List<Accounts> accountList = new ArrayList<Accounts>();
