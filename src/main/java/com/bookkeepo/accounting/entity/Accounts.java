@@ -59,6 +59,12 @@ public class Accounts {
 
 	@Column(name = "account_pincode")
 	private String accountPincode;
+	
+	@Column(name = "opening_balance_type")
+	private String openingBalanceType;
+	
+	@Column(name = "opening_balance_ammount")
+	private String openingBalanceAmount;
 
 	@CreationTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
@@ -74,7 +80,7 @@ public class Accounts {
 	@Email(message = "*Please provide a valid Email")
 	private String accountEmail;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "account_company_reference_no", updatable = false)
 	private Company accountCompanyDetails;
 
@@ -272,6 +278,34 @@ public class Accounts {
 	 */
 	public void setAccountCompanyDetails(Company accountCompanyDetails) {
 		this.accountCompanyDetails = accountCompanyDetails;
+	}
+
+	/**
+	 * @return the openingBalanceType
+	 */
+	public String getOpeningBalanceType() {
+		return openingBalanceType;
+	}
+
+	/**
+	 * @param openingBalanceType the openingBalanceType to set
+	 */
+	public void setOpeningBalanceType(String openingBalanceType) {
+		this.openingBalanceType = openingBalanceType;
+	}
+
+	/**
+	 * @return the openingBalanceAmount
+	 */
+	public String getOpeningBalanceAmount() {
+		return openingBalanceAmount;
+	}
+
+	/**
+	 * @param openingBalanceAmount the openingBalanceAmount to set
+	 */
+	public void setOpeningBalanceAmount(String openingBalanceAmount) {
+		this.openingBalanceAmount = openingBalanceAmount;
 	}
 
 }

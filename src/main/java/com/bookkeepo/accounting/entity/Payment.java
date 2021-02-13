@@ -65,7 +65,7 @@ public class Payment {
 	@JoinColumn(name = "payment_account_reference_no")
 	private Accounts accountRefNo;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "payment_company_reference_no", updatable = false)
 	private Company paymentCompanyDetails;
 

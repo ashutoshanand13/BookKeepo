@@ -926,3 +926,7 @@ div.form-content label.field-description{
 .modalbuttoncolor{
 	background-color: #27c8a9;
 }
+
+select option[data-default] {
+  color: #888;
+}
