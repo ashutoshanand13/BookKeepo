@@ -57,5 +57,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.loginPage("/login").successHandler(successHandler).permitAll().and().logout().permitAll().and()
 				.exceptionHandling().accessDeniedHandler(accessDeniedHandler);
 		http.addFilterAfter(new CustomFilter(), BasicAuthenticationFilter.class);
+		http.addFilterAfter(new URLBlockingFilter(), BasicAuthenticationFilter.class);
 	}
 }
