@@ -14,6 +14,8 @@ public class TrialBalanceCol {
 	String creditSum;
 	
 	String balance;
+	
+	String accountNormalBalance;
 
 	/**
 	 * @return the balance
@@ -55,6 +57,20 @@ public class TrialBalanceCol {
 	 */
 	public void setDebitSum(String debitSum) {
 		this.debitSum = debitSum;
+	}
+
+	/**
+	 * @return the accountNormalBalance
+	 */
+	public String getAccountNormalBalance() {
+		return accountNormalBalance;
+	}
+
+	/**
+	 * @param accountNormalBalance the accountNormalBalance to set
+	 */
+	public void setAccountNormalBalance(String accountNormalBalance) {
+		this.accountNormalBalance = accountNormalBalance;
 	}
 	
 	
