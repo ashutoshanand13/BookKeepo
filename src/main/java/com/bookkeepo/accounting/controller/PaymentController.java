@@ -42,7 +42,6 @@ public class PaymentController extends MasterController {
 	@RequestMapping(value = { "/home/addpayment" }, method = RequestMethod.GET)
 	public ModelAndView getPaymentScreen(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
-		String user = request.getUserPrincipal().getName();
 
 		Company company = CommonUtils.getSessionAttributes(request);
 		if (company == null) {
@@ -68,6 +67,7 @@ public class PaymentController extends MasterController {
 		checkPaymentInvoiceDetails(payment);
 		String formatDate = InvoiceUtil.reverseDate(payment.getPaymentDate());
 		payment.setPaymentDate(formatDate);
+		savePaidInvoices(payment.getPaymentInvoiceDetails());
 		paymentService.saveAccount(payment);
 		List<Accounts> accountList = accountService.findAccounts(principal.getName(), company);
 		Payment newPayment = new Payment();
@@ -77,6 +77,21 @@ public class PaymentController extends MasterController {
 		modelAndView.setViewName("addPayment");
 		modelAndView.addObject("accountList", accountList);
 		return modelAndView;
+	}
+
+	/**
+	 * Functions to update Invoice paid amount
+	 * 
+	 * @param paymentInvoiceDetails
+	 */
+	private void savePaidInvoices(List<PaymentInvoices> paymentInvoiceDetails) {
+		if(paymentInvoiceDetails != null) {
+			for (PaymentInvoices invoicePay : paymentInvoiceDetails) {
+				invoiceService.updateInvoicePaidAmt(invoicePay.getPaymentInvoiceAmount(),
+						Integer.valueOf(invoicePay.getPaymentInvoiceId()));
+			}
+		}
+		
 	}
 
 	private void checkPaymentInvoiceDetails(@Valid Payment payment) {

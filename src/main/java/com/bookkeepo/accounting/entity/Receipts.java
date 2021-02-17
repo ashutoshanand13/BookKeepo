@@ -65,7 +65,7 @@ public class Receipts {
 	@JoinColumn(name = "receipt_account_reference_no")
 	private Accounts accountRefNo;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "receipt_company_reference_no", updatable = false)
 	private Company receiptCompanyDetails;
 

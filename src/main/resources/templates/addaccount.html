@@ -124,6 +124,9 @@
 <th:block layout:fragment="scripts">
 	<script type="text/javascript">
 	$(document).ready(function() {
+		
+		$("[name=openingBalanceAmount]").prop('disabled', true);
+		
 		$("#selectbasic").change(function() {
 			getAccountData();
 		});
