@@ -139,7 +139,7 @@ html, body {
     top: 0;
     left: 0;
     width: 550px;
-    min-height: 1000px !important;
+    min-height: 700px;
     height: 100%;
     overflow: hidden;
     background-color: #000000;
