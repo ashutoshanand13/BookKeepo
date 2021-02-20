@@ -7,7 +7,9 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.bookkeepo.accounting.entity.Accounts;
@@ -33,7 +35,7 @@ public interface InvoiceRepository extends JpaRepository<InvoiceDetails, Long> {
 	List<InvoiceDetails> findByInvoiceOwnerAndInvoiceTypeAndInvoiceSubTypeAndInvoiceCompanyDetails(String invoiceOwner, String invoiceType,
 			String invoiceSubType,Company company);
 	
-	List<InvoiceDetails> findByInvoiceAccountDetailsAndInvoiceOwner(Accounts account, String owner);
+	List<InvoiceDetails> findByInvoiceAccountDetailsAndInvoiceOwnerAndInvoicePaid(Accounts account, String owner, int paid);
 	
 	List<InvoiceDetails> findByInvoiceAccountDetails(Accounts account);
 	
@@ -45,4 +47,8 @@ public interface InvoiceRepository extends JpaRepository<InvoiceDetails, Long> {
 	
 	@Query("SELECT o FROM InvoiceDetails o WHERE o.invoiceType in (?1) AND o.invoiceOwner=?2 AND str_to_date(o.invoiceDate,'%d-%m-%Y') BETWEEN ?3 AND ?4")
 	List<InvoiceDetails> findByStartEndDate(List<String> invoiceType,String invoiceOwner, Date startDate, Date endDate);
+	
+	@Modifying
+	@Query("UPDATE InvoiceDetails o set o.invoicePaidAmt= o.invoicePaidAmt+:amt where o.id = :id")
+	void updateInvoicePaidAmt(@Param("amt")String amt, @Param("id") int id);
 }
