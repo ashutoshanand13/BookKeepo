@@ -43,7 +43,6 @@ public class ReceiptController extends MasterController{
 	@RequestMapping(value = { "/home/addreceipt" }, method = RequestMethod.GET)
 	public ModelAndView getAddReceipt(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
-		String user = request.getUserPrincipal().getName();
 		Company company = CommonUtils.getSessionAttributes(request);
 		if (company == null) {
 			modelAndView.setViewName("redirect:/home/showProfile");
@@ -70,6 +69,7 @@ public class ReceiptController extends MasterController{
 		
 		String formatDate = InvoiceUtil.reverseDate(receipt.getReceiptDate());
 		receipt.setReceiptDate(formatDate);
+		savePaidInvoices(receipt.getReceiptInvoiceDetails());
 		receiptService.saveAccount(receipt);
 		List<Accounts> accountList = accountService.findAccounts(principal.getName(), company);
 		modelAndView.addObject("receipts", new Receipts());
@@ -79,6 +79,16 @@ public class ReceiptController extends MasterController{
 		return modelAndView;
 	}
 	
+	private void savePaidInvoices(List<ReceiptInvoices> receiptInvoiceDetails) {
+		if(receiptInvoiceDetails != null) {
+			for (ReceiptInvoices invoicePay : receiptInvoiceDetails) {
+				invoiceService.updateInvoicePaidAmt(invoicePay.getReceiptInvoiceAmount(),
+						Integer.valueOf(invoicePay.getReceiptInvoiceId()));
+			}
+		}
+		
+	}
+
 	private void checkReceiptInvoiceDetails(@Valid Receipts receipt) {
 		if (!receipt.getReceiptReference().equals("Invoice Ref")) {
 			receipt.setReceiptInvoiceDetails(null);

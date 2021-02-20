@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bookkeepo.accounting.entity.Accounts;
 import com.bookkeepo.accounting.entity.InvoiceDetails;
@@ -25,6 +26,7 @@ import com.bookkeepo.accounting.util.InvoiceUtil;
  *
  */
 
+@Transactional
 @Service("invoiceService")
 public class InvoiceService {
 
@@ -156,7 +158,7 @@ public class InvoiceService {
 	}
 
 	public List<InvoiceDetails> findByInvoiceAccountDetailsAndInvoiceOwner(Accounts account, String owner) {
-		List<InvoiceDetails> invoiceList = invoiceRepository.findByInvoiceAccountDetailsAndInvoiceOwner(account, owner);
+		List<InvoiceDetails> invoiceList = invoiceRepository.findByInvoiceAccountDetailsAndInvoiceOwnerAndInvoicePaid(account, owner, 0);
 
 		if (!invoiceList.isEmpty()) {
 			InvoiceDetails temp = new InvoiceDetails();
@@ -200,4 +202,7 @@ public class InvoiceService {
 		return invoiceRepository.findByStartEndDate(invoiceType, owner, startDate, endDate);
 	}
 
+	public void updateInvoicePaidAmt(String amt, int id) {
+		invoiceRepository.updateInvoicePaidAmt(amt, id);
+	}
 }

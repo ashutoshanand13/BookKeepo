@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{postLoginCommonPage}">
+
+<head>
+<title>Add Account</title>
+</head>
+<div layout:fragment="screen_description">
+	<div class="img-holder">
+		<div class="bg"></div>
+		<h5>Get more things done with BookKeepo platform.</h5>
+		<br/>
+		<p>Company Name : <b><span th:text= "${session.company!=null} ? ${session.company.CompanyName}:''" ></span></b></p>
+		<p>Company GSTIN : <span th:text= "${session.company.companyGstin!=null && session.company.companyGstin!=''} ? ${session.company.companyGstin}:'Not Available'" /></span></p>
+	</div>
+</div>
+<div layout:fragment="form_content" id="form_content">
+	<div class="form-items">
+		<h3 class="form-title doubleunderlinetext">Account List</h3>
+		<div id="alert" th:if="${message}" th:text="${message} "
+			class="alert alert-info fade-in"></div>
+			<div id="alert_placeholder"></div>
+		<form autocomplete="off" th:action="@{/home/accountlist}"
+			th:object="${account}" class="form-horizontal"
+			role="form" >
+			<div class="row">
+				<div class="col-md-6 form-group">
+					<div class="form-group">
+						<label>Account List</label> <select
+							class="form-control" id="selectbasic" name="selectbasic">
+							<option th:each="accountValue : ${accountList}" th:value="${accountValue.id}"
+								th:text="${accountValue.accountName}"></option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6 form-group">
+					<div class="form-group">
+						<label>Account Name : </label>
+							<input type="text"
+							class="form-control" name="name" th:field="*{accountName}"
+							placeholder="Account Name" required onblur="checkAccountName(this)" readonly> 
+							<div id = "name_alert"></div>
+							<label>Account Type : </label><select name="selectbasic" class="form-control" th:field="*{accountType}"
+							required="required" >
+							<option th:each="account : ${accountLedgerType}" th:value="${account.accountType}"
+							th:text="${account.accountType}"></option></select>
+							<label>Account GST : </label> 
+						<input type="text" class="form-control" th:field="*{gstin}"
+							placeholder="GST Number"
+							pattern="^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$"
+							oninvalid="this.setCustomValidity('GST Identification Number is not valid. It should be in this 11AAAAA1111Z1A1 format')" 
+							oninput="setCustomValidity('')" readonly>
+					</div>
+				</div>
+				<div class="col-md-6 form-group">
+					<label>Opening Balance</label>
+					<input type="text"
+							onfocus="(this.type='number')" onblur="(this.type='text')"
+							min="0" class="form-control"
+							th:field="*{openingBalanceAmount}" placeholder="Opening Balance Amount" readonly>
+					<label>New Balance</label>
+					<input type="text"
+							onfocus="(this.type='number')" onblur="(this.type='text')"
+							min="0" class="form-control"
+							th:field="*{openingBalanceAmount}" placeholder="Current Balance Amount" readonly>
+					<div class="form-group">
+						<label>Address</label>
+						<textarea class="form-control" th:field="*{accountAddress}" readonly
+							></textarea>
+					</div>
+					
+				</div>
+				<input type="hidden" th:field="*{id}">
+			</div>
+		</form>
+	</div>
+</div>
+<th:block layout:fragment="scripts">
+	<script type="text/javascript">
+	$(document).ready(function() {
+		$("#selectbasic").change(function() {
+			getAccountData();
+		});
+	});
+	
+	function getAccountData() {
+		$('#name_alert').remove();
+		var accountId = $("#selectbasic").val();
+		if(accountId !== '0'){
+			$.ajax({
+				type : "GET",
+				contentType : "application/json",
+				url : "/home/getAccountData?accountName=" + accountId,
+				dataType : 'json',				
+				success : function(data) {
+					$("[name=accountName").val(data.accountName);
+					$("[name=accountType").val(data.accountType);
+					$("[name=gstin").val(data.gstin);
+					$("[name=accountAddress").val(data.accountAddress);
+					$("[name=openingBalanceAmount]").val(data.openingBalanceAmount);
+					$("[name=id").val(data.id);
+				}
+				});
+		} else {
+			$("[name=accountName").val("");
+			$("[name=accountType").val("");
+			$("[name=gstin").val("");
+			$("[name=accountAddress").val("");
+			$("[name=openingBalanceAmount]").val("");
+			$("[name=id").val(0);
+		}
+	};
+	</script>
+</th:block>
