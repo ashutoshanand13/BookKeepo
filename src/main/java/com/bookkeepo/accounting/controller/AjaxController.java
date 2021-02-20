@@ -26,7 +26,7 @@ public class AjaxController extends MasterController {
 
 	@RequestMapping(value = "/home/getAccountData", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody String getAccountData(@RequestParam int accountName, HttpServletRequest request) {
-		return gson.toJson(accountService.findById(accountName));
+		return gson.toJson(accountService.findAccountbyId(accountName));
 	}
 
 	@RequestMapping(value = "/home/getAmountInWords", method = RequestMethod.GET, produces = "application/json")

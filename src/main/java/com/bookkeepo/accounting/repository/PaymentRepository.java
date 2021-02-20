@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import com.bookkeepo.accounting.dtos.PaymentDto;
 import com.bookkeepo.accounting.entity.Accounts;
 import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.entity.Payment;
@@ -23,7 +24,12 @@ import com.bookkeepo.accounting.entity.Payment;
 @Repository("paymentRepository")
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
-	List<Payment> findByPaymentOwnerAndPaymentCompanyDetailsAndPaymentDeleted(String owner, Company company, int isDeleted);
+	@Query("SELECT new com.bookkeepo.accounting.dtos.PaymentDto("
+			+ "o.id, o.paymentNumber, o.paymentReference, "
+			+ "o.paymentDate, o.paymentMode, o.paymentAmount, "
+			+ "o.paymentDescription, o.accountRefNo.accountName) "
+			+ "FROM Payment o WHERE o.paymentOwner=?1 AND o.paymentCompanyDetails=?2 AND o.paymentDeleted=?3")
+	List<PaymentDto> findAllPayment(String owner, Company company, int isDeleted);
 	
 	Payment findByIdAndPaymentOwner(int id, String owner);
 	

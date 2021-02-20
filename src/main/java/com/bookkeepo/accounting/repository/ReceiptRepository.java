@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import com.bookkeepo.accounting.dtos.ReceiptDto;
 import com.bookkeepo.accounting.entity.Accounts;
 import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.entity.Receipts;
@@ -23,7 +24,13 @@ import com.bookkeepo.accounting.entity.Receipts;
 @Repository("receiptRepository")
 public interface ReceiptRepository extends JpaRepository<Receipts, Long> {
 
-	List<Receipts> findByReceiptOwnerAndReceiptCompanyDetailsAndReceiptDeleted(String owner, Company company, int isDeleted);
+	
+	@Query("SELECT new com.bookkeepo.accounting.dtos.ReceiptDto("
+			+ "o.id, o.receiptNumber, o.receiptReference, "
+			+ "o.receiptDate, o.receiptMode, o.receiptAmount, "
+			+ "o.receiptDescription, o.accountRefNo.accountName) "
+			+ "FROM Receipts o WHERE o.receiptOwner=?1 AND o.receiptCompanyDetails=?2 AND o.receiptDeleted=?3")
+	List<ReceiptDto> findAllReceipt(String owner, Company company, int isDeleted);
 	
 	Receipts findByIdAndReceiptOwner(int id, String owner);
 	

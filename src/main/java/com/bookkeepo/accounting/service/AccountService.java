@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bookkeepo.accounting.dtos.AccountDto;
 import com.bookkeepo.accounting.entity.Accounts;
 import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.repository.AccountRepository;
@@ -117,14 +118,14 @@ public class AccountService {
 		return accountList;
 	}
 	
-	public List<Accounts> findAccounts(String owner, Company company) {
-		List<Accounts> accountList = new ArrayList<Accounts>();
-		Accounts accounts = new Accounts();
+	public List<AccountDto> findAccounts(String owner, Company company) {
+		List<AccountDto> accountList = new ArrayList<AccountDto>();
+		AccountDto accounts = new AccountDto();
 		accounts.setId(0);
 		accounts.setAccountName("Select Account");
 		accountList.add(accounts);
 
-		List<Accounts> dbAccountList = accountRepository.findAccounts(owner, company);
+		List<AccountDto> dbAccountList = accountRepository.findAccountList(owner, company);
 
 		if (!dbAccountList.isEmpty()) {
 			accountList.addAll(dbAccountList);
@@ -156,6 +157,10 @@ public class AccountService {
 	
 	public Accounts findByAccountNameAndAccountType(String name, String type) {
 		return accountRepository.findByAccountNameAndAccountType(name, type);
+	}
+	
+	public AccountDto findAccountbyId(int id) {
+		return accountRepository.findAccountbyId(id);
 	}
 	
 }
