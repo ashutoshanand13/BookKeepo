@@ -85,7 +85,10 @@
 								<div class="col-md-6 form-group">
 									<label class="field-description">Bank Details</label> <input type="text"
 										class="form-control" name="bankAC" th:field="*{companyBankAC}"
-										placeholder="Bank A/C"> <input type="text"
+										placeholder="Bank A/C" pattern="^\d{9,18}$" 
+										oninvalid="this.setCustomValidity('Account number should be numeric with 9-18 length')"
+										oninput="setCustomValidity('')"> 
+										<input type="text"
 										class="form-control" th:field="*{companyBankIFSC}"
 										pattern="^[A-Za-z]{4}[a-zA-Z0-9]{7}$"
 										oninvalid="this.setCustomValidity('IFSC code should of format AAAA1111111')"

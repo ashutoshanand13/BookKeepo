@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -81,9 +80,11 @@ public class UserProfileController extends MasterController {
 	public ModelAndView deleteCompany(@PathVariable("uniqueKey") String uniqueKey, HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 		ModelAndView modelAndView = new ModelAndView();
-		Company company = CommonUtils.getSessionAttributes(request);
+		Company company = companyDetailsService.findByCompanyUniqueKey(uniqueKey);
+		if(company.getCompanyActive()!=1) {
 		company.setCompanyDeleted(1);
 		companyDetailsService.save(company);
+		}
 		modelAndView.setViewName("redirect:/home/showProfile");
 
 		return modelAndView;
