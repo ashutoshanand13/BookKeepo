@@ -22,6 +22,7 @@ import com.bookkeepo.accounting.model.LedgerInfo;
 import com.bookkeepo.accounting.model.TrialBalanceCol;
 import com.bookkeepo.accounting.util.CommonUtils;
 import com.bookkeepo.accounting.util.Constants;
+import com.bookkeepo.accounting.util.InvoiceUtil;
 import com.bookkeepo.accounting.util.LedgerUtil;
 
 /**
@@ -39,8 +40,10 @@ public class TrialBalanceController extends MasterController{
 		List<Accounts> accountList = accountService.findAccountList(principal.getName(), company);
 		Map<Accounts, List<TrialBalanceCol>> ledgerMap = new HashMap();
 		LedgerInfo ledger = new LedgerInfo();
-		ledger.setStartDate("2020-04-01");
-		ledger.setEndDate("2021-04-01");
+		int financialYear = InvoiceUtil.getFiscalYear();
+		String date ="-04-01";
+		ledger.setStartDate(String.valueOf(financialYear)+date);
+		ledger.setEndDate(String.valueOf(financialYear+1)+date);
 		
 		for ( Accounts account : accountList) {
 				ledgerMap.putAll(LedgerUtil.trialBalanceLedger(account,
