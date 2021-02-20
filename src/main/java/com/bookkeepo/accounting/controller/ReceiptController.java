@@ -130,8 +130,13 @@ public class ReceiptController extends MasterController{
 	public ModelAndView showReceipt(Principal principal, HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
 		String user = principal.getName();
-		modelAndView.addObject("receiptList", receiptService.fetchAllReceipt(user, CommonUtils.getSessionAttributes(request)));
-		modelAndView.setViewName("receiptData");
+		Company company = CommonUtils.getSessionAttributes(request);
+		if (company == null) {
+			modelAndView.setViewName("redirect:/home/showProfile");
+		} else {
+			modelAndView.addObject("receiptList", receiptService.fetchAllReceipt(user, CommonUtils.getSessionAttributes(request)));
+			modelAndView.setViewName("receiptData");
+		}
 		return modelAndView;
 	}
 	

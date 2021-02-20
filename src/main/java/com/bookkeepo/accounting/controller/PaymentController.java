@@ -139,8 +139,13 @@ public class PaymentController extends MasterController {
 	public ModelAndView showPayments(Principal principal, HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
 		String user = principal.getName();
-		modelAndView.addObject("paymentList", paymentService.fetchAllPayment(user, CommonUtils.getSessionAttributes(request)));
-		modelAndView.setViewName("paymentData");
+		Company company = CommonUtils.getSessionAttributes(request);
+		if (company == null) {
+			modelAndView.setViewName("redirect:/home/showProfile");
+		} else {
+			modelAndView.addObject("paymentList", paymentService.fetchAllPayment(user, CommonUtils.getSessionAttributes(request)));
+			modelAndView.setViewName("paymentData");
+		}
 		return modelAndView;
 	}
 
