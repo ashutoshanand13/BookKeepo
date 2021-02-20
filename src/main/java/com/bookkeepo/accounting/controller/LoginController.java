@@ -76,8 +76,12 @@ public class LoginController extends MasterController {
 			modelAndView.addObject("user", new User());
 			modelAndView.addObject("message", loginregistermessageproperties.getRegistrationSuccessMessage());
 			modelAndView.setViewName("login");
-			emailservice.sendEmail(user, messageproperties.getEmailFrom(), messageproperties.getAcctactivationSubject(),
-					messageproperties.getAcctactivationBody());
+			
+			/* Skipping Email Verification for User Registration
+			 * emailservice.sendEmail(user, messageproperties.getEmailFrom(),
+			 * messageproperties.getAcctactivationSubject(),
+			 * messageproperties.getAcctactivationBody());
+			 */
 
 		}
 		return modelAndView;

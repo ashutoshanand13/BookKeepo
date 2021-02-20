@@ -46,7 +46,8 @@ public class UserService {
 
 	public void saveUser(User user) {
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-		user.setActive(0);
+		//Changing to 1 for Skipping Email Verification
+		user.setActive(1);
 		user.setToken(CommonUtils.generateToken(user.getEmail()));
 		Role userRole = roleRepository.findByRole("USER");
 		user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));

@@ -541,10 +541,13 @@ public class LedgerUtil {
 		TrialBalanceCol balance = new TrialBalanceCol();
 		balance.setCreditSum(String.valueOf(creditSum));
 		balance.setDebitSum(String.valueOf(debitSum));
-		if(account.getOpeningBalanceType().equalsIgnoreCase("cr"))
+		if(("cr").equalsIgnoreCase(account.getOpeningBalanceType()))
 			balance.setBalance(String.valueOf(debitSum - (creditSum + Double.valueOf(account.getOpeningBalanceAmount()))));
-		else
+		else if(("dr").equalsIgnoreCase(account.getOpeningBalanceType()))
 			balance.setBalance(String.valueOf((debitSum + Double.valueOf(account.getOpeningBalanceAmount())) - creditSum));
+		else
+			balance.setBalance(String.valueOf(debitSum - creditSum));
+		balance.setAccountNormalBalance(accountLedger.findByAccountType(account.getAccountType()).getAccountNormalBalance());
 		trialBalanceList.add(balance);
 		trialBalance.put(account, trialBalanceList);
 		return trialBalance;
