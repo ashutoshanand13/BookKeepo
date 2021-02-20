@@ -83,6 +83,7 @@ public class UserProfileController extends MasterController {
 		Company company = companyDetailsService.findByCompanyUniqueKey(uniqueKey);
 		if(company.getCompanyActive()!=1) {
 		company.setCompanyDeleted(1);
+		company.setCompanyActive(0);
 		companyDetailsService.save(company);
 		}
 		modelAndView.setViewName("redirect:/home/showProfile");
