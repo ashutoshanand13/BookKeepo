@@ -31,7 +31,6 @@ public class AccountController extends MasterController {
 	@RequestMapping(value = { "/home/addaccount" }, method = RequestMethod.GET)
 	public ModelAndView getHomePage(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
-		String user = request.getUserPrincipal().getName();
 		Company company = CommonUtils.getSessionAttributes(request);
 		if (company == null) {
 			modelAndView.setViewName("redirect:/home/showProfile");

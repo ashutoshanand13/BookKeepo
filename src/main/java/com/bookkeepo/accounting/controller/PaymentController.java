@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.bookkeepo.accounting.entity.Accounts;
+import com.bookkeepo.accounting.dtos.AccountDto;
 import com.bookkeepo.accounting.entity.BankDetails;
 import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.entity.Payment;
@@ -69,7 +69,7 @@ public class PaymentController extends MasterController {
 		payment.setPaymentDate(formatDate);
 		savePaidInvoices(payment.getPaymentInvoiceDetails());
 		paymentService.saveAccount(payment);
-		List<Accounts> accountList = accountService.findAccounts(principal.getName(), company);
+		List<AccountDto> accountList = accountService.findAccounts(principal.getName(), company);
 		Payment newPayment = new Payment();
 		addPaymentInvoices(newPayment);
 		modelAndView.addObject("payment", newPayment);
@@ -118,7 +118,7 @@ public class PaymentController extends MasterController {
 	 */
 	protected void makePageReadyforLoad(HttpServletRequest request, ModelAndView modelAndView, Company company) {
 		String user = request.getUserPrincipal().getName();
-		List<Accounts> accountList = accountService.findAccounts(user, company);
+		List<AccountDto> accountList = accountService.findAccounts(user, company);
 		Payment payment = new Payment();
 		addPaymentInvoices(payment);
 		modelAndView.addObject("payment", payment);
@@ -136,19 +136,19 @@ public class PaymentController extends MasterController {
 	}
 
 	@RequestMapping(value = { "/home/showpayment" }, method = RequestMethod.GET)
-	public ModelAndView showPayments(Principal principal) {
+	public ModelAndView showPayments(Principal principal, HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
 		String user = principal.getName();
-		modelAndView.addObject("paymentList", paymentService.fetchAllPayment(user));
+		modelAndView.addObject("paymentList", paymentService.fetchAllPayment(user, CommonUtils.getSessionAttributes(request)));
 		modelAndView.setViewName("paymentData");
 		return modelAndView;
 	}
 
 	@RequestMapping(value = { "/home/updatepayment" }, method = RequestMethod.GET)
-	public ModelAndView updatePayment(Principal principal) {
+	public ModelAndView updatePayment(Principal principal, HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
 		String user = principal.getName();
-		modelAndView.addObject("paymentList", paymentService.fetchAllPayment(user));
+		modelAndView.addObject("paymentList", paymentService.fetchAllPayment(user, CommonUtils.getSessionAttributes(request)));
 		modelAndView.setViewName("updatePayment");
 		return modelAndView;
 	}
@@ -160,6 +160,12 @@ public class PaymentController extends MasterController {
 		String user = request.getUserPrincipal().getName();
 		Payment payment = paymentService.findByIdAndPaymentOwner(Integer.valueOf(id), user);
 		payment.setPaymentDeleted(1);
+		if(payment.getPaymentInvoiceDetails().size()>0) {
+			for (PaymentInvoices invoicePay : payment.getPaymentInvoiceDetails()) {
+				invoiceService.updateInvoicePaidAmt("-"+invoicePay.getPaymentInvoiceAmount(),
+						Integer.valueOf(invoicePay.getPaymentInvoiceId()));
+			}
+		}
 		paymentService.saveAccount(payment);
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("redirect:/home/updatepayment");
