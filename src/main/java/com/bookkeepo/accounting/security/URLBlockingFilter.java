@@ -27,8 +27,6 @@ public class URLBlockingFilter extends GenericFilterBean {
 	public URLBlockingFilter() {
 		urls.add("/home/ledger");
 		urls.add("/home/invoiceledger");
-		urls.add("/home/updatereceipt");
-		urls.add("/home/updatepayment");
 		urls.add("/home/recordexpense");
 		urls.add("/home/recordincome");
 		urls.add("/home/recordcontracash");

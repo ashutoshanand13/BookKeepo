@@ -60,10 +60,16 @@ public class ItemController extends MasterController {
 	}
 
 	@RequestMapping(value = { "/home/showitem" }, method = RequestMethod.GET)
-	public ModelAndView showItem(Principal principal) {
-		ModelAndView modelAndView = new ModelAndView("itemData");
+	public ModelAndView showItem(Principal principal, HttpServletRequest request) {
+		ModelAndView modelAndView = new ModelAndView();
 		String user = principal.getName();
-		modelAndView.addObject("itemList", itemService.fetchAllItems(user));
+		Company company = CommonUtils.getSessionAttributes(request);
+		if (company == null) {
+			modelAndView.setViewName("redirect:/home/showProfile");
+		} else {
+			modelAndView.addObject("itemList", itemService.fetchAllItems(user));	
+			modelAndView.setViewName("itemData");
+		}
 		return modelAndView;
 	}
 

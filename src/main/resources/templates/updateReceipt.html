@@ -13,8 +13,10 @@
 		<div class="bg"></div>
 		<h5>Get more things done with BookKeepo platform.</h5>
 		<br/>
+		<div th:if="${session.company!=null}">
 		<p>Company Name : <b><span th:text= "${session.company!=null} ? ${session.company.CompanyName}:''" ></span></b></p>
 		<p>Company GSTIN : <span th:text= "${session.company.companyGstin!=null && session.company.companyGstin!=''} ? ${session.company.companyGstin}:'Not Available'" /></span></p>
+		</div>
 	</div>
 </div>
 	<div layout:fragment="form_content" id="form_content">
@@ -43,7 +45,7 @@
 						<td data-th-text="${receipt.receiptNumber}"></td>
 						<td data-th-text="${receipt.receiptMode}"></td>
 						<td data-th-text="${receipt.receiptDate}"></td>
-						<td data-th-text="${receipt.accountRefNo.accountName}"></td>
+						<td data-th-text="${receipt.accountName}"></td>
 						<td data-th-text="${receipt.receiptReference}"></td>
 						<td data-th-text="${receipt.receiptAmount}"></td>
 						<td data-th-text="${receipt.receiptDescription}"></td>

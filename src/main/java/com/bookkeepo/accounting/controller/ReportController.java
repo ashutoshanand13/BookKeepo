@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.entity.InvoiceDetails;
 import com.bookkeepo.accounting.model.Reports;
 import com.bookkeepo.accounting.model.ReportsData;
@@ -41,8 +42,13 @@ public class ReportController extends MasterController {
 	@RequestMapping(value = { "/home/reports" }, method = RequestMethod.GET)
 	public ModelAndView showReport(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("reports", new Reports());
-		modelAndView.setViewName("reports");
+		Company company = CommonUtils.getSessionAttributes(request);
+		if (company == null) {
+			modelAndView.setViewName("redirect:/home/showProfile");
+		} else {
+				modelAndView.addObject("reports", new Reports());
+				modelAndView.setViewName("reports");
+			}
 		return modelAndView;
 	}
 
@@ -72,8 +78,13 @@ public class ReportController extends MasterController {
 	@RequestMapping(value = { "/home/showInvoice" }, method = RequestMethod.GET)
 	public ModelAndView showInvoice(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("invoiceList", invoiceService.findByInvoiceOwner(request.getUserPrincipal().getName()));
-		modelAndView.setViewName("showInvoice");
+		Company company = CommonUtils.getSessionAttributes(request);
+		if (company == null) {
+			modelAndView.setViewName("redirect:/home/showProfile");
+		} else {
+			modelAndView.addObject("invoiceList", invoiceService.findByInvoiceOwner(request.getUserPrincipal().getName()));
+			modelAndView.setViewName("showInvoice");
+		}
 		return modelAndView;
 	}
 

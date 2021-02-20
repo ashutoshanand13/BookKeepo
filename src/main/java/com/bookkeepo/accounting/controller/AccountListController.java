@@ -22,7 +22,6 @@ public class AccountListController extends MasterController{
 	@RequestMapping(value = { "/home/accountlist" }, method = RequestMethod.GET)
 	public ModelAndView getAccountListPage(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
-		String user = request.getUserPrincipal().getName();
 		Company company = CommonUtils.getSessionAttributes(request);
 		if (company == null) {
 			modelAndView.setViewName("redirect:/home/showProfile");

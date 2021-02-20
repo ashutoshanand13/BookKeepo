@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.bookkeepo.accounting.entity.Accounts;
+import com.bookkeepo.accounting.dtos.AccountDto;
 import com.bookkeepo.accounting.entity.BankDetails;
 import com.bookkeepo.accounting.entity.Company;
 import com.bookkeepo.accounting.entity.ReceiptInvoices;
@@ -71,7 +71,7 @@ public class ReceiptController extends MasterController{
 		receipt.setReceiptDate(formatDate);
 		savePaidInvoices(receipt.getReceiptInvoiceDetails());
 		receiptService.saveAccount(receipt);
-		List<Accounts> accountList = accountService.findAccounts(principal.getName(), company);
+		List<AccountDto> accountList = accountService.findAccounts(principal.getName(), company);
 		modelAndView.addObject("receipts", new Receipts());
 		modelAndView.addObject("message", "Receipt Details Successfully Added");
 		modelAndView.setViewName("addReceipt");
@@ -109,7 +109,7 @@ public class ReceiptController extends MasterController{
 	
 	protected void makePageReadyforLoad(HttpServletRequest request, ModelAndView modelAndView, Company company) {
 		String user = request.getUserPrincipal().getName();
-		List<Accounts> accountList = accountService.findAccounts(user, company);
+		List<AccountDto> accountList = accountService.findAccounts(user, company);
 		Receipts receipt = new Receipts();
 		addReceiptInvoices(receipt);
 		modelAndView.addObject("receipts", receipt);
@@ -127,19 +127,24 @@ public class ReceiptController extends MasterController{
 	}
 
 	@RequestMapping(value = { "/home/showreceipt" }, method = RequestMethod.GET)
-	public ModelAndView showReceipt(Principal principal) {
+	public ModelAndView showReceipt(Principal principal, HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
 		String user = principal.getName();
-		modelAndView.addObject("receiptList", receiptService.fetchAllReceipt(user));
-		modelAndView.setViewName("receiptData");
+		Company company = CommonUtils.getSessionAttributes(request);
+		if (company == null) {
+			modelAndView.setViewName("redirect:/home/showProfile");
+		} else {
+			modelAndView.addObject("receiptList", receiptService.fetchAllReceipt(user, CommonUtils.getSessionAttributes(request)));
+			modelAndView.setViewName("receiptData");
+		}
 		return modelAndView;
 	}
 	
 	@RequestMapping(value = { "/home/updatereceipt" }, method = RequestMethod.GET)
-	public ModelAndView updatePayment(Principal principal) {
+	public ModelAndView updatePayment(Principal principal, HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
 		String user = principal.getName();
-		modelAndView.addObject("receiptList", receiptService.fetchAllReceipt(user));
+		modelAndView.addObject("receiptList", receiptService.fetchAllReceipt(user, CommonUtils.getSessionAttributes(request)));
 		modelAndView.setViewName("updateReceipt");
 		return modelAndView;
 	}
@@ -151,6 +156,12 @@ public class ReceiptController extends MasterController{
 		String user = request.getUserPrincipal().getName();
 		Receipts receipt = receiptService.findByIdAndReceiptOwner(Integer.valueOf(id), user);
 		receipt.setReceiptDeleted(1);
+		if(receipt.getReceiptInvoiceDetails().size()>0) {
+			for (ReceiptInvoices invoicePay : receipt.getReceiptInvoiceDetails()) {
+				invoiceService.updateInvoicePaidAmt("-"+invoicePay.getReceiptInvoiceAmount(),
+						Integer.valueOf(invoicePay.getReceiptInvoiceId()));
+			}
+		}
 		receiptService.saveAccount(receipt);
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("redirect:/home/updatereceipt");
