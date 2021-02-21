@@ -662,6 +662,35 @@ function getAccountList() {
 		});
 }
 
+function getExportAccountList() {
+	$("[name=accountNo]").empty();
+	$("[name=nameShip]").val("");
+	$("[name=addressBill]").val("");
+	$("[name=addressShip]").val("");
+	$("[name=gstinBill]").val("");
+	$("[name=gstinShip]").val("");
+	$("[name=stateBill]").val("");
+	$("[name=stateShip]").val("");
+	$("[name=gstinBill]").focus();
+	$("[name=gstinShip]").focus();
+	$("[name=gstinShip]").blur();
+	$.ajax({
+		type : "GET",
+		contentType : "application/json",
+		url : "/home/getexportaccountlist",
+		dataType : 'json',			
+		async : false,
+		success : function(data) {			
+			$.each(data, function (i, item) {
+			    $('[name=accountNo]').append($('<option>', { 
+			        value: item.id,
+			        text : item.accountName 
+			    }));
+			});
+		}
+		});
+}
+
 
 function setBOSValues() {
 

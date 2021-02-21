@@ -72,6 +72,12 @@ public class AjaxController extends MasterController {
 		return gson.toJson(accountService.fetchAccountNameForInvoice(request.getUserPrincipal().getName(), Constants.SUNDRY_DEBTOR));
 	}
 	
+	@RequestMapping(value = "/home/getexportaccountlist", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody String getExportAccountList(HttpServletRequest request) {
+		return gson.toJson(accountService.fetchAccountNameForExportInvoice(request.getUserPrincipal().getName(),Constants.SUNDRY_DEBTOR, "-1"));
+	}
+
+	
 	@RequestMapping(value = "/home/getaccountlistpurchase", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody String getAccountListPurchase(HttpServletRequest request) {
 		return gson.toJson(accountService.fetchAccountNameForInvoice(request.getUserPrincipal().getName(), Constants.SUNDRY_CREDITOR));
