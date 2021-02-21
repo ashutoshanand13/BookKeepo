@@ -213,9 +213,8 @@ function submitHandler(e){
 						var json = JSON.stringify($('#form').serializeJSON())
 								.replace(/\\/g, "").replace("\"[", "[")
 								.replace("]\"", "]");
-						debugger;
 						$('#overlay').fadeIn();
-						
+						f.reset();
 						$.ajax({
 							url : url,
 							async : true,
@@ -231,7 +230,6 @@ function submitHandler(e){
 								link.href = window.URL.createObjectURL(blob);
 								link.download = fileName;
 								link.click();
-								f.reset();
 								$('input').focus();
 								$('input').blur();
 								if(name==="billOfSupply") {
@@ -243,6 +241,7 @@ function submitHandler(e){
 								$('#bankDiv').empty();
 							}
 						});
+						location.reload(true);
 						$('#overlay').delay(500).fadeOut();
 						$('#custom_alert').html(
 								'<div class="alert alert-info text-center table-width fade-in" role="alert">'
