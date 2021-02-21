@@ -124,7 +124,7 @@ public class InvoiceDetails {
 	@JoinColumn(name = "invoice_company_reference_no")
 	private Company invoiceCompanyDetails;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "invoice_company_details_reference_no")
 	private InvoiceCompanyDetails invoiceAssoCompanyDetails;
 
