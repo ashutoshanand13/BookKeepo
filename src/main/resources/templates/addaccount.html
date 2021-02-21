@@ -127,7 +127,8 @@
 	$(document).ready(function() {
 		$("#selectbasic").change(function() {
 			getAccountData();
-		});
+		}); 
+		getOpeningBalanceType();
 		
 		$("#openingBalanceSelect").change(function() {
 			getOpeningBalanceType();
@@ -176,6 +177,7 @@
 			$("[name=id]").val(0);
 			getOpeningBalanceType();
 		}
+		disableFields();
 	};
 	
 	function checkAccountDetails() {
@@ -202,6 +204,19 @@
 			$("[name=openingBalanceAmount]").prop('disabled', true);
 		} else {
 			$("[name=openingBalanceAmount]").prop('disabled', false);
+		}
+	}
+	
+	function disableFields() {
+		var id = $("[name=id]");
+		
+		if(id!== 0){
+			$("[name=accountType]").prop('disabled', true);
+			$("[name=accountState]").prop('disabled', true);
+			
+		} else {
+			$("[name=accountType]").prop('disabled', false);
+			$("[name=accountState]").prop('disabled', false);
 		}
 	}
 	</script>
