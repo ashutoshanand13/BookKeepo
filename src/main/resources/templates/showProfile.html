@@ -13,7 +13,6 @@
 			$(document).ready(function() {
 			$('#example').DataTable();
 			} );
-
 		</script>
 		
 	</head>
@@ -107,7 +106,7 @@
 								<div class="col-md-6 form-group">
 									<div class="form-group">
 										<label class="field-description">Address</label>
-										<textarea class="form-control text-uppercase"
+										<textarea class="form-control text-uppercase" maxlength="255"
 											id="companyaddress" th:field="*{companyAddress}"></textarea>
 									</div>
 								</div>
@@ -150,17 +149,18 @@
 						<td th:if="${company.companyActive == 0}">
 							<a th:href="'javascript:activateCompany(\'' + ${company.companyUniqueKey} +'\');'">Activate</a>
 						</td>
+						<td th:unless="${company.companyActive == 0}">
+							Active
+						</td>
+						
 						<td>
 							<a th:href="'javascript:updateCompany(\'' + ${company.companyActive} +'\');'">Update</a>
 						</td>
 						<td>
 							<a th:href="'javascript:deleteCompany(\'' + ${company.companyActive} +'\',\'' + ${company.companyUniqueKey} +'\');'">Delete</a>
 						</td>
-
 					</tr>
 				</tbody>
 			</table>
-
 		</div>
-
 	</div>
