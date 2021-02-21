@@ -39,7 +39,7 @@
 			</div>
 			<div class="row">
 				<div class="col-md-4 form-group"><label class="field-description">Item Details</label>
-					<textarea cols="40" rows="5" style="height: 60px;"
+					<textarea cols="40" rows="5" maxlength="255" style="height: 60px;"
 						th:field="*{productDescription}" required="required"></textarea>
 					<label class="field-description">GST Rate</label>
 					<input type="text" onfocus="(this.type='number')" min="0" class="form-control"
