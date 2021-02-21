@@ -34,8 +34,6 @@ public class SalesInvoiceController extends MasterController {
 			modelAndView.addObject("logoImage", CommonUtils.getImgfromByteArray(company.getCompanyLogo()));
 			modelAndView.addObject("itemList", itemService.findByProductOwner(user));
 			modelAndView.addObject("pageName", InvoiceType.Tax_Invoice.getType());
-			modelAndView.addObject("InvoiceNbr",
-					invoiceService.getInvoiceNumber(user, InvoiceType.Tax_Invoice.getType()));
 
 			modelAndView.setViewName("salesInvoice");
 		}
@@ -53,7 +51,6 @@ public class SalesInvoiceController extends MasterController {
 		modelAndView.addObject("logoImage", CommonUtils.getImgfromByteArray(company.getCompanyLogo()));
 		modelAndView.addObject("itemList", itemService.findByProductOwner(user));
 		modelAndView.addObject("pageName", InvoiceType.Tax_Invoice.getType());
-		modelAndView.addObject("InvoiceNbr", invoiceService.getInvoiceNumber(user, InvoiceType.Tax_Invoice.getType()));
 		modelAndView.setViewName("salesInvoice");
 		return modelAndView;
 	}

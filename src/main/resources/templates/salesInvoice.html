@@ -73,7 +73,7 @@
 				</thead>
 				<tbody class="table-width">
 					<tr>
-						<td class="pt-3-half"><input type="text" th:value="${InvoiceNbr}" class="form-control"
+						<td class="pt-3-half"><input type="text" class="form-control"
 							name="invoiceNo" readonly="readonly"></td>
 						<td class="pt-3-half"><input type="text" class="form-control"
 							name="poNo" placeholder="PO No." required="required"></td>
@@ -386,6 +386,7 @@
 	<script>
 window.onload = function() {
 	setValues();
+	getInvoiceNumber();
 };
 
  function inputValidate(){

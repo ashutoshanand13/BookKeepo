@@ -70,7 +70,7 @@
 				<div class="col-md-6 form-group">
 					<div class="form-group">
 						<label>Terms & Conditions</label>
-						<textarea class="form-control override-heightarea" 
+						<textarea class="form-control override-heightarea" maxlength="255" 
 						th:field="*{companyBankTNC}" ></textarea>
 					</div>
 				</div>
@@ -90,7 +90,7 @@
 				<div class="col-md-6 form-group">
 					<div class="form-group">
 						<label>Address</label>
-						<textarea class="form-control text-uppercase" id="companyaddress" th:field="*{companyAddress}"
+						<textarea class="form-control text-uppercase"  maxlength="255" id="companyaddress" th:field="*{companyAddress}"
 							></textarea>
 					</div>
 				</div>

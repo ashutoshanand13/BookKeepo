@@ -28,7 +28,7 @@
  var controllerMap = { salesInvoice: "/home/submitInvoice", exportInvoice: "/home/submitInvoice", debitNote:"/home/submitInvoice", creditNote:"/home/submitInvoice" , purchaseOrder:"/home/submitInvoice"  , purchaseInvoice:"/home/submitInvoice", billOfSupply:"/home/submitInvoice", retailInvoice:"/home/submitInvoice"};
  var fileMap = { salesInvoice: "Tax_Invoice", exportInvoice: "Export_Invoice", debitNote:"Debit_Note", creditNote:"Credit_Note", purchaseOrder:"Purchase_Order", purchaseInvoice:"Purchase_Invoice", billOfSupply:"Bill_Of_Supply", retailInvoice:"Retail_Invoice" };
  
- var gstCodeStateMap = {"01":"JAMMU & KASHMIR","02":"HIMACHAL PRADESH	","03":"PUNJAB","04":"CHANDIGARH","05":"UTTARAKHAND","06":"DELHI","08":"RAJASTHAN","09":"UTTAR PRADESH","10":"BIHAR","11":"SIKKIM","12":"ARUNACHAL PRADESH","13":"NAGALAND","14":"MANIPUR","15":"MIZORAM","16":"TRIPURA","17":"MEGHLAYA","18":"ASSAM","19":"WEST BENGAL","20":"JHARKHAND","21":"ODISHA","22":"CHATTISGARH","22":"MADHYA PRADESH","24":"GUJARAT","25":"DAMAN AND DIU","26":"DADRA AND NAGAR HAVELI","27":"MAHARASHTRA",        "28":"ANDHRA PRADESH (Old)","29":"KARNATAKA","30":"GOA","31":"LAKSHWADEEP","32":"KERALA","33":"TAMIL NADU","34":"PUDUCHERRY","35":"ANDAMAN AND NICOBAR ISLANDS","36":"TELANGANA","37":"ANDHRA PRADESH (New)","38":"LADAKH","-1":"OTHER" }
+ var gstCodeStateMap = {"01":"JAMMU & KASHMIR","02":"HIMACHAL PRADESH	","03":"PUNJAB","04":"CHANDIGARH","05":"UTTARAKHAND","06":"DELHI","08":"RAJASTHAN","09":"UTTAR PRADESH","10":"BIHAR","11":"SIKKIM","12":"ARUNACHAL PRADESH","13":"NAGALAND","14":"MANIPUR","15":"MIZORAM","16":"TRIPURA","17":"MEGHLAYA","18":"ASSAM","19":"WEST BENGAL","20":"JHARKHAND","21":"ODISHA","22":"CHATTISGARH","22":"MADHYA PRADESH","24":"GUJARAT","25":"DAMAN AND DIU","26":"DADRA AND NAGAR HAVELI","27":"MAHARASHTRA","28":"ANDHRA PRADESH (Old)","29":"KARNATAKA","30":"GOA","31":"LAKSHWADEEP","32":"KERALA","33":"TAMIL NADU","34":"PUDUCHERRY","35":"ANDAMAN AND NICOBAR ISLANDS","36":"TELANGANA","37":"ANDHRA PRADESH (New)","38":"LADAKH","-1":"OTHER" }
  
  var gstRegex = /^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$/;
  
@@ -213,9 +213,8 @@ function submitHandler(e){
 						var json = JSON.stringify($('#form').serializeJSON())
 								.replace(/\\/g, "").replace("\"[", "[")
 								.replace("]\"", "]");
-						debugger;
 						$('#overlay').fadeIn();
-						
+						f.reset();
 						$.ajax({
 							url : url,
 							async : true,
@@ -231,7 +230,6 @@ function submitHandler(e){
 								link.href = window.URL.createObjectURL(blob);
 								link.download = fileName;
 								link.click();
-								f.reset();
 								$('input').focus();
 								$('input').blur();
 								if(name==="billOfSupply") {
@@ -249,6 +247,7 @@ function submitHandler(e){
 								  +'Invoice successfully saved. View all invoices <a href="/home/showInvoice" class="alert-link">here</a>.'+
 								  '</div>');
 						$("#custom_alert").fadeTo(5000, 500).slideUp(500);
+						getInvoiceNumber();
    }
  });
 
@@ -1114,6 +1113,20 @@ function getAccountListPurchase() {
 			        text : item.accountName 
 			    }));
 			});
+		}
+		});
+}
+
+function getInvoiceNumber() {
+	var pageName = $("[name=pageName]").val();
+	$.ajax({
+		type : "GET",
+		contentType : "application/json",
+		url : "/home/getinvoicenumber?page="+pageName,
+		dataType : 'json',			
+		async : false,
+		success : function(data) {			
+			$("[name=invoiceNo]").val(data)
 		}
 		});
 }
