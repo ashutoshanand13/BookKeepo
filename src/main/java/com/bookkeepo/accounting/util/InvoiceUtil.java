@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
@@ -173,7 +174,16 @@ public class InvoiceUtil {
 					subType = InvoiceSubType.INTERSTATE.getInvoiceSubType();
 				}
 			} else {
-				subType = InvoiceSubType.INTRASTATE.getInvoiceSubType();
+				String StateKey = Constants.gstCodeStateMap.entrySet()
+		                   .stream()
+		                   .filter(entry -> salesInvoiceData.getStateBill().equals(entry.getValue()))
+		                   .map(Map.Entry::getKey)
+		                   .findFirst().get();
+				if (companyGST.substring(0, 2).equals(StateKey)) {
+					subType = InvoiceSubType.INTRASTATE.getInvoiceSubType();
+				} else {
+					subType = InvoiceSubType.INTERSTATE.getInvoiceSubType();
+				}
 			}
 		} catch (Exception e) {
 

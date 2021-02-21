@@ -64,7 +64,7 @@
 					<tr>
 						<td class="pt-3-half"><select class="form-control" name="accountNo" onfocus="getAccountListPurchase()" style="font-size: 10px;"></select>
 						</td>
-						<td class="pt-3-half"><input type="text" th:value="${InvoiceNbr}" class="form-control"
+						<td class="pt-3-half"><input type="text" class="form-control"
 							name="invoiceNo" readonly="readonly"></td>
 							<td class="pt-3-half"><input type="text" class="form-control"
 							name="invoiceDate" onfocus="(this.type='date')"
@@ -321,6 +321,7 @@
 	<script>
 window.onload = function() {
 	setValues();
+	getInvoiceNumber();
 };
 
  function inputValidate(){

@@ -111,4 +111,9 @@ public class AjaxController extends MasterController {
 	public @ResponseBody String checkBank(@RequestParam String bankAccount, HttpServletRequest request) {
 		return gson.toJson(bankService.findByUserBankAccount(bankAccount));
 	}
+	
+	@RequestMapping(value = "/home/getinvoicenumber", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody String getInvoiceNumber(@RequestParam String page, HttpServletRequest request) {
+		return gson.toJson(invoiceService.getInvoiceNumber(request.getUserPrincipal().getName(), page));
+	}
 }

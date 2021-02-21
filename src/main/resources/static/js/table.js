@@ -241,13 +241,13 @@ function submitHandler(e){
 								$('#bankDiv').empty();
 							}
 						});
-						location.reload(true);
 						$('#overlay').delay(500).fadeOut();
 						$('#custom_alert').html(
 								'<div class="alert alert-info text-center table-width fade-in" role="alert">'
 								  +'Invoice successfully saved. View all invoices <a href="/home/showInvoice" class="alert-link">here</a>.'+
 								  '</div>');
 						$("#custom_alert").fadeTo(5000, 500).slideUp(500);
+						getInvoiceNumber();
    }
  });
 
@@ -1113,6 +1113,20 @@ function getAccountListPurchase() {
 			        text : item.accountName 
 			    }));
 			});
+		}
+		});
+}
+
+function getInvoiceNumber() {
+	var pageName = $("[name=pageName]").val();
+	$.ajax({
+		type : "GET",
+		contentType : "application/json",
+		url : "/home/getinvoicenumber?page="+pageName,
+		dataType : 'json',			
+		async : false,
+		success : function(data) {			
+			$("[name=invoiceNo]").val(data)
 		}
 		});
 }
