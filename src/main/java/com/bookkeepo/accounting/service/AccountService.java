@@ -85,6 +85,29 @@ public class AccountService {
 
 		return accountList;
 	}
+	
+	public List<Accounts> fetchAccountNameForExportInvoice(String user, String accountType,String state) {
+		List<Accounts> accountList = new ArrayList<Accounts>();
+		Accounts selectAccount = new Accounts();
+		selectAccount.setId(0);
+		selectAccount.setAccountName("Select Account");
+		accountList.add(selectAccount);
+
+		Accounts newAccount = new Accounts();
+		newAccount.setId(-1);
+		newAccount.setAccountName("Add New Account");
+		accountList.add(newAccount);
+
+		List<Accounts> dbAccountList = accountRepository
+				.findByAccountOwnerAndAccountCompanyDetailsAndAccountTypeAndAccountState(user,
+						companyDetailsRepository.findByUserNameAndCompanyActive(user, 1), accountType, state);
+
+		if (!dbAccountList.isEmpty()) {
+			accountList.addAll(dbAccountList);
+		}
+
+		return accountList;
+	}
 
 	public Accounts findById(int id) {
 		return accountRepository.findById(id);

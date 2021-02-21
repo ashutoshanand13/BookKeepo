@@ -56,4 +56,7 @@ public interface AccountRepository extends JpaRepository<Accounts, Long> {
 			+ "from Accounts u where u.id = ?1")
 	AccountDto findAccountbyId(int id);
 
+	List<Accounts> findByAccountOwnerAndAccountCompanyDetailsAndAccountTypeAndAccountState(String user,
+			Company findByUserNameAndCompanyActive, String accountType, String state);
+
 }

@@ -158,7 +158,9 @@ public class InvoiceService {
 	}
 
 	public List<InvoiceDetails> findByInvoiceAccountDetailsAndInvoiceOwner(Accounts account, String owner) {
-		List<InvoiceDetails> invoiceList = invoiceRepository.findByInvoiceAccountDetailsAndInvoiceOwnerAndInvoicePaid(account, owner, 0);
+		List<InvoiceDetails> invoiceList = invoiceRepository
+				.findByInvoiceAccountDetailsAndInvoiceOwnerAndInvoicePaidAndInvoiceTypeNot(account, owner, 0,
+						InvoiceType.Purchase_Order.getType());
 
 		if (!invoiceList.isEmpty()) {
 			InvoiceDetails temp = new InvoiceDetails();
