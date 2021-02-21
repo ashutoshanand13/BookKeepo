@@ -46,7 +46,9 @@
 			<div class="row">
 				<div class="col-md-6 form-group">
 					<label class="mandatory field-description">Bank Account</label> <input
-						type="text" class="form-control" name="bankAC"
+						type="text" class="form-control" name="bankAC" pattern="^\d{9,18}$" 
+						oninvalid="this.setCustomValidity('Account number should be numeric with 9-18 length')"
+						oninput="setCustomValidity('')"
 						th:field="*{userBankAccount}" required="required" onchange="checkBankAccount(this);"> <label
 						class="mandatory field-description">Bank
 						Name</label> <input type="text" th:field="*{userBankName}"
