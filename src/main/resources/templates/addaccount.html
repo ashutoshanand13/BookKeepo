@@ -160,30 +160,30 @@
 					$("[name=openingBalanceAmount]").val(data.openingBalanceAmount);
 					$("[name=id]").val(data.id);
 					getOpeningBalanceType();
+					disableFields();
 				}
 				});
 		} else {
 			$("[name=accountName]").val("");
-			$("[name=accountType]").val("");
+			$("[name=accountType]").prop("selectedIndex", 0);
 			$("[name=gstin]").val("");
 			$("[name=accountPan]").val("");
 			$("[name=accountEmail]").val("");
 			$("[name=accountContact]").val("");
 			$("[name=accountAddress]").val("");
-			$("[name=accountState]").val("");
+			$("[name=accountState]").prop("selectedIndex", 0);
 			$("[name=accountPincode]").val("");
 			$("[name=openingBalanceType]").val("");
 			$("[name=openingBalanceAmount]").val("");
 			$("[name=id]").val(0);
 			getOpeningBalanceType();
+			disableFields();
 		}
-		disableFields();
 	};
 	
 	function checkAccountDetails() {
 		var state = $("#accountState").val();
 		var gst  = $("#gstin").val();
-		debugger;
 		if(state == "00") {
 			createConfirmationMessageModal("Please select a state");
 			return false;
@@ -208,15 +208,16 @@
 	}
 	
 	function disableFields() {
-		var id = $("[name=id]");
+		var id = $("[name=id]").val();
 		
-		if(id!== 0){
-			$("[name=accountType]").prop('disabled', true);
-			$("[name=accountState]").prop('disabled', true);
+		if(id!== "0"){
+			$("[name=accountType]").attr("style", "pointer-events: none;");
+			$("[name=accountState]").attr("style", "pointer-events: none;");
 			
 		} else {
-			$("[name=accountType]").prop('disabled', false);
-			$("[name=accountState]").prop('disabled', false);
+			console.log("hi")
+			$("[name=accountType]").attr("style", "pointer-events: auto");
+			$("[name=accountState]").attr("style", "pointer-events: auto");
 		}
 	}
 	</script>
