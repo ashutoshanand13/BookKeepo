@@ -53,7 +53,7 @@
 				</thead>
 								<tbody class="table-width">
 					<tr>
-						<td class="pt-3-half"><input type="text" th:value="${InvoiceNbr}" class="form-control"
+						<td class="pt-3-half"><input type="text" class="form-control"
 							name="invoiceNo" readonly="readonly"></td>
 						<td class="pt-3-half"><select class="form-control" 
 						id="againstInvoicedropdown" name="againstInvoice" style="font-size: 10px;">
@@ -358,6 +358,7 @@
 	<script>
 window.onload = function() {
 	setValues();
+	getInvoiceNumber();
 };
  
  function inputValidate(){

@@ -60,7 +60,7 @@
 				</thead>
 				<tbody class="table-width">
 					<tr>
-						<td class="pt-3-half" colspan="2"><input type="text" th:value="${InvoiceNbr}" class="form-control"
+						<td class="pt-3-half" colspan="2"><input type="text" class="form-control"
 							name="invoiceNo" placeholder="Invoice No." required="required" readonly="readonly"></td>
 						<td class="pt-3-half"><input type="text" class="form-control"
 							name="poNo" placeholder="PO No." required="required"></td>
@@ -284,6 +284,7 @@
 	<script>
 window.onload = function() {
 	setBOSValues();
+	getInvoiceNumber();
 };
 
 </script>

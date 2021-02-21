@@ -71,7 +71,7 @@ public class ProductDetails {
 	@Column(name = "product_last_modified", nullable = false)
 	private Date productLastModified;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "product_company_reference_no", updatable = false)
 	private Company productCompanyDetails;
 
