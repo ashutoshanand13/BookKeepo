@@ -22,4 +22,6 @@ public interface CompanyDetailsRepository extends JpaRepository<Company, Long> {
 	Company findByCompanyUniqueKey(String key);
 
 	List<Company> findByCompanyDeletedAndUserName(int companyDeleted, String userName);
+	
+	Company findByCompanyGstin(String gstin);
 }

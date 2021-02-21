@@ -49,7 +49,21 @@ public class CompanyController extends MasterController {
 	public ModelAndView addCompany(@Valid @ModelAttribute("company") Company company, BindingResult bindingResult,
 			Principal principal, @RequestParam("companyLogo") MultipartFile companyLogo, HttpServletRequest request) {
 		HttpSession session = request.getSession();
-		ModelAndView modelAndView = new ModelAndView(
+		ModelAndView modelAndView = null;
+		if (company.getCompanyGstin() != null && !company.getCompanyGstin().isEmpty()) {
+			Company userCompmany = companyDetailsService.findByCompanyGstin(company.getCompanyGstin());
+			if (userCompmany != null && userCompmany.getId() != company.getId()) {
+				company.setCompanyGstin("");
+				modelAndView = new ModelAndView("addCompany");
+				company.setCompanyStringLogo(CommonUtils.getImgfromByteArray(company.getCompanyLogo()));
+				modelAndView.addObject("message","GSTIN already registered. Please enter valid GSTIN");
+				modelAndView.addObject("company", company);
+				modelAndView.addObject("logoImage", company.getCompanyStringLogo());
+				return modelAndView;
+			}
+		}
+
+		modelAndView = new ModelAndView(
 				CommonUtils.isPopulated(company.getPageName()) ? "redirect:" + company.getPageName() : "addCompany");
 		try {
 			if (companyLogo != null && !companyLogo.getOriginalFilename().isEmpty()) {
@@ -67,10 +81,11 @@ public class CompanyController extends MasterController {
 			modelAndView.addObject("message", "Company details updated successfully!");
 			modelAndView.addObject("company", company);
 		}
-		String menuToDisplay = CommonUtils.isPopulated(company.getCompanyGstin()) 
-				? "menu_withCompanyGSTIN":"menu_withoutCompanyGSTIN";
+		String menuToDisplay = CommonUtils.isPopulated(company.getCompanyGstin()) ? "menu_withCompanyGSTIN"
+				: "menu_withoutCompanyGSTIN";
 		CommonUtils.setSessionAttributes(session, menuToDisplay, company);
 		return modelAndView;
+
 	}
 
 	/**
