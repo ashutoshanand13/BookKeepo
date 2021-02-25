@@ -55,7 +55,8 @@ public class Constants {
         map.put("03", "PUNJAB");
         map.put("04", "CHANDIGARH");
         map.put("05", "UTTARAKHAND");
-        map.put("06", "DELHI");
+        map.put("06", "HARYANA");
+	map.put("07", "DELHI");
         map.put("08", "RAJASTHAN");
         map.put("09", "UTTAR PRADESH");
         map.put("10", "BIHAR");

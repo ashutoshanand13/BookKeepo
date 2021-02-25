@@ -81,10 +81,10 @@ public class UserProfileController extends MasterController {
 			HttpServletResponse response) throws IOException {
 		ModelAndView modelAndView = new ModelAndView();
 		Company company = companyDetailsService.findByCompanyUniqueKey(uniqueKey);
-		if(company.getCompanyActive()!=1) {
-		company.setCompanyDeleted(1);
-		company.setCompanyActive(0);
-		companyDetailsService.save(company);
+		if (company.getCompanyActive() != 1) {
+			company.setCompanyDeleted(1);
+			company.setCompanyActive(0);
+			companyDetailsService.save(company);
 		}
 		modelAndView.setViewName("redirect:/home/showProfile");
 
@@ -100,8 +100,8 @@ public class UserProfileController extends MasterController {
 		for (Company com : companyList) {
 			if (uniqueKey.equals(com.getCompanyUniqueKey())) {
 				com.setCompanyActive(1);
-				String menuToDisplay = CommonUtils.isPopulated(com.getCompanyGstin()) 
-						? "menu_withCompanyGSTIN":"menu_withoutCompanyGSTIN";
+				String menuToDisplay = CommonUtils.isPopulated(com.getCompanyGstin()) ? "menu_withCompanyGSTIN"
+						: "menu_withoutCompanyGSTIN";
 				CommonUtils.setSessionAttributes(session, menuToDisplay, com);
 			} else {
 				com.setCompanyActive(0);
@@ -116,12 +116,14 @@ public class UserProfileController extends MasterController {
 
 	@RequestMapping(value = { "/home/addnewcompany" }, method = RequestMethod.POST)
 	public ModelAndView addNewCompany(@Valid @ModelAttribute("company") Company company, BindingResult bindingResult,
-			Principal principal, @RequestParam("companyLogo") MultipartFile companyLogo, HttpServletRequest request) throws IOException {
+			Principal principal, @RequestParam("companyLogo") MultipartFile companyLogo, HttpServletRequest request)
+			throws IOException {
 		ModelAndView modelAndView = new ModelAndView();
 		HttpSession session = request.getSession();
 		List<Company> companyRecord = companyDetailsService.fetchAllCompanies(principal.getName());
 		Accounts account = new Accounts();
 		account.setAccountName(Constants.DEFAULT_ACCOUNT_ON_COMPANY_CREATION);
+
 		if (companyRecord == null || companyRecord.size() == 0) {
 			company.setCompanyActive(1);
 		}
@@ -135,20 +137,26 @@ public class UserProfileController extends MasterController {
 			company.setCompanyLogo(null);
 		}
 
+		if (company.getCompanyGstin() != null && !company.getCompanyGstin().isEmpty()) {
+			Company userCompmany = companyDetailsService.findByCompanyGstin(company.getCompanyGstin());
+			if (userCompmany != null) {
+				company.setCompanyGstin(null);
+			}
+		}
+
 		company.setCompanyUniqueKey(CommonUtils.getUniqueID());
 		company.setUserName(principal.getName());
 		account.setAccountOwner(principal.getName());
 		account.setAccountType(Constants.DEFAULT_ACCOUNT_ON_COMPANY_CREATION);
-		Company companyforAccount= companyDetailsService.save(company);
+		Company companyforAccount = companyDetailsService.save(company);
 		account.setAccountCompanyDetails(companyforAccount);
 		accountService.saveAccount(account);
-		
-		modelAndView.addObject("message", "New Company Added Successfully. ");
+
 		modelAndView.setViewName("redirect:/home/showProfile");
-		if(company.getCompanyActive()==1) {
-		String menuToDisplay = CommonUtils.isPopulated(company.getCompanyGstin()) 
-				? "menu_withCompanyGSTIN":"menu_withoutCompanyGSTIN";
-		CommonUtils.setSessionAttributes(session, menuToDisplay, company);
+		if (company.getCompanyActive() == 1) {
+			String menuToDisplay = CommonUtils.isPopulated(company.getCompanyGstin()) ? "menu_withCompanyGSTIN"
+					: "menu_withoutCompanyGSTIN";
+			CommonUtils.setSessionAttributes(session, menuToDisplay, company);
 		}
 		return modelAndView;
 	}

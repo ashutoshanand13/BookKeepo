@@ -41,4 +41,8 @@ public class CompanyDetailsService {
 	public int getActivateCompanyId(String name) {
 		return companyDetailsRepository.findByUserNameAndCompanyActive(name, 1).getId();
 	}
+	
+	public Company findByCompanyGstin(String gstin) {
+		return companyDetailsRepository.findByCompanyGstin(gstin);
+	}
 }

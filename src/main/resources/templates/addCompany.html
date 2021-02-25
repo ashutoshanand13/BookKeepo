@@ -115,6 +115,9 @@
 		$(document).ready(function() {
 			var data = document.getElementById('companylogopreview').src;
 			checkifImageExists(data);
+			if($("#companygstin").val() !==""){
+				$("#companygstin").prop('readonly', true);
+			}
 		});
 	</script>
 </th:block>

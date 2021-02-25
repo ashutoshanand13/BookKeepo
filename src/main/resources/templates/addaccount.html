@@ -127,7 +127,8 @@
 	$(document).ready(function() {
 		$("#selectbasic").change(function() {
 			getAccountData();
-		});
+		}); 
+		getOpeningBalanceType();
 		
 		$("#openingBalanceSelect").change(function() {
 			getOpeningBalanceType();
@@ -159,29 +160,30 @@
 					$("[name=openingBalanceAmount]").val(data.openingBalanceAmount);
 					$("[name=id]").val(data.id);
 					getOpeningBalanceType();
+					disableFields();
 				}
 				});
 		} else {
 			$("[name=accountName]").val("");
-			$("[name=accountType]").val("");
+			$("[name=accountType]").prop("selectedIndex", 0);
 			$("[name=gstin]").val("");
 			$("[name=accountPan]").val("");
 			$("[name=accountEmail]").val("");
 			$("[name=accountContact]").val("");
 			$("[name=accountAddress]").val("");
-			$("[name=accountState]").val("");
+			$("[name=accountState]").prop("selectedIndex", 0);
 			$("[name=accountPincode]").val("");
 			$("[name=openingBalanceType]").val("");
 			$("[name=openingBalanceAmount]").val("");
 			$("[name=id]").val(0);
 			getOpeningBalanceType();
+			disableFields();
 		}
 	};
 	
 	function checkAccountDetails() {
 		var state = $("#accountState").val();
 		var gst  = $("#gstin").val();
-		debugger;
 		if(state == "00") {
 			createConfirmationMessageModal("Please select a state");
 			return false;
@@ -202,6 +204,20 @@
 			$("[name=openingBalanceAmount]").prop('disabled', true);
 		} else {
 			$("[name=openingBalanceAmount]").prop('disabled', false);
+		}
+	}
+	
+	function disableFields() {
+		var id = $("[name=id]").val();
+		
+		if(id!== "0"){
+			$("[name=accountType]").attr("style", "pointer-events: none;");
+			$("[name=accountState]").attr("style", "pointer-events: none;");
+			
+		} else {
+			console.log("hi")
+			$("[name=accountType]").attr("style", "pointer-events: auto");
+			$("[name=accountState]").attr("style", "pointer-events: auto");
 		}
 	}
 	</script>
